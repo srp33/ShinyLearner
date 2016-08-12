@@ -1,4 +1,4 @@
-![ShinyLearner logo](Web/Logo.jpg)
+![ShinyLearner logo](Web/Logo_Small.jpg)
 
 ## Introduction
 
