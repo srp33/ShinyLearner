@@ -1,9 +1,10 @@
 language: java
 install: true
-script: ant
+script:
+- ant
+- ls
+- echo "This is a test"
 jdk: oraclejdk8
 branches:
   only:
     - master
-script:
-  echo "Success!!!"
