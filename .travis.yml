@@ -1,11 +1,14 @@
 language: java
+language: r
+r:
+  - release
 install: true
 jdk: oraclejdk8
 branches:
   only:
     - master
 script:
-- sh scripts/build
+- Validation/generate_data
 - sh TestScripts/classification_montecarlo
 notifications:
   email:
