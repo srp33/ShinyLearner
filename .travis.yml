@@ -8,7 +8,7 @@ branches:
   only:
     - master
 script:
-- cd Validation; generate_data; cd ..
+- cd Validation; ./generate_data; cd ..
 - sh TestScripts/classification_montecarlo
 notifications:
   email:
