@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -o errexit
+
+dataFiles="$1"
+description="$2"
+numIterations="$3"
+debug="$4"
+classifAlgos="$5"
+useDefaultParameters="$6"
+outPredictionsFile="$7"
+outMetricsFile="$8"
+outBenchmarkFile="$9"
+
+scripts/classification "$dataFiles" "$description" "$numIterations" "$debug" "$classifAlgos" "$useDefaultParameters" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo 0

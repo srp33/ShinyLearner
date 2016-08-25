@@ -1,0 +1,9 @@
+.dropbox
+.ipynb_checkpoints
+.DS_Store
+Icon?
+Archive
+TestFiles
+release
+*.tsv
+*.txt

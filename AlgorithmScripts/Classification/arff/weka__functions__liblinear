@@ -1,0 +1,11 @@
+#!/bin/bash
+
+mlflexDirPath="$1"
+trainingFilePath="$2"
+testFilePath="$3"
+classOptions="$4"
+
+parameters='weka.classifiers.functions.LibLINEAR -S 1 -C 1.0 -E 0.001 -B 1.0 -L 0.1 -I 1000'
+classPath="$mlflexDirPath/lib/LibLINEAR.jar:$mlflexDirPath/lib/wekalib/liblinear-java-1.96-SNAPSHOT.jar"
+
+sh "$(dirname $0)"/Helper/weka_c_generic "$mlflexDirPath" "$classPath" "$trainingFilePath" "$testFilePath" "$parameters" "$classOptions"

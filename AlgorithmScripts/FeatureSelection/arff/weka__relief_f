@@ -1,0 +1,10 @@
+#!/bin/bash
+
+mlflexDirPath="$1"
+dataFilePath="$2"
+
+parameters='weka.attributeSelection.ReliefFAttributeEval -M -1 -D 1 -K 10 -s "weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1"'
+
+classPath=""
+
+sh "$(dirname $0)"/Helper/weka_fs_generic "$mlflexDirPath" "$classPath" "$dataFilePath" "$parameters"

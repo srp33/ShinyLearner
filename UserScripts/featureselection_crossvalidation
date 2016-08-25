@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -o errexit
+
+dataFiles="$1"
+description="$2"
+numIterations="$3"
+numFolds="$4"
+debug="$5"
+fsAlgos="$6"
+useDefaultParameters="$7"
+outFeaturesFile="$8"
+outBenchmarkFile="$9"
+
+tmpDir=/tmp/$(mktemp XXXXXXXXXXXXX)
+
+function cleanup {
+  rm -rf $tmpDir
+}
+
+cleanup
+
+for iteration in $(seq 1 $numIterations)
+do
+  outDir=$tmpDir/$iteration
+  mkdir -p $outDir
+
+  if [[ "$outFeaturesFile" == "" ]]
+  then
+    outFeaturesFileIteration=
+  else
+    outFeaturesFileIteration=$outDir/outfeatures
+  fi
+  if [[ "$outBenchmarkFile" == "" ]]
+  then
+    outBenchmarkFileIteration=
+  else
+    outBenchmarkFileIteration=$outDir/outbench
+  fi
+
+  scripts/featureselection "$dataFiles" "$description" "$numFolds" "$debug" "$fsAlgos" "$useDefaultParameters" "$outFeaturesFileIteration" "$outBenchmarkFileIteration" crossvalidation $iteration
+done
+
+python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfeatures,$tmpDir/*/outbench" "$outFeaturesFile,$outBenchmarkFile"
+
+cleanup

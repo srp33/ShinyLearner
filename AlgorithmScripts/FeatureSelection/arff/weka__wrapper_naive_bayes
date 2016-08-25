@@ -1,0 +1,10 @@
+#!/bin/bash
+
+mlflexDirPath="$1"
+dataFilePath="$2"
+
+parameters='weka.attributeSelection.WrapperSubsetEval -B weka.classifiers.bayes.NaiveBayes -s "weka.attributeSelection.GreedyStepwise -T -1.7976931348623157E308 -N -1 -num-slots 1"'
+
+classPath=""
+
+sh "$(dirname $0)"/Helper/weka_fs_generic "$mlflexDirPath" "$classPath" "$dataFilePath" "$parameters"

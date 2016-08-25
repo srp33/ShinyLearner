@@ -1,0 +1,11 @@
+#!/bin/bash
+
+mlflexDirPath="$1"
+trainingFilePath="$2"
+testFilePath="$3"
+classOptions="$4"
+
+#parameters='weka.classifiers.rules.JRip -F 3 -N 2.0 -O 2 -S 1'
+parameters='weka.classifiers.rules.JRip -F 3 -N 2.0 -O 2 -S 1 -num-decimal-places 7'
+
+sh "$(dirname $0)"/Helper/weka_c_generic "$mlflexDirPath" "" "$trainingFilePath" "$testFilePath" "$parameters" "$classOptions"

@@ -1,0 +1,104 @@
+#!/bin/bash
+
+set -o errexit
+
+dataFiles="$1"
+description="$2"
+numIterations="$3"
+outerNumIterations="$4"
+innerNumIterations="$5"
+debug="$6"
+fsAlgos="$7"
+numFeaturesOptions="$8"
+classifAlgos="$9"
+outSelectedFeaturesFile="${10}"
+outPredictionsFile="${11}"
+outMetricsFile="${12}"
+outFeatureSelectionBenchmarkFile="${13}"
+outClassificationBenchmarkFile="${14}"
+outNestedSelectedFeaturesFile="${15}"
+outNestedPredictionsFile="${16}"
+outNestedMetricsFile="${17}"
+outNestedFeatureSelectionBenchmarkFile="${18}"
+outNestedClassificationBenchmarkFile="${19}"
+
+tmpDir=/tmp/$(mktemp XXXXXXXXXXXXX)
+
+function cleanup {
+  rm -rf $tmpDir
+}
+
+cleanup
+
+for iteration in $(seq 1 $numIterations)
+do
+  outDir=$tmpDir/$iteration
+  mkdir -p $outDir
+
+  if [[ "$outSelectedFeaturesFile" == "" ]]
+  then
+    outSelectedFeaturesFileIteration=
+  else
+    outSelectedFeaturesFileIteration=$outDir/outfs
+  fi
+  if [[ "$outPredictionsFile" == "" ]]
+  then
+    outPredictionsFileIteration=
+  else
+    outPredictionsFileIteration=$outDir/outpreds
+  fi
+  if [[ "$outMetricsFile" == "" ]]
+  then
+    outMetricsFileIteration=
+  else
+    outMetricsFileIteration=$outDir/outmetrics
+  fi
+  if [[ "$outFeatureSelectionBenchmarkFile" == "" ]]
+  then
+    outFeatureSelectionBenchmarkFileIteration=
+  else
+    outFeatureSelectionBenchmarkFileIteration=$outDir/outbenchfs
+  fi
+  if [[ "$outClassificationBenchmarkFile" == "" ]]
+  then
+    outClassificationBenchmarkFileIteration=
+  else
+    outClassificationBenchmarkFileIteration=$outDir/outbenchcl
+  fi
+  if [[ "$outNestedSelectedFeaturesFile" == "" ]]
+  then
+    outNestedSelectedFeaturesFileIteration=
+  else
+    outNestedSelectedFeaturesFileIteration=$outDir/outfsnested
+  fi
+  if [[ "$outNestedPredictionsFile" == "" ]]
+  then
+    outNestedPredictionsFileIteration=
+  else
+    outNestedPredictionsFileIteration=$outDir/outpredsnested
+  fi
+  if [[ "$outNestedMetricsFile" == "" ]]
+  then
+    outNestedMetricsFileIteration=
+  else
+    outNestedMetricsFileIteration=$outDir/outmetricsnested
+  fi
+  if [[ "$outNestedFeatureSelectionBenchmarkFile" == "" ]]
+  then
+    outNestedFeatureSelectionBenchmarkFileIteration=
+  else
+    outNestedFeatureSelectionBenchmarkFileIteration=$outDir/outbenchfsnested
+  fi
+  if [[ "$outNestedClassificationBenchmarkFile" == "" ]]
+  then
+    outNestedClassificationBenchmarkFileIteration=
+  else
+    outNestedClassificationBenchmarkFileIteration=$outDir/outbenchclnested
+  fi
+
+  scripts/nestedboth "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$debug" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFileIteration" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outFeatureSelectionBenchmarkFileIteration" "$outClassificationBenchmarkFileIteration" "$outNestedSelectedFeaturesFileIteration" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedFeatureSelectionBenchmarkFileIteration" "$outNestedClassificationBenchmarkFileIteration" crossvalidation $iteration
+done
+
+python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfs,$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outbenchfs,$tmpDir/*/outbenchcl,$tmpDir/*/outfsnested,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchfsnested,$tmpDir/*/outbenchclnested" "$outSelectedFeaturesFile,$outPredictionsFile,$outMetricsFile,$outFeatureSelectionBenchmarkFile,$outClassificationBenchmarkFile,$outNestedSelectedFeaturesFile,$outNestedPredictionsFile,$outNestedMetricsFile,$outNestedFeatureSelectionBenchmarkFile,$outNestedClassificationBenchmarkFile"
+
+cleanup

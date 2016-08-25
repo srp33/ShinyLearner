@@ -1,0 +1,50 @@
+#!/bin/bash
+
+set -o errexit
+
+validationType=$1
+
+if [[ "$validationType" == "" ]]
+then
+  echo No validation type was specified. This may not be the script you want to be executing.
+  exit 1
+fi
+
+./scripts/build
+
+currentDir=$(pwd)
+testDir=/tmp/ML_Flex_Lite_Test_NestedCL
+outputDir=$currentDir/TestOutput/NestedCL
+
+rm -rfv $testDir
+mkdir -p $testDir
+
+cp -rv release/* $testDir/
+cp -rv scripts $testDir/
+cp -rv AlgorithmScripts $testDir/
+cp -rv UserScripts $testDir/
+
+mkdir -p $outputDir
+rm -fv $outputDir/${validationType}*
+
+cd $testDir
+
+validation=StrongSignal_Both
+dataFile=$currentDir/Validation/${validation}.tsv.gz
+
+#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr__bayes__naiveBayes
+classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn__functions__svm_linear
+#classifAlgo="AlgorithmScripts/Classification/arff/weka__rules__*"
+
+#useDefaultParameters=false
+useDefaultParameters=true
+
+#debug=false
+debug=true
+
+if [[ "$validationType" == "montecarlo" ]]
+then
+  UserScripts/nestedclassification_${validationType} "$dataFile" $validation 2 2 $debug "$classifAlgo" $outDirPath $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Benchmark.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Nested.tsv
+else
+  UserScripts/nestedclassification_${validationType} "$dataFile" $validation 2 2 2 $debug "$classifAlgo" $outDirPath $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Benchmark.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Nested.tsv
+fi

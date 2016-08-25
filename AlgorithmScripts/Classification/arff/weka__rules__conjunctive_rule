@@ -1,0 +1,11 @@
+#!/bin/bash
+
+mlflexDirPath="$1"
+trainingFilePath="$2"
+testFilePath="$3"
+classOptions="$4"
+
+parameters="weka.classifiers.rules.ConjunctiveRule -N 3 -M 2.0 -P -1 -S 1"
+classPath="$mlflexDirPath/lib/conjunctiveRule.jar"
+
+sh "$(dirname $0)"/Helper/weka_c_generic "$mlflexDirPath" "$classPath" "$trainingFilePath" "$testFilePath" "$parameters" "$classOptions"

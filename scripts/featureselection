@@ -1,0 +1,89 @@
+#!/bin/bash
+
+set -o errexit
+
+dataFiles="$1"
+description="$2"
+numIterations="$3"
+debug="$4"
+fsAlgos="$5"
+useDefaultParameters="$6"
+outFeaturesFile="$7"
+outBenchmarkFile="$8"
+validationType="$9"
+randomSeed="${10}"
+
+function checkParam {
+  value="$1"
+  messageDescription="$2"
+
+  if [ "$value" == "" ]
+  then
+    echo "No value was specified for $messageDescription."
+    exit 1
+  fi
+}
+
+checkParam "$dataFiles" "data files"
+checkParam "$description" "description"
+checkParam "$numIterations" "number of iterations"
+checkParam "$debug" "debug"
+checkParam "$fsAlgos" "feature selection algorithm(s)"
+checkParam "$useDefaultParameters" "use default parameters"
+checkParam "$validationType" "validation type"
+
+if [[ "$validationType" != "montecarlo" ]]
+then
+  if [[ "$validationType" != "crossvalidation" ]]
+  then
+    echo "Invalid validation type: ${validationType}."
+    exit 1
+  fi
+fi
+
+tmpDir=/tmp/$(mktemp XXXXXXXXXXXXX)
+
+function cleanup {
+  rm -rf $tmpDir
+}
+
+cleanup
+mkdir -p $tmpDir
+
+################trap cleanup INT TERM EXIT
+
+idFile=$tmpDir/id
+classFile=$tmpDir/cl
+trainTestFile=$tmpDir/tt
+trainTestFile2=$tmpDir/tt2
+
+python scripts/IdentifySamples.py $dataFiles $description $idFile $classFile
+
+if [[ "$validationType" == "montecarlo" ]]
+then
+  python scripts/AssignTrainingTesting.py $idFile $classFile Iteration $trainTestFile $numIterations $randomSeed
+  iterationOutputHeader=Iteration
+else
+  python scripts/AssignCrossValidation.py $idFile $classFile Fold $trainTestFile $numIterations $randomSeed
+  iterationOutputHeader=Fold
+fi
+
+python scripts/AddAlgorithmScripts.py $trainTestFile "$fsAlgos" $trainTestFile2
+
+mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
+
+java -Xmx${mem} -jar mlflexlite.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$trainTestFile2 USE_DEFAULT_PARAMETERS="$useDefaultParameters" OUTPUT_FEATURES_FILE_PATH="$tmpDir/of" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir
+
+function parseOutputFile {
+  if [[ "$2" != "" ]]
+  then
+    python scripts/ParseNonNestedResults.py $1 $iterationOutputHeader "$2"
+  fi
+}
+
+parseOutputFile $tmpDir/of $outFeaturesFile
+parseOutputFile $tmpDir/ob $outBenchmarkFile
+cp $outFeaturesFile ~/Downloads/of.tsv
+cp $outBenchmarkFile ~/Downloads/ofb.tsv
+
+#cleanup

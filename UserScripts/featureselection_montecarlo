@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -o errexit
+
+dataFiles="$1"
+description="$2"
+numIterations="$3"
+debug="$4"
+fsAlgos="$5"
+useDefaultParameters="$6"
+outFeaturesFile="$7"
+outBenchmarkFile="$8"
+
+scripts/featureselection "$dataFiles" "$description" "$numIterations" "$debug" "$fsAlgos" "$useDefaultParameters" "$outFeaturesFile" "$outBenchmarkFile" montecarlo 0

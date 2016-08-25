@@ -1,0 +1,130 @@
+#!/bin/bash
+
+set -o errexit
+
+dataFiles="$1"
+description="$2"
+outerNumIterations="$3"
+innerNumIterations="$4"
+debug="$5"
+classifAlgos="$6"
+useDefaultParameters="$7"
+outPredictionsFile="$8"
+outMetricsFile="$9"
+outBenchmarkFile="${10}"
+outNestedPredictionsFile="${11}"
+outNestedMetricsFile="${12}"
+outNestedBenchmarkFile="${13}"
+validationType="${14}"
+randomSeed="${15}"
+
+function checkParam {
+  value="$1"
+  messageDescription="$2"
+
+  if [ "$value" == "" ]
+  then
+    echo "No value was specified for $messageDescription."
+    exit 1
+  fi
+}
+
+checkParam "$dataFiles" "data files"
+checkParam "$description" "description"
+checkParam "$outerNumIterations" "outer number of iterations"
+checkParam "$innerNumIterations" "inner number of iterations"
+checkParam "$debug" "debug"
+checkParam "$classifAlgos" "classification algorithm(s)"
+#checkParam "$outPredictionsFile" "output predictions file"
+#checkParam "$outMetricsFile" "output metrics file"
+#checkParam "$outBenchmarkFile" "output benchmark file"
+#checkParam "$outNestedPredictionsFile" "output nested predictions file"
+#checkParam "$outNestedMetricsFile" "output nested metrics file"
+#checkParam "$outNestedBenchmarkFile" "output nested benchmark file"
+checkParam "$validationType" "validation type"
+
+if [[ "$validationType" != "montecarlo" ]]
+then
+  if [[ "$validationType" != "crossvalidation" ]]
+  then
+    echo "Invalid validation type: ${validationType}."
+    exit 1
+  fi
+fi
+
+tmpDir=/tmp/$(mktemp XXXXXXXXXXXXX)
+
+function cleanup {
+  rm -rf $tmpDir
+}
+
+cleanup
+mkdir -p $tmpDir
+
+###########################
+#trap cleanup INT TERM EXIT
+###########################
+
+## Make training and testing assignments
+python scripts/IdentifySamples.py $dataFiles "$description" $tmpDir/allid $tmpDir/classes
+
+if [[ "$validationType" == "montecarlo" ]]
+then
+  python scripts/AssignTrainingTesting.py $tmpDir/allid $tmpDir/classes "Iteration" $tmpDir/ott $outerNumIterations $randomSeed
+  python scripts/AssignTrainingTesting.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
+  iterationOutputHeader=Iteration
+else
+  python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "Fold" $tmpDir/ott $outerNumIterations $randomSeed
+  python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
+  iterationOutputHeader=Fold
+fi
+
+## Prepare inner experiment files
+python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie2
+
+## Find out amount of memory available
+mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
+
+## Classify for inner iterations
+java -Xmx${mem} -jar mlflexlite.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ie2 DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/icb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/ip TEMP_DIR=$tmpDir
+
+Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/ip" "$tmpDir/im"
+
+## Parse inner classification results
+python scripts/ReformatInnerResults_Classification.py $tmpDir/im $tmpDir/ibrf
+
+## Use "ensemble" approach to identify best combination of algorithms
+Rscript --vanilla scripts/SelectBestInnerResults_Classification.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ocle
+
+## Classify for outer iterations
+java -Xmx${mem} -jar mlflexlite.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ocle DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/ocb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/op TEMP_DIR=$tmpDir
+
+Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
+
+if [[ "$outPredictionsFile" != "" ]]
+then
+  python scripts/ParseNestedResults.py $tmpDir/op $iterationOutputHeader "$outPredictionsFile"
+fi
+if [[ "$outMetricsFile" != "" ]]
+then
+  python scripts/ParseNestedResults.py $tmpDir/om $iterationOutputHeader "$outMetricsFile"
+fi
+if [[ "$outBenchmarkFile" != "" ]]
+then
+  python scripts/ParseNestedResults.py $tmpDir/ocb $iterationOutputHeader "$outBenchmarkFile"
+fi
+
+if [[ "$outNestedPredictionsFile" != "" ]]
+then
+  python scripts/ParseNestedResults2.py $tmpDir/ip $iterationOutputHeader "$outNestedPredictionsFile"
+fi
+if [[ "$outNestedMetricsFile" != "" ]]
+then
+  python scripts/ParseNestedResults2.py $tmpDir/im $iterationOutputHeader "$outNestedMetricsFile"
+fi
+if [[ "$outNestedBenchmarkFile" != "" ]]
+then
+  python scripts/ParseNestedResults2.py $tmpDir/icb $iterationOutputHeader "$outNestedBenchmarkFile"
+fi
+
+cleanup

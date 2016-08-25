@@ -1,0 +1,91 @@
+#!/bin/bash
+
+set -o errexit
+
+dataFiles="$1"
+description="$2"
+numIterations="$3"
+debug="$4"
+classifAlgos="$5"
+useDefaultParameters="$6"
+outPredictionsFile="$7"
+outMetricsFile="$8"
+outBenchmarkFile="$9"
+validationType="${10}"
+randomSeed="${11}"
+
+function checkParam {
+  value="$1"
+  messageDescription="$2"
+
+  if [ "$value" == "" ]
+  then
+    echo "No value was specified for $messageDescription."
+    exit 1
+  fi
+}
+
+checkParam "$dataFiles" "data files"
+checkParam "$description" "description"
+checkParam "$numIterations" "number of iterations"
+checkParam "$debug" "debug"
+checkParam "$useDefaultParameters" "use default parameters"
+checkParam "$classifAlgos" "classification algorithm(s)"
+checkParam "$validationType" "validation type"
+
+if [[ "$validationType" != "montecarlo" ]]
+then
+  if [[ "$validationType" != "crossvalidation" ]]
+  then
+    echo "Invalid validation type: ${validationType}."
+    exit 1
+  fi
+fi
+
+tmpDir=/tmp/$(mktemp XXXXXXXXXXXXX)
+
+function cleanup {
+  rm -rf $tmpDir
+}
+
+cleanup
+mkdir -p $tmpDir
+
+trap cleanup INT TERM EXIT
+
+idFile=$tmpDir/id
+classFile=$tmpDir/cl
+trainTestFile=$tmpDir/tt
+trainTestFile2=$tmpDir/tt2
+
+python scripts/IdentifySamples.py "$dataFiles" "$description" $idFile $classFile
+
+if [[ "$validationType" == "montecarlo" ]]
+then
+  python scripts/AssignTrainingTesting.py $idFile $classFile Iteration $trainTestFile $numIterations $randomSeed
+  iterationOutputHeader=Iteration
+else
+  python scripts/AssignCrossValidation.py $idFile $classFile Fold $trainTestFile $numIterations $randomSeed
+  iterationOutputHeader=Fold
+fi
+
+python scripts/AddAlgorithmScripts.py $trainTestFile "$classifAlgos" $trainTestFile2
+
+mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
+
+java -Xmx${mem} -jar mlflexlite.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$trainTestFile2 USE_DEFAULT_PARAMETERS="$useDefaultParameters" OUTPUT_PREDICTIONS_FILE_PATH="$tmpDir/op" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir
+
+Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
+
+function parseOutputFile {
+  if [[ "$2" != "" ]]
+  then
+    python scripts/ParseNonNestedResults.py $1 "$iterationOutputHeader" "$2"
+  fi
+}
+
+parseOutputFile $tmpDir/op "$outPredictionsFile"
+parseOutputFile $tmpDir/om "$outMetricsFile"
+parseOutputFile $tmpDir/ob "$outBenchmarkFile"
+
+cleanup

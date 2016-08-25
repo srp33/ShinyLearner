@@ -1,0 +1,11 @@
+#!/bin/bash
+
+mlflexDirPath="$1"
+dataFilePath="$2"
+callingScript="$3"
+
+dirName=$(dirname $0)
+
+algorithmAbbreviated=$(python $dirName/ParseAlgorithmName.py $callingScript)
+
+python $dirName/sklearn_fs_generic.py "$dataFilePath" "$algorithmAbbreviated"

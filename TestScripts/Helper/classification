@@ -1,0 +1,73 @@
+#!/bin/bash
+
+set -o errexit
+
+validationType=$1
+
+if [[ "$validationType" == "" ]]
+then
+  echo No validation type was specified. This may not be the script you want to be executing.
+  exit 1
+fi
+
+./scripts/build
+
+currentDir=$(pwd)
+testDir=/tmp/ML_Flex_Lite_Test_CL
+outputDir=$currentDir/TestOutput/CL
+
+rm -rfv $testDir
+mkdir -p $testDir
+
+cp -rv release/* $testDir/
+cp -rv scripts $testDir/
+cp -rv AlgorithmScripts $testDir/
+cp -rv UserScripts $testDir/
+
+mkdir -p $outputDir
+rm -fv $outputDir/${validationType}*
+
+cd $testDir
+
+#validation=NoSignal_Continuous
+#validation=NoSignal_Discrete
+#validation=NoSignal_Both
+#validation=MediumSignal_Continuous
+#validation=MediumSignal_Discrete
+#validation=MediumSignal_Both
+#validation=StrongSignal_Continuous
+#validation=StrongSignal_Discrete
+validation=StrongSignal_Both
+
+dataFile=$currentDir/Validation/${validation}.tsv.gz
+
+#classifAlgo=AlgorithmScripts/Classification/arff/weka__rules__one_r
+######classifAlgo=$currentDir/AlgorithmScripts/Classification/arff/weka__rules__one_r
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka__*"
+
+classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr__bayes__naiveBayes
+#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr__functions__lda
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr__*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr__meta*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr__functions*"
+
+#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn__functions__lda
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn__*"
+
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*__*__*"
+
+#debug=false
+debug=true
+useDefaultParameters=false
+#useDefaultParameters=true
+
+outPredictionsFile=$outputDir/${validationType}_${validation}_Predictions.tsv
+outMetricsFile=$outputDir/${validationType}_${validation}_Metrics.tsv
+outBenchmarkFile=$outputDir/${validationType}_${validation}_Benchmark.tsv
+
+if [[ "$validationType" == "montecarlo" ]]
+then
+  UserScripts/classification_${validationType} "$dataFile" "$validation" 2 $debug "$classifAlgo" "$useDefaultParameters" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile"
+else
+  UserScripts/classification_${validationType} "$dataFile" "$validation" 2 2 $debug "$classifAlgo" "$useDefaultParameters" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile"
+fi

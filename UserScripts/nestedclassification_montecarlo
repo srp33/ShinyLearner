@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -o errexit
+
+dataFiles="$1"
+description="$2"
+outerNumIterations="$3"
+innerNumIterations="$4"
+debug="$5"
+classifAlgos="$6"
+useDefaultParameters="$7"
+outPredictionsFile="$8"
+outMetricsFile="$9"
+outBenchmarkFile="${10}"
+outNestedPredictionsFile="${11}"
+outNestedMetricsFile="${12}"
+outNestedBenchmarkFile="${13}"
+
+scripts/nestedclassification "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$debug" "$classifAlgos" "$useDefaultParameters" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" montecarlo 0

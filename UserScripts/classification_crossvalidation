@@ -1,0 +1,53 @@
+#!/bin/bash
+
+set -o errexit
+
+dataFiles="$1"
+description="$2"
+numIterations="$3"
+numFolds="$4"
+debug="$5"
+classifAlgos="$6"
+useDefaultParameters="$7"
+outPredictionsFile="$8"
+outMetricsFile="$9"
+outBenchmarkFile="${10}"
+
+tmpDir=/tmp/$(mktemp XXXXXXXXXXXXX)
+
+function cleanup {
+  rm -rf $tmpDir
+}
+
+cleanup
+
+for iteration in $(seq 1 $numIterations)
+do
+  outDir=$tmpDir/$iteration
+  mkdir -p $outDir
+
+  if [[ "$outPredictionsFile" == "" ]]
+  then
+    outPredictionsFileIteration=
+  else
+    outPredictionsFileIteration=$outDir/outpreds
+  fi
+  if [[ "$outMetricsFile" == "" ]]
+  then
+    outMetricsFileIteration=
+  else
+    outMetricsFileIteration=$outDir/outmetrics
+  fi
+  if [[ "$outBenchmarkFile" == "" ]]
+  then
+    outBenchmarkFileIteration=
+  else
+    outBenchmarkFileIteration=$outDir/outbench
+  fi
+
+  scripts/classification "$dataFiles" "$description" "$numFolds" "$debug" "$classifAlgos" "$useDefaultParameters" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outBenchmarkFileIteration" crossvalidation $iteration
+done
+
+python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outbench" "$outPredictionsFile,$outMetricsFile,$outBenchmarkFile"
+
+cleanup

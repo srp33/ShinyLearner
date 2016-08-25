@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -o errexit
+
+dataFiles=TestFiles/Combined.txt
+description=TestingCV
+idFile=/tmp/IDFile
+classFile=/tmp/ClassFile
+outputFile=/tmp/Assignments
+numIterations=5
+
+python scripts/IdentifySamples.py $dataFiles $description $idFile $classFile
+python scripts/AssignImbalancedClasses.py $idFile $classFile "Iteration" $outputFile $numIterations "UnderSampling"
+#python scripts/AssignCrossValidation.py $idFile $classFile "Iteration" $outputFile $numIterations
+vim $outputFile

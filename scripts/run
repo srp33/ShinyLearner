@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#The following command executes one of the example experiments. See the README files for explanations on how to execute a custom experiment.
+java -Xmx1g -jar mlflex.jar EXPERIMENT_FILE=Experiments/CrossValidationSimple.txt ACTION=Process NUM_THREADS=2 THREAD_TIMEOUT_MINUTES=10 PAUSE_SECONDS=60

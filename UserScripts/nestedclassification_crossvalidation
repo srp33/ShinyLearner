@@ -1,0 +1,75 @@
+#!/bin/bash
+
+set -o errexit
+
+dataFiles="$1"
+description="$2"
+numIterations="$3"
+outerNumFolds="$4"
+innerNumFolds="$5"
+debug="$6"
+classifAlgos="$7"
+useDefaultParameters="$8"
+outPredictionsFile="$9"
+outMetricsFile="${10}"
+outBenchmarkFile="${11}"
+outNestedPredictionsFile="${12}"
+outNestedMetricsFile="${13}"
+outNestedBenchmarkFile="${14}"
+
+tmpDir=/tmp/$(mktemp XXXXXXXXXXXXX)
+
+function cleanup {
+  rm -rf $tmpDir
+}
+
+cleanup
+
+for iteration in $(seq 1 $numIterations)
+do
+  outDir=$tmpDir/$iteration
+  mkdir -p $outDir
+
+  if [[ "$outPredictionsFile" == "" ]]
+  then
+    outPredictionsFileIteration=
+  else
+    outPredictionsFileIteration=$outDir/outpreds
+  fi
+  if [[ "$outMetricsFile" == "" ]]
+  then
+    outMetricsFileIteration=
+  else
+    outMetricsFileIteration=$outDir/outmetrics
+  fi
+  if [[ "$outBenchmarkFile" == "" ]]
+  then
+    outBenchmarkFileIteration=
+  else
+    outBenchmarkFileIteration=$outDir/outbench
+  fi
+  if [[ "$outNestedPredictionsFile" == "" ]]
+  then
+    outNestedPredictionsFileIteration=
+  else
+    outNestedPredictionsFileIteration=$outDir/outpredsnested
+  fi
+  if [[ "$outNestedMetricsFile" == "" ]]
+  then
+    outNestedMetricsFileIteration=
+  else
+    outNestedMetricsFileIteration=$outDir/outmetricsnested
+  fi
+  if [[ "$outNestedBenchmarkFile" == "" ]]
+  then
+    outNestedBenchmarkFileIteration=
+  else
+    outNestedBenchmarkFileIteration=$outDir/outbenchnested
+  fi
+
+  scripts/nestedclassification "$dataFiles" "$description" "$outerNumFolds" "$innerNumFolds" "$debug" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outBenchmarkFileIteration" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedBenchmarkFileIteration" crossvalidation $iteration
+done
+
+python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outbench,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchnested" "$outPredictionsFile,$outMetricsFile,$outBenchmarkFile,$outNestedPredictionsFile,$outNestedMetricsFile,$outNestedBenchmarkFile"
+
+cleanup

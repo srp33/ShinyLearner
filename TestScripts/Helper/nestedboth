@@ -1,0 +1,49 @@
+#!/bin/bash
+
+set -o errexit
+
+validationType=$1
+
+if [[ "$validationType" == "" ]]
+then
+  echo No validation type was specified. This may not be the script you want to be executing.
+  exit 1
+fi
+
+#./scripts/build
+
+currentDir=$(pwd)
+testDir=/tmp/ML_Flex_Lite_Test_NestedBoth
+outputDir=$currentDir/TestOutput/NestedBoth
+
+rm -rfv $testDir
+mkdir -p $testDir
+
+cp -rv release/* $testDir/
+cp -rv scripts $testDir/
+cp -rv AlgorithmScripts $testDir/
+cp -rv UserScripts $testDir/
+
+mkdir -p $outputDir
+rm -fv $outputDir/${validationType}*
+
+cd $testDir
+
+validation=StrongSignal_Small_Both
+dataFile=$currentDir/Validation/${validation}_Data.tsv.gz
+
+fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka__info_gain"
+#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka__*"
+numFeaturesOptions="5,20"
+classifAlgo=AlgorithmScripts/Classification/arff/weka__rules__one_r
+#classifAlgo="AlgorithmScripts/Classification/arff/weka__rules__*"
+
+debug=false
+#debug=true
+
+if [[ "$validationType" == "montecarlo" ]]
+then
+  UserScripts/nestedboth_${validationType} "$dataFile" $validation 2 2 $debug "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" $outputDir/${validationType}_${validation}_SelectedFeatures.tsv $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Benchmark_FeatureSelection.tsv $outputDir/${validationType}_${validation}_Benchmark_Classification.tsv $outputDir/${validationType}_${validation}_SelectedFeatures_Nested.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_FeatureSelection_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Classification_Nested.tsv 
+else
+  UserScripts/nestedboth_${validationType} "$dataFile" $validation 2 2 2 $debug "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" $outputDir/${validationType}_${validation}_SelectedFeatures.tsv $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Benchmark_FeatureSelection.tsv $outputDir/${validationType}_${validation}_Benchmark_Classification.tsv $outputDir/${validationType}_${validation}_SelectedFeatures_Nested.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_FeatureSelection_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Classification_Nested.tsv 
+fi

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+rm -f *.tsv.gz
+Rscript --vanilla GenerateData.R
+
+for f in *.tsv.gz
+#for f in Strong*Discrete.tsv.gz
+#for f in Strong*Continuous.tsv.gz
+#for f in Strong*Both.tsv.gz
+do
+  echo $f
+  cp $f /tmp/1.gz
+  rm -f /tmp/1
+  gunzip /tmp/1.gz
+
+  Rscript --vanilla Impute.R /tmp/1 /tmp/2
+  Rscript --vanilla Dummify.R /tmp/2 /tmp/3
+  Rscript --vanilla Standardize.R /tmp/3 /tmp/4
+
+  rm -f /tmp/4.gz
+  gzip /tmp/4
+  mv /tmp/4.gz $f
+done

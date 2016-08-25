@@ -1,0 +1,11 @@
+#!/bin/bash
+
+mlflexDirPath="$1"
+trainingFilePath="$2"
+testFilePath="$3"
+classOptions="$4"
+
+parameters='weka.classifiers.functions.RBFNetwork -B 2 -S 1 -R 1.0E-8 -M -1 -W 0.1'
+classPath="$mlflexDirPath/lib/RBFNetwork.jar"
+
+sh "$(dirname $0)"/Helper/weka_c_generic "$mlflexDirPath" "$classPath" "$trainingFilePath" "$testFilePath" "$parameters" "$classOptions"
