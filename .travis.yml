@@ -5,5 +5,5 @@ jdk: oraclejdk8
 branches:
   only:
     - master
-after_success:
+script:
   echo "Success!!!"
