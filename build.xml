@@ -1,11 +1,10 @@
 <project default="jar">
   <target name="jar">
     <jar destfile="mlflexlite.jar"
-        basedir="src"
+        basedir="mlflexlite/src"
         includes="**/*.class">
       <manifest>
         <attribute name="Main-Class" value="mlflexlite.Main" />
-        <attribute name="Class-Path" value=". lib/weka.jar lib/libsvm.jar" />
       </manifest>
     </jar>
   </target>

@@ -6,59 +6,26 @@ set -o errexit
 javaDir="/usr/bin"
 
 currentDir=$(pwd)
-buildDir=/tmp/mlflexlite/builddir
+buildDir=/tmp/mlflexlite_build
 
 rm -rfv $buildDir
-mkdir -pv $buildDir/src/mlflex
-#mkdir -pv $buildDir/lib
 
-cd /Users/srp33/Dropbox/Eclipse/mlflexlite/src/mlflexlite
-for f in $(find . -depth -type f -name '*.java')
-do
-  d=$(dirname $f)
-
-  mkdir -pv $buildDir/src/mlflexlite/$d
-  cp -rvp $f $buildDir/src/mlflexlite/$d/$(basename $f)
-done
-
-cd $currentDir
-
-#cp -rv lib/* $buildDir/lib/
-cp -v scripts/build.xml $buildDir
+mkdir -pv $buildDir/mlflexlite/src/mlflexlite
+cp -rv mlflexlite/src/mlflexlite/* $buildDir/mlflexlite/src/mlflexlite
+cp -v build.xml $buildDir/
 
 cd $buildDir
 
-find src -name *.java > sources_list.txt
+find mlflexlite -name *.java > sources_list.txt
 $javaDir/javac @sources_list.txt
-#$javaDir/javac -Djava.ext.dirs=lib @sources_list.txt
-
-#if [ "$1" != "NO" ]
-#then
-#  mkdir docs
-#  $javaDir/javadoc -protected -splitindex -author -version -nodeprecated -extdirs lib -d docs @sources_list.txt -sourcepath src
-#fi
-
 rm sources_list.txt
 
 ant
-
-rm build.xml
-
-echo `date +%m-%d-%Y-%H-%M` > Version.txt
 
 mkdir -p $currentDir/release
 rm -rf $currentDir/release/*
 
 cp -v mlflexlite.jar $currentDir/release/
-cp -v Version.txt $currentDir/release/
 
-#if [ "$1" != "NO" ]
-#then
-#  cp -r docs $currentDir/release/
-#fi
-
-#cp -r lib $currentDir/release/
-
-cd ..
+cd $currentDir
 rm -rf $buildDir
-rm -rf src
