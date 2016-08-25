@@ -1,8 +1,12 @@
 language: java
 install: true
-script:
-- sh scripts/build
 jdk: oraclejdk8
 branches:
   only:
     - master
+script:
+- sh scripts/build
+- sh TestScripts/classification_montecarlo
+notifications:
+  email:
+    - goldfish1434@yahoo.com
