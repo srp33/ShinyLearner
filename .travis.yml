@@ -12,7 +12,7 @@ branches:
     - master
 before_install:
 #  - sudo docker rmi -f srp33/${imageName}:${version}
-  - sudo docker build -t srp33/shinylearner:alpha1 Dockerfile
+  - sudo docker build -t srp33/shinylearner:alpha1 .
 #script:
 #- cd Validation; ./generate_data; cd ..
 #- sh TestScripts/classification_montecarlo
