@@ -87,6 +87,9 @@ FROM java:8u91-jre
 #  && find /usr/lib/R/library/ -depth -wholename '*/demo' -exec rm -r "{}" \; \
 #  && rm -rf /usr/local/lib/R/site-library/BH
 
+##############################
+RUN apt-get update
+##############################
 RUN apt-get -y install git
 
 ##Cleanup Debian
