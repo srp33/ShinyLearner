@@ -95,7 +95,6 @@ RUN apt-get -y remove cpp-4.9 && apt-get -y autoremove \
   && rm -rf /usr/share/doc /usr/share/locale /usr/share/perl5
 
 #Install ML-Flex-Lite
-COPY . /ShinyLearner/
 RUN git clone https://github.com/srp33/ShinyLearner.git
 VOLUME /ShinyLearner/v
 WORKDIR /ShinyLearner
