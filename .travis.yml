@@ -1,15 +1,18 @@
+sudo: required
+services:
+  - docker
 language: java
-language: r
-r:
-  - release
+#language: r
+#r:
+#  - release
 install: true
 jdk: oraclejdk8
 branches:
   only:
     - master
-script:
-- cd Validation; ./generate_data; cd ..
-- sh TestScripts/classification_montecarlo
-notifications:
-  email:
-    - goldfish1434@yahoo.com
+before_install:
+#  - sudo docker rmi -f srp33/${imageName}:${version}
+  - sudo docker build -t srp33/shinylearner:alpha1 Dockerfile
+#script:
+#- cd Validation; ./generate_data; cd ..
+#- sh TestScripts/classification_montecarlo
