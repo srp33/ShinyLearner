@@ -88,9 +88,9 @@ FROM java:8u91-jre
 #  && rm -rf /usr/local/lib/R/site-library/BH
 
 ##############################
-RUN apt-get update
 ##############################
-RUN apt-get -y install git
+RUN apt-get update && apt-get install -y git
+#RUN apt-get -y install git
 
 ##Cleanup Debian
 #RUN apt-get -y remove cpp-4.9 && apt-get -y autoremove \
