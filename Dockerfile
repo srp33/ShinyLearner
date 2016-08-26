@@ -4,52 +4,52 @@
 FROM java:8u91-jre
 
 #Install R + Packages
-#RUN echo "deb http://cran.cnr.berkeley.edu/bin/linux/debian jessie-cran3/" >> /etc/apt/sources.list \
-#  && apt-get update \
-#  && apt-get -y --force-yes install libcurl4-openssl-dev r-base-core \
-#  && R -e "install.packages('dplyr',repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('knitr',repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('rmarkdown',repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('readr',repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('AUC',repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('RankAggreg', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('ggplot2', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('mlr', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('randomForestSRC', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('mRMRe', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('nnet', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('kohonen', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('adabag', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('rpart', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('C50', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('party', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('glmnet', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('deepnet', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('extraTrees', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('FNN', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('kernlab', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('gbm', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('DescriMiner', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('h2o', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('kknn', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('class', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('MASS', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('LiblineaR', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('mda', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('RSNNS', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('e1071', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('randomForest', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('ranger', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('klaR', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('rFerns', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('rknn', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('RRF', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('rrlda', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('sda', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('sparseLDA', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('elasticnet', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('xgboost', repos='https://rweb.crmda.ku.edu/cran/')" \
-#  && R -e "install.packages('ROCR',repos='https://rweb.crmda.ku.edu/cran/')"
+RUN echo "deb http://cran.cnr.berkeley.edu/bin/linux/debian jessie-cran3/" >> /etc/apt/sources.list \
+  && apt-get update \
+  && apt-get -y --force-yes install libcurl4-openssl-dev r-base-core \
+  && R -e "install.packages('dplyr',repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('knitr',repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('rmarkdown',repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('readr',repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('AUC',repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('RankAggreg', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('ggplot2', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('mlr', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('randomForestSRC', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('mRMRe', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('nnet', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('kohonen', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('adabag', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('rpart', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('C50', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('party', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('glmnet', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('deepnet', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('extraTrees', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('FNN', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('kernlab', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('gbm', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('DescriMiner', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('h2o', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('kknn', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('class', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('MASS', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('LiblineaR', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('mda', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('RSNNS', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('e1071', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('randomForest', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('ranger', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('klaR', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('rFerns', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('rknn', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('RRF', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('rrlda', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('sda', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('sparseLDA', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('elasticnet', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('xgboost', repos='https://rweb.crmda.ku.edu/cran/')" \
+  && R -e "install.packages('ROCR',repos='https://rweb.crmda.ku.edu/cran/')"
 
 ##Install Scikit-Learn (non-MKL)
 #RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda2-4.0.5-Linux-x86_64.sh -O ~/miniconda.sh \
@@ -87,9 +87,6 @@ FROM java:8u91-jre
 #  && find /usr/lib/R/library/ -depth -wholename '*/demo' -exec rm -r "{}" \; \
 #  && rm -rf /usr/local/lib/R/site-library/BH
 
-##############################
-##############################
-RUN apt-get update && apt-get install -y git
 #RUN apt-get -y install git
 
 ##Cleanup Debian
@@ -99,7 +96,7 @@ RUN apt-get update && apt-get install -y git
 
 ##Install ML-Flex-Lite
 #COPY . /ShinyLearner/
-RUN git clone https://github.com/srp33/ShinyLearner.git
-VOLUME /ShinyLearner/v
-WORKDIR /ShinyLearner
-ENTRYPOINT ["./docker_nc_mc.sh"]
+#RUN git clone https://github.com/srp33/ShinyLearner.git
+#VOLUME /ShinyLearner/v
+#WORKDIR /ShinyLearner
+#ENTRYPOINT ["./docker_nc_mc.sh"]
