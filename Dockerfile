@@ -51,52 +51,52 @@ RUN echo "deb http://cran.cnr.berkeley.edu/bin/linux/debian jessie-cran3/" >> /e
   && R -e "install.packages('xgboost', repos='https://rweb.crmda.ku.edu/cran/')" \
   && R -e "install.packages('ROCR',repos='https://rweb.crmda.ku.edu/cran/')"
 
-##Install Scikit-Learn (non-MKL)
-#RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda2-4.0.5-Linux-x86_64.sh -O ~/miniconda.sh \
-#  && /bin/bash ~/miniconda.sh -b -p /opt/conda \ 
-#  && rm ~/miniconda.sh \
-#  && /opt/conda/bin/conda install -y nomkl scikit-learn pandas conda-build \
-#  && /opt/conda/bin/conda clean --all
+#Install Scikit-Learn (non-MKL)
+RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda2-4.0.5-Linux-x86_64.sh -O ~/miniconda.sh \
+  && /bin/bash ~/miniconda.sh -b -p /opt/conda \ 
+  && rm ~/miniconda.sh \
+  && /opt/conda/bin/conda install -y nomkl scikit-learn pandas conda-build \
+  && /opt/conda/bin/conda clean --all
 
-##Add python to PATH
-#ENV PATH /opt/conda/bin:$PATH
+#Add python to PATH
+ENV PATH /opt/conda/bin:$PATH
 
-###Install Pandoc
-#RUN apt-get -y install pandoc
+#Install Pandoc
+RUN apt-get -y install pandoc
 
 #Cleanup R 
-#RUN find /usr/local/lib/R/site-library/ -depth -wholename '*/html' -exec rm -r "{}" \; \
-#  && find /usr/local/lib/R/site-library/ -depth -wholename '*/data' -exec rm -r "{}" \; \
-#  && find /usr/local/lib/R/site-library/ -depth -wholename '*/doc' -exec rm -r "{}" \; \
-#  && find /usr/local/lib/R/site-library/ -depth -wholename '*/tests' -exec rm -r "{}" \; \
-#  && find /usr/local/lib/R/site-library/ -depth -wholename '*/examples' -exec rm -r "{}" \; \
-#  && find /usr/local/lib/R/site-library/ -depth -wholename '*/help' -exec rm -r "{}" \; \
-#  && find /usr/local/lib/R/site-library/ -depth -wholename '*/www' -exec rm -r "{}" \; \
-#  && find /usr/local/lib/R/site-library/ -depth -wholename '*/www-dir' -exec rm -r "{}" \; \
-#  && find /usr/local/lib/R/site-library/ -depth -wholename '*/staticdocs' -exec rm -r "{}" \; \
-#  && find /usr/local/lib/R/site-library/ -depth -wholename '*/demo' -exec rm -r "{}" \; \
-#  && find /usr/lib/R/library/ -depth -wholename '*/html' -exec rm -r "{}" \; \
-#  && find /usr/lib/R/library/ -depth -wholename '*/data' -exec rm -r "{}" \; \
-#  && find /usr/lib/R/library/ -depth -wholename '*/doc' -exec rm -r "{}" \; \
-#  && find /usr/lib/R/library/ -depth -wholename '*/tests' -exec rm -r "{}" \; \
-#  && find /usr/lib/R/library/ -depth -wholename '*/examples' -exec rm -r "{}" \; \
-#  && find /usr/lib/R/library/ -depth -wholename '*/help' -exec rm -r "{}" \; \
-#  && find /usr/lib/R/library/ -depth -wholename '*/www' -exec rm -r "{}" \; \
-#  && find /usr/lib/R/library/ -depth -wholename '*/www-dir' -exec rm -r "{}" \; \
-#  && find /usr/lib/R/library/ -depth -wholename '*/staticdocs' -exec rm -r "{}" \; \
-#  && find /usr/lib/R/library/ -depth -wholename '*/demo' -exec rm -r "{}" \; \
-#  && rm -rf /usr/local/lib/R/site-library/BH
+RUN find /usr/local/lib/R/site-library/ -depth -wholename '*/html' -exec rm -r "{}" \; \
+  && find /usr/local/lib/R/site-library/ -depth -wholename '*/data' -exec rm -r "{}" \; \
+  && find /usr/local/lib/R/site-library/ -depth -wholename '*/doc' -exec rm -r "{}" \; \
+  && find /usr/local/lib/R/site-library/ -depth -wholename '*/tests' -exec rm -r "{}" \; \
+  && find /usr/local/lib/R/site-library/ -depth -wholename '*/examples' -exec rm -r "{}" \; \
+  && find /usr/local/lib/R/site-library/ -depth -wholename '*/help' -exec rm -r "{}" \; \
+  && find /usr/local/lib/R/site-library/ -depth -wholename '*/www' -exec rm -r "{}" \; \
+  && find /usr/local/lib/R/site-library/ -depth -wholename '*/www-dir' -exec rm -r "{}" \; \
+  && find /usr/local/lib/R/site-library/ -depth -wholename '*/staticdocs' -exec rm -r "{}" \; \
+  && find /usr/local/lib/R/site-library/ -depth -wholename '*/demo' -exec rm -r "{}" \; \
+  && find /usr/lib/R/library/ -depth -wholename '*/html' -exec rm -r "{}" \; \
+  && find /usr/lib/R/library/ -depth -wholename '*/data' -exec rm -r "{}" \; \
+  && find /usr/lib/R/library/ -depth -wholename '*/doc' -exec rm -r "{}" \; \
+  && find /usr/lib/R/library/ -depth -wholename '*/tests' -exec rm -r "{}" \; \
+  && find /usr/lib/R/library/ -depth -wholename '*/examples' -exec rm -r "{}" \; \
+  && find /usr/lib/R/library/ -depth -wholename '*/help' -exec rm -r "{}" \; \
+  && find /usr/lib/R/library/ -depth -wholename '*/www' -exec rm -r "{}" \; \
+  && find /usr/lib/R/library/ -depth -wholename '*/www-dir' -exec rm -r "{}" \; \
+  && find /usr/lib/R/library/ -depth -wholename '*/staticdocs' -exec rm -r "{}" \; \
+  && find /usr/lib/R/library/ -depth -wholename '*/demo' -exec rm -r "{}" \; \
+  && rm -rf /usr/local/lib/R/site-library/BH
 
-#RUN apt-get -y install git
+RUN apt-get -y install git
 
-##Cleanup Debian
-#RUN apt-get -y remove cpp-4.9 && apt-get -y autoremove \
-#  && rm -rf /usr/share/mime /usr/share/mime /usr/share/perl /usr/share/tcltk /usr/share/man \
-#  && rm -rf /usr/share/doc /usr/share/locale /usr/share/perl5
+#Cleanup Debian
+RUN apt-get -y remove cpp-4.9 && apt-get -y autoremove \
+  && rm -rf /usr/share/mime /usr/share/mime /usr/share/perl /usr/share/tcltk /usr/share/man \
+  && rm -rf /usr/share/doc /usr/share/locale /usr/share/perl5
 
-##Install ML-Flex-Lite
-#COPY . /ShinyLearner/
-#RUN git clone https://github.com/srp33/ShinyLearner.git
-#VOLUME /ShinyLearner/v
-#WORKDIR /ShinyLearner
-#ENTRYPOINT ["./docker_nc_mc.sh"]
+#Install ML-Flex-Lite
+COPY . /ShinyLearner/
+RUN git clone https://github.com/srp33/ShinyLearner.git
+VOLUME /ShinyLearner/v
+WORKDIR /ShinyLearner
+ENTRYPOINT ["./docker_nc_mc.sh"]
