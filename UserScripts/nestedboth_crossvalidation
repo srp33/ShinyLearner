@@ -22,7 +22,7 @@ outNestedMetricsFile="${17}"
 outNestedFeatureSelectionBenchmarkFile="${18}"
 outNestedClassificationBenchmarkFile="${19}"
 
-tmpDir=/tmp/$(mktemp XXXXXXXXXXXXX)
+tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 
 function cleanup {
   rm -rf $tmpDir

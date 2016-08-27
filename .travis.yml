@@ -1,18 +1,21 @@
 sudo: required
 services:
   - docker
-language: java
+#language: java
 #language: r
 #r:
 #  - release
 install: true
-jdk: oraclejdk8
+#jdk: oraclejdk8
 branches:
   only:
     - master
+#  - sudo docker build -t srp33/shinylearner:alpha1 .
 before_install:
+  - sudo docker pull srp33/shinylearner_environment:latest
 #  - sudo docker rmi -f srp33/${imageName}:${version}
-  - sudo docker build -t srp33/shinylearner:alpha1 .
-#script:
+#  - sudo docker build -t srp33/shinylearner:alpha1 .
+script:
+- echo "This is a test!!!!!!!!"
 #- cd Validation; ./generate_data; cd ..
 #- sh TestScripts/classification_montecarlo
