@@ -4,8 +4,8 @@ COPY ShinyLearner.tar.gz /
 
 RUN cd / \
   && tar -zxvf ShinyLearner.tar.gz \
-  && TestScripts/nestedclassification_montecarlo
+  && BuildTests/all
 
-t#VOLUME /ShinyLearner/v
+#VOLUME /ShinyLearner/v
 #WORKDIR /ShinyLearner
 #ENTRYPOINT ["./docker_nc_mc.sh"]

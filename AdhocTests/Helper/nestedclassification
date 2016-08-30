@@ -19,7 +19,7 @@ outputDir=$currentDir/TestOutput/NestedCL
 rm -rfv $testDir
 mkdir -p $testDir
 
-cp -rv release/* $testDir/
+cp -rv shinylearner.jar $testDir/
 cp -rv scripts $testDir/
 cp -rv AlgorithmScripts $testDir/
 cp -rv UserScripts $testDir/
