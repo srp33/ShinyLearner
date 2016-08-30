@@ -2,7 +2,7 @@
 
 echo "hello, world!!"
 pwd
-ls
+ls -al data
 exit
 
 set -o errexit
