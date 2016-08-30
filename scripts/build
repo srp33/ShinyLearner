@@ -22,10 +22,7 @@ rm sources_list.txt
 
 ant
 
-mkdir -p $currentDir/release
-rm -rf $currentDir/release/*
-
-cp -v shinylearner.jar $currentDir/release/
+cp -v shinylearner.jar $currentDir/
 
 cd $currentDir
 rm -rf $buildDir
