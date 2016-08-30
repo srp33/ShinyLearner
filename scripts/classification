@@ -71,7 +71,8 @@ fi
 
 python scripts/AddAlgorithmScripts.py $trainTestFile "$classifAlgos" $trainTestFile2
 
-mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
+#mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
+mem=$(free -m | tail -n3 | awk '{print $2}' | head -n1)M # Gives total memory in MB (preferred over GB because it always rounds down)
 
 java -Xmx${mem} -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$trainTestFile2 USE_DEFAULT_PARAMETERS="$useDefaultParameters" OUTPUT_PREDICTIONS_FILE_PATH="$tmpDir/op" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir
 

@@ -14,6 +14,7 @@ then
   classPath="$classPath:$classPath2"
 fi
 
-mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
+#mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
+mem=$(free -m | tail -n3 | awk '{print $2}' | head -n1)M # Gives total memory in MB (preferred over GB because it always rounds down)
 
 echo java -Xmx${mem} -classpath $classPath $parameters -t "$trainingFilePath" -T "$testFilePath" -p 0 -distribution | python $(dirname $0)/ReformatWekaParameters.py | sh | python $(dirname $0)/ParseWekaPredictions.py "$classOptions"
