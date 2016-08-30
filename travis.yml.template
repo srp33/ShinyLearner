@@ -14,8 +14,10 @@ branches:
   only:
     - master
 script:
-  - echo "This is a test!!!!!!!!"
+  - ./scripts/build
+
 #  - sudo docker pull srp33/shinylearner_environment:version1
+
 #  - sudo docker rmi -f srp33/shinylearner:version{version}
 #  - sudo docker build -t srp33/shinylearner:version{version} .
 
