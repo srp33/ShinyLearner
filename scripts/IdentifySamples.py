@@ -13,6 +13,8 @@ inFilePaths = []
 for inFilePattern in inFilePath.split(","):
     inFilePaths.extend(glob.glob(inFilePattern))
 
+print "inFilePath:"
+print inFilePath
 print "inFilePaths:"
 print inFilePaths
 
