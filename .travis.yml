@@ -16,19 +16,22 @@ branches:
 script:
   - scripts/build
   - tar -zcvf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests LICENSE UserScripts
-  - sudo docker build -t srp33/shinylearner:version25 .
+  - sudo docker build -t srp33/shinylearner:version26 .
   - mkdir input; cp Validation/*.tsv.gz input/
-  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input srp33/shinylearner:version25 /BuildTests/all
-  - sudo docker inspect inputdata
+  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input srp33/shinylearner:version26 /BuildTests/all
 
-#  - sudo docker run --name inputdata -v $(pwd)/input:/input srp33/shinylearner:version25
-#  - sudo docker run --rm -v data:/data srp33/shinylearner:version25
+#  - mkdir -p input/_data; cp Validation/*.tsv.gz input/_data/
+#  - sudo docker run --rm --name shinylearner -v input:/input srp33/shinylearner:version26 /BuildTests/all
+#  - sudo docker inspect shinylearner
+
+#  - sudo docker run --name inputdata -v $(pwd)/input:/input srp33/shinylearner:version26
+#  - sudo docker run --rm -v data:/data srp33/shinylearner:version26
 #  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-#  - sudo docker push srp33/shinylearner:version25
+#  - sudo docker push srp33/shinylearner:version26
 
 
 #- cd Validation; ./generate_data; cd ..
 #- sh TestScripts/classification_montecarlo
 #
 #  - sudo docker pull srp33/shinylearner_environment:version1
-#  - sudo docker rmi -f srp33/shinylearner:version25
+#  - sudo docker rmi -f srp33/shinylearner:version26

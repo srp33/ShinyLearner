@@ -19,7 +19,10 @@ script:
   - sudo docker build -t srp33/shinylearner:version{version} .
   - mkdir input; cp Validation/*.tsv.gz input/
   - sudo docker run --rm --name inputdata -v $(pwd)/input:/input srp33/shinylearner:version{version} /BuildTests/all
-  - sudo docker inspect inputdata
+
+#  - mkdir -p input/_data; cp Validation/*.tsv.gz input/_data/
+#  - sudo docker run --rm --name shinylearner -v input:/input srp33/shinylearner:version{version} /BuildTests/all
+#  - sudo docker inspect shinylearner
 
 #  - sudo docker run --name inputdata -v $(pwd)/input:/input srp33/shinylearner:version{version}
 #  - sudo docker run --rm -v data:/data srp33/shinylearner:version{version}
