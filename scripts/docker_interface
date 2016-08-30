@@ -1,9 +1,9 @@
 #!/bin/bash
 
 echo "hello, world!!"
-ls -al /
-ls -al /data
-exit
+echo "testing" > /data/abc
+ls -al /data/
+exit 0
 
 set -o errexit
 
