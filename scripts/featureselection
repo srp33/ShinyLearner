@@ -49,8 +49,9 @@ function cleanup {
 
 cleanup
 mkdir -p $tmpDir
+source scripts/helper
 
-################trap cleanup INT TERM EXIT
+trap cleanup INT TERM EXIT
 
 idFile=$tmpDir/id
 classFile=$tmpDir/cl
@@ -70,8 +71,7 @@ fi
 
 python scripts/AddAlgorithmScripts.py $trainTestFile "$fsAlgos" $trainTestFile2
 
-#mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
-mem=$(free -m | tail -n3 | awk '{print $2}' | head -n1)M # Gives total memory in MB (preferred over GB because it always rounds down)
+mem=$(getMemAvailable)
 
 java -Xmx${mem} -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$trainTestFile2 USE_DEFAULT_PARAMETERS="$useDefaultParameters" OUTPUT_FEATURES_FILE_PATH="$tmpDir/of" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir
 

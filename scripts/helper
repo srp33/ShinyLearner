@@ -1,12 +1,5 @@
 #!/bin/bash
 
-mlflexDirPath="$1"
-classPath="$2"
-dataFilePath="$3"
-parameters="$4"
-
-classPath="$mlflexDirPath:$mlflexDirPath/lib/weka.jar:$classPath"
-
 command_exists () {
     type "$1" &> /dev/null ;
 }
@@ -22,8 +15,3 @@ function getMemAvailable {
 
   echo "$mem"
 }
-
-mem=$(getMemAvailable)
- 
-echo java -Xmx${mem} -classpath $classPath $parameters -i $dataFilePath | python $(dirname $0)/ReformatWekaParameters.py | sh | python $(dirname $0)/ParseWekaResults.py
-#echo java -Xmx${mem} -classpath $classPath $parameters -i $dataFilePath

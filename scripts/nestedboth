@@ -61,6 +61,7 @@ function cleanup {
 
 cleanup
 mkdir -p $tmpDir
+source scripts/helper
 
 trap cleanup INT TERM EXIT
 
@@ -82,9 +83,7 @@ fi
 python scripts/AddAlgorithmScripts.py $tmpDir/ie "$fsAlgos" $tmpDir/ie2
 python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie3
 
-## Find out amount of memory available
-#mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
-mem=$(free -m | tail -n3 | awk '{print $2}' | head -n1)M # Gives total memory in MB (preferred over GB because it always rounds down)
+mem=$(getMemAvailable)
 
 ## Select features for inner iterations
 java -Xmx${mem} -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$tmpDir/ie2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/if" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ifb" DEBUG=$debug TEMP_DIR=$tmpDir

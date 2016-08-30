@@ -7,8 +7,9 @@ outMetricsFilePath <- commandArgs()[8]
 
 calculateMetrics <- function(predictionData)
 {
-  truth <- as.factor(predictionData$ActualClass)
-  response <- as.factor(predictionData$PredictedClass)
+  levels <- sort(unique(c(predictionData$ActualClass, predictionData$PredictedClass)))
+  truth <- factor(predictionData$ActualClass, levels=levels)
+  response <- factor(predictionData$PredictedClass, levels=levels)
   probabilities <- predictionData$Probabilities
 
   accuracy <- measureACC(truth, response)
