@@ -10,4 +10,4 @@ classifAlgo=/AlgorithmScripts/Classification/tsv/sklearn__functions__svm_linear
 useDefaultParameters=true
 debug=false
 
-/BuildTests/helper nestedclassification montecarlo $inputDir/${description}_Both.tsv.gz $description "$classifAlgo" $useDefaultParameters $debug $outputDir
+/BuildTests/helper nestedclassification montecarlo $inputDir/${description}.tsv.gz $description "$classifAlgo" $useDefaultParameters $debug $outputDir
