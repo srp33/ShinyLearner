@@ -16,8 +16,12 @@ branches:
 script:
   - scripts/build
   - tar -zcvf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests LICENSE UserScripts
-  - sudo docker build -t srp33/shinylearner:version{version} .
-  - sudo docker run --rm -v data:/data srp33/shinylearner:version{version}
+#  - sudo docker build -t srp33/shinylearner:version{version} .
+  - mkdir data; cd Validation; ./generate_data; cd ..; cp Validation/*.tsv.gz data/
+  - ls -al .
+  - echo "Data dir:"
+  - ls -al data/
+#  - sudo docker run --rm -v data:/data srp33/shinylearner:version{version}
 
 #  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
 #  - sudo docker push srp33/shinylearner:version{version}
