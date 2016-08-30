@@ -34,10 +34,10 @@ do
       classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*__*svm*"
       numIterations=2
 
-      scripts/mlflexlite_classification "$dataFile" "$validation" $numIterations false "$classifAlgo" "$outDir/${validation}_Classification_Predictions.tsv" "$outDir/${validation}_Classification_Metrics.tsv" ""
-      scripts/mlflexlite_featureselection "$dataFile" "$validation" $numIterations false "$fsAlgo" "$outDir/${validation}_FeatureSelection_SelectedFeatures.tsv" ""
-      scripts/mlflexlite_nested "$dataFile" $validation $numIterations $numIterations false "$classifAlgo" $outDir/Nested
-      scripts/mlflexlite_nested_featureselection "$dataFile" $validation $numIterations $numIterations false "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" $outDir/Nested_FS
+      scripts/shinylearner_classification "$dataFile" "$validation" $numIterations false "$classifAlgo" "$outDir/${validation}_Classification_Predictions.tsv" "$outDir/${validation}_Classification_Metrics.tsv" ""
+      scripts/shinylearner_featureselection "$dataFile" "$validation" $numIterations false "$fsAlgo" "$outDir/${validation}_FeatureSelection_SelectedFeatures.tsv" ""
+      scripts/shinylearner_nested "$dataFile" $validation $numIterations $numIterations false "$classifAlgo" $outDir/Nested
+      scripts/shinylearner_nested_featureselection "$dataFile" $validation $numIterations $numIterations false "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" $outDir/Nested_FS
     done
   done
 done

@@ -6,17 +6,17 @@ set -o errexit
 javaDir="/usr/bin"
 
 currentDir=$(pwd)
-buildDir=/tmp/mlflexlite_build
+buildDir=/tmp/shinylearner_build
 
 rm -rfv $buildDir
 
-mkdir -pv $buildDir/mlflexlite/src/mlflexlite
-cp -rv mlflexlite/src/mlflexlite/* $buildDir/mlflexlite/src/mlflexlite
+mkdir -pv $buildDir/shinylearner/src/shinylearner
+cp -rv java/src/shinylearner/* $buildDir/shinylearner/src/shinylearner
 cp -v build.xml $buildDir/
 
 cd $buildDir
 
-find mlflexlite -name *.java > sources_list.txt
+find shinylearner -name *.java > sources_list.txt
 $javaDir/javac @sources_list.txt
 rm sources_list.txt
 
@@ -25,7 +25,7 @@ ant
 mkdir -p $currentDir/release
 rm -rf $currentDir/release/*
 
-cp -v mlflexlite.jar $currentDir/release/
+cp -v shinylearner.jar $currentDir/release/
 
 cd $currentDir
 rm -rf $buildDir

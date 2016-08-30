@@ -1,0 +1,16 @@
+#!/bin/bash
+
+message="$1"
+
+if [[ "$message" == "" ]]
+then
+  echo "No commit message was provided."
+  exit 1
+fi
+
+python UpdateVersion.py travis.yml.template VERSION .travis.yml
+
+git add .travis.yml
+git add --all .
+git commit -m "$message"
+git push origin master

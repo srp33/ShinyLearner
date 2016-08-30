@@ -1,21 +1,23 @@
 library(mlr)
 library(dplyr)
+library(AUC)
 
 inPredictionsFilePath <- commandArgs()[7]
 outMetricsFilePath <- commandArgs()[8]
 
 calculateMetrics <- function(predictionData)
 {
-  truth <- predictionData$ActualClass
-  response <- predictionData$PredictedClass
+  truth <- as.factor(predictionData$ActualClass)
+  response <- as.factor(predictionData$PredictedClass)
   probabilities <- predictionData$Probabilities
 
   accuracy <- measureACC(truth, response)
-  auc <- ROCR::performance(ROCR::prediction(probabilities, truth, label.ordering=c(0, 1)), "auc")@y.values[[1L]]
+  #auc <- ROCR::performance(ROCR::prediction(probabilities, truth, label.ordering=c(0, 1)), "auc")@y.values[[1L]]
+  auc <- auc(roc(probabilities, truth))
   balancedAccuracy <- measureBAC(truth, response, 0, 1)
   brier <- measureBrier(probabilities, truth, 0, 1)
   fdr <- measureFDR(truth, response, 1)
-  fn <- measureFN(truth, response, 1)
+  fn <- measureFN(truth, response, 0)
   fnr <- measureFNR(truth, response, 0, 1)
   fp <- measureFP(truth, response, 1)
   fpr <- measureFPR(truth, response, 0, 1)
@@ -24,9 +26,9 @@ calculateMetrics <- function(predictionData)
   mcc <- measureMCC(truth, response, 0, 1)
   mmce <- measureMMCE(truth, response)
   ppv <- measurePPV(truth, response, 1)
-  npv <- measureNPV(truth, response, 1)
+  npv <- measureNPV(truth, response, 0)
   tn <- measureTN(truth, response, 1)
-  tnr <- measureTNR(truth, response, 1)
+  tnr <- measureTNR(truth, response, 0)
   tp <- measureTP(truth, response, 1)
   tpr <- measureTPR(truth, response, 1)
 
