@@ -17,15 +17,15 @@ script:
   - scripts/build
   - tar -zcvf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests LICENSE UserScripts
   - mkdir data; cp Validation/*.tsv.gz data/
-  - sudo docker build -t srp33/shinylearner:version15 .
-  - sudo docker run --rm -v data:/data srp33/shinylearner:version15
+  - sudo docker build -t srp33/shinylearner:version16 .
+  - sudo docker run --rm -v data:/data srp33/shinylearner:version16
 
 #  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-#  - sudo docker push srp33/shinylearner:version15
+#  - sudo docker push srp33/shinylearner:version16
 
 
 #- cd Validation; ./generate_data; cd ..
 #- sh TestScripts/classification_montecarlo
 #
 #  - sudo docker pull srp33/shinylearner_environment:version1
-#  - sudo docker rmi -f srp33/shinylearner:version15
+#  - sudo docker rmi -f srp33/shinylearner:version16
