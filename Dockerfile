@@ -1,9 +1,8 @@
 FROM srp33/shinylearner_environment:version1
 
-COPY release/shinylearner.jar ~/
-COPY scripts/* ~/scripts/
+COPY ShinyLearner.tar.gz ~/
 
-#RUN git clone https://github.com/srp33/ShinyLearner.git
+RUN tar -zxvf ShinyLearner.tar.gz
 #VOLUME /ShinyLearner/v
 #WORKDIR /ShinyLearner
 #ENTRYPOINT ["./docker_nc_mc.sh"]
