@@ -19,7 +19,7 @@ script:
   - mkdir data; cp Validation/*.tsv.gz data/
   - sudo docker build -t srp33/shinylearner:version{version} .
   - ls -al data/
-  - sudo docker run -d -P -v data:/data srp33/shinylearner:version{version}
+  - sudo docker run -v data:/data srp33/shinylearner:version{version}
 
 #  - sudo docker run --rm -v data:/data srp33/shinylearner:version{version}
 #  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
