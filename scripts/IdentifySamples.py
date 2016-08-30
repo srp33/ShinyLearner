@@ -13,11 +13,6 @@ inFilePaths = []
 for inFilePattern in inFilePath.split(","):
     inFilePaths.extend(glob.glob(inFilePattern))
 
-print "inFilePath:"
-print inFilePath
-print "inFilePaths:"
-print inFilePaths
-
 #if prefix == "":
 #    print "No prefix was specified."
 #    sys.exit(1)

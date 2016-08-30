@@ -83,10 +83,12 @@ fi
 python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie2
 
 ## Find out amount of memory available
-mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
+#mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
+mem=$(free -m | tail -n3 | awk '{print $2}' | head -n1)M # Gives total memory in MB (preferred over GB because it always rounds down)
 
 ## Classify for inner iterations
-java -Xmx${mem} -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ie2 DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/icb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/ip TEMP_DIR=$tmpDir
+echo java -Xmx${mem} -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ie2 DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/icb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/ip TEMP_DIR=$tmpDir
+exit 1
 
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/ip" "$tmpDir/im"
 
