@@ -1,5 +1,10 @@
 #!/bin/bash
 
+echo "Root:"
+ls -al /
+echo "input:"
+ls -al /input
+
 echo $@
 $@
 
