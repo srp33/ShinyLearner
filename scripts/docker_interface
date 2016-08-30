@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo "hello, world!!"
-pwd
-ls -al data
+ls -al /
+ls -al /data
 exit
 
 set -o errexit
