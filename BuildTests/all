@@ -7,4 +7,4 @@ classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn__functions__
 useDefaultParameters=true
 debug=false
 
-echo /BuildTests/helper nestedclassification montecarlo /Validation/${description}_Both.tsv.gz $description "$classifAlgo" $useDefaultParameters $debug
+/BuildTests/helper nestedclassification montecarlo /Validation/${description}_Both.tsv.gz $description "$classifAlgo" $useDefaultParameters $debug
