@@ -4,6 +4,5 @@ COPY ShinyLearner.tar.gz /
 
 RUN tar -zxvf ShinyLearner.tar.gz
 
-VOLUME /data
 WORKDIR /
 ENTRYPOINT ["/scripts/docker_interface"]
