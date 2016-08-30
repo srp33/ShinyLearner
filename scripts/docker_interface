@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo "hello, world!!"
-echo "testing" > /input/abc
-ls -al /input/
+echo $@
+$@
+
 exit 0
 
 set -o errexit
