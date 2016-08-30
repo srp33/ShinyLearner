@@ -2,9 +2,12 @@
 
 set -o errexit
 
+inputDir=/input
+#outputDir=/output
+outputDir=/tmp/BuildTestOutput
 description=StrongSignal_Both
 classifAlgo=/AlgorithmScripts/Classification/tsv/sklearn__functions__svm_linear
 useDefaultParameters=true
 debug=false
 
-/BuildTests/helper nestedclassification montecarlo /inputdata/${description}_Both.tsv.gz $description "$classifAlgo" $useDefaultParameters $debug
+/BuildTests/helper nestedclassification montecarlo $inputDir/${description}_Both.tsv.gz $description "$classifAlgo" $useDefaultParameters $debug $outputDir

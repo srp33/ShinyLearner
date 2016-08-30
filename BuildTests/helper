@@ -9,10 +9,8 @@ description=$4
 classifAlgo=$5
 useDefaultParameters=$6
 debug=$7
+outputDir=$8
 
-outputDir=/tmp/BuildTestOutput
-
-rm -rfv $outputDir
 mkdir -p $outputDir
 
 if [[ "$validationType" == "montecarlo" ]]
