@@ -15,8 +15,10 @@ branches:
     - master
 script:
   - scripts/build
-  - tar -zcvf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION Validation BuildTests build.xml LICENSE UserScripts
+  - tar -zcvf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests LICENSE UserScripts
   - sudo docker build -t srp33/shinylearner:version{version} .
+  - sudo docker run --rm -v data:/data srp33/shinylearner:version{version}
+
 #  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
 #  - sudo docker push srp33/shinylearner:version{version}
 
