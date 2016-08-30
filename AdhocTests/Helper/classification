@@ -45,21 +45,21 @@ dataFile=$currentDir/Validation/${validation}.tsv.gz
 ######classifAlgo=$currentDir/AlgorithmScripts/Classification/arff/weka__rules__one_r
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka__*"
 
-classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr__bayes__naiveBayes
+#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr__bayes__naiveBayes
 #classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr__functions__lda
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr__*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr__meta*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr__functions*"
 
-#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn__functions__lda
+classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn__functions__lda
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn__*"
 
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*__*__*"
 
 #debug=false
 debug=true
-useDefaultParameters=false
-#useDefaultParameters=true
+#useDefaultParameters=false
+useDefaultParameters=true
 
 outPredictionsFile=$outputDir/${validationType}_${validation}_Predictions.tsv
 outMetricsFile=$outputDir/${validationType}_${validation}_Metrics.tsv

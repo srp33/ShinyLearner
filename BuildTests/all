@@ -3,8 +3,8 @@
 set -o errexit
 
 inputDir=/input
-#outputDir=/output
-outputDir=/tmp/BuildTestOutput
+outputDir=/output
+#outputDir=/tmp/BuildTestOutput
 description=StrongSignal_Both
 classifAlgo=/AlgorithmScripts/Classification/tsv/sklearn__functions__svm_linear
 useDefaultParameters=true
