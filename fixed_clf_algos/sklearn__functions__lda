@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sh $(dirname $0)/Helper/sklearn_c_generic "$1" "$1" "$2" $(basename $0)

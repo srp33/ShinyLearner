@@ -100,4 +100,4 @@ for i in range(len(probs)):
 
     prediction = classOptions[indicesMatchingMax[0]]
 
-    print "%s\t%s\t%s" % ("", prediction, "\t".join(["%.9f" % iProb for iProb in iProbs]))
+    print "%s\t%s" % (prediction, "\t".join(["%.9f" % iProb for iProb in iProbs]))

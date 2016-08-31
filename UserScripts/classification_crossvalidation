@@ -8,10 +8,9 @@ numIterations="$3"
 numFolds="$4"
 debug="$5"
 classifAlgos="$6"
-useDefaultParameters="$7"
-outPredictionsFile="$8"
-outMetricsFile="$9"
-outBenchmarkFile="${10}"
+outPredictionsFile="$7"
+outMetricsFile="$8"
+outBenchmarkFile="$9"
 
 tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 
@@ -45,7 +44,7 @@ do
     outBenchmarkFileIteration=$outDir/outbench
   fi
 
-  scripts/classification "$dataFiles" "$description" "$numFolds" "$debug" "$classifAlgos" "$useDefaultParameters" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outBenchmarkFileIteration" crossvalidation $iteration
+  scripts/classification "$dataFiles" "$description" "$numFolds" "$debug" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outBenchmarkFileIteration" crossvalidation $iteration
 done
 
 python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outbench" "$outPredictionsFile,$outMetricsFile,$outBenchmarkFile"

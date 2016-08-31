@@ -7,7 +7,6 @@ import java.util.ArrayList;
  */
 public class Prediction
 {
-	public String ParameterDescription;
     /** Data instance for which the prediction was made. */
     public String InstanceID;
     /** The dependent variable (class) value. */
@@ -24,9 +23,8 @@ public class Prediction
      * @param prediction Predicted dependent-variable value of the specified instance
      * @param classProbabilities Probabilities of each possible dependent-variable value in the same order that the dependent-variable processor orders the possible dependent-variable values.
      */
-    public Prediction(String parameterDescription, String instanceID, String dependentVariableValue, String prediction, ArrayList<Double> classProbabilities) throws Exception
+    public Prediction(String instanceID, String dependentVariableValue, String prediction, ArrayList<Double> classProbabilities) throws Exception
     {
-    	ParameterDescription = parameterDescription;
         InstanceID = instanceID;
         DependentVariableValue = dependentVariableValue;
         Prediction = prediction;

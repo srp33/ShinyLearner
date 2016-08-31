@@ -31,20 +31,12 @@ cd $testDir
 
 validation=StrongSignal_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
-
-#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr__bayes__naiveBayes
-classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn__functions__svm_linear
-#classifAlgo="AlgorithmScripts/Classification/arff/weka__rules__*"
-
-#useDefaultParameters=false
-useDefaultParameters=true
-
-#debug=false
+classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn__functions__lda
 debug=true
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/nestedclassification_${validationType} "$dataFile" $validation 2 2 $debug "$classifAlgo" $useDefaultParameters $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Benchmark.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Nested.tsv
+  UserScripts/nestedclassification_${validationType} "$dataFile" $validation 2 2 $debug "$classifAlgo" $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Benchmark.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Nested.tsv
 else
-  UserScripts/nestedclassification_${validationType} "$dataFile" $validation 2 2 2 $debug "$classifAlgo" $useDefaultParameters $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Benchmark.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Nested.tsv
+  UserScripts/nestedclassification_${validationType} "$dataFile" $validation 2 2 2 $debug "$classifAlgo" $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Benchmark.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Nested.tsv
 fi

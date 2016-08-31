@@ -29,36 +29,16 @@ rm -fv $outputDir/${validationType}*
 
 cd $testDir
 
-#validation=NoSignal_Both
 validation=StrongSignal_Both
-
 dataFile=$currentDir/Validation/${validation}.tsv.gz
-
-#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka__info_gain"
-#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka__wrapper_knn1"
-#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka__*"
-
-#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn__svm_rfe"
-#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn__random_forest_rfe"
-#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn__anova"
-#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn__random_lasso"
-#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn__random_logistic_regression"
-#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn__*"
-
-#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr__*"
-#fsAlgo=AlgorithmScripts/FeatureSelection/tsv/mlr__univariate.model.score
-fsAlgo=AlgorithmScripts/FeatureSelection/tsv/mlr__rf.min.depth
-
+fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn__random_logistic_regression"
+debug=true
 outFeaturesFile=$outputDir/${validationType}_${validation}_SelectedFeatures.tsv
 outBenchmarkFile=$outputDir/${validationType}_${validation}_Benchmark.tsv
 
-#debug=false
-debug=true
-useDefaultParameters=true
-
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/featureselection_${validationType} "$dataFile" "$validation" 2 $debug "$fsAlgo" "$useDefaultParameters" "$outFeaturesFile" "$outBenchmarkFile"
+  UserScripts/featureselection_${validationType} "$dataFile" "$validation" 2 $debug "$fsAlgo" "$outFeaturesFile" "$outBenchmarkFile"
 else
-  UserScripts/featureselection_${validationType} "$dataFile" "$validation" 2 2 $debug "$fsAlgo" "$useDefaultParameters" "$outFeaturesFile" "$outBenchmarkFile"
+  UserScripts/featureselection_${validationType} "$dataFile" "$validation" 2 2 $debug "$fsAlgo" "$outFeaturesFile" "$outBenchmarkFile"
 fi

@@ -15,5 +15,5 @@ then
   parametersFilePath="$dirName/../ParameterCombinations/$callingScript"
 fi
 
-Rscript --vanilla $dirName/mlr_fs_generic.R "$dataFilePath" "${algorithmAbbreviated}" "$parametersFilePath"
-#Rscript --vanilla $dirName/mlr_fs_generic.R "$dataFilePath" "${algorithmAbbreviated}" "$parametersFilePath" 2>&1 | python $dirName/ReformatOutput.py
+#Rscript --vanilla $dirName/mlr_fs_generic.R "$dataFilePath" "${algorithmAbbreviated}" "$parametersFilePath"
+Rscript --vanilla $dirName/mlr_fs_generic.R "$dataFilePath" "${algorithmAbbreviated}" "$parametersFilePath" 2>&1 | python $dirName/ReformatMlrOutput.py

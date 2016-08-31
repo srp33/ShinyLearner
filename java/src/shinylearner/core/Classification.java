@@ -19,8 +19,8 @@ public class Classification
 		long startTime = System.nanoTime();
 
 		String predictionOutput = TrainTest(trainingFilePath, testFilePath);
-		//		Log.Debug(predictionOutput);
-		//		Log.Exit(1);
+		Log.Debug(predictionOutput);
+//		Log.Exit(1);
 
 		if (!Settings.OUTPUT_BENCHMARK_FILE_PATH.equals(""))
 			FileUtilities.AppendLineToFile(Settings.OUTPUT_BENCHMARK_FILE_PATH, Benchmark.GetBenchmarkValues(startTime));
@@ -36,7 +36,7 @@ public class Classification
 	private static String TrainTest(String trainingFilePath, String testFilePath) throws Exception
 	{
 		String dependentVariableOptions = ListUtilities.Join(ListUtilities.SortStringList(Singletons.InstanceVault.DependentVariableOptions), ",");
-		String parameters = "\"" + Settings.MAIN_DIR + "\" \"" + trainingFilePath + "\" \"" + testFilePath + "\" \"" + dependentVariableOptions + "\" \"" + Settings.USE_DEFAULT_PARAMETERS + "\"";
+		String parameters = "\"" + trainingFilePath + "\" \"" + testFilePath + "\" \"" + dependentVariableOptions + "\"";
 
 		Log.Debug(Singletons.ExperimentItems.AlgorithmScriptFilePath + " " + parameters);
 		//Log.Exit(1);
@@ -64,16 +64,15 @@ public class Classification
 
 			String[] lineItems = predictionLines[i].split("\t");
 
-			String parameterDescription = lineItems[0].equals("") ? "Default" : lineItems[0];
 			String instanceID = tempTestIDs.remove(0);
 			String actualClass = Singletons.InstanceVault.DependentVariableInstances.get(instanceID);
-			String prediction = lineItems[1];
+			String prediction = lineItems[0];
 
 			ArrayList<Double> probabilities = new ArrayList<Double>();
-			for (int j=2; j<lineItems.length; j++)
+			for (int j=1; j<lineItems.length; j++)
 				probabilities.add(Double.parseDouble(lineItems[j].trim()));
 
-			predictions.add(new Prediction(parameterDescription, instanceID, actualClass, prediction, probabilities));
+			predictions.add(new Prediction(instanceID, actualClass, prediction, probabilities));
 		}
 		
 		if (tempTestIDs.size() > 0)
@@ -84,7 +83,7 @@ public class Classification
 
 	public static String GetOutputHeader()
 	{
-		String header = "Description\tAlgorithmScript\tParameterDescription\tInstanceID\tActualClass\tPredictedClass";
+		String header = "Description\tAlgorithmScript\tInstanceID\tActualClass\tPredictedClass";
 
 		for (String x : Singletons.InstanceVault.DependentVariableOptions)
 			header += "\t" + MiscUtilities.UnformatClassValue(x);
@@ -103,7 +102,6 @@ public class Classification
 
 			outputVals.add(Singletons.ExperimentItems.Description);
 			outputVals.add(Singletons.ExperimentItems.AlgorithmScriptFilePath);
-			outputVals.add(prediction.ParameterDescription);
 			outputVals.add(MiscUtilities.UnformatName(prediction.InstanceID));
 			outputVals.add(MiscUtilities.UnformatClassValue(prediction.DependentVariableValue));
 			outputVals.add(MiscUtilities.UnformatClassValue(prediction.Prediction));

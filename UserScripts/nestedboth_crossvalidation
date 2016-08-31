@@ -5,8 +5,8 @@ set -o errexit
 dataFiles="$1"
 description="$2"
 numIterations="$3"
-outerNumIterations="$4"
-innerNumIterations="$5"
+outerNumFolds="$4"
+innerNumFolds="$5"
 debug="$6"
 fsAlgos="$7"
 numFeaturesOptions="$8"
@@ -96,7 +96,7 @@ do
     outNestedClassificationBenchmarkFileIteration=$outDir/outbenchclnested
   fi
 
-  scripts/nestedboth "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$debug" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFileIteration" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outFeatureSelectionBenchmarkFileIteration" "$outClassificationBenchmarkFileIteration" "$outNestedSelectedFeaturesFileIteration" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedFeatureSelectionBenchmarkFileIteration" "$outNestedClassificationBenchmarkFileIteration" crossvalidation $iteration
+  scripts/nestedboth "$dataFiles" "$description" "$outerNumFolds" "$innerNumFolds" "$debug" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFileIteration" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outFeatureSelectionBenchmarkFileIteration" "$outClassificationBenchmarkFileIteration" "$outNestedSelectedFeaturesFileIteration" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedFeatureSelectionBenchmarkFileIteration" "$outNestedClassificationBenchmarkFileIteration" crossvalidation $iteration
 done
 
 python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfs,$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outbenchfs,$tmpDir/*/outbenchcl,$tmpDir/*/outfsnested,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchfsnested,$tmpDir/*/outbenchclnested" "$outSelectedFeaturesFile,$outPredictionsFile,$outMetricsFile,$outFeatureSelectionBenchmarkFile,$outClassificationBenchmarkFile,$outNestedSelectedFeaturesFile,$outNestedPredictionsFile,$outNestedMetricsFile,$outNestedFeatureSelectionBenchmarkFile,$outNestedClassificationBenchmarkFile"

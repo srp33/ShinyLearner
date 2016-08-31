@@ -10,7 +10,7 @@ then
   exit 1
 fi
 
-#./scripts/build
+./scripts/build
 
 currentDir=$(pwd)
 testDir=/tmp/ML_Flex_Lite_Test_NestedBoth
@@ -29,17 +29,12 @@ rm -fv $outputDir/${validationType}*
 
 cd $testDir
 
-validation=StrongSignal_Small_Both
-dataFile=$currentDir/Validation/${validation}_Data.tsv.gz
-
-fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka__info_gain"
-#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka__*"
+validation=StrongSignal_Both
+dataFile=$currentDir/Validation/${validation}.tsv.gz
+fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn__random_logistic_regression"
 numFeaturesOptions="5,20"
-classifAlgo=AlgorithmScripts/Classification/arff/weka__rules__one_r
-#classifAlgo="AlgorithmScripts/Classification/arff/weka__rules__*"
-
-debug=false
-#debug=true
+classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn__functions__lda
+debug=true
 
 if [[ "$validationType" == "montecarlo" ]]
 then

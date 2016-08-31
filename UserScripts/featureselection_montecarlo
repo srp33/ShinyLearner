@@ -7,8 +7,7 @@ description="$2"
 numIterations="$3"
 debug="$4"
 fsAlgos="$5"
-useDefaultParameters="$6"
-outFeaturesFile="$7"
-outBenchmarkFile="$8"
+outFeaturesFile="$6"
+outBenchmarkFile="$7"
 
-scripts/featureselection "$dataFiles" "$description" "$numIterations" "$debug" "$fsAlgos" "$useDefaultParameters" "$outFeaturesFile" "$outBenchmarkFile" montecarlo 0
+scripts/featureselection "$dataFiles" "$description" "$numIterations" "$debug" "$fsAlgos" "$outFeaturesFile" "$outBenchmarkFile" montecarlo 0

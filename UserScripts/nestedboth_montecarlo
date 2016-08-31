@@ -2,4 +2,25 @@
 
 set -o errexit
 
-scripts/nestedboth "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9" "${10}" "${11}" "${12}" "${13}" "${14}" "${15}" "${16}" "${17}" "${18}" montecarlo 0
+dataFiles="$1"
+description="$2"
+outerNumIterations="$3"
+innerNumIterations="$4"
+debug="$5"
+fsAlgos="$6"
+numFeaturesOptions="$7"
+classifAlgos="$8"
+outSelectedFeaturesFile="$9"
+outPredictionsFile="${10}"
+outMetricsFile="${11}"
+outFeatureSelectionBenchmarkFile="${12}"
+outClassificationBenchmarkFile="${13}"
+outNestedSelectedFeaturesFile="${14}"
+outNestedPredictionsFile="${15}"
+outNestedMetricsFile="${16}"
+outNestedFeatureSelectionBenchmarkFile="${17}"
+outNestedClassificationBenchmarkFile="${18}"
+validationType="montecarlo"
+randomSeed="0"
+
+scripts/nestedboth "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$debug" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outFeatureSelectionBenchmarkFile" "$outClassificationBenchmarkFile" "$outNestedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" montecarlo 0

@@ -10,7 +10,7 @@ data <- filter(data, Metric=="AUROC")
 data <- select(data, -Metric)
 
 # Average across the inner iterations
-data <- ungroup(summarise(group_by(data, Description, ParameterDescription, CL), Value=mean(Value)))
+data <- ungroup(summarise(group_by(data, Description, CL), Value=mean(Value)))
 
 # Pick best result for each description
 groupedData <- group_by(data, Description)

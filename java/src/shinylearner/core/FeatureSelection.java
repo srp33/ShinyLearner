@@ -11,7 +11,7 @@ public class FeatureSelection
 {
 	public static String GetOutputHeader()
 	{
-		return "Description\tAlgorithmScript\tParameterDescription\tFeatures";
+		return "Description\tAlgorithmScript\tFeatures";
 	}
 	
 	public static void SelectFeatures(String trainingFilePath) throws Exception
@@ -33,25 +33,32 @@ public class FeatureSelection
 	
     private static String SelectFeaturesCommand(String dataFilePath) throws Exception
     {
-        String parameters = "\"" + Settings.MAIN_DIR + "\" \"" + dataFilePath + "\" \"" + Settings.USE_DEFAULT_PARAMETERS + "\"";
+        String parameters = "\"" + dataFilePath + "\"";
         Log.Debug(Singletons.ExperimentItems.AlgorithmScriptFilePath + " " + parameters);
-        Log.Exit(1);
+        //Log.Exit(1);
         return MiscUtilities.ExecuteShellCommand(Singletons.ExperimentItems.AlgorithmScriptFilePath + " " + parameters);
     }
     
     private static String GetOutput(String algorithmOutput) throws Exception
     {
-    	String[] outputLines = algorithmOutput.trim().split("\n");
-    	String parameterDescription = outputLines[0];
-		String selectedFeatures = MiscUtilities.UnformatName(outputLines[1]);
+    	StringBuffer output = new StringBuffer();
+
+    	for (String outputLine : algorithmOutput.split("\n"))
+    	{
+    		if (outputLine.trim().length() == 0)
+    			continue;
+
+    		String[] outputLineItems = outputLine.split("\t");
+    		String selectedFeatures = MiscUtilities.UnformatName(outputLineItems[0]);
 		
-        ArrayList<String> outputVals = new ArrayList<String>();
+    		ArrayList<String> outputVals = new ArrayList<String>();
+    		outputVals.add(Singletons.ExperimentItems.Description);
+    		outputVals.add(Singletons.ExperimentItems.AlgorithmScriptFilePath);
+    		outputVals.add(selectedFeatures);
 
-        outputVals.add(Singletons.ExperimentItems.Description);
-        outputVals.add(Singletons.ExperimentItems.AlgorithmScriptFilePath);
-        outputVals.add(parameterDescription);
-        outputVals.add(selectedFeatures);
-
-        return ListUtilities.Join(outputVals, "\t");
+    		output.append(ListUtilities.Join(outputVals, "\t"));
+    	}
+    	
+    	return output.toString();
     }
 }

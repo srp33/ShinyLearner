@@ -9,24 +9,28 @@ data <- read.table(dataFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE,
 
 task <- makeClassifTask(data = data, target = "Class")
 
-learn <- function(parameterList, parameterDescription, ...)
+learn <- function(parameterList, parameterDescription)
 {
   set.seed(0)
 
-  if (algorithm == "permutation.importance") {
-    fv = generateFilterValuesData(task, method = algorithm, learner="classif.logreg", ...)$data
-  } else {
-    fv = do.call(generateFilterValuesData, parameterList)$data
-  }
+  fv = generateFilterValuesData(task, method = algorithm)$data
+
+#  if (algorithm == "permutation.importance") {
+#    fv = generateFilterValuesData(task, method = algorithm, learner="classif.logreg", ...)$data
+#  } else {
+#    fv = do.call(generateFilterValuesData, parameterList)$data
+#  }
 
   fv <- fv[order(fv[,algorithm], decreasing=TRUE),,drop=FALSE]
-  fv <- cbind(parameterDescription, fv)
+  features <- paste(fv[,1], collapse=",")
+  output <- t(as.data.frame(c(parameterDescription, features)))
 
-  write.table(fv[,1:2], "", sep="\t", row.names = FALSE, col.names=FALSE, quote = FALSE)
+  write.table(output, "", sep="\t", row.names = FALSE, col.names=FALSE, quote = FALSE)
 }
 
 if (parametersFilePath == "") {
-  learn(NULL, "")
+  #learn(NULL, "")
+  learn(list(), "")
 } else {
   parameterData <- read.table(parametersFilePath, sep="\t", header=TRUE, stringsAsFactor=F, row.names=NULL, check.names=FALSE, quote="")
   parameterNames <- colnames(parameterData)

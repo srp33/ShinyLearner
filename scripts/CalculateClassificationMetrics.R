@@ -40,18 +40,16 @@ calculateMetrics <- function(predictionData)
   list(Accuracy=accuracy, AUROC=auc, BalancedAccuracy=balancedAccuracy, Brier=brier, FDR=fdr, FNR=fnr, FPR=fpr, MCC=mcc, MMCE=mmce, PPV=ppv, NPV=npv, TNR=tnr, TPR=tpr, Precision=precision, Recall=recall, F1=f1)
 }
 
-#Description	AlgorithmScript	ParameterDescription	InstanceID	ActualClass	PredictedClass	0	1
-#Description	AlgorithmScript	ParameterDescription	InstanceID	ActualClass	PredictedClass	Class__1	Class__2	Class__3
+#Description	AlgorithmScript	InstanceID	ActualClass	PredictedClass	0	1
 predictionsData <- read.table(inPredictionsFilePath, sep="\t", header=TRUE, row.names=NULL, quote="\"", check.names=FALSE)
 
 predictionStartIndex <- which(colnames(predictionsData) == "PredictedClass") + 1
 classOptions <- colnames(predictionsData)[predictionStartIndex:ncol(predictionsData)]
 
-uniqueCombinations <- distinct(select(predictionsData, Description, AlgorithmScript, ParameterDescription))
+uniqueCombinations <- distinct(select(predictionsData, Description, AlgorithmScript))
 
 outDescriptions <- NULL
 outAlgorithmScripts <- NULL
-outParameterDescriptions <- NULL
 outMetrics <- NULL
 outValues <- NULL
 
@@ -59,9 +57,8 @@ for (i in 1:nrow(uniqueCombinations))
 {
   description <- as.character(uniqueCombinations[i,"Description"])
   algorithmScript <- as.character(uniqueCombinations[i,"AlgorithmScript"])
-  parameterDescription <- as.character(uniqueCombinations[i,"ParameterDescription"])
 
-  combinationPredictionData <- filter(predictionsData, Description==description & AlgorithmScript==algorithmScript & ParameterDescription==parameterDescription)
+  combinationPredictionData <- filter(predictionsData, Description==description & AlgorithmScript==algorithmScript)
 
   if (length(classOptions) == 2) {
     combinationPredictionData$Probabilities <- combinationPredictionData[,"1"]
@@ -71,7 +68,6 @@ for (i in 1:nrow(uniqueCombinations))
     {
       outDescriptions <- c(outDescriptions, description)
       outAlgorithmScripts <- c(outAlgorithmScripts, algorithmScript)
-      outParameterDescriptions <- c(outParameterDescriptions, parameterDescription)
       outMetrics <- c(outMetrics, metric)
       outValues <- c(outValues, metrics[[metric]])
     }
@@ -98,7 +94,6 @@ for (i in 1:nrow(uniqueCombinations))
       {
         outDescriptions <- c(outDescriptions, description)
         outAlgorithmScripts <- c(outAlgorithmScripts, algorithmScript)
-        outParameterDescriptions <- c(outParameterDescriptions, parameterDescription)
         outMetrics <- c(outMetrics, metric)
         outValues <- c(outValues, metrics[[metric]])
       }
@@ -106,7 +101,7 @@ for (i in 1:nrow(uniqueCombinations))
   }
 }
 
-outData <- data.frame(Description=outDescriptions, AlgorithmScript=outAlgorithmScripts, ParameterDescription=outParameterDescriptions, Metric=outMetrics, Value=outValues)
-outData <- as.data.frame(ungroup(summarize(group_by(outData, Description, AlgorithmScript, ParameterDescription, Metric), Value=mean(Value))))
+outData <- data.frame(Description=outDescriptions, AlgorithmScript=outAlgorithmScripts, Metric=outMetrics, Value=outValues)
+outData <- as.data.frame(ungroup(summarize(group_by(outData, Description, AlgorithmScript, Metric), Value=mean(Value))))
 
 write.table(outData, outMetricsFilePath, sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE)

@@ -17,7 +17,6 @@ public class Settings
     public static ArrayList<String> DATA_FILES = new ArrayList<String>();
     public static String DEPENDENT_VARIABLE_NAME;
     public static String EXPERIMENT_FILE;
-    public static boolean USE_DEFAULT_PARAMETERS;
     public static String OUTPUT_DATA_FILE_PATH;
     public static String OUTPUT_PREDICTIONS_FILE_PATH;
     public static String OUTPUT_FEATURES_FILE_PATH;
@@ -40,7 +39,6 @@ public class Settings
 		
 		DEPENDENT_VARIABLE_NAME = GetArgValue(args, "DEPENDENT_VARIABLE_NAME", "Class");
 		EXPERIMENT_FILE = GetArgValue(args, "EXPERIMENT_FILE", null);
-		USE_DEFAULT_PARAMETERS = Boolean.parseBoolean(GetArgValue(args, "USE_DEFAULT_PARAMETERS", "true"));
 		OUTPUT_DATA_FILE_PATH = GetArgValue(args, "OUTPUT_DATA_FILE_PATH", "");
 		OUTPUT_PREDICTIONS_FILE_PATH = GetArgValue(args, "OUTPUT_PREDICTIONS_FILE_PATH", "");
 		OUTPUT_FEATURES_FILE_PATH = GetArgValue(args, "OUTPUT_FEATURES_FILE_PATH", "");
