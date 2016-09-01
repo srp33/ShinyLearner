@@ -13,8 +13,6 @@ if len(metricFilePaths) == 0:
     exit(1)
 
 for metricFilePath in metricFilePaths:
-    print "[TEST] Checking metric file: %s" % metricFilePath
-
     metricData = [line.rstrip().split("\t") for line in file(metricFilePath)]
     headerItems = metricData.pop(0)
     metricNameIndex = headerItems.index("Metric")
@@ -24,6 +22,8 @@ for metricFilePath in metricFilePaths:
     uniqueAlgorithmScripts = list(set([row[algorithmScriptIndex] for row in metricData]))
 
     for algorithmScript in uniqueAlgorithmScripts:
+        print "[TEST] Running tests for %s and %s." % (metricFilePath, algorithmScript)
+
         aucValues = [float(row[valueIndex]) for row in metricData if row[algorithmScriptIndex] == algorithmScript and row[metricNameIndex] == "AUROC"]
         meanAUC = sum(aucValues) / float(len(aucValues))
 
