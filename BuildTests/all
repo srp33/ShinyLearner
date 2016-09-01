@@ -4,9 +4,15 @@ set -o errexit
 
 inputDir=/input
 outputDir=/output
-#outputDir=/tmp/BuildTestOutput
-description=StrongSignal_Both
 classifAlgo=/AlgorithmScripts/Classification/tsv/sklearn/lda/default
 debug=false
 
-/BuildTests/helper nestedclassification montecarlo $inputDir/${description}.tsv.gz $description "$classifAlgo" $debug $outputDir
+for description in StrongSignal_Both
+do
+  dataFile=$inputDir/${description}.tsv.gz
+
+  rm -fv output/*
+  /BuildTests/nestedclassification_montecarlo $dataFile $description $classifAlgo $debug $outputDir
+  ./check
+  rm -fv output/*
+done
