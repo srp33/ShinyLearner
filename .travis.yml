@@ -16,14 +16,14 @@ branches:
 script:
   - scripts/build
   - tar -zcvf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests LICENSE UserScripts
-  - sudo docker build -t srp33/shinylearner:version49 .
+  - sudo docker build -t srp33/shinylearner:version50 .
   - mkdir input
   - mkdir output
   - cp Validation/*.tsv.gz input/
-  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version49 /BuildTests/all
+  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version50 /BuildTests/all
 
 #  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-#  - sudo docker push srp33/shinylearner:version49
+#  - sudo docker push srp33/shinylearner:version50
 #
 #  - sudo docker pull srp33/shinylearner_environment:version1
-#  - sudo docker rmi -f srp33/shinylearner:version49
+#  - sudo docker rmi -f srp33/shinylearner:version50

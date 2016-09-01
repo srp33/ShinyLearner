@@ -15,7 +15,8 @@ function createScript {
   cp -v $templateFile $scriptDir/$parameterDescription
 }
 
-for algorithm in lda logistic_regression qda sgd svm_linear svm_nurbf svm_poly svm_rbf svm_sigmoid knn bagging decision_tree extra_trees random_forest
+#for algorithm in lda logistic_regression qda sgd svm_linear svm_nurbf svm_poly svm_rbf svm_sigmoid knn bagging decision_tree extra_trees random_forest
+for algorithm in lda logistic_regression qda sgd svm_linear svm_nurbf svm_poly svm_rbf knn bagging decision_tree extra_trees random_forest
 do
   createScript Classification sklearn_c_template $algorithm default
 done
