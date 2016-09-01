@@ -12,7 +12,9 @@ do
   dataFile=$inputDir/${description}.tsv.gz
 
   rm -fv output/*
+
   /BuildTests/nestedclassification_montecarlo $dataFile $description $classifAlgo $debug $outputDir
-  ./check
-  rm -fv output/*
+  /BuildTests/check $description
+
+  rm -v output/*
 done

@@ -2,4 +2,6 @@
 
 set -o errexit
 
-ls output/*Predictions*
+description=$1
+
+python BuildTests/CheckAccuracy.py $description "output/*_Metrics.tsv"
