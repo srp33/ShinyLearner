@@ -4,7 +4,7 @@ set -o errexit
 
 inputDir=/input
 outputDir=/output
-classifAlgo=/AlgorithmScripts/Classification/tsv/sklearn/lda/default
+classifAlgo="/AlgorithmScripts/Classification/tsv/sklearn/*/default"
 debug=false
 
 for description in StrongSignal_Both
@@ -13,7 +13,7 @@ do
 
   rm -fv output/*
 
-  /BuildTests/nestedclassification_montecarlo $dataFile $description $classifAlgo $debug $outputDir
+  /BuildTests/nestedclassification_montecarlo $dataFile $description "$classifAlgo" $debug $outputDir
   /BuildTests/check $description "$classifAlgo"
 
   rm -v output/*
