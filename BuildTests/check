@@ -5,4 +5,4 @@ set -o errexit
 description=$1
 classifAlgo="$2"
 
-python BuildTests/CheckAccuracy.py $description "$classifAlgo" "output/*_Metrics.tsv"
+python BuildTests/CheckAccuracy.py $description "$classifAlgo" "output/*Metrics.tsv"

@@ -14,7 +14,6 @@ do
   rm -fv output/*
 
   /BuildTests/nestedclassification_montecarlo $dataFile $description $classifAlgo $debug $outputDir
-  ls output
   /BuildTests/check $description "$classifAlgo"
 
   rm -v output/*
