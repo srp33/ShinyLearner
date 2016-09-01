@@ -33,7 +33,7 @@ for metricFilePath in metricFilePaths:
                 print "[OBSERVATION] The mean AUROC was %.3f for %s and %s." % (meanAUC, description, algorithmScript)
                 print "[PASSED]"
             else:
-                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f." % (meanAUC, description, lowerThreshold, algorithmScript)
+                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f." % (meanAUC, description, algorithmScript, lowerThreshold)
                 print "[FAILED]"
                 exit(1)
         elif description.startswith("MediumSignal"):
@@ -43,7 +43,7 @@ for metricFilePath in metricFilePaths:
                 print "[OBSERVATION] The mean AUROC was %.3f for %s and %s." % (meanAUC, description, algorithmScript)
                 print "[PASSED]"
             else:
-                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f. The expected upper threshold is %.3f" % (meanAUC, description, lowerThreshold, upperThreshold, algorithmScript)
+                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f. The expected upper threshold is %.3f" % (meanAUC, description, algorithmScript, lowerThreshold, upperThreshold)
                 print "[FAILED]"
                 exit(1)
         elif description.startswith("NoSignal"):
@@ -52,6 +52,6 @@ for metricFilePath in metricFilePaths:
                 print "[OBSERVATION] The mean AUROC was %.3f for %s and %s." % (meanAUC, description, algorithmScript)
                 print "[PASSED]"
             else:
-                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s. The expected upper threshold is %.3f." % (meanAUC, description, upperThreshold, algorithmScript)
+                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s. The expected upper threshold is %.3f." % (meanAUC, description, algorithmScript, upperThreshold)
                 print "[FAILED]"
                 exit(1)
