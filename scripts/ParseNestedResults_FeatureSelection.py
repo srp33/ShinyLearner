@@ -13,6 +13,7 @@ headerItems.insert(1, "Num_Features")
 headerItems.insert(1, "Feature_Selection_AlgorithmScript")
 headerItems.insert(1, "Nested_Algorithm")
 headerItems.insert(1, iterationOutputHeader)
+headerItems[headerItems.index("AlgorithmScript")] = "Classification_AlgorithmScript"
 outFile.write("\t".join(headerItems) + "\n")
 
 for line in inFile:

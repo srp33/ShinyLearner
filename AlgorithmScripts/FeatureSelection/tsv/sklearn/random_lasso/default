@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sh "$(dirname $0)"/../../../../Helper/sklearn_fs_generic "$1" "$0"

@@ -31,9 +31,9 @@ cd $testDir
 
 validation=StrongSignal_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
-fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn__random_logistic_regression"
+fsAlgo=AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default
 numFeaturesOptions="5,20"
-classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn__functions__lda
+classifAlgo=AlgorithmScripts/Classification/tsv/sklearn/lda/default
 debug=true
 
 if [[ "$validationType" == "montecarlo" ]]

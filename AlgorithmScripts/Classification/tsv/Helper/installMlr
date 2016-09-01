@@ -1,3 +1,0 @@
-#!/bin/bash
-
-Rscript --vanilla installMlr.R

@@ -9,7 +9,7 @@ inFile = open(inFilePath)
 #StrongSignal_Small_Both____Iteration1____Nested_Select_Best	/Users/srp33/Dropbox/ML-Flex-Lite/AlgorithmScripts/Classification/arff/weka__rules__one_r	Weighted average AUC	1.0
 
 headerItems = inFile.readline().rstrip().split("\t")
-headerItems.insert(1, "Nested_Algorithm")
+headerItems.insert(1, "Nested_Classification_Algorithm")
 headerItems.insert(1, iterationOutputHeader)
 outFile.write("\t".join(headerItems) + "\n")
 

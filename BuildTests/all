@@ -6,7 +6,7 @@ inputDir=/input
 outputDir=/output
 #outputDir=/tmp/BuildTestOutput
 description=StrongSignal_Both
-classifAlgo=/AlgorithmScripts/Classification/tsv/sklearn__functions__svm_linear
+classifAlgo=/AlgorithmScripts/Classification/tsv/sklearn/lda/default
 debug=false
 
 /BuildTests/helper nestedclassification montecarlo $inputDir/${description}.tsv.gz $description "$classifAlgo" $debug $outputDir

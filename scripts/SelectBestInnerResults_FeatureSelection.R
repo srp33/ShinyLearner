@@ -8,7 +8,7 @@ library(dplyr)
 
 data <- read.table(inFilePath, sep="\t", header=TRUE, row.names=NULL, quote="\"", check.names=F)
 
-data <- filter(data, Metric=="Weighted average AUC")
+data <- filter(data, Metric=="AUROC")
 data <- select(data, -Metric)
 
 # Average across the inner iterations

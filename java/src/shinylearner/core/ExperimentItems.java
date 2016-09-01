@@ -35,9 +35,9 @@ public class ExperimentItems
 			Log.ExceptionFatal("No algorithm script file exists at " + AlgorithmScriptFilePath + ".");
 		
 		String[] fileNameParts = AlgorithmScriptFilePath.split("/");
-		AlgorithmType = fileNameParts[fileNameParts.length - 3];
-		AlgorithmDataFormat = fileNameParts[fileNameParts.length - 2];
-		
+		AlgorithmType = fileNameParts[fileNameParts.length - 5];
+		AlgorithmDataFormat = fileNameParts[fileNameParts.length - 4];
+
 		if (!AlgorithmType.equals("Classification") && !AlgorithmType.equals("FeatureSelection"))
 			Log.ExceptionFatal("Invalid algorithm type: " + AlgorithmType);
 

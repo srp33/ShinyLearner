@@ -1,0 +1,47 @@
+#!/bin/bash
+
+rm -fv ../Classification/tsv/mlr__*
+
+exit
+
+#mlr__univariate.model.score
+#mlr__cforest.importance
+#mlr__kruskal.test
+#mlr__rf.importance
+#mlr__rf.min.depth
+
+mlr__bayes__naiveBayes          mlr__meta__xgboost
+mlr__functions__LiblineaRL1LogReg   mlr__trees__cforest
+mlr__functions__LiblineaRL2LogReg   mlr__trees__ctree
+mlr__functions__avNNet          mlr__trees__randomForestSRCSyn
+mlr__functions__cvglmnet        mlr__trees__ranger
+mlr__functions__dbnDNN          mlr__trees__rpart
+mlr__functions__glmnet
+mlr__functions__hdrda
+mlr__functions__ksvm
+mlr__functions__lda
+mlr__functions__mlp
+mlr__functions__multinom
+mlr__functions__nnTrain
+mlr__functions__nnet
+mlr__functions__rda
+mlr__functions__saeDNN
+mlr__functions__sda
+mlr__functions__svm
+mlr__lazy__kknn
+mlr__meta__boosting
+
+# mlr naive bayes
+laplace
+1
+10
+100
+1000
+10000
+
+## Don't work
+mlr__functions__mda
+mlr__functions__xyf
+mlr__trees__extraTrees
+mlr__functions__sparseLDA
+mlr__meta__gbm
