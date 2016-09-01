@@ -13,7 +13,7 @@ if len(metricFilePaths) == 0:
     exit(1)
 
 for metricFilePath in metricFilePaths:
-    print "Checking metric file: %s" % metricFilePath
+    print "[TEST] Checking metric file: %s" % metricFilePath
 
     metricData = [line.rstrip().split("\t") for line in file(metricFilePath)]
     headerItems = metricData.pop(0)
@@ -26,25 +26,28 @@ for metricFilePath in metricFilePaths:
     if description.startswith("StrongSignal"):
         lowerThreshold = 0.9
         if meanAUC >= lowerThreshold:
+            print "[OBSERVATION] The mean AUROC was %.3f for %s." % (meanAUC, description)
             print "[PASSED]"
         else:
-            print "The mean AUROC was %.3f for %s. The expected lower threshold is %.3f." % (meanAUC, description, lowerThreshold)
+            print "[OBSERVATION] The mean AUROC was %.3f for %s. The expected lower threshold is %.3f." % (meanAUC, description, lowerThreshold)
             print "[FAILED]"
             exit(1)
     elif description.startswith("MediumSignal"):
         lowerThreshold = 0.6
         upperThreshold = 0.9
         if meanAUC >= lowerThreshold and meanAUC <= upperThreshold:
+            print "[OBSERVATION] The mean AUROC was %.3f for %s." % (meanAUC, description)
             print "[PASSED]"
         else:
-            print "The mean AUROC was %.3f for %s. The expected lower threshold is %.3f. The expected upper threshold is %.3f" % (meanAUC, description, lowerThreshold, upperThreshold)
+            print "[OBSERVATION] The mean AUROC was %.3f for %s. The expected lower threshold is %.3f. The expected upper threshold is %.3f" % (meanAUC, description, lowerThreshold, upperThreshold)
             print "[FAILED]"
             exit(1)
     elif description.startswith("NoSignal"):
         upperThreshold = 0.6
         if meanAUC <= upperThreshold:
+            print "[OBSERVATION] The mean AUROC was %.3f for %s." % (meanAUC, description)
             print "[PASSED]"
         else:
-            print "The mean AUROC was %.3f for %s. The expected upper threshold is %.3f." % (meanAUC, description, upperThreshold)
+            print "[OBSERVATION] The mean AUROC was %.3f for %s. The expected upper threshold is %.3f." % (meanAUC, description, upperThreshold)
             print "[FAILED]"
             exit(1)
