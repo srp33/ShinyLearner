@@ -19,35 +19,39 @@ for metricFilePath in metricFilePaths:
     headerItems = metricData.pop(0)
     metricNameIndex = headerItems.index("Metric")
     valueIndex = headerItems.index("Value")
+    algorithmScriptIndex = headerItems.index("AlgorithmScript")
 
-    aucValues = [float(row[valueIndex]) for row in metricData if row[metricNameIndex] == "AUROC"]
-    meanAUC = sum(aucValues) / float(len(aucValues))
+    uniqueAlgorithmScripts = list(set([row[algorithmScriptIndex] for row in metricData]))
 
-    if description.startswith("StrongSignal"):
-        lowerThreshold = 0.9
-        if meanAUC >= lowerThreshold:
-            print "[OBSERVATION] The mean AUROC was %.3f for %s." % (meanAUC, description)
-            print "[PASSED]"
-        else:
-            print "[OBSERVATION] The mean AUROC was %.3f for %s. The expected lower threshold is %.3f." % (meanAUC, description, lowerThreshold)
-            print "[FAILED]"
-            exit(1)
-    elif description.startswith("MediumSignal"):
-        lowerThreshold = 0.6
-        upperThreshold = 0.9
-        if meanAUC >= lowerThreshold and meanAUC <= upperThreshold:
-            print "[OBSERVATION] The mean AUROC was %.3f for %s." % (meanAUC, description)
-            print "[PASSED]"
-        else:
-            print "[OBSERVATION] The mean AUROC was %.3f for %s. The expected lower threshold is %.3f. The expected upper threshold is %.3f" % (meanAUC, description, lowerThreshold, upperThreshold)
-            print "[FAILED]"
-            exit(1)
-    elif description.startswith("NoSignal"):
-        upperThreshold = 0.6
-        if meanAUC <= upperThreshold:
-            print "[OBSERVATION] The mean AUROC was %.3f for %s." % (meanAUC, description)
-            print "[PASSED]"
-        else:
-            print "[OBSERVATION] The mean AUROC was %.3f for %s. The expected upper threshold is %.3f." % (meanAUC, description, upperThreshold)
-            print "[FAILED]"
-            exit(1)
+    for algorithmScript in uniqueAlgorithmScripts:
+        aucValues = [float(row[valueIndex]) for row in metricData if row[algorithmScriptIndex] == algorithmScript and row[metricNameIndex] == "AUROC"]
+        meanAUC = sum(aucValues) / float(len(aucValues))
+
+        if description.startswith("StrongSignal"):
+            lowerThreshold = 0.9
+            if meanAUC >= lowerThreshold:
+                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s." % (meanAUC, description, algorithmScript)
+                print "[PASSED]"
+            else:
+                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f." % (meanAUC, description, lowerThreshold, algorithmScript)
+                print "[FAILED]"
+                exit(1)
+        elif description.startswith("MediumSignal"):
+            lowerThreshold = 0.6
+            upperThreshold = 0.9
+            if meanAUC >= lowerThreshold and meanAUC <= upperThreshold:
+                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s." % (meanAUC, description, algorithmScript)
+                print "[PASSED]"
+            else:
+                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f. The expected upper threshold is %.3f" % (meanAUC, description, lowerThreshold, upperThreshold, algorithmScript)
+                print "[FAILED]"
+                exit(1)
+        elif description.startswith("NoSignal"):
+            upperThreshold = 0.6
+            if meanAUC <= upperThreshold:
+                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s." % (meanAUC, description, algorithmScript)
+                print "[PASSED]"
+            else:
+                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s. The expected upper threshold is %.3f." % (meanAUC, description, upperThreshold, algorithmScript)
+                print "[FAILED]"
+                exit(1)
