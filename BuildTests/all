@@ -2,10 +2,10 @@
 
 set -o errexit
 
-inputDir=/input
-outputDir=/output
-classifAlgo="/AlgorithmScripts/Classification/tsv/sklearn/*/default"
-fsAlgo="/AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default"
+inputDir=input
+outputDir=output
+classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
+fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default"
 debug=false
 
 #for description in StrongSignal_Discrete NoSignal_Discrete StrongSignal_Continuous NoSignal_Continuous StrongSignal_Both NoSignal_Both
@@ -13,10 +13,10 @@ for description in StrongSignal_Both NoSignal_Both
 do
   dataFile=$inputDir/${description}.tsv.gz
 
-  rm -fv $outputDir/*
-  /UserScripts/nestedclassification_montecarlo "$dataFile" $description 2 2 $debug "$classifAlgo" $outputDir/Predictions.tsv $outputDir/Metrics.tsv $outputDir/Benchmark.tsv $outputDir/Nested_Predictions.tsv $outputDir/Nested_Metrics.tsv $outputDir/Nested_Benchmark.tsv
+  rm -fv $outputDir/*.tsv
+  UserScripts/nestedclassification_montecarlo "$dataFile" $description 2 2 $debug "$classifAlgo" $outputDir/Predictions.tsv $outputDir/Metrics.tsv $outputDir/Benchmark.tsv $outputDir/Nested_Predictions.tsv $outputDir/Nested_Metrics.tsv $outputDir/Nested_Benchmark.tsv
   python BuildTests/CheckAccuracy.py $description "$classifAlgo" "output/*Metrics.tsv"
-  rm -v $outputDir/*
+  rm -v $outputDir/*.tsv
 
   # Need to write script to check top features when feature selection is performed
 done
