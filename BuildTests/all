@@ -8,7 +8,7 @@ classifAlgo="/AlgorithmScripts/Classification/tsv/sklearn/*/default"
 fsAlgo="/AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default"
 debug=false
 
-for description in StrongSignal_Both MediumSignal_Both NoSignal_Both
+for description in StrongSignal_Discrete NoSignal_Discrete StrongSignal_Continuous NoSignal_Continuous StrongSignal_Both NoSignal_Both
 do
   dataFile=$inputDir/${description}.tsv.gz
 
