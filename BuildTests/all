@@ -8,12 +8,14 @@ classifAlgo="/AlgorithmScripts/Classification/tsv/sklearn/*/default"
 fsAlgo="/AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default"
 debug=false
 
-for description in StrongSignal_Both
+for description in StrongSignal_Both MediumSignal_Both NoSignal_Both
 do
   dataFile=$inputDir/${description}.tsv.gz
 
   rm -fv $outputDir/*
   /UserScripts/nestedclassification_montecarlo "$dataFile" $description 2 2 $debug "$classifAlgo" $outputDir/Predictions.tsv $outputDir/Metrics.tsv $outputDir/Benchmark.tsv $outputDir/Nested_Predictions.tsv $outputDir/Nested_Metrics.tsv $outputDir/Nested_Benchmark.tsv
-  /BuildTests/check $description "$classifAlgo"
+  python BuildTests/CheckAccuracy.py $description "$classifAlgo" "output/*Metrics.tsv"
   rm -v $outputDir/*
+
+  # Need to write script to check top features when feature selection is performed
 done
