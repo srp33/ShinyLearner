@@ -8,6 +8,10 @@ then
   exit 1
 fi
 
+cd AlgorithmScripts/Helper
+./build_sklearn_scripts
+cd ../..
+
 python UpdateVersion.py travis.yml.template VERSION .travis.yml
 
 git add .travis.yml
