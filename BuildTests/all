@@ -5,6 +5,7 @@ set -o errexit
 inputDir=/input
 outputDir=/output
 classifAlgo="/AlgorithmScripts/Classification/tsv/sklearn/*/default"
+fsAlgo="/AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default"
 debug=false
 
 for description in StrongSignal_Both
