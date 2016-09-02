@@ -11,10 +11,8 @@ for description in StrongSignal_Both
 do
   dataFile=$inputDir/${description}.tsv.gz
 
-  rm -fv output/*
-
-  /BuildTests/nestedclassification_montecarlo $dataFile $description "$classifAlgo" $debug $outputDir
+  rm -fv $outputDir/*
+  /UserScripts/nestedclassification_montecarlo "$dataFile" $description 2 2 $debug "$classifAlgo" $outputDir/Predictions.tsv $outputDir/Metrics.tsv $outputDir/Benchmark.tsv $outputDir/Nested_Predictions.tsv $outputDir/Nested_Metrics.tsv $outputDir/Nested_Benchmark.tsv
   /BuildTests/check $description "$classifAlgo"
-
-  rm -v output/*
+  rm -v $outputDir/*
 done
