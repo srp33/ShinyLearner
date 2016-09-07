@@ -1,7 +1,10 @@
 #!/bin/bash
 
-echo $@
-$@
+echo "this is a test exit code"
+exit 1
+
+#echo $@
+#$@
 
 exit 0
 
