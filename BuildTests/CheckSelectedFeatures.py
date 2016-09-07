@@ -70,3 +70,5 @@ if len(failedAlgorithms) > 0:
     for algorithm in failedAlgorithms:
         print "  %s" % algorithm
     exit(1)
+else:
+    print "All tests passed!"
