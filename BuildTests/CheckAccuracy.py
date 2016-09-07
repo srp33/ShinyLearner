@@ -15,7 +15,7 @@ if len(metricFilePaths) == 0:
     print "[FAILED] No metric files were found!"
     exit(1)
 
-failureOutput = ""
+failedAlgorithms = set()
 
 for metricFilePath in metricFilePaths:
     metricData = [line.rstrip().split("\t") for line in file(metricFilePath)]
@@ -27,9 +27,8 @@ for metricFilePath in metricFilePaths:
     uniqueAlgorithmScripts = list(set([row[algorithmScriptIndex] for row in metricData]))
 
     if len(uniqueAlgorithmScripts) == 0:
-        message = "[FAILED] No algorithm scripts could be found."
-        failureOutput += message + "\n"
-        print message
+        print "[FAILED] No algorithm scripts could be found."
+        exit(1)
 
     for algorithmScript in uniqueAlgorithmScripts:
         idText = "%s - %s - %s - %s" % (taskType, validationType, metricFilePath, algorithmScript)
@@ -42,27 +41,29 @@ for metricFilePath in metricFilePaths:
             if meanAUC >= lowerThreshold:
                 print "[PASSED] The mean AUROC was %.3f for %s and %s. {%s}" % (meanAUC, description, algorithmScript, idText)
             else:
-                message = "[FAILED] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f. {%s}" % (meanAUC, description, algorithmScript, lowerThreshold, idText)
-                failureOutput += message + "\n"
-                print message
+                print "[FAILED] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f. {%s}" % (meanAUC, description, algorithmScript, lowerThreshold, idText)
+                failedAlgorithms.add(algorithmScript)
         elif description.startswith("MediumSignal"):
             lowerThreshold = 0.6
             upperThreshold = 0.9
             if meanAUC >= lowerThreshold and meanAUC <= upperThreshold:
                 print "[PASSED] The mean AUROC was %.3f for %s and %s. {%s}" % (meanAUC, description, algorithmScript, idText)
             else:
-                message = "[FAILED] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f. The expected upper threshold is %.3f. {%s}" % (meanAUC, description, algorithmScript, lowerThreshold, upperThreshold, idText)
-                failureOutput += message + "\n"
-                print message
+                print "[FAILED] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f. The expected upper threshold is %.3f. {%s}" % (meanAUC, description, algorithmScript, lowerThreshold, upperThreshold, idText)
+                failedAlgorithms.add(algorithmScript)
         elif description.startswith("NoSignal"):
             upperThreshold = 0.6
             if meanAUC <= upperThreshold:
                 print "[PASSED] The mean AUROC was %.3f for %s and %s. {%s}" % (meanAUC, description, algorithmScript, idText)
             else:
-                message = "[FAILED] The mean AUROC was %.3f for %s and %s. The expected upper threshold is %.3f. {%s}" % (meanAUC, description, algorithmScript, upperThreshold, idText)
-                failureOutput += message + "\n"
-                print message
+                print "[FAILED] The mean AUROC was %.3f for %s and %s. The expected upper threshold is %.3f. {%s}" % (meanAUC, description, algorithmScript, upperThreshold, idText)
+                failedAlgorithms.add(algorithmScript)
 
-if len(failureOutput) > 0:
-    print failureOutput
+print "\n[TEST SUMMARY]\n"
+if len(failedAlgorithms) > 0:
+    print "The following algorithm(s) failed at least once:"
+    for algorithm in failedAlgorithms:
+        print "  %s" % algorithm
     exit(1)
+else:
+    print "All tests passed!"

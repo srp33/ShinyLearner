@@ -21,12 +21,12 @@ def validateMeanFeatureRank(algorithmFeatureData, featureName, lowerThreshold, u
 
     if meanFeatureIndex > lowerThreshold and meanFeatureIndex <= upperThreshold:
         print "[PASSED] The mean feature index for %s was %.1f. {%s}" % (featureName, meanFeatureIndex, idText)
+        return True
     else:
-        message = "[FAILED] The mean feature index for %s was %.1f. Expected was between %.1f and %.1f. {%s}" % (featureName, meanFeatureIndex, lowerThreshold, upperThreshold, idText)
-        print message
-        return message + "\n"
+        print "[FAILED] The mean feature index for %s was %.1f. Expected was between %.1f and %.1f. {%s}" % (featureName, meanFeatureIndex, lowerThreshold, upperThreshold, idText)
+        return False
 
-failureOutput = ""
+failedAlgorithms = set()
 
 for selectedFeaturesFilePath in selectedFeaturesFilePaths:
     data = [line.rstrip().split("\t") for line in file(selectedFeaturesFilePath)]
@@ -52,18 +52,21 @@ for selectedFeaturesFilePath in selectedFeaturesFilePaths:
             upperThreshold = len(algorithmFeatureData[0])
 
         for i in range(1, 6):
-            message = validateMeanFeatureRank(algorithmFeatureData, "Feature%s" % i, lowerThreshold, upperThreshold, idText)
-            if message != None:
-                failureOutput += message
+            success = validateMeanFeatureRank(algorithmFeatureData, "Feature%s" % i, lowerThreshold, upperThreshold, idText)
+            if not success:
+                failedAlgorithms.add(algorithmScript)
 
         for i in range(51, 56):
-            message = validateMeanFeatureRank(algorithmFeatureData, "Feature%s.Low" % i, lowerThreshold, upperThreshold, idText)
-            if message != None:
-                failureOutput += message
-            message = validateMeanFeatureRank(algorithmFeatureData, "Feature%s.Medium" % i, lowerThreshold, upperThreshold, idText)
-            if message != None:
-                failureOutput += message
+            success = validateMeanFeatureRank(algorithmFeatureData, "Feature%s.Low" % i, lowerThreshold, upperThreshold, idText)
+            if not success:
+                failedAlgorithms.add(algorithmScript)
+            success = validateMeanFeatureRank(algorithmFeatureData, "Feature%s.Medium" % i, lowerThreshold, upperThreshold, idText)
+            if not success:
+                failedAlgorithms.add(algorithmScript)
 
-if len(failureOutput) > 0:
-    print failureOutput
+print "\n[TEST SUMMARY]\n"
+if len(failedAlgorithms) > 0:
+    print "The following algorithm(s) failed at least once:"
+    for algorithm in failedAlgorithms:
+        print "  %s" % algorithm
     exit(1)
