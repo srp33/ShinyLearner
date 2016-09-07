@@ -1,4 +1,4 @@
-![ShinyLearner logo](Web/Logo_Small.jpg)
+![ShinyLearner logo](Web/shinylearner/Logo_Small.jpg)
 
 ==========================
 [![Build Status](https://travis-ci.org/srp33/ShinyLearner.svg?branch=master)](https://travis-ci.org/srp33/ShinyLearner)
