@@ -2,12 +2,17 @@
 
 set -o errexit
 
-#inputDir=input
-#outputDir=output
-
-inputDir=Validation
-outputDir=/tmp/output
-mkdir -p $outputDir
+if [ -d input ]
+then
+  # We are running the tests inside a Docker container
+  inputDir=input
+  outputDir=output
+else
+  # We are running the tests locally
+  inputDir=Validation
+  outputDir=/tmp/output
+  mkdir -p $outputDir
+fi
 
 classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default"
