@@ -22,7 +22,7 @@ do
 done
 
 #for algorithm in anova random_forest_rfe random_lasso random_logistic_regression svm_rfe
-for algorithm in anova random_logistic_regression svm_rfe
+for algorithm in anova random_forest_rfe random_logistic_regression svm_rfe
 do
   createScript FeatureSelection sklearn_fs_template $algorithm default
 done

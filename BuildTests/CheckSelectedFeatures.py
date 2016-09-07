@@ -15,15 +15,18 @@ if len(selectedFeaturesFilePaths) == 0:
     print "[FAILED] No selected-features files were found!"
     exit(1)
 
-def validateMeanFeatureRank(algorithmFeatureData, featureName, lowerThreshold, upperThreshold, idText):
+def getMeanFeatureRank(algorithmFeatureData, featureName):
     featureIndices = [float(x.index(featureName) + 1) for x in algorithmFeatureData]
-    meanFeatureIndex = sum(featureIndices) / len(featureIndices)
+    return sum(featureIndices) / len(featureIndices)
 
-    if meanFeatureIndex > lowerThreshold and meanFeatureIndex <= upperThreshold:
-        print "[PASSED] The mean feature index for %s was %.1f. {%s}" % (featureName, meanFeatureIndex, idText)
+def testMeanFeatureRanks(meanFeatureRanks, featureNames, lowerThreshold, upperThreshold, idText):
+    grandMean = sum(meanFeatureRanks) / len(meanFeatureRanks)
+
+    if grandMean > lowerThreshold and grandMean <= upperThreshold:
+        print "[PASSED] The mean feature index for %s and %s was %.1f. {%s}" % (",".join(featureNames), description, grandMean, idText)
         return True
     else:
-        print "[FAILED] The mean feature index for %s was %.1f. Expected was between %.1f and %.1f. {%s}" % (featureName, meanFeatureIndex, lowerThreshold, upperThreshold, idText)
+        print "[FAILED] The mean feature index for %s and %s was %.1f. Expected was between %.1f and %.1f. {%s}" % (",".join(featureNames), description, grandMean, lowerThreshold, upperThreshold, idText)
         return False
 
 failedAlgorithms = set()
@@ -46,23 +49,23 @@ for selectedFeaturesFilePath in selectedFeaturesFilePaths:
 
         if description.startswith("StrongSignal"):
             lowerThreshold = 0
-            upperThreshold = 20
+            upperThreshold = 15
         elif description.startswith("NoSignal"):
             lowerThreshold = 15
             upperThreshold = len(algorithmFeatureData[0])
 
+        featureNames = set()
         for i in range(1, 6):
-            success = validateMeanFeatureRank(algorithmFeatureData, "Feature%s" % i, lowerThreshold, upperThreshold, idText)
-            if not success:
-                failedAlgorithms.add(algorithmScript)
-
+            featureNames.add("Feature%s" % i)
         for i in range(51, 56):
-            success = validateMeanFeatureRank(algorithmFeatureData, "Feature%s.Low" % i, lowerThreshold, upperThreshold, idText)
-            if not success:
-                failedAlgorithms.add(algorithmScript)
-            success = validateMeanFeatureRank(algorithmFeatureData, "Feature%s.Medium" % i, lowerThreshold, upperThreshold, idText)
-            if not success:
-                failedAlgorithms.add(algorithmScript)
+            featureNames.add("Feature%s.Low" % i)
+            featureNames.add("Feature%s.Medium" % i)
+
+        meanFeatureRanks = [getMeanFeatureRank(algorithmFeatureData, featureName) for featureName in featureNames]
+        success = testMeanFeatureRanks(meanFeatureRanks, featureNames, lowerThreshold, upperThreshold, idText)
+
+        if not success:
+            failedAlgorithms.add(algorithmScript)
 
 print "\n[TEST SUMMARY]\n"
 if len(failedAlgorithms) > 0:
