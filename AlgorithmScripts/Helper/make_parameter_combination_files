@@ -1,0 +1,7 @@
+#!/bin/bash
+
+baseDir=../ParameterCombinations
+
+##python MakeParameterCombinationFiles.py $baseDir/mlr__rf.min.depth method=md,vh,vh.vimp conservative=medium,low,high nodesize=2,3,4 nrep=50,100 nstep=1,5
+python MakeParameterCombinationFiles.py $baseDir/mlr__rf.min.depth conservative=medium,low,high nodesize=2,3,4 nrep=50,100 nstep=1,5
+vim $baseDir/mlr__rf.min.depth

@@ -39,7 +39,8 @@ def rank_features(algorithm, X, y):
         scorer = RandomizedLasso(random_state=R_SEED)
         scorer.fit(X, y)
 
-        return [y[1] for y in sorted(zip(map(lambda x: round(x, 4), scorer.scores_), features), reverse=True)]
+        #return [y[1] for y in sorted(zip(map(lambda x: round(x, 4), scorer.scores_), features), reverse=True)]
+        return [y[1] for y in sorted(zip(map(lambda x: round(x, 4), scorer.scores_), features))]
     elif algorithm == 'anova':
         from sklearn.feature_selection import f_classif
         F, pval = f_classif(X, y)

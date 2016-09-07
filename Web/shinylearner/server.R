@@ -1,10 +1,8 @@
 library(shiny)
-library(readr)
-library(dplyr)
+#library(readr)
+#library(dplyr)
 
 shinyServer(function(input, output, session) {
-
-clfNames <- read_tsv('meta/classifier_names_all.tsv')
 shiny_script <- NULL
 description <- NULL
 
@@ -17,13 +15,11 @@ observeEvent(input$button_script, {
   outerNumIterations <- 5
   innerNumIterations <- 2
   debug <- 'false'
-  use_default_parameters <- 'true'
-  classifAlgos <- c('s_random_forest','s_svm_linear')
-  classifAlgos <- paste(filter(clfNames,(clfNames$classifier %in% classifAlgos))$script, collapse=',') 
+  classifAlgos <- paste('AlgorithmScripts/Classification/tsv/sklearn__trees__random_forest','AlgorithmScripts/Classification/tsv/sklearn__functions__svm_linear',sep=',')
   class_options <- paste("\"",input$class_options,"\"",sep='')
   exp_name <- paste("\"",input$exp_name,"\"",sep='')
   description <- gsub('[^[:alnum:]]','_',input$exp_name)
-  shiny_script <<- paste(paste('docker run --rm -v $(pwd)/',shared_dir,':/ShinyLearner/v shiny_learner',sep=''), dataFiles, description, outerNumIterations, innerNumIterations, debug, classifAlgos, use_default_parameters, class_options, exp_name)
+  shiny_script <<- paste(paste('docker run --rm -v $(pwd)/',shared_dir,':/ShinyLearner/v shiny_learner',sep=''), dataFiles, description, outerNumIterations, innerNumIterations, debug, classifAlgos, class_options, exp_name)
 })
 
 # Display Scripts

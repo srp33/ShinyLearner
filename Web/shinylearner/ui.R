@@ -14,19 +14,19 @@ shinyUI(navbarPage(id='navbar', "ShinyLearner",
       actionButton('button_script','Get Script')    
     ),
     mainPanel(
-      tags$img(src = "shinylearner.jpg", width = "484px", height = "374px")
+      tags$img(src = "Logo_Big.jpg", width = "484px", height = "374px")
     )
   )),
 # Help
   tabPanel(id='help','Help',
-    tags$img(src = "shinylearner.jpg", width = "484px", height = "374px"),
+    tags$img(src = "Logo_Big.jpg", width = "484px", height = "374px"),
     tags$br(),
     h2('Contact'),
     tags$a(href="http://piccolo.byu.edu/Contact.aspx", target="_blank", "Piccolo Lab at BYU")
   ),
 # Contact
   tabPanel(id='contact','Contact',
-    tags$img(src = "shinylearner.jpg", width = "484px", height = "374px"),
+    tags$img(src = "Logo_Big.jpg", width = "484px", height = "374px"),
     tags$br(),
     h2('Contact'),
     tags$a(href="http://piccolo.byu.edu/Contact.aspx", target="_blank", "Piccolo Lab at BYU")

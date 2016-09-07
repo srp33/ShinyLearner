@@ -4,7 +4,7 @@ outFSFilePath = commandArgs()[9]
 outNumFeaturesFilePath = commandArgs()[10]
 outCLFilePath = commandArgs()[11]
 
-library(dplyr)
+suppressPackageStartupMessages(library(dplyr))
 
 data <- read.table(inFilePath, sep="\t", header=TRUE, row.names=NULL, quote="\"", check.names=F)
 

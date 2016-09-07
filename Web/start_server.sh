@@ -1,3 +1,4 @@
 #!/bin/bash
 
-sudo systemctl start shiny-server
+# might need sudo
+systemctl start shiny-server

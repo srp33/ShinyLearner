@@ -1,8 +1,11 @@
 import os, sys, glob
 
-description = sys.argv[1]
-classificationAlgorithmPaths = glob.glob(sys.argv[2])
-metricFilePaths = glob.glob(sys.argv[3])
+taskType = sys.argv[1]
+validationType = sys.argv[2]
+description = sys.argv[3]
+classificationAlgorithmPaths = glob.glob(sys.argv[4])
+metricFilePaths = glob.glob(sys.argv[5])
+algorithmScriptColumnName = sys.argv[6]
 
 if len(classificationAlgorithmPaths) == 0:
     print "[FAILED] No classification algorithm scripts were found!"
@@ -12,17 +15,24 @@ if len(metricFilePaths) == 0:
     print "[FAILED] No metric files were found!"
     exit(1)
 
+failureOutput = ""
+
 for metricFilePath in metricFilePaths:
     metricData = [line.rstrip().split("\t") for line in file(metricFilePath)]
     headerItems = metricData.pop(0)
     metricNameIndex = headerItems.index("Metric")
     valueIndex = headerItems.index("Value")
-    algorithmScriptIndex = headerItems.index("AlgorithmScript")
+    algorithmScriptIndex = headerItems.index(algorithmScriptColumnName)
 
     uniqueAlgorithmScripts = list(set([row[algorithmScriptIndex] for row in metricData]))
 
+    if len(uniqueAlgorithmScripts) == 0:
+        message = "[FAILED] No algorithm scripts could be found."
+        failureOutput += message + "\n"
+        print message
+
     for algorithmScript in uniqueAlgorithmScripts:
-        print "[TEST] Running tests for %s and %s." % (metricFilePath, algorithmScript)
+        idText = "%s - %s - %s - %s" % (taskType, validationType, metricFilePath, algorithmScript)
 
         aucValues = [float(row[valueIndex]) for row in metricData if row[algorithmScriptIndex] == algorithmScript and row[metricNameIndex] == "AUROC"]
         meanAUC = sum(aucValues) / float(len(aucValues))
@@ -30,28 +40,29 @@ for metricFilePath in metricFilePaths:
         if description.startswith("StrongSignal"):
             lowerThreshold = 0.9
             if meanAUC >= lowerThreshold:
-                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s." % (meanAUC, description, algorithmScript)
-                print "[PASSED]"
+                print "[PASSED] The mean AUROC was %.3f for %s and %s. {%s}" % (meanAUC, description, algorithmScript, idText)
             else:
-                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f." % (meanAUC, description, algorithmScript, lowerThreshold)
-                print "[FAILED]"
-                #exit(1)
+                message = "[FAILED] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f. {%s}" % (meanAUC, description, algorithmScript, lowerThreshold, idText)
+                failureOutput += message + "\n"
+                print message
         elif description.startswith("MediumSignal"):
             lowerThreshold = 0.6
             upperThreshold = 0.9
             if meanAUC >= lowerThreshold and meanAUC <= upperThreshold:
-                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s." % (meanAUC, description, algorithmScript)
-                print "[PASSED]"
+                print "[PASSED] The mean AUROC was %.3f for %s and %s. {%s}" % (meanAUC, description, algorithmScript, idText)
             else:
-                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f. The expected upper threshold is %.3f" % (meanAUC, description, algorithmScript, lowerThreshold, upperThreshold)
-                print "[FAILED]"
-                #exit(1)
+                message = "[FAILED] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f. The expected upper threshold is %.3f. {%s}" % (meanAUC, description, algorithmScript, lowerThreshold, upperThreshold, idText)
+                failureOutput += message + "\n"
+                print message
         elif description.startswith("NoSignal"):
             upperThreshold = 0.6
             if meanAUC <= upperThreshold:
-                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s." % (meanAUC, description, algorithmScript)
-                print "[PASSED]"
+                print "[PASSED] The mean AUROC was %.3f for %s and %s. {%s}" % (meanAUC, description, algorithmScript, idText)
             else:
-                print "[OBSERVATION] The mean AUROC was %.3f for %s and %s. The expected upper threshold is %.3f." % (meanAUC, description, algorithmScript, upperThreshold)
-                print "[FAILED]"
-                #exit(1)
+                message = "[FAILED] The mean AUROC was %.3f for %s and %s. The expected upper threshold is %.3f. {%s}" % (meanAUC, description, algorithmScript, upperThreshold, idText)
+                failureOutput += message + "\n"
+                print message
+
+if len(failureOutput) > 0:
+    print failureOutput
+    exit(1)

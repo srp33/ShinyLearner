@@ -2,7 +2,7 @@ inFilePath = commandArgs()[7]
 trainTestFilePath = commandArgs()[8]
 outCLFilePath = commandArgs()[9]
 
-library(dplyr)
+suppressPackageStartupMessages(library(dplyr))
 
 data <- read.table(inFilePath, sep="\t", header=TRUE, row.names=NULL, quote="\"", check.names=F)
 

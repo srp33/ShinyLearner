@@ -1,6 +1,6 @@
-library(mlr)
-library(dplyr)
-library(AUC)
+suppressPackageStartupMessages(library(mlr))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(AUC))
 
 inPredictionsFilePath <- commandArgs()[7]
 outMetricsFilePath <- commandArgs()[8]

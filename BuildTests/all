@@ -2,21 +2,53 @@
 
 set -o errexit
 
-inputDir=input
-outputDir=output
-classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
-fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default"
-debug=false
+#inputDir=input
+#outputDir=output
 
-#for description in StrongSignal_Discrete NoSignal_Discrete StrongSignal_Continuous NoSignal_Continuous StrongSignal_Both NoSignal_Both
+inputDir=Validation
+outputDir=/tmp/output
+mkdir -p $outputDir
+
+classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default"
+fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default"
+debug=false
+#numOuterIterations=2
+#numInnerIterations=2
+numOuterIterations=5
+numInnerIterations=5
+
 for description in StrongSignal_Both NoSignal_Both
 do
   dataFile=$inputDir/${description}.tsv.gz
 
-  rm -fv $outputDir/*.tsv
-  UserScripts/nestedclassification_montecarlo "$dataFile" $description 2 2 $debug "$classifAlgo" $outputDir/Predictions.tsv $outputDir/Metrics.tsv $outputDir/Benchmark.tsv $outputDir/Nested_Predictions.tsv $outputDir/Nested_Metrics.tsv $outputDir/Nested_Benchmark.tsv
-  python BuildTests/CheckAccuracy.py $description "$classifAlgo" "output/*Metrics.tsv"
-  rm -v $outputDir/*.tsv
+  for validationType in montecarlo crossvalidation
+  do
+    numCVIterations=
+    if [[ "$validationType" == "crossvalidation" ]]
+    then
+      #numCVIterations=2
+      numCVIterations=5
+    fi
 
-  # Need to write script to check top features when feature selection is performed
+#    rm -fv $outputDir/*.tsv
+#    UserScripts/classification_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$classifAlgo" $outputDir/Predictions.tsv $outputDir/Metrics.tsv /dev/null
+#    python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "$outputDir/Metrics.tsv" AlgorithmScript
+
+#    rm -fv $outputDir/*.tsv
+#    UserScripts/nestedclassification_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $numInnerIterations $debug "$classifAlgo" $outputDir/Predictions.tsv $outputDir/Metrics.tsv /dev/null $outputDir/Nested_Predictions.tsv $outputDir/Nested_Metrics.tsv /dev/null
+#    python BuildTests/CheckAccuracy.py nestedclassification $validationType $description "$classifAlgo" "$outputDir/Metrics.tsv" AlgorithmScript
+
+    rm -fv $outputDir/*.tsv
+    UserScripts/featureselection_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$fsAlgo" $outputDir/SelectedFeatures.tsv /dev/null
+    python BuildTests/CheckSelectedFeatures.py featureselection $validationType $description "$fsAlgo" "$outputDir/SelectedFeatures.tsv" AlgorithmScript
+
+#    rm -fv $outputDir/*.tsv
+#    UserScripts/nestedboth_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $numInnerIterations $debug "$fsAlgo" "5,20" "$classifAlgo" $outputDir/SelectedFeatures.tsv $outputDir/Predictions.tsv $outputDir/Metrics.tsv /dev/null /dev/null $outputDir/Nested_SelectedFeatures.tsv $outputDir/Nested_Predictions.tsv $outputDir/Nested_Metrics.tsv /dev/null /dev/null
+#    python BuildTests/CheckAccuracy.py nestedboth $validationType $description "$classifAlgo" "$outputDir/Metrics.tsv" Classification_AlgorithmScript
+#    python BuildTests/CheckSelectedFeatures.py nestedboth $validationType $description "$fsAlgo" "$outputDir/SelectedFeatures.tsv" AlgorithmScript
+break
+  done
+break
 done
