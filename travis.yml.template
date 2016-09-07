@@ -19,6 +19,7 @@ script:
   - sudo docker build -t srp33/shinylearner:version{version} .
   - mkdir input output
   - cp -v Validation/*.tsv.gz input/
+  - set -o pipefail
   - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version{version} /BuildTests/all | tee output/log
 #  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version{version} /BuildTests/all
   #- python scripts/CheckTestOutput.py output/log
