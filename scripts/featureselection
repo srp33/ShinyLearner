@@ -82,7 +82,5 @@ function parseOutputFile {
 
 parseOutputFile $tmpDir/of $outFeaturesFile
 parseOutputFile $tmpDir/ob $outBenchmarkFile
-cp $outFeaturesFile ~/Downloads/of.tsv
-cp $outBenchmarkFile ~/Downloads/ofb.tsv
 
 cleanup
