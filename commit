@@ -9,7 +9,7 @@ then
 fi
 
 cd AlgorithmScripts/Helper
-./build_sklearn_scripts
+./build_algorithm_scripts
 cd ../..
 
 python UpdateVersion.py travis.yml.template VERSION .travis.yml
