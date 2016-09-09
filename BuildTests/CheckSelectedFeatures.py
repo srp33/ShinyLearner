@@ -49,7 +49,7 @@ for selectedFeaturesFilePath in selectedFeaturesFilePaths:
 
         if description.startswith("StrongSignal"):
             lowerThreshold = 0
-            upperThreshold = 15
+            upperThreshold = 20
         elif description.startswith("NoSignal"):
             lowerThreshold = 15
             upperThreshold = len(algorithmFeatureData[0])
@@ -74,4 +74,4 @@ if len(failedAlgorithms) > 0:
         print "  %s" % algorithm
     exit(1)
 else:
-    print "All tests passed!"
+    print "Tests passed!\n"

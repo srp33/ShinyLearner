@@ -7,22 +7,29 @@ then
   # We are running the tests inside a Docker container
   inputDir=input
   outputDir=output
-  numOuterIterations=10
-  numInnerIterations=2
 else
   # We are running the tests locally
   inputDir=Validation
   outputDir=/tmp/output
   mkdir -p $outputDir
-  numOuterIterations=10
-  numInnerIterations=2
 fi
 
-classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
+classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default"
-fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/lda/default"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default"
+fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default"
 #fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/*/default"
+#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/*/default"
 debug=false
+#debug=true
+numOuterIterations=10
+#numOuterIterations=2
+numInnerIterations=2
 
 for description in StrongSignal_Both NoSignal_Both
 do
@@ -36,19 +43,19 @@ do
       numCVIterations=2
     fi
 
-    rm -fv $outputDir/*.tsv
+    rm -f $outputDir/*.tsv
     UserScripts/classification_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$classifAlgo" $outputDir/Predictions.tsv $outputDir/Metrics.tsv /dev/null
     python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "$outputDir/Metrics.tsv" AlgorithmScript
 
-    rm -fv $outputDir/*.tsv
+    rm -f $outputDir/*.tsv
     UserScripts/featureselection_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$fsAlgo" $outputDir/SelectedFeatures.tsv /dev/null
     python BuildTests/CheckSelectedFeatures.py featureselection $validationType $description "$fsAlgo" "$outputDir/SelectedFeatures.tsv" AlgorithmScript
 
-#    rm -fv $outputDir/*.tsv
+#    rm -f $outputDir/*.tsv
 #    UserScripts/nestedclassification_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $numInnerIterations $debug "$classifAlgo" $outputDir/Predictions.tsv $outputDir/Metrics.tsv /dev/null $outputDir/Nested_Predictions.tsv $outputDir/Nested_Metrics.tsv /dev/null
 #    python BuildTests/CheckAccuracy.py nestedclassification $validationType $description "$classifAlgo" "$outputDir/Metrics.tsv" AlgorithmScript
 
-#    rm -fv $outputDir/*.tsv
+#    rm -f $outputDir/*.tsv
 #    UserScripts/nestedboth_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $numInnerIterations $debug "$fsAlgo" "5,20" "$classifAlgo" $outputDir/SelectedFeatures.tsv $outputDir/Predictions.tsv $outputDir/Metrics.tsv /dev/null /dev/null $outputDir/Nested_SelectedFeatures.tsv $outputDir/Nested_Predictions.tsv $outputDir/Nested_Metrics.tsv /dev/null /dev/null
 #    python BuildTests/CheckAccuracy.py nestedboth $validationType $description "$classifAlgo" "$outputDir/Metrics.tsv" Classification_AlgorithmScript
 #    python BuildTests/CheckSelectedFeatures.py nestedboth $validationType $description "$fsAlgo" "$outputDir/SelectedFeatures.tsv" AlgorithmScript

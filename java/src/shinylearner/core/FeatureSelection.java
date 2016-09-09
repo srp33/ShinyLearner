@@ -16,7 +16,7 @@ public class FeatureSelection
 	
 	public static void SelectFeatures(String trainingFilePath) throws Exception
 	{
-		Log.PrintErr(Log.FormatText("Getting ready to select features."));
+		Log.PrintErr(Log.FormatText("Starting feature selection."));
 
 		long startTime = System.nanoTime();
 

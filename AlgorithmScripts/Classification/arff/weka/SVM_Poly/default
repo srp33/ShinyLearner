@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sh "$(dirname $0)"/../../../../Helper/weka_c_generic "$1" "$2" "$3" "weka.classifiers.functions.LibSVM -S 0 -K 1 -D 3 -G 0.0 -R 0.0 -N 0.5 -M 40.0 -C 1.0 -E 0.0010 -P 0.1 -B"

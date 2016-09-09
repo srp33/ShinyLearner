@@ -31,6 +31,9 @@ for metricFilePath in metricFilePaths:
         exit(1)
 
     for algorithmScript in uniqueAlgorithmScripts:
+        if "ZeroR" in algorithmScript:
+            continue
+
         idText = "%s - %s - %s - %s" % (taskType, validationType, metricFilePath, algorithmScript)
 
         aucValues = [float(row[valueIndex]) for row in metricData if row[algorithmScriptIndex] == algorithmScript and row[metricNameIndex] == "AUROC"]
@@ -66,4 +69,4 @@ if len(failedAlgorithms) > 0:
         print "  %s" % algorithm
     exit(1)
 else:
-    print "All tests passed!"
+    print "Tests passed!\n"

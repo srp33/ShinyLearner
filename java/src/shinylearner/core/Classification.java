@@ -14,7 +14,7 @@ public class Classification
 {
 	public static void Classify(String trainingFilePath, String testFilePath) throws Exception
 	{
-		Log.PrintErr(Log.FormatText("Getting ready to classify."));
+		Log.PrintErr(Log.FormatText("Starting classification."));
 
 		long startTime = System.nanoTime();
 

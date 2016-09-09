@@ -1,0 +1,27 @@
+#!/bin/bash
+
+dataFilePath="$1"
+parameters="$2"
+
+command_exists () {
+    type "$1" &> /dev/null ;
+}
+
+## Find out amount of memory available
+function getMemAvailable {
+  if command_exists free
+  then
+    mem=$(free -m | tail -n3 | awk '{print $2}' | head -n1)M # Gives total memory in MB (preferred over GB because it always rounds down)
+  else
+    mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
+  fi
+
+  echo "$mem"
+}
+
+mem=$(getMemAvailable)
+
+wekaLibPath=$(dirname $0)/lib
+classPath="$wekaLibPath/*:$wekaLibPath/wekalib/*"
+
+echo java -Xmx${mem} -classpath $classPath $parameters -i $dataFilePath | python $(dirname $0)/ReformatFeatureSelectionParameters.py | sh | python $(dirname $0)/ParseFeatureSelectionResults.py

@@ -1,0 +1,130 @@
+#!/bin/bash
+
+#rm -rf ../Classification/tsv/sklearn/* ../FeatureSelection/tsv/sklearn/*
+#rm -rf ../Classification/tsv/mlr/* ../FeatureSelection/tsv/mlr/*
+rm -rf ../Classification/arff/weka/* ../FeatureSelection/arff/weka/*
+
+function createScript {
+  algorithmType=$1
+  softwareLibrary=$2
+  templateFile=$3
+  algorithm=$4
+  parameterDescription=$5
+
+  scriptDir=../$algorithmType/tsv/$softwareLibrary/$algorithm
+
+  mkdir -p $scriptDir
+
+  cp -v $templateFile $scriptDir/$parameterDescription
+}
+
+##############################
+## sklearn
+##############################
+
+##for algorithm in lda logistic_regression qda sgd svm_linear svm_nurbf svm_poly svm_rbf svm_sigmoid knn bagging decision_tree extra_trees random_forest
+#for algorithm in lda logistic_regression sgd svm_linear svm_poly svm_rbf knn bagging decision_tree extra_trees random_forest
+#do
+#  createScript Classification sklearn sklearn_c_template $algorithm default
+#done
+
+##for algorithm in anova random_forest_rfe random_lasso random_logistic_regression svm_rfe
+#for algorithm in anova random_forest_rfe random_logistic_regression svm_rfe
+#do
+#  createScript FeatureSelection sklearn sklearn_fs_template $algorithm default
+#done
+
+##############################
+## mlr
+##############################
+
+#for algorithm in avNNet boosting cforest ctree naiveBayes cvglmnet glmnet kknn ksvm lda LiblineaRL1LogReg LiblineaRL1LogReg mlp multinom nnet randomForestSRCSyn ranger rda rpart sda svm xgboost
+#do
+#  createScript Classification mlr mlr_c_template $algorithm default
+#done
+
+## Don't work
+#saeDNN
+#nnTrain
+#dbnDNN
+#mda
+#xyf
+#extraTrees
+#sparseLDA
+#gbm
+
+#for algorithm in cforest.importance kruskal.test rf.importance rf.min.depth
+#do
+#  createScript FeatureSelection mlr mlr_fs_template $algorithm default
+#done
+
+#Need to add? permutation.importance
+#Failed test with default parameters = mlr__univariate.model.score
+
+##python MakeParameterCombinationFiles.py $baseDir/mlr__rf.min.depth method=md,vh,vh.vimp conservative=medium,low,high nodesize=2,3,4 nrep=50,100 nstep=1,5
+
+### mlr naive bayes
+##laplace
+##1
+##10
+##100
+##1000
+##10000
+
+##############################
+## weka
+##############################
+
+function createWekaScript {
+  algorithmType="$1"
+  templateFile="$2"
+  algorithmName="$3"
+  parameters="$4"
+
+  outDir=../$algorithmType/arff/weka/$algorithmName
+  outFile=$outDir/default
+
+  mkdir -p $outDir
+  python ReplaceText.py $templateFile "{params}" "$parameters" $outFile
+  chmod 777 $outFile
+}
+
+## The default is ZeroR. Don't use DecisionStump though because not super accurate.
+##createWekaScript Classification weka_c_template AdaBoostM1 "weka.classifiers.meta.AdaBoostM1 -P 100 -S 1 -I 10 -W weka.classifiers.trees.DecisionStump"
+createWekaScript Classification weka_c_template Bagging "weka.classifiers.meta.Bagging -P 100 -S 1 -num-slots 1 -I 10 -W weka.classifiers.trees.REPTree -- -M 2 -V 0.001 -N 3 -S 1 -L -1 -I 0.0"
+createWekaScript Classification weka_c_template BayesNet "weka.classifiers.bayes.BayesNet -D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -S BAYES -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5"
+createWekaScript Classification weka_c_template DecisionTable 'weka.classifiers.rules.DecisionTable -X 1 -S "weka.attributeSelection.BestFirst -D 1 -N 5"'
+createWekaScript Classification weka_c_template HoeffdingTree "weka.classifiers.trees.HoeffdingTree -L 2 -S 1 -E 1.0E-7 -H 0.05 -M 0.01 -G 200.0 -N 0.0"
+createWekaScript Classification weka_c_template HyperPipes "weka.classifiers.misc.HyperPipes"
+## Probably can use this one but not accurate enough with the default settings
+#createWekaScript Classification weka_c_template IBk 'weka.classifiers.lazy.IBk -K 1 -W 0 -A "weka.core.neighboursearch.LinearNNSearch -A \"weka.core.EuclideanDistance -R first-last\""'
+createWekaScript Classification weka_c_template J48 "weka.classifiers.trees.J48 -C 0.25 -M 2"
+createWekaScript Classification weka_c_template JRip "weka.classifiers.rules.JRip -F 3 -N 2.0 -O 2 -S 1 -num-decimal-places 7"
+createWekaScript Classification weka_c_template LibLINEAR "weka.classifiers.functions.LibLINEAR -S 1 -C 1.0 -E 0.001 -B 1.0 -L 0.1 -I 1000"
+## The default is ZeroR. Don't use DecisionStump though because not super accurate.
+##createWekaScript Classification weka_c_template LogitBoost_DecisionStump "weka.classifiers.meta.LogitBoost -P 100 -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 1 -E 1 -S 1 -I 10 -W weka.classifiers.trees.DecisionStump -batch-size"
+## The default is ZeroR. Don't use DecisionStump though because not super accurate.
+##createWekaScript Classification weka_c_template LWL 'weka.classifiers.lazy.LWL -U 0 -K -1 -A "weka.core.neighboursearch.LinearNNSearch -A \"weka.core.EuclideanDistance -R first-last\"" -W weka.classifiers.trees.DecisionStump'
+createWekaScript Classification weka_c_template MultilayerPerceptron "weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a -I"
+createWekaScript Classification weka_c_template NaiveBayes "weka.classifiers.bayes.NaiveBayes"
+createWekaScript Classification weka_c_template OneR "weka.classifiers.rules.OneR -B 6"
+createWekaScript Classification weka_c_template RandomForest "weka.classifiers.trees.RandomForest -I 100 -K 0 -S 1"
+createWekaScript Classification weka_c_template RandomTree "weka.classifiers.meta.RandomCommittee -S 1 -I 10 -W weka.classifiers.trees.RandomTree -- -K 0 -M 1.0 -S 1"
+createWekaScript Classification weka_c_template RBFNetwork "weka.classifiers.functions.RBFNetwork -B 2 -S 1 -R 1.0E-8 -M -1 -W 0.1"
+createWekaScript Classification weka_c_template REPTree "weka.classifiers.meta.RandomSubSpace -P 0.5 -S 1 -I 10 -W weka.classifiers.trees.REPTree -- -M 2 -V 0.001 -N 3 -S 1 -L -1"
+createWekaScript Classification weka_c_template SimpleLogistic "weka.classifiers.functions.SimpleLogistic -I 0 -M 500 -H 50 -W 0.0"
+createWekaScript Classification weka_c_template SMO 'weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 2 -V -1 -W 1 -K "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007" -calibrator "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"'
+createWekaScript Classification weka_c_template SVM_Linear "weka.classifiers.functions.LibSVM -S 0 -K 0 -D 3 -G 0.0 -R 0.0 -N 0.5 -M 40.0 -C 1.0 -E 0.001 -P 0.1 -B"
+createWekaScript Classification weka_c_template SVM_Poly "weka.classifiers.functions.LibSVM -S 0 -K 1 -D 3 -G 0.0 -R 0.0 -N 0.5 -M 40.0 -C 1.0 -E 0.0010 -P 0.1 -B"
+createWekaScript Classification weka_c_template SVM_RBF "weka.classifiers.functions.LibSVM -S 0 -K 2 -D 3 -G 0.0 -R 0.0 -N 0.5 -M 40.0 -C 1.0 -E 0.0010 -P 0.1 -B"
+createWekaScript Classification weka_c_template VFI "weka.classifiers.misc.VFI -B 0.6"
+createWekaScript Classification weka_c_template ZeroR "weka.classifiers.rules.ZeroR"
+
+createWekaScript FeatureSelection weka_fs_template Correlation 'weka.attributeSelection.CorrelationAttributeEval -s "weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1"' ""
+createWekaScript FeatureSelection weka_fs_template GainRatio 'weka.attributeSelection.GainRatioAttributeEval -s "weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1"' ""
+createWekaScript FeatureSelection weka_fs_template InfoGain 'weka.attributeSelection.InfoGainAttributeEval -s "weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1"'
+createWekaScript FeatureSelection weka_fs_template OneR 'weka.attributeSelection.OneRAttributeEval -S 1 -F 10 -B 6 -s "weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1"'
+createWekaScript FeatureSelection weka_fs_template ReliefF 'weka.attributeSelection.ReliefFAttributeEval -M -1 -D 1 -K 10 -s "weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1"'
+#createWekaScript FeatureSelection weka_fs_template SVMRFE 'weka.attributeSelection.SVMAttributeEval -X 5 -Y 10 -Z 5 -P 1.0E-25 -T 1.0E-10 -C 1.0 -N 0 weka.attributeSelection.SVMAttributeEval -X 1 -Y 0 -Z 0 -P 1.0E-25 -T 1.0E-10 -C 1.0 -N 2 -s "weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1"'
+createWekaScript FeatureSelection weka_fs_template SVMRFE 'weka.attributeSelection.SVMAttributeEval -X 1 -Y 0 -Z 0 -P 1.0E-25 -T 1.0E-10 -C 1.0 -N 2 -s "weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1"'
+createWekaScript FeatureSelection weka_fs_template SymetricalUncertainty 'weka.attributeSelection.SymmetricalUncertAttributeEval -s "weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1"'

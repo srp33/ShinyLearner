@@ -3,18 +3,14 @@
 trainingFilePath="$1"
 testFilePath="$2"
 classOptions="$3"
-useDefaultParameters="$4"
-callingScript="$5"
+callingScript="$4"
 
 dirName=$(dirname $0)
 
-algorithmAbbreviated=$(python $dirName/ParseAlgorithmName.py $callingScript)
+algorithm=$(dirname $callingScript)
+algorithm=$(basename $algorithm)
 
-parametersFilePath=
-if [[ "$useDefaultParameters" == "false" ]]
-then
-  parametersFilePath="$dirName/../ParameterCombinations/$callingScript"
-fi
+parameterDescription=$(basename $callingScript)
 
-Rscript --vanilla $dirName/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "classif.${algorithmAbbreviated}" "$parametersFilePath" 2>&1 | python $dirName/ReformatOutput.py "$classOptions"
-#Rscript --vanilla $dirName/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "classif.${algorithmAbbreviated}" "$parametersFilePath"
+Rscript --vanilla $dirName/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "classif.${algorithm}" "$parameterDescription" 2>&1 | python $dirName/ReformatMlrOutput.py "$classOptions"
+#Rscript --vanilla $dirName/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "classif.${algorithm}" "$parameterDescription"
