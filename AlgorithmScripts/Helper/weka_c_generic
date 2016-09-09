@@ -25,10 +25,12 @@ echo "Testingabc"
 free
 
 echo "Testingdef"
-source $(dirname $0)/../../scripts/helper
+#source $(dirname $0)/../../scripts/helper
+echo $(dirname $0)/../../scripts/helper
+ls $(dirname $0)/../../scripts/helper
 
 echo "Testingghi"
-mem=$(getMemAvailable)
+#mem=$(getMemAvailable)
 exit 1
 
 #wekaLibPath=$(dirname $0)/lib
