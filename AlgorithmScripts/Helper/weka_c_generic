@@ -22,7 +22,7 @@ parameters="$4"
 #}
 
 echo "Testingabc"
-#free
+free
 exit 1
 
 #mem=$(getMemAvailable)
