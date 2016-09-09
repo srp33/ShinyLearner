@@ -42,5 +42,7 @@ mem=$(getMemAvailable)
 wekaLibPath=$(dirname $0)/lib
 #classPath="$wekaLibPath/*:$wekaLibPath/wekalib/*"
 classPath="$wekaLibPath/weka.jar"
+echo "Testing:"
+ls $classPath
 
 echo java -Xmx${mem} -classpath "$classPath" $parameters -t "$trainingFilePath" -T "$testFilePath" -p 0 -distribution | python $(dirname $0)/ReformatClassificationParameters.py | bash | python $(dirname $0)/ParsePredictions.py "$classOptions"
