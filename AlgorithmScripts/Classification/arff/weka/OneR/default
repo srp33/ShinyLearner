@@ -1,3 +1,4 @@
 #!/bin/bash
 
-sh "$(dirname $0)"/../../../../Helper/weka_c_generic "$1" "$2" "$3" "weka.classifiers.rules.OneR -B 6"
+#sh "$(dirname $0)"/../../../../Helper/weka_c_generic "$1" "$2" "$3" "weka.classifiers.rules.OneR -B 6"
+bash "$(dirname $0)"/../../../../Helper/weka_c_generic "$1" "$2" "$3" "weka.classifiers.rules.OneR -B 6"

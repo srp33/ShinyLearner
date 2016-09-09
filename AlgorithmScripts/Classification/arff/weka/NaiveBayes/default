@@ -1,3 +1,4 @@
 #!/bin/bash
 
-sh "$(dirname $0)"/../../../../Helper/weka_c_generic "$1" "$2" "$3" "weka.classifiers.bayes.NaiveBayes"
+#sh "$(dirname $0)"/../../../../Helper/weka_c_generic "$1" "$2" "$3" "weka.classifiers.bayes.NaiveBayes"
+bash "$(dirname $0)"/../../../../Helper/weka_c_generic "$1" "$2" "$3" "weka.classifiers.bayes.NaiveBayes"

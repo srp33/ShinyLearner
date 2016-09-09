@@ -37,13 +37,9 @@ function getMemAvailable {
   echo "$mem"
 }
 
-#echo "Testingdef"
-#echo $(dirname $0)/../../scripts/helper
-#ls $(dirname $0)/../../scripts/helper
-#source $(dirname $0)/../../scripts/helper
-
-echo "Testingghi"
-#mem=$(getMemAvailable)
+mem=$(getMemAvailable)
+echo "This is a test..."
+echo $mem
 exit 1
 
 #wekaLibPath=$(dirname $0)/lib

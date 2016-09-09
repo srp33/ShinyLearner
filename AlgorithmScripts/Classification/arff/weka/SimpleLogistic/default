@@ -1,3 +1,4 @@
 #!/bin/bash
 
-sh "$(dirname $0)"/../../../../Helper/weka_c_generic "$1" "$2" "$3" "weka.classifiers.functions.SimpleLogistic -I 0 -M 500 -H 50 -W 0.0"
+#sh "$(dirname $0)"/../../../../Helper/weka_c_generic "$1" "$2" "$3" "weka.classifiers.functions.SimpleLogistic -I 0 -M 500 -H 50 -W 0.0"
+bash "$(dirname $0)"/../../../../Helper/weka_c_generic "$1" "$2" "$3" "weka.classifiers.functions.SimpleLogistic -I 0 -M 500 -H 50 -W 0.0"
