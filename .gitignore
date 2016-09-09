@@ -8,5 +8,5 @@ TestFiles
 release
 *.tsv
 *.txt
-*.jar
+shinylearner.jar
 Docker_and_Rendering
