@@ -1,4 +1,3 @@
 #!/bin/bash
 
-#sh "$(dirname $0)"/../../../../Helper/weka_c_generic "$1" "$2" "$3" "weka.classifiers.rules.JRip -F 3 -N 2.0 -O 2 -S 1 -num-decimal-places 7"
 bash "$(dirname $0)"/../../../../Helper/weka_c_generic "$1" "$2" "$3" "weka.classifiers.rules.JRip -F 3 -N 2.0 -O 2 -S 1 -num-decimal-places 7"

@@ -38,11 +38,8 @@ function getMemAvailable {
 }
 
 mem=$(getMemAvailable)
-echo "This is a test..."
-echo $mem
-exit 1
 
-#wekaLibPath=$(dirname $0)/lib
-#classPath="$wekaLibPath/*:$wekaLibPath/wekalib/*"
+wekaLibPath=$(dirname $0)/lib
+classPath="$wekaLibPath/*:$wekaLibPath/wekalib/*"
 
-#echo java -Xmx${mem} -classpath "$classPath" $parameters -t "$trainingFilePath" -T "$testFilePath" -p 0 -distribution | python $(dirname $0)/ReformatClassificationParameters.py | sh | python $(dirname $0)/ParsePredictions.py "$classOptions"
+echo java -Xmx${mem} -classpath "$classPath" $parameters -t "$trainingFilePath" -T "$testFilePath" -p 0 -distribution | python $(dirname $0)/ReformatClassificationParameters.py | bash | python $(dirname $0)/ParsePredictions.py "$classOptions"
