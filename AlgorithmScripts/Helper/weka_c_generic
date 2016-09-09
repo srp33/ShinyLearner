@@ -21,13 +21,26 @@ parameters="$4"
 #  echo "$mem"
 #}
 
-echo "Testingabc"
-free
+command_exists () {
+    type "$1" &> /dev/null ;
+}
 
-echo "Testingdef"
-echo $(dirname $0)/../../scripts/helper
-ls $(dirname $0)/../../scripts/helper
-source $(dirname $0)/../../scripts/helper
+## Find out amount of memory available
+function getMemAvailable {
+  if command_exists free
+  then
+    mem=$(free -m | tail -n3 | awk '{print $2}' | head -n1)M # Gives total memory in MB (preferred over GB because it always rounds down)
+  else
+    mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
+  fi
+
+  echo "$mem"
+}
+
+#echo "Testingdef"
+#echo $(dirname $0)/../../scripts/helper
+#ls $(dirname $0)/../../scripts/helper
+#source $(dirname $0)/../../scripts/helper
 
 echo "Testingghi"
 #mem=$(getMemAvailable)
