@@ -22,10 +22,12 @@ numInnerIterations=2
 
 rm -rf $outputDir/*
 
+$(dirname $0)/classification StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations
+$(dirname $0)/classification NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations
+exit
 $(dirname $0)/classification StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
 $(dirname $0)/classification NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
 wait
-exit
 
 $(dirname $0)/classification StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
 $(dirname $0)/classification NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &

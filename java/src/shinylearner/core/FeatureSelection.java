@@ -16,7 +16,7 @@ public class FeatureSelection
 	
 	public static void SelectFeatures(String trainingFilePath) throws Exception
 	{
-		Log.PrintErr(Log.FormatText("Starting feature selection."));
+		Log.PrintErr(Log.FormatText("Selecting features."));
 
 		long startTime = System.nanoTime();
 
@@ -27,8 +27,6 @@ public class FeatureSelection
 		
 		if (!Settings.OUTPUT_FEATURES_FILE_PATH.equals(""))
 			FileUtilities.AppendLineToFile(Settings.OUTPUT_FEATURES_FILE_PATH, GetOutput(algorithmOutput));
-
-		Log.PrintErr(Log.FormatText("Done selecting features."));
 	}
 	
     private static String SelectFeaturesCommand(String dataFilePath) throws Exception

@@ -14,7 +14,7 @@ public class Classification
 {
 	public static void Classify(String trainingFilePath, String testFilePath) throws Exception
 	{
-		Log.PrintErr(Log.FormatText("Starting classification."));
+		Log.PrintErr(Log.FormatText("Classifying."));
 
 		long startTime = System.nanoTime();
 
@@ -29,8 +29,6 @@ public class Classification
 
 		if (!Settings.OUTPUT_PREDICTIONS_FILE_PATH.equals(""))
 			FileUtilities.AppendLineToFile(Settings.OUTPUT_PREDICTIONS_FILE_PATH, GetPredictionOutput(predictions));
-
-		Log.PrintErr(Log.FormatText("Done classifying."));
 	}
 
 	private static String TrainTest(String trainingFilePath, String testFilePath) throws Exception
