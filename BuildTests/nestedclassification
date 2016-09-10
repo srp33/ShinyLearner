@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -o errexit
+
+description=$1
+validationType=$2
+inputDir=$3
+outputDir=$4
+debug=$5
+numOuterIterations=$6
+numInnerIterations=$7
+
+source $(dirname $0)/helper
+
+classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/l*/default"
+
+outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
+
+UserScripts/nestedclassification_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $numInnerIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null ${outPrefix}_Nested_Predictions.tsv ${outPrefix}_Nested_Metrics.tsv /dev/null
+python BuildTests/CheckAccuracy.py nestedclassification $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Ensemble_Algorithm

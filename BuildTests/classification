@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -o errexit
+
+description=$1
+validationType=$2
+inputDir=$3
+outputDir=$4
+debug=$5
+numOuterIterations=$6
+numInnerIterations=$7
+
+source $(dirname $0)/helper
+
+classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default"
+
+outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
+
+UserScripts/classification_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null
+python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" AlgorithmScript

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -o errexit
+
+description=$1
+validationType=$2
+inputDir=$3
+outputDir=$4
+debug=$5
+numOuterIterations=$6
+numInnerIterations=$7
+
+source $(dirname $0)/helper
+
+fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/*/default"
+#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/*/default"
+
+outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
+
+UserScripts/featureselection_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$fsAlgo" ${outPrefix}_SelectedFeatures.tsv /dev/null
+python BuildTests/CheckSelectedFeatures.py featureselection $validationType $description "$fsAlgo" "${outPrefix}_SelectedFeatures.tsv" AlgorithmScript

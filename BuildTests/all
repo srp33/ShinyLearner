@@ -16,53 +16,40 @@ fi
 
 debug=false
 #debug=true
-numOuterIterations=5
+numOuterIterations=10
 #numOuterIterations=2
 numInnerIterations=2
 
-for description in StrongSignal_Both NoSignal_Both
-do
-  dataFile=$inputDir/${description}.tsv.gz
+rm -rf $outputDir/*
 
-  for validationType in montecarlo crossvalidation
-  do
-    numCVIterations=
-    if [[ "$validationType" == "crossvalidation" ]]
-    then
-      numCVIterations=2
-    fi
+$(dirname $0)/classification StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+$(dirname $0)/classification NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+wait
 
-    classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
-    #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
-    #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default"
-    #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default"
-    #classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default"
+$(dirname $0)/classification StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+$(dirname $0)/classification NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+wait
 
-    rm -f $outputDir/*.tsv
-    UserScripts/classification_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$classifAlgo" $outputDir/Predictions.tsv $outputDir/Metrics.tsv /dev/null
-    python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "$outputDir/Metrics.tsv" AlgorithmScript
+$(dirname $0)/featureselection StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+$(dirname $0)/featureselection NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+wait
 
-    fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default"
-    #fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default"
-    #fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default"
-    #fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/*/default"
-    #fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/*/default"
+$(dirname $0)/featureselection StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+$(dirname $0)/featureselection NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+wait
 
-    rm -f $outputDir/*.tsv
-    UserScripts/featureselection_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$fsAlgo" $outputDir/SelectedFeatures.tsv /dev/null
-    python BuildTests/CheckSelectedFeatures.py featureselection $validationType $description "$fsAlgo" "$outputDir/SelectedFeatures.tsv" AlgorithmScript
+$(dirname $0)/nestedclassification StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+$(dirname $0)/nestedclassification NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+wait
 
-    classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/l*/default"
+$(dirname $0)/nestedclassification StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+$(dirname $0)/nestedclassification NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+wait
 
-    rm -f $outputDir/*.tsv
-    UserScripts/nestedclassification_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $numInnerIterations $debug "$classifAlgo" $outputDir/Predictions.tsv $outputDir/Metrics.tsv /dev/null $outputDir/Nested_Predictions.tsv $outputDir/Nested_Metrics.tsv /dev/null
-    python BuildTests/CheckAccuracy.py nestedclassification $validationType $description "$classifAlgo" "$outputDir/Metrics.tsv" Ensemble_Algorithm
+$(dirname $0)/nestedboth StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+$(dirname $0)/nestedboth NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+wait
 
-    fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default"
-
-    rm -f $outputDir/*.tsv
-    UserScripts/nestedboth_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $numInnerIterations $debug "$fsAlgo" "5,20" "$classifAlgo" $outputDir/SelectedFeatures.tsv $outputDir/Predictions.tsv $outputDir/Metrics.tsv /dev/null /dev/null $outputDir/Nested_SelectedFeatures.tsv $outputDir/Nested_Predictions.tsv $outputDir/Nested_Metrics.tsv /dev/null /dev/null
-    python BuildTests/CheckAccuracy.py nestedboth $validationType $description "$classifAlgo" "$outputDir/Metrics.tsv" Ensemble_Algorithm
-    python BuildTests/CheckSelectedFeatures.py nestedboth $validationType $description "$fsAlgo" "$outputDir/SelectedFeatures.tsv" Ensemble_Algorithm
-  done
-done
+$(dirname $0)/nestedboth StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+$(dirname $0)/nestedboth NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
+wait
