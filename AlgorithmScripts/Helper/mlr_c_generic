@@ -12,5 +12,5 @@ algorithm=$(basename $algorithm)
 
 parameterDescription=$(basename $callingScript)
 
-Rscript --vanilla $dirName/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "classif.${algorithm}" "$parameterDescription" 2>&1 | python $dirName/ReformatMlrOutput.py "$classOptions"
+Rscript --vanilla $dirName/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "classif.${algorithm}" "$parameterDescription" 2>&1 | python $dirName/ReformatMlrClassificationOutput.py "$classOptions"
 #Rscript --vanilla $dirName/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "classif.${algorithm}" "$parameterDescription"

@@ -10,4 +10,4 @@ algorithm=$(basename $algorithm)
 
 parameterDescription=$(basename $callingScript)
 
-Rscript --vanilla $dirName/mlr_fs_generic.R "$dataFilePath" "$algorithm" "$parameterDescription" 2>&1 | python $dirName/ReformatMlrOutput.py
+Rscript --vanilla $dirName/mlr_fs_generic.R "$dataFilePath" "$algorithm" "$parameterDescription" 2>&1 | python $dirName/ReformatMlrFeatureSelectionOutput.py

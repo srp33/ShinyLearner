@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#rm -rf ../Classification/tsv/sklearn/* ../FeatureSelection/tsv/sklearn/*
-#rm -rf ../Classification/tsv/mlr/* ../FeatureSelection/tsv/mlr/*
+rm -rf ../Classification/tsv/sklearn/* ../FeatureSelection/tsv/sklearn/*
+rm -rf ../Classification/tsv/mlr/* ../FeatureSelection/tsv/mlr/*
 rm -rf ../Classification/arff/weka/* ../FeatureSelection/arff/weka/*
 
 function createScript {
@@ -23,27 +23,28 @@ function createScript {
 ##############################
 
 ##for algorithm in lda logistic_regression qda sgd svm_linear svm_nurbf svm_poly svm_rbf svm_sigmoid knn bagging decision_tree extra_trees random_forest
-#for algorithm in lda logistic_regression sgd svm_linear svm_poly svm_rbf knn bagging decision_tree extra_trees random_forest
-#do
-#  createScript Classification sklearn sklearn_c_template $algorithm default
-#done
+for algorithm in lda logistic_regression sgd svm_linear svm_poly svm_rbf knn bagging decision_tree extra_trees random_forest
+do
+  createScript Classification sklearn sklearn_c_template $algorithm default
+done
 
 ##for algorithm in anova random_forest_rfe random_lasso random_logistic_regression svm_rfe
-#for algorithm in anova random_forest_rfe random_logistic_regression svm_rfe
-#do
-#  createScript FeatureSelection sklearn sklearn_fs_template $algorithm default
-#done
+for algorithm in anova random_forest_rfe random_logistic_regression svm_rfe
+do
+  createScript FeatureSelection sklearn sklearn_fs_template $algorithm default
+done
 
 ##############################
 ## mlr
 ##############################
 
-#for algorithm in avNNet boosting cforest ctree naiveBayes cvglmnet glmnet kknn ksvm lda LiblineaRL1LogReg LiblineaRL1LogReg mlp multinom nnet randomForestSRCSyn ranger rda rpart sda svm xgboost
-#do
-#  createScript Classification mlr mlr_c_template $algorithm default
-#done
+for algorithm in avNNet boosting cforest ctree naiveBayes cvglmnet glmnet kknn ksvm LiblineaRL1LogReg LiblineaRL1LogReg mlp multinom nnet randomForestSRCSyn ranger rda rpart sda svm xgboost
+do
+  createScript Classification mlr mlr_c_template $algorithm default
+done
 
 ## Don't work
+#lda
 #saeDNN
 #nnTrain
 #dbnDNN
@@ -53,10 +54,10 @@ function createScript {
 #sparseLDA
 #gbm
 
-#for algorithm in cforest.importance kruskal.test rf.importance rf.min.depth
-#do
-#  createScript FeatureSelection mlr mlr_fs_template $algorithm default
-#done
+for algorithm in cforest.importance kruskal.test rf.importance rf.min.depth
+do
+  createScript FeatureSelection mlr mlr_fs_template $algorithm default
+done
 
 #Need to add? permutation.importance
 #Failed test with default parameters = mlr__univariate.model.score
