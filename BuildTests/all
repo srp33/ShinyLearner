@@ -16,7 +16,7 @@ fi
 
 debug=false
 #debug=true
-numOuterIterations=10
+numOuterIterations=5
 #numOuterIterations=2
 numInnerIterations=2
 
