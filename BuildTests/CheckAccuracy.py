@@ -40,7 +40,7 @@ for metricFilePath in metricFilePaths:
         meanAUC = sum(aucValues) / float(len(aucValues))
 
         if description.startswith("StrongSignal"):
-            lowerThreshold = 0.9
+            lowerThreshold = 0.8
             if meanAUC >= lowerThreshold:
                 print "[PASSED] The mean AUROC was %.3f for %s and %s. {%s}" % (meanAUC, description, algorithmScript, idText)
             else:
@@ -55,7 +55,7 @@ for metricFilePath in metricFilePaths:
                 print "[FAILED] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f. The expected upper threshold is %.3f. {%s}" % (meanAUC, description, algorithmScript, lowerThreshold, upperThreshold, idText)
                 failedAlgorithms.add(algorithmScript)
         elif description.startswith("NoSignal"):
-            upperThreshold = 0.6
+            upperThreshold = 0.7
             if meanAUC <= upperThreshold:
                 print "[PASSED] The mean AUROC was %.3f for %s and %s. {%s}" % (meanAUC, description, algorithmScript, idText)
             else:

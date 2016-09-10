@@ -16,43 +16,32 @@ fi
 
 debug=false
 #debug=true
-numOuterIterations=10
-#numOuterIterations=2
+#numOuterIterations=10
+numOuterIterations=2
 numInnerIterations=2
 
 rm -rf $outputDir/*
 
-$(dirname $0)/classification StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations
-$(dirname $0)/classification NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations
-exit
 $(dirname $0)/classification StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
 $(dirname $0)/classification NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
-wait
-
 $(dirname $0)/classification StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
 $(dirname $0)/classification NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
 wait
 
 $(dirname $0)/featureselection StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
 $(dirname $0)/featureselection NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
-wait
-
 $(dirname $0)/featureselection StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
 $(dirname $0)/featureselection NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
 wait
 
 $(dirname $0)/nestedclassification StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
 $(dirname $0)/nestedclassification NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
-wait
-
 $(dirname $0)/nestedclassification StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
 $(dirname $0)/nestedclassification NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
 wait
 
 $(dirname $0)/nestedboth StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
 $(dirname $0)/nestedboth NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
-wait
-
 $(dirname $0)/nestedboth StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
 $(dirname $0)/nestedboth NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations &
 wait
