@@ -15,7 +15,7 @@ function createScript {
 
   mkdir -p $scriptDir
 
-  cp -v $templateFile $scriptDir/$parameterDescription
+  cp $templateFile $scriptDir/$parameterDescription
 }
 
 ##############################

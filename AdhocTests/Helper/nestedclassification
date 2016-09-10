@@ -31,7 +31,7 @@ cd $testDir
 
 validation=StrongSignal_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
-classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default
+classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
 debug=true
 
 if [[ "$validationType" == "montecarlo" ]]
