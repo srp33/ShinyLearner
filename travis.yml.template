@@ -22,5 +22,5 @@ script:
   - set -o pipefail
   - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version{version} /BuildTests/all | tee output/log
 
-#  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-#  - sudo docker push srp33/shinylearner:version{version}
+  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+  - sudo docker push srp33/shinylearner:version{version}
