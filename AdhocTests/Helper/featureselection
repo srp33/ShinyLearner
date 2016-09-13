@@ -34,11 +34,12 @@ dataFile=$currentDir/Validation/${validation}.tsv.gz
 fsAlgo=AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default
 debug=true
 outFeaturesFile=$outputDir/${validationType}_${validation}_SelectedFeatures.tsv
+outSummarizedFeaturesFile=$outputDir/${validationType}_${validation}_SelectedFeatures_Summarized.tsv
 outBenchmarkFile=$outputDir/${validationType}_${validation}_Benchmark.tsv
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/featureselection_${validationType} "$dataFile" "$validation" 2 $debug "$fsAlgo" "$outFeaturesFile" "$outBenchmarkFile"
+  UserScripts/featureselection_${validationType} "$dataFile" "$validation" 2 $debug "$fsAlgo" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile"
 else
-  UserScripts/featureselection_${validationType} "$dataFile" "$validation" 2 2 $debug "$fsAlgo" "$outFeaturesFile" "$outBenchmarkFile"
+  UserScripts/featureselection_${validationType} "$dataFile" "$validation" 2 2 $debug "$fsAlgo" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile"
 fi

@@ -9,7 +9,8 @@ numFolds="$4"
 debug="$5"
 fsAlgos="$6"
 outFeaturesFile="$7"
-outBenchmarkFile="$8"
+outSummarizedFeaturesFile="$8"
+outBenchmarkFile="$9"
 
 tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 
@@ -37,9 +38,11 @@ do
     outBenchmarkFileIteration=$outDir/outbench
   fi
 
-  scripts/featureselection "$dataFiles" "$description" "$numFolds" "$debug" "$fsAlgos" "$outFeaturesFileIteration" "$outBenchmarkFileIteration" crossvalidation $iteration
+  scripts/featureselection "$dataFiles" "$description" "$numFolds" "$debug" "$fsAlgos" "$outFeaturesFileIteration" "" "$outBenchmarkFileIteration" crossvalidation $iteration
 done
 
 python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfeatures,$tmpDir/*/outbench" "$outFeaturesFile,$outBenchmarkFile"
+
+Rscript --vanilla scripts/BordaCountFeatures.R $outFeaturesFile $outSummarizedFeaturesFile
 
 cleanup

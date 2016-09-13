@@ -20,5 +20,6 @@ fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default"
 
 outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
 
-UserScripts/featureselection_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$fsAlgo" ${outPrefix}_SelectedFeatures.tsv /dev/null
+UserScripts/featureselection_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$fsAlgo" ${outPrefix}_SelectedFeatures.tsv ${outPrefix}_SelectedFeatures_Summarized.tsv /dev/null
 python BuildTests/CheckSelectedFeatures.py featureselection $validationType $description "$fsAlgo" "${outPrefix}_SelectedFeatures.tsv" AlgorithmScript
+python BuildTests/CheckSummarizedSelectedFeatures.py "${outPrefix}_SelectedFeatures_Summarized.tsv"

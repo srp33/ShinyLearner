@@ -8,9 +8,10 @@ numIterations="$3"
 debug="$4"
 fsAlgos="$5"
 outFeaturesFile="$6"
-outBenchmarkFile="$7"
-validationType="$8"
-randomSeed="$9"
+outSummarizedFeaturesFile="$7"
+outBenchmarkFile="$8"
+validationType="$9"
+randomSeed="${10}"
 
 function checkParam {
   value="$1"
@@ -82,5 +83,10 @@ function parseOutputFile {
 
 parseOutputFile $tmpDir/of $outFeaturesFile
 parseOutputFile $tmpDir/ob $outBenchmarkFile
+
+if [[ "$outSummarizedFeaturesFile" != "" ]]
+then
+  Rscript --vanilla scripts/BordaCountFeatures.R $outFeaturesFile $outSummarizedFeaturesFile
+fi
 
 cleanup
