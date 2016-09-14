@@ -10,7 +10,7 @@ classifAlgos="$5"
 outPredictionsFile="$6"
 outMetricsFile="$7"
 outBenchmarkFile="$8"
-validationType="$9"
+validationType="${9}"
 randomSeed="${10}"
 
 function checkParam {
@@ -72,8 +72,9 @@ python scripts/AddAlgorithmScripts.py $trainTestFile "$classifAlgos" $trainTestF
 
 mem=$(getMemAvailable)
 
-java -Xmx${mem} -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_PREDICTIONS_FILE_PATH="$tmpDir/op" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir
+java -Xmx${mem} -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_PREDICTIONS_FILE_PATH="$tmpDir/op0" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir
 
+Rscript --vanilla scripts/MajorityVote.R "$tmpDir/op0" "$tmpDir/op"
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
 
 function parseOutputFile {

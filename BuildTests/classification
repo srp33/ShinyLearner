@@ -12,9 +12,9 @@ numInnerIterations=$7
 
 source $(dirname $0)/helper
 
-classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
+#classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
-#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default"
+classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default"
 

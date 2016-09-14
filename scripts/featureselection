@@ -81,12 +81,12 @@ function parseOutputFile {
   fi
 }
 
-parseOutputFile $tmpDir/of $outFeaturesFile
-parseOutputFile $tmpDir/ob $outBenchmarkFile
+parseOutputFile $tmpDir/of "$outFeaturesFile"
+parseOutputFile $tmpDir/ob "$outBenchmarkFile"
 
 if [[ "$outSummarizedFeaturesFile" != "" ]]
 then
-  Rscript --vanilla scripts/BordaCountFeatures.R $outFeaturesFile $outSummarizedFeaturesFile
+  Rscript --vanilla scripts/BordaCountFeatures.R "$outFeaturesFile" "$outSummarizedFeaturesFile"
 fi
 
 cleanup

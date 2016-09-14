@@ -1,5 +1,5 @@
-library(readr)
-library(dplyr)
+suppressPackageStartupMessages(library(readr))
+suppressPackageStartupMessages(library(dplyr))
 
 inFilePath <- commandArgs()[7]
 outFilePath <- commandArgs()[8]
