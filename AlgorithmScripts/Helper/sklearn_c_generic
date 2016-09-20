@@ -1,6 +1,5 @@
 #!/bin/bash
 
-echo "testing"
 set -euo pipefail
 
 trainingFilePath="$1"
