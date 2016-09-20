@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#set -o errexit
-#set -o pipefail
+echo "testing"
 set -euo pipefail
 
 trainingFilePath="$1"
