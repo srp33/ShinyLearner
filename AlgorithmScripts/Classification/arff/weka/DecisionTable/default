@@ -1,6 +1,3 @@
 #!/bin/bash
 
-set -o errexit
-set -o pipefail
-
 bash "$(dirname $0)"/../../../../Helper/weka_c_generic "$1" "$2" "$3" "weka.classifiers.rules.DecisionTable -X 1 -S "weka.attributeSelection.BestFirst -D 1 -N 5""

@@ -73,7 +73,7 @@ public class Classification
 		}
 		
 		if (tempTestIDs.size() > 0)
-			Log.ExceptionFatal("The number of predictions [" + predictionLines.length + "] was not divisible by the number of test samples [" + testIDs.size() + "].");
+			Log.ExceptionFatal("The number of predictions [" + predictionLines.length + "] was not divisible by the number of test samples [" + testIDs.size() + "].\n\n" + predictionOutput);
 
 		return predictions;
 	}

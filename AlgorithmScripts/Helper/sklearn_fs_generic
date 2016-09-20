@@ -1,7 +1,8 @@
 #!/bin/bash
 
-set -o errexit
-set -o pipefail
+#set -o errexit
+#set -o pipefail
+set -euo pipefail
 
 dataFilePath="$1"
 callingScript="$2"
