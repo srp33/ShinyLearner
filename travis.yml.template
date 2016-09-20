@@ -17,9 +17,9 @@ notifications:
   email: true
 script:
   - scripts/build
-  - scripts/build_dependencies
-#  - tar -zcvf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests LICENSE UserScripts lib
-#  - sudo docker build -t srp33/shinylearner:version{version} .
+#  - scripts/build_dependencies
+  - tar -zcvf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests LICENSE UserScripts lib
+  - sudo docker build -t srp33/shinylearner:version{version} .
 #  - mkdir input output
 #  - cp -v Validation/*.tsv.gz input/
 #  - set -euo pipefail
