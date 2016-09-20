@@ -4,9 +4,6 @@ rm -f *.tsv.gz
 Rscript --vanilla GenerateData.R
 
 for f in *.tsv.gz
-#for f in Strong*Discrete.tsv.gz
-#for f in Strong*Continuous.tsv.gz
-#for f in Strong*Both.tsv.gz
 do
   echo $f
   cp $f /tmp/1.gz

@@ -4,105 +4,105 @@ shinylearner.dataprocessors.DelimitedDataProcessor
 Parsing input data from /Users/srp33/Dropbox/ShinyLearner/Validation/StrongSignal_Both.tsv.gz
 60 dependent variable instances
 Reconciling dependent variable values
-StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | Do a sanity check to make sure that no instances overlap between the training and test sets
-StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | Classifying.
-StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.f3a1b692-5ff2-4e64-8b7c-8423bad74c83.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.f9932c02-1ee0-4258-95a0-49cb0b2dd46c.tsv" "cLaSs___1,cLaSs___2,cLaSs___3"
-StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | System command:
-StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.f3a1b692-5ff2-4e64-8b7c-8423bad74c83.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.f9932c02-1ee0-4258-95a0-49cb0b2dd46c.tsv" "cLaSs___1,cLaSs___2,cLaSs___3"
-StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | cLaSs___1	0.977069495	0.015042769	0.007887737
-cLaSs___1	0.994783294	0.003284739	0.001931966
-cLaSs___1	0.934332276	0.065667660	0.000000064
-cLaSs___1	0.973993294	0.000021512	0.025985194
-cLaSs___1	0.997638941	0.002054398	0.000306661
-cLaSs___1	0.972179108	0.027761419	0.000059473
-cLaSs___1	0.957109407	0.038517621	0.004372971
-cLaSs___1	0.914628597	0.000618514	0.084752889
-cLaSs___1	0.997855068	0.001624932	0.000519999
-cLaSs___2	0.335073881	0.664925808	0.000000310
-cLaSs___2	0.232644657	0.767355341	0.000000003
-cLaSs___2	0.096379441	0.903620553	0.000000007
-cLaSs___2	0.187705858	0.812291932	0.000002210
-cLaSs___2	0.257548308	0.742451670	0.000000022
-cLaSs___3	0.095675028	0.000000328	0.904324644
-cLaSs___3	0.034549971	0.000000077	0.965449951
-cLaSs___3	0.031330435	0.000024531	0.968645035
-cLaSs___3	0.043755859	0.000000464	0.956243677
-cLaSs___3	0.055881694	0.000000621	0.944117685
-cLaSs___1	0.567132551	0.432867445	0.000000004
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | Do a sanity check to make sure that no instances overlap between the training and test sets
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | Classifying.
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.9BIF4WYA/id.4d03e9e3-a908-497c-9b0e-4974b38d48c2.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.9BIF4WYA/id.7c1d79bd-fdad-4182-8ab2-647d7d5cace1.tsv" "cLaSs___1,cLaSs___2,cLaSs___3"
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | System command:
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.9BIF4WYA/id.4d03e9e3-a908-497c-9b0e-4974b38d48c2.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.9BIF4WYA/id.7c1d79bd-fdad-4182-8ab2-647d7d5cace1.tsv" "cLaSs___1,cLaSs___2,cLaSs___3"
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | cLaSs___1	0.858089406710983	0.114406937182978	0.0275036561060392
+cLaSs___1	0.767161142386179	0.059246738018389	0.173592119595432
+cLaSs___1	0.94262674597277	0.0359922555577028	0.0213809984695276
+cLaSs___1	0.897760163174941	0.0481098812199343	0.0541299556051248
+cLaSs___1	0.822073494980098	0.0466983787781738	0.131228126241729
+cLaSs___1	0.883736190697181	0.0596721022615698	0.0565917070412489
+cLaSs___1	0.750108180610611	0.0857888776839628	0.164102941705426
+cLaSs___3	0.235979607250906	0.295165415561151	0.468854977187942
+cLaSs___1	0.918415002138905	0.028942427182113	0.0526425706789816
+cLaSs___2	0.238644244693094	0.752231484713625	0.00912427059328072
+cLaSs___2	0.389216746351435	0.603267875937572	0.00751537771099317
+cLaSs___2	0.106871765123141	0.866401076344446	0.0267271585324132
+cLaSs___2	0.0958627326445523	0.839629095119238	0.0645081722362097
+cLaSs___2	0.279304284453226	0.709131194079617	0.0115645214671568
+cLaSs___3	0.0802250412935557	0.0316069679534386	0.888167990753006
+cLaSs___3	0.136501682786368	0.0191488335402934	0.844349483673339
+cLaSs___3	0.104541824456091	0.0306043119586446	0.864853863585264
+cLaSs___3	0.0555375214676746	0.0312463449924725	0.913216133539853
+cLaSs___3	0.129383220255387	0.0203738557800437	0.85024292396457
+cLaSs___1	0.69634139037651	0.167251960873125	0.136406648750365
 
-StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | cLaSs___1	0.977069495	0.015042769	0.007887737
-cLaSs___1	0.994783294	0.003284739	0.001931966
-cLaSs___1	0.934332276	0.065667660	0.000000064
-cLaSs___1	0.973993294	0.000021512	0.025985194
-cLaSs___1	0.997638941	0.002054398	0.000306661
-cLaSs___1	0.972179108	0.027761419	0.000059473
-cLaSs___1	0.957109407	0.038517621	0.004372971
-cLaSs___1	0.914628597	0.000618514	0.084752889
-cLaSs___1	0.997855068	0.001624932	0.000519999
-cLaSs___2	0.335073881	0.664925808	0.000000310
-cLaSs___2	0.232644657	0.767355341	0.000000003
-cLaSs___2	0.096379441	0.903620553	0.000000007
-cLaSs___2	0.187705858	0.812291932	0.000002210
-cLaSs___2	0.257548308	0.742451670	0.000000022
-cLaSs___3	0.095675028	0.000000328	0.904324644
-cLaSs___3	0.034549971	0.000000077	0.965449951
-cLaSs___3	0.031330435	0.000024531	0.968645035
-cLaSs___3	0.043755859	0.000000464	0.956243677
-cLaSs___3	0.055881694	0.000000621	0.944117685
-cLaSs___1	0.567132551	0.432867445	0.000000004
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | cLaSs___1	0.858089406710983	0.114406937182978	0.0275036561060392
+cLaSs___1	0.767161142386179	0.059246738018389	0.173592119595432
+cLaSs___1	0.94262674597277	0.0359922555577028	0.0213809984695276
+cLaSs___1	0.897760163174941	0.0481098812199343	0.0541299556051248
+cLaSs___1	0.822073494980098	0.0466983787781738	0.131228126241729
+cLaSs___1	0.883736190697181	0.0596721022615698	0.0565917070412489
+cLaSs___1	0.750108180610611	0.0857888776839628	0.164102941705426
+cLaSs___3	0.235979607250906	0.295165415561151	0.468854977187942
+cLaSs___1	0.918415002138905	0.028942427182113	0.0526425706789816
+cLaSs___2	0.238644244693094	0.752231484713625	0.00912427059328072
+cLaSs___2	0.389216746351435	0.603267875937572	0.00751537771099317
+cLaSs___2	0.106871765123141	0.866401076344446	0.0267271585324132
+cLaSs___2	0.0958627326445523	0.839629095119238	0.0645081722362097
+cLaSs___2	0.279304284453226	0.709131194079617	0.0115645214671568
+cLaSs___3	0.0802250412935557	0.0316069679534386	0.888167990753006
+cLaSs___3	0.136501682786368	0.0191488335402934	0.844349483673339
+cLaSs___3	0.104541824456091	0.0306043119586446	0.864853863585264
+cLaSs___3	0.0555375214676746	0.0312463449924725	0.913216133539853
+cLaSs___3	0.129383220255387	0.0203738557800437	0.85024292396457
+cLaSs___1	0.69634139037651	0.167251960873125	0.136406648750365
 
-StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 20
-StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 20
-StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | Do a sanity check to make sure that no instances overlap between the training and test sets
-StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | Classifying.
-StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.d2ac6465-f78c-4eec-a061-4a3e62684ff3.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.253c6f99-9aec-44c8-8948-c10f6e5d90fe.tsv" "cLaSs___1,cLaSs___2,cLaSs___3"
-StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | System command:
-StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.d2ac6465-f78c-4eec-a061-4a3e62684ff3.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.253c6f99-9aec-44c8-8948-c10f6e5d90fe.tsv" "cLaSs___1,cLaSs___2,cLaSs___3"
-StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | cLaSs___3	0.295694608	0.000005154	0.704300238
-cLaSs___1	0.999900511	0.000099415	0.000000074
-cLaSs___1	0.999816402	0.000008417	0.000175182
-cLaSs___1	0.998232578	0.001767245	0.000000177
-cLaSs___1	0.999187961	0.000812021	0.000000018
-cLaSs___1	0.996584790	0.000035957	0.003379254
-cLaSs___1	0.861020641	0.009173221	0.129806138
-cLaSs___1	0.981889248	0.018108745	0.000002006
-cLaSs___2	0.303318101	0.696681899	0.000000000
-cLaSs___2	0.161744801	0.838255199	0.000000000
-cLaSs___2	0.333215015	0.666784985	0.000000000
-cLaSs___1	0.985601657	0.000022945	0.014375399
-cLaSs___2	0.153477832	0.846522168	0.000000000
-cLaSs___2	0.346546037	0.653453963	0.000000000
-cLaSs___3	0.016558934	0.000000002	0.983441064
-cLaSs___3	0.009184507	0.000000001	0.990815493
-cLaSs___3	0.013071999	0.000000000	0.986928001
-cLaSs___3	0.009461402	0.000000000	0.990538598
-cLaSs___3	0.018149011	0.000000000	0.981850989
-cLaSs___1	0.989547455	0.010452364	0.000000181
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | 20
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | 20
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | Do a sanity check to make sure that no instances overlap between the training and test sets
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | Classifying.
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.9BIF4WYA/id.4af4e4d9-555b-4d40-8684-16a045c11abb.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.9BIF4WYA/id.6a8f4636-2099-441a-8cb8-b903a2d547b7.tsv" "cLaSs___1,cLaSs___2,cLaSs___3"
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | System command:
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.9BIF4WYA/id.4af4e4d9-555b-4d40-8684-16a045c11abb.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.9BIF4WYA/id.6a8f4636-2099-441a-8cb8-b903a2d547b7.tsv" "cLaSs___1,cLaSs___2,cLaSs___3"
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | cLaSs___1	0.677225648889895	0.171579003833597	0.151195347276508
+cLaSs___1	0.819106236662175	0.0658319386205974	0.115061824717228
+cLaSs___1	0.887889390938592	0.0302660820737355	0.0818445269876725
+cLaSs___1	0.873320361190427	0.044743995202882	0.0819356436066909
+cLaSs___1	0.918762858258639	0.0407220442643705	0.0405150974769904
+cLaSs___1	0.749136347197322	0.0518233012599437	0.199040351542735
+cLaSs___3	0.21035260777787	0.296142430656173	0.493504961565957
+cLaSs___1	0.81838190294759	0.0575345359405089	0.124083561111901
+cLaSs___2	0.314810023561757	0.674676961417117	0.0105130150211259
+cLaSs___2	0.166022645015317	0.826820862829699	0.0071564921549842
+cLaSs___2	0.104289063314817	0.881935068683915	0.0137758680012675
+cLaSs___1	0.682796819644935	0.169845771338242	0.147357409016823
+cLaSs___2	0.302791653727438	0.686741116233406	0.0104672300391565
+cLaSs___2	0.104276319967306	0.878853996796786	0.0168696832359084
+cLaSs___3	0.101341723476513	0.0442421003707647	0.854416176152722
+cLaSs___3	0.331835357312817	0.0180923593712244	0.650072283315959
+cLaSs___3	0.157733818575069	0.0151928537732767	0.827073327651654
+cLaSs___3	0.162395216635112	0.0246818214251398	0.812922961939748
+cLaSs___3	0.103915157818655	0.0386348385974031	0.857450003583942
+cLaSs___1	0.833136934141766	0.0956279004576847	0.0712351654005496
 
-StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | cLaSs___3	0.295694608	0.000005154	0.704300238
-cLaSs___1	0.999900511	0.000099415	0.000000074
-cLaSs___1	0.999816402	0.000008417	0.000175182
-cLaSs___1	0.998232578	0.001767245	0.000000177
-cLaSs___1	0.999187961	0.000812021	0.000000018
-cLaSs___1	0.996584790	0.000035957	0.003379254
-cLaSs___1	0.861020641	0.009173221	0.129806138
-cLaSs___1	0.981889248	0.018108745	0.000002006
-cLaSs___2	0.303318101	0.696681899	0.000000000
-cLaSs___2	0.161744801	0.838255199	0.000000000
-cLaSs___2	0.333215015	0.666784985	0.000000000
-cLaSs___1	0.985601657	0.000022945	0.014375399
-cLaSs___2	0.153477832	0.846522168	0.000000000
-cLaSs___2	0.346546037	0.653453963	0.000000000
-cLaSs___3	0.016558934	0.000000002	0.983441064
-cLaSs___3	0.009184507	0.000000001	0.990815493
-cLaSs___3	0.013071999	0.000000000	0.986928001
-cLaSs___3	0.009461402	0.000000000	0.990538598
-cLaSs___3	0.018149011	0.000000000	0.981850989
-cLaSs___1	0.989547455	0.010452364	0.000000181
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | cLaSs___1	0.677225648889895	0.171579003833597	0.151195347276508
+cLaSs___1	0.819106236662175	0.0658319386205974	0.115061824717228
+cLaSs___1	0.887889390938592	0.0302660820737355	0.0818445269876725
+cLaSs___1	0.873320361190427	0.044743995202882	0.0819356436066909
+cLaSs___1	0.918762858258639	0.0407220442643705	0.0405150974769904
+cLaSs___1	0.749136347197322	0.0518233012599437	0.199040351542735
+cLaSs___3	0.21035260777787	0.296142430656173	0.493504961565957
+cLaSs___1	0.81838190294759	0.0575345359405089	0.124083561111901
+cLaSs___2	0.314810023561757	0.674676961417117	0.0105130150211259
+cLaSs___2	0.166022645015317	0.826820862829699	0.0071564921549842
+cLaSs___2	0.104289063314817	0.881935068683915	0.0137758680012675
+cLaSs___1	0.682796819644935	0.169845771338242	0.147357409016823
+cLaSs___2	0.302791653727438	0.686741116233406	0.0104672300391565
+cLaSs___2	0.104276319967306	0.878853996796786	0.0168696832359084
+cLaSs___3	0.101341723476513	0.0442421003707647	0.854416176152722
+cLaSs___3	0.331835357312817	0.0180923593712244	0.650072283315959
+cLaSs___3	0.157733818575069	0.0151928537732767	0.827073327651654
+cLaSs___3	0.162395216635112	0.0246818214251398	0.812922961939748
+cLaSs___3	0.103915157818655	0.0386348385974031	0.857450003583942
+cLaSs___1	0.833136934141766	0.0956279004576847	0.0712351654005496
 
-StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 20
-StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 20
-StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | Successfully completed!
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | 20
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | 20
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default | Successfully completed!
 WARNING: ignoring environment value of R_HOME
 WARNING: ignoring environment value of R_HOME
 Analysis successfully completed!
