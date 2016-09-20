@@ -2,10 +2,8 @@ package shinylearner.core;
 
 import java.util.ArrayList;
 
-import shinylearner.helper.AnalysisFileCreator;
 import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
-import shinylearner.helper.Log;
 import shinylearner.helper.MiscUtilities;
 
 public class ExperimentItems

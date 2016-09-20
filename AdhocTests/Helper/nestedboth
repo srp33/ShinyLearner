@@ -14,7 +14,7 @@ fi
 
 currentDir=$(pwd)
 testDir=/tmp/ML_Flex_Lite_Test_NestedBoth
-outputDir=$currentDir/TestOutput/NestedBoth
+outputDir=$currentDir/TestOutput/nestedboth
 
 rm -rfv $testDir
 mkdir -p $testDir
@@ -38,7 +38,7 @@ debug=true
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/nestedboth_${validationType} "$dataFile" $validation 2 2 $debug "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" $outputDir/${validationType}_${validation}_SelectedFeatures.tsv $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Benchmark_FeatureSelection.tsv $outputDir/${validationType}_${validation}_Benchmark_Classification.tsv $outputDir/${validationType}_${validation}_SelectedFeatures_Nested.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_FeatureSelection_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Classification_Nested.tsv 
+  UserScripts/nestedboth_${validationType} "$dataFile" $validation 2 2 $debug "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" $outputDir/${validationType}_${validation}_SelectedFeatures.tsv $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_SelectedFeatures_Nested.tsv $outputDir/${validationType}_${validation}_SelectedFeatures_Summarized_Nested.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_FeatureSelection_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Classification_Nested.tsv 
 else
-  UserScripts/nestedboth_${validationType} "$dataFile" $validation 2 2 2 $debug "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" $outputDir/${validationType}_${validation}_SelectedFeatures.tsv $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Benchmark_FeatureSelection.tsv $outputDir/${validationType}_${validation}_Benchmark_Classification.tsv $outputDir/${validationType}_${validation}_SelectedFeatures_Nested.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_FeatureSelection_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Classification_Nested.tsv 
+  UserScripts/nestedboth_${validationType} "$dataFile" $validation 2 2 2 $debug "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" $outputDir/${validationType}_${validation}_SelectedFeatures.tsv $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_SelectedFeatures_Nested.tsv $outputDir/${validationType}_${validation}_SelectedFeatures_Summarized_Nested.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_FeatureSelection_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Classification_Nested.tsv 
 fi

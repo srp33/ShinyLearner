@@ -14,7 +14,7 @@ fi
 
 currentDir=$(pwd)
 testDir=/tmp/ML_Flex_Lite_Test_CL
-outputDir=$currentDir/TestOutput/CL
+outputDir=$currentDir/TestOutput/classification
 
 rm -rfv $testDir
 mkdir -p $testDir
@@ -31,16 +31,17 @@ cd $testDir
 
 validation=StrongSignal_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
-#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default
-classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
+classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
 debug=true
 outPredictionsFile=$outputDir/${validationType}_${validation}_Predictions.tsv
 outMetricsFile=$outputDir/${validationType}_${validation}_Metrics.tsv
 outBenchmarkFile=$outputDir/${validationType}_${validation}_Benchmark.tsv
+outLogFile=$outputDir/${validationType}_${validation}.log
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/classification_${validationType} "$dataFile" "$validation" 2 $debug "$classifAlgo" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile"
+  UserScripts/classification_${validationType} "$dataFile" "$validation" 2 $debug "$classifAlgo" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" "$outLogFile"
 else
-  UserScripts/classification_${validationType} "$dataFile" "$validation" 2 2 $debug "$classifAlgo" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile"
+  UserScripts/classification_${validationType} "$dataFile" "$validation" 2 2 $debug "$classifAlgo" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" "$outLogFile"
 fi

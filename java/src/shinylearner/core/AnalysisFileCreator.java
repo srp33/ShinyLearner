@@ -1,4 +1,4 @@
-package shinylearner.helper;
+package shinylearner.core;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -6,8 +6,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import shinylearner.core.Settings;
-import shinylearner.core.Singletons;
+import shinylearner.helper.DataTypeUtilities;
+import shinylearner.helper.FileUtilities;
+import shinylearner.helper.ListUtilities;
+import shinylearner.helper.MiscUtilities;
 
 /** This class is used to transform data from the data format to the format that is required for external software components.
  * @author Stephen Piccolo

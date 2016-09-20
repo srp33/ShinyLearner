@@ -1,6 +1,0 @@
-#!/bin/bash
-
-set -o errexit
-
-cp -v Validation/LastTestResults_Full.txt Validation/TrustedTestResults_Full.txt
-cp -v Validation/LastTestResults_Summarized.txt Validation/TrustedTestResults_Summarized.txt

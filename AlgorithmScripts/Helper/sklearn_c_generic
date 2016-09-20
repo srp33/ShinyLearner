@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -o errexit
+set -o pipefail
+
 trainingFilePath="$1"
 testFilePath="$2"
 classOptions="$3"

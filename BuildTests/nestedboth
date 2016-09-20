@@ -9,6 +9,7 @@ outputDir=$4
 debug=$5
 numOuterIterations=$6
 numInnerIterations=$7
+outLogFile=$8
 
 source $(dirname $0)/helper
 
@@ -17,6 +18,7 @@ fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default"
 
 outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
 
-UserScripts/nestedboth_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $numInnerIterations $debug "$fsAlgo" "5,20" "$classifAlgo" ${outPrefix}_SelectedFeatures.tsv ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null /dev/null ${outPrefix}_Nested_SelectedFeatures.tsv ${outPrefix}_Nested_Predictions.tsv ${outPrefix}_Nested_Metrics.tsv /dev/null /dev/null
-python BuildTests/CheckAccuracy.py nestedboth $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Ensemble_Algorithm
-python BuildTests/CheckSelectedFeatures.py nestedboth $validationType $description "$fsAlgo" "${outPrefix}_SelectedFeatures.tsv" Ensemble_Algorithm
+UserScripts/nestedboth_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $numInnerIterations $debug "$fsAlgo" "5,20" "$classifAlgo" ${outPrefix}_SelectedFeatures.tsv ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv ${outPrefix}_Nested_SelectedFeatures.tsv ${outPrefix}_Nested_Summarized_SelectedFeatures.tsv ${outPrefix}_Nested_Predictions.tsv ${outPrefix}_Nested_Metrics.tsv /dev/null /dev/null $outLogFile
+python BuildTests/CheckAccuracy.py nestedboth $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Algorithm 2>&1 | tee -a $outLogFile
+python BuildTests/CheckSelectedFeatures.py nestedboth $validationType $description "$fsAlgo" "${outPrefix}_SelectedFeatures.tsv" Algorithm 2>&1 | tee -a $outLogFile
+python BuildTests/CheckSummarizedSelectedFeatures.py "${outPrefix}_Nested_Summarized_SelectedFeatures.tsv" 2>&1 | tee -a $outLogFile

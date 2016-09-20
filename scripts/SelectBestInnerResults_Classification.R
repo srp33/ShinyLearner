@@ -22,7 +22,7 @@ colnames(trainTestData) <- c("Description", "TrainIDs", "TestIDs")
 
 mergedData <- inner_join(groupedData, trainTestData)
 
-mergedData$Description <- paste(mergedData$Description, "____Select_Best", sep="")
+mergedData$Description <- paste(mergedData$Description, "____Ensemble_Select_Best", sep="")
 
 outCLData <- select(mergedData, Description, TrainIDs, TestIDs, CL)
 write.table(outCLData, outCLFilePath, sep="\t", col.names=F, row.names=F, quote=F)

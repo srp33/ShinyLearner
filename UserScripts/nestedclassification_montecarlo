@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -o errexit
+set -o pipefail
 
 dataFiles="$1"
 description="$2"
@@ -10,9 +11,19 @@ debug="$5"
 classifAlgos="$6"
 outPredictionsFile="$7"
 outMetricsFile="$8"
-outBenchmarkFile="$9"
-outNestedPredictionsFile="${10}"
-outNestedMetricsFile="${11}"
-outNestedBenchmarkFile="${12}"
+outNestedPredictionsFile="${9}"
+outNestedMetricsFile="${10}"
+outNestedBenchmarkFile="${11}"
+outLogFile="${12}"
 
-scripts/nestedclassification "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" montecarlo 0
+if [[ "$outLogFile" == "" ]]
+then
+  echo An output log file must be specified.
+  exit 1
+fi
+
+rm -f "$outLogFile"
+
+scripts/nestedclassification "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" montecarlo 0 2>&1 | tee -a "$outLogFile"
+
+echo "Analysis successfully completed!" >> "$outLogFile"

@@ -14,7 +14,7 @@ fi
 
 currentDir=$(pwd)
 testDir=/tmp/ML_Flex_Lite_Test_FS
-outputDir=$currentDir/TestOutput/FS
+outputDir=$currentDir/TestOutput/featureselection
 
 rm -rfv $testDir
 mkdir -p $testDir

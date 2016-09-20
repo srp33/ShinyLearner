@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
-import shinylearner.helper.Log;
 import shinylearner.helper.MiscUtilities;
 
 public class FeatureSelection
 {
 	public static String GetOutputHeader()
 	{
-		return "Description\tAlgorithmScript\tFeatures";
+		return "Description\tAlgorithm\tFeatures";
 	}
 	
 	public static void SelectFeatures(String trainingFilePath) throws Exception

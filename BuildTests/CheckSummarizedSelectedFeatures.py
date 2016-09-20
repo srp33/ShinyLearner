@@ -18,10 +18,10 @@ if not os.path.exists(inFilePath):
 
 if "StrongSignal" in inFilePath:
     lowerThreshold = 0
-    upperThreshold = 20
-elif description.startswith("NoSignal"):
-    lowerThreshold = 15
-    upperThreshold = len(algorithmFeatureData[0])
+    upperThreshold = 30
+elif "NoSignal" in inFilePath:
+    lowerThreshold = 20
+    upperThreshold = 100000000
 
 featureNames = set()
 for i in range(1, 6):

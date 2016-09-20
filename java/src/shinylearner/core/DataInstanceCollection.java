@@ -16,7 +16,6 @@ import shinylearner.helper.MiscUtilities;
 public class DataInstanceCollection implements Iterable<String>
 {
     /** This value is placed at the end of a file that contains a serialized version of this object. It's used to verify that the entire file was stored properly. */
-    public static String END_OF_FILE_MARKER = "[EOF]";
     private static String COMMA_REPLACE_STRING = "_comma_";
     
     private HashMap<String, CompactHashMap<Integer, String>> _instances;

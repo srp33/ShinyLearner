@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -o errexit
+set -o pipefail
 
 dataFiles="$1"
 description="$2"
@@ -11,6 +12,7 @@ classifAlgos="$6"
 outPredictionsFile="$7"
 outMetricsFile="$8"
 outBenchmarkFile="$9"
+outLogFile="${10}"
 
 tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 
@@ -19,6 +21,14 @@ function cleanup {
 }
 
 cleanup
+
+if [[ "$outLogFile" == "" ]]
+then
+  echo An output log file must be specified.
+  exit 1
+fi
+
+rm -f "$outLogFile"
 
 for iteration in $(seq 1 $numIterations)
 do
@@ -44,9 +54,11 @@ do
     outBenchmarkFileIteration=$outDir/outbench
   fi
 
-  scripts/classification "$dataFiles" "$description" "$numFolds" "$debug" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outBenchmarkFileIteration" crossvalidation $iteration
+  scripts/classification "$dataFiles" "$description" "$numFolds" "$debug" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outBenchmarkFileIteration" crossvalidation $iteration 2>&1 | tee -a "$outLogFile"
 done
 
-python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outbench" "$outPredictionsFile,$outMetricsFile,$outBenchmarkFile"
+python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outbench" "$outPredictionsFile,$outMetricsFile,$outBenchmarkFile" 2>&1 | tee -a "$outLogFile"
 
 cleanup
+
+echo "Analysis successfully completed!" >> "$outLogFile"

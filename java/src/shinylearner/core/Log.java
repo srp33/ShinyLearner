@@ -1,12 +1,11 @@
-package shinylearner.helper;
+package shinylearner.core;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 
-import shinylearner.core.Settings;
-import shinylearner.core.Singletons;
+import shinylearner.helper.ListUtilities;
 
 /** This class contains methods for logging information about execution. Values are output to the screen and to output files.
  * @author Stephen Piccolo

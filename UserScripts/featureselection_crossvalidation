@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -o errexit
+set -o pipefail
 
 dataFiles="$1"
 description="$2"
@@ -11,6 +12,7 @@ fsAlgos="$6"
 outFeaturesFile="$7"
 outSummarizedFeaturesFile="$8"
 outBenchmarkFile="$9"
+outLogFile="${10}"
 
 tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 
@@ -19,6 +21,14 @@ function cleanup {
 }
 
 cleanup
+
+if [[ "$outLogFile" == "" ]]
+then
+  echo An output log file must be specified.
+  exit 1
+fi
+
+rm -f "$outLogFile"
 
 for iteration in $(seq 1 $numIterations)
 do
@@ -38,11 +48,13 @@ do
     outBenchmarkFileIteration=$outDir/outbench
   fi
 
-  scripts/featureselection "$dataFiles" "$description" "$numFolds" "$debug" "$fsAlgos" "$outFeaturesFileIteration" "" "$outBenchmarkFileIteration" crossvalidation $iteration
+  scripts/featureselection "$dataFiles" "$description" "$numFolds" "$debug" "$fsAlgos" "$outFeaturesFileIteration" "" "$outBenchmarkFileIteration" crossvalidation $iteration 2>&1 | tee -a "$outLogFile"
 done
 
-python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfeatures,$tmpDir/*/outbench" "$outFeaturesFile,$outBenchmarkFile"
+python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfeatures,$tmpDir/*/outbench" "$outFeaturesFile,$outBenchmarkFile" 2>&1 | tee -a "$outLogFile"
 
-Rscript --vanilla scripts/BordaCountFeatures.R $outFeaturesFile $outSummarizedFeaturesFile
+Rscript --vanilla scripts/BordaCountFeatures.R $outFeaturesFile $outSummarizedFeaturesFile 2>&1 | tee -a "$outLogFile"
 
 cleanup
+
+echo "Analysis successfully completed!" >> "$outLogFile"

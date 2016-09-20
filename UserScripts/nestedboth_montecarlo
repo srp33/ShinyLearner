@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -o errexit
+set -o pipefail
 
 dataFiles="$1"
 description="$2"
@@ -13,14 +14,24 @@ classifAlgos="$8"
 outSelectedFeaturesFile="$9"
 outPredictionsFile="${10}"
 outMetricsFile="${11}"
-outFeatureSelectionBenchmarkFile="${12}"
-outClassificationBenchmarkFile="${13}"
-outNestedSelectedFeaturesFile="${14}"
-outNestedPredictionsFile="${15}"
-outNestedMetricsFile="${16}"
-outNestedFeatureSelectionBenchmarkFile="${17}"
-outNestedClassificationBenchmarkFile="${18}"
+outNestedSelectedFeaturesFile="${12}"
+outNestedSummarizedSelectedFeaturesFile="${13}"
+outNestedPredictionsFile="${14}"
+outNestedMetricsFile="${15}"
+outNestedFeatureSelectionBenchmarkFile="${16}"
+outNestedClassificationBenchmarkFile="${17}"
+outLogFile="${18}"
 validationType="montecarlo"
 randomSeed="0"
 
-scripts/nestedboth "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$debug" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outFeatureSelectionBenchmarkFile" "$outClassificationBenchmarkFile" "$outNestedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" montecarlo 0
+if [[ "$outLogFile" == "" ]]
+then
+  echo An output log file must be specified.
+  exit 1
+fi
+
+rm -f "$outLogFile"
+
+scripts/nestedboth "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$debug" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" montecarlo 0 2>&1 | tee -a "$outLogFile"
+
+echo "Analysis successfully completed!" >> "$outLogFile"

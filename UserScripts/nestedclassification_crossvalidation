@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -o errexit
+set -o pipefail
 
 dataFiles="$1"
 description="$2"
@@ -11,10 +12,10 @@ debug="$6"
 classifAlgos="$7"
 outPredictionsFile="$8"
 outMetricsFile="$9"
-outBenchmarkFile="${10}"
-outNestedPredictionsFile="${11}"
-outNestedMetricsFile="${12}"
-outNestedBenchmarkFile="${13}"
+outNestedPredictionsFile="${10}"
+outNestedMetricsFile="${11}"
+outNestedBenchmarkFile="${12}"
+outLogFile="${13}"
 
 tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 
@@ -23,6 +24,14 @@ function cleanup {
 }
 
 cleanup
+
+if [[ "$outLogFile" == "" ]]
+then
+  echo An output log file must be specified.
+  exit 1
+fi
+
+rm -f "$outLogFile"
 
 for iteration in $(seq 1 $numIterations)
 do
@@ -40,12 +49,6 @@ do
     outMetricsFileIteration=
   else
     outMetricsFileIteration=$outDir/outmetrics
-  fi
-  if [[ "$outBenchmarkFile" == "" ]]
-  then
-    outBenchmarkFileIteration=
-  else
-    outBenchmarkFileIteration=$outDir/outbench
   fi
   if [[ "$outNestedPredictionsFile" == "" ]]
   then
@@ -66,9 +69,11 @@ do
     outNestedBenchmarkFileIteration=$outDir/outbenchnested
   fi
 
-  scripts/nestedclassification "$dataFiles" "$description" "$outerNumFolds" "$innerNumFolds" "$debug" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outBenchmarkFileIteration" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedBenchmarkFileIteration" crossvalidation $iteration
+  scripts/nestedclassification "$dataFiles" "$description" "$outerNumFolds" "$innerNumFolds" "$debug" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedBenchmarkFileIteration" crossvalidation $iteration 2>&1 | tee -a "$outLogFile"
 done
 
-python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outbench,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchnested" "$outPredictionsFile,$outMetricsFile,$outBenchmarkFile,$outNestedPredictionsFile,$outNestedMetricsFile,$outNestedBenchmarkFile"
+python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchnested" "$outPredictionsFile,$outMetricsFile,$outNestedPredictionsFile,$outNestedMetricsFile,$outNestedBenchmarkFile" 2>&1 | tee -a "$outLogFile"
 
 cleanup
+
+echo "Analysis successfully completed!" >> "$outLogFile"

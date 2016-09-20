@@ -23,7 +23,7 @@ function createScript {
 ##############################
 
 ##for algorithm in lda logistic_regression qda sgd svm_linear svm_nurbf svm_poly svm_rbf svm_sigmoid knn bagging decision_tree extra_trees random_forest
-for algorithm in lda logistic_regression sgd svm_linear svm_poly svm_rbf knn bagging decision_tree extra_trees random_forest
+for algorithm in lda logistic_regression sgd svm_linear svm_poly svm_rbf knn bagging extra_trees random_forest
 do
   createScript Classification sklearn sklearn_c_template $algorithm default
 done
@@ -38,7 +38,8 @@ done
 ## mlr
 ##############################
 
-for algorithm in avNNet boosting cforest ctree naiveBayes cvglmnet glmnet kknn ksvm LiblineaRL1LogReg LiblineaRL1LogReg mlp multinom nnet randomForestSRCSyn ranger rda rpart sda svm xgboost
+#for algorithm in avNNet boosting cforest ctree naiveBayes cvglmnet glmnet kknn ksvm LiblineaRL1LogReg LiblineaRL1LogReg mlp multinom nnet randomForestSRCSyn ranger rda rpart sda svm xgboost
+for algorithm in avNNet boosting ctree naiveBayes cvglmnet glmnet kknn ksvm LiblineaRL1LogReg LiblineaRL1LogReg mlp multinom nnet randomForestSRCSyn ranger rda rpart sda svm xgboost
 do
   createScript Classification mlr mlr_c_template $algorithm default
 done

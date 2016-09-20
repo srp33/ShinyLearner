@@ -9,6 +9,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.zip.GZIPOutputStream;
 
+import shinylearner.core.Log;
+
 /** This class provides helper methods for reading, writing, updating, and deleting files.
  * @author Stephen Piccolo
  */

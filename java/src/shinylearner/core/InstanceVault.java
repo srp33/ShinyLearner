@@ -7,10 +7,8 @@ import shinylearner.dataprocessors.AbstractDataProcessor;
 import shinylearner.dataprocessors.ArffDataProcessor;
 import shinylearner.dataprocessors.DelimitedDataProcessor;
 import shinylearner.dataprocessors.TransposedDelimitedDataProcessor;
-import shinylearner.helper.AnalysisFileCreator;
 import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
-import shinylearner.helper.Log;
 import shinylearner.helper.MiscUtilities;
 
 /** This class provides convenience methods for accessing information about data instances that are used for machine-learning analyses.

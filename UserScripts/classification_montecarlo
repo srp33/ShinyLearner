@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -o errexit
+set -o pipefail
 
 dataFiles="$1"
 description="$2"
@@ -10,5 +11,16 @@ classifAlgos="$5"
 outPredictionsFile="$6"
 outMetricsFile="$7"
 outBenchmarkFile="$8"
+outLogFile="$9"
 
-scripts/classification "$dataFiles" "$description" "$numIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo 0
+if [[ "$outLogFile" == "" ]]
+then
+  echo An output log file must be specified.
+  exit 1
+fi
+
+rm -f "$outLogFile"
+
+scripts/classification "$dataFiles" "$description" "$numIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo 0 2>&1 | tee -a "$outLogFile"
+
+echo "Analysis successfully completed!" >> "$outLogFile"

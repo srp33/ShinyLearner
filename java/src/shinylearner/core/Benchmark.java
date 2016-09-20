@@ -4,7 +4,7 @@ public class Benchmark
 {
 	public static String GetBenchmarkHeader()
 	{
-		return "Description\tAlgorithmScript\tElapsedSeconds";
+		return "Description\tAlgorithm\tElapsedSeconds";
 	}
 
 	public static String GetBenchmarkValues(long startTime)

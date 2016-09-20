@@ -4,7 +4,7 @@ inFilePath <- commandArgs()[7]
 numTop <- as.integer(commandArgs()[8])
 outFilePath <- commandArgs()[9]
 
-#Description	Iteration	Fold	Ensemble_Algorithm	AlgorithmScript	Features
+#Description	Iteration	Fold	Ensemble_Algorithm	Algorithm	Features
 data <- read.table(inFilePath, sep="\t", header=TRUE, row.names=NULL, check.names=FALSE, stringsAsFactors=FALSE)
 data <- data[,c("Iteration","Fold","Features")]
 

@@ -40,25 +40,25 @@ calculateMetrics <- function(predictionData)
   list(Accuracy=accuracy, AUROC=auc, BalancedAccuracy=balancedAccuracy, Brier=brier, FDR=fdr, FNR=fnr, FPR=fpr, MCC=mcc, MMCE=mmce, PPV=ppv, NPV=npv, TNR=tnr, TPR=tpr, Precision=precision, Recall=recall, F1=f1)
 }
 
-#Description	AlgorithmScript	InstanceID	ActualClass	PredictedClass	0	1
+#Description	Algorithm	InstanceID	ActualClass	PredictedClass	0	1
 predictionsData <- read.table(inPredictionsFilePath, sep="\t", header=TRUE, row.names=NULL, quote="\"", check.names=FALSE)
 
 predictionStartIndex <- which(colnames(predictionsData) == "PredictedClass") + 1
 classOptions <- colnames(predictionsData)[predictionStartIndex:ncol(predictionsData)]
 
-uniqueCombinations <- distinct(select(predictionsData, Description, AlgorithmScript))
+uniqueCombinations <- distinct(select(predictionsData, Description, Algorithm))
 
 outDescriptions <- NULL
-outAlgorithmScripts <- NULL
+outAlgorithms <- NULL
 outMetrics <- NULL
 outValues <- NULL
 
 for (i in 1:nrow(uniqueCombinations))
 {
   description <- as.character(uniqueCombinations[i,"Description"])
-  algorithmScript <- as.character(uniqueCombinations[i,"AlgorithmScript"])
+  algorithm <- as.character(uniqueCombinations[i,"Algorithm"])
 
-  combinationPredictionData <- filter(predictionsData, Description==description & AlgorithmScript==algorithmScript)
+  combinationPredictionData <- filter(predictionsData, Description==description & Algorithm==algorithm)
 
   if (length(classOptions) == 2) {
     combinationPredictionData$Probabilities <- combinationPredictionData[,"1"]
@@ -67,7 +67,7 @@ for (i in 1:nrow(uniqueCombinations))
     for (metric in names(metrics))
     {
       outDescriptions <- c(outDescriptions, description)
-      outAlgorithmScripts <- c(outAlgorithmScripts, algorithmScript)
+      outAlgorithms <- c(outAlgorithms, algorithm)
       outMetrics <- c(outMetrics, metric)
       outValues <- c(outValues, metrics[[metric]])
     }
@@ -93,7 +93,7 @@ for (i in 1:nrow(uniqueCombinations))
       for (metric in names(metrics))
       {
         outDescriptions <- c(outDescriptions, description)
-        outAlgorithmScripts <- c(outAlgorithmScripts, algorithmScript)
+        outAlgorithms <- c(outAlgorithms, algorithm)
         outMetrics <- c(outMetrics, metric)
         outValues <- c(outValues, metrics[[metric]])
       }
@@ -101,7 +101,7 @@ for (i in 1:nrow(uniqueCombinations))
   }
 }
 
-outData <- data.frame(Description=outDescriptions, AlgorithmScript=outAlgorithmScripts, Metric=outMetrics, Value=outValues)
-outData <- as.data.frame(ungroup(summarize(group_by(outData, Description, AlgorithmScript, Metric), Value=mean(Value))))
+outData <- data.frame(Description=outDescriptions, Algorithm=outAlgorithms, Metric=outMetrics, Value=outValues)
+outData <- as.data.frame(ungroup(summarize(group_by(outData, Description, Algorithm, Metric), Value=mean(Value))))
 
 write.table(outData, outMetricsFilePath, sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE)

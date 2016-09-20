@@ -24,7 +24,7 @@ colnames(trainTestData) <- c("Description", "TrainIDs", "TestIDs")
 
 mergedData <- inner_join(groupedData, trainTestData)
 
-mergedData$Description <- paste(mergedData$Description, "____Select_Best", sep="")
+mergedData$Description <- paste(mergedData$Description, "____Ensemble_Select_Best", sep="")
 
 outFSData <- select(mergedData, Description, TrainIDs, TestIDs, FS)
 outNumFeaturesData <- select(mergedData, Description, NumFeatures)

@@ -13,15 +13,14 @@ classifAlgos="$8"
 outSelectedFeaturesFile="$9"
 outPredictionsFile="${10}"
 outMetricsFile="${11}"
-outFeatureSelectionBenchmarkFile="${12}"
-outClassificationBenchmarkFile="${13}"
-outNestedSelectedFeaturesFile="${14}"
-outNestedPredictionsFile="${15}"
-outNestedMetricsFile="${16}"
-outNestedFeatureSelectionBenchmarkFile="${17}"
-outNestedClassificationBenchmarkFile="${18}"
-validationType="${19}"
-randomSeed="${20}"
+outNestedSelectedFeaturesFile="${12}"
+outNestedSummarizedSelectedFeaturesFile="${13}"
+outNestedPredictionsFile="${14}"
+outNestedMetricsFile="${15}"
+outNestedFeatureSelectionBenchmarkFile="${16}"
+outNestedClassificationBenchmarkFile="${17}"
+validationType="${18}"
+randomSeed="${19}"
 
 function checkParam {
   value="$1"
@@ -104,13 +103,13 @@ python scripts/ReformatInnerResults_FeatureSelection.py $tmpDir/im $tmpDir/ibrf
 Rscript --vanilla scripts/SelectBestInnerResults_FeatureSelection.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ofse $tmpDir/onfe $tmpDir/ocle
 
 ## Select features on outer iterations
-java -Xmx${mem} -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ofse DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/ofb OUTPUT_FEATURES_FILE_PATH=$tmpDir/of TEMP_DIR=$tmpDir
+java -Xmx${mem} -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ofse DEBUG=$debug OUTPUT_FEATURES_FILE_PATH=$tmpDir/of TEMP_DIR=$tmpDir
 
 ## Add selected features to outer classification files
 python scripts/AppendOuterSelectedFeatures.py $tmpDir/of $tmpDir/ocle $tmpDir/onfe $tmpDir/ocle2
 
 ## Classify using selected features for outer iterations
-java -Xmx${mem} -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ocle2 DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/ocb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/op TEMP_DIR=$tmpDir
+java -Xmx${mem} -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ocle2 DEBUG=$debug OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/op TEMP_DIR=$tmpDir
 
 ## Calculate performance metrics for outer folds
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
@@ -118,7 +117,7 @@ Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir
 function parseOuterFileA {
   if [[ "$2" != "" ]]
   then
-    python scripts/ParseNestedResults.py $1 $iterationOutputHeader "$2"
+    python scripts/ParseNestedResults.py $1 $iterationOutputHeader $3 "$2"
   fi
 }
 
@@ -129,11 +128,16 @@ function parseOuterFileB {
   fi
 }
 
-parseOuterFileA $tmpDir/of "$outSelectedFeaturesFile"
+function parseOuterFileC {
+  if [[ "$2" != "" ]]
+  then
+    python scripts/ParseNestedResults_FeatureSelection3.py $1 $iterationOutputHeader "$2"
+  fi
+}
+
+parseOuterFileC $tmpDir/ocle2 "$outSelectedFeaturesFile"
 parseOuterFileB $tmpDir/op "$outPredictionsFile"
 parseOuterFileB $tmpDir/om "$outMetricsFile"
-parseOuterFileA $tmpDir/ofb "$outFeatureSelectionBenchmarkFile"
-parseOuterFileB $tmpDir/ocb "$outClassificationBenchmarkFile"
 
 function copyInnerFileA {
   if [[ "$2" != "" ]]
@@ -154,5 +158,10 @@ copyInnerFileB $tmpDir/ip "$outNestedPredictionsFile"
 copyInnerFileB $tmpDir/im "$outNestedMetricsFile"
 copyInnerFileA $tmpDir/ifb "$outNestedFeatureSelectionBenchmarkFile"
 copyInnerFileB $tmpDir/icb "$outNestedClassificationBenchmarkFile"
+
+if [[ "$outNestedSummarizedSelectedFeaturesFile" != "" ]]
+then
+  Rscript --vanilla scripts/BordaCountFeatures.R "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile"
+fi
 
 cleanup

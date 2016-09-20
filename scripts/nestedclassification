@@ -10,12 +10,11 @@ debug="$5"
 classifAlgos="$6"
 outPredictionsFile="$7"
 outMetricsFile="$8"
-outBenchmarkFile="$9"
-outNestedPredictionsFile="${10}"
-outNestedMetricsFile="${11}"
-outNestedBenchmarkFile="${12}"
-validationType="${13}"
-randomSeed="${14}"
+outNestedPredictionsFile="${9}"
+outNestedMetricsFile="${10}"
+outNestedBenchmarkFile="${11}"
+validationType="${12}"
+randomSeed="${13}"
 
 function checkParam {
   value="$1"
@@ -36,7 +35,6 @@ checkParam "$debug" "debug"
 checkParam "$classifAlgos" "classification algorithm(s)"
 #checkParam "$outPredictionsFile" "output predictions file"
 #checkParam "$outMetricsFile" "output metrics file"
-#checkParam "$outBenchmarkFile" "output benchmark file"
 #checkParam "$outNestedPredictionsFile" "output nested predictions file"
 #checkParam "$outNestedMetricsFile" "output nested metrics file"
 #checkParam "$outNestedBenchmarkFile" "output nested benchmark file"
@@ -61,9 +59,7 @@ cleanup
 mkdir -p $tmpDir
 source scripts/helper
 
-###########################
 trap cleanup INT TERM EXIT
-###########################
 
 ## Make training and testing assignments
 python scripts/IdentifySamples.py "$dataFiles" "$description" $tmpDir/allid $tmpDir/classes
@@ -96,7 +92,7 @@ python scripts/ReformatInnerResults_Classification.py $tmpDir/im $tmpDir/ibrf
 Rscript --vanilla scripts/SelectBestInnerResults_Classification.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ocle
 
 ## Classify for outer iterations
-java -Xmx${mem} -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ocle DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/ocb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/op TEMP_DIR=$tmpDir
+java -Xmx${mem} -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ocle DEBUG=$debug OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/op TEMP_DIR=$tmpDir
 
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
 
@@ -107,10 +103,6 @@ fi
 if [[ "$outMetricsFile" != "" ]]
 then
   python scripts/ParseNestedResults.py $tmpDir/om $iterationOutputHeader "$outMetricsFile"
-fi
-if [[ "$outBenchmarkFile" != "" ]]
-then
-  python scripts/ParseNestedResults.py $tmpDir/ocb $iterationOutputHeader "$outBenchmarkFile"
 fi
 
 if [[ "$outNestedPredictionsFile" != "" ]]

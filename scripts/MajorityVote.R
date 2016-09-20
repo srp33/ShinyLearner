@@ -13,9 +13,9 @@ calculateMajority <- function(data, classOptions)
   majorityVote <- sample(classesMatchingMax, size=1)
 
   data2 <- data
-  data2$AlgorithmScript <- rep("Majority Vote", nrow(data2))
+  data2$Algorithm <- rep("Ensemble_Majority_Vote", nrow(data2))
 
-  data2 <- unique(select(data2, Description, AlgorithmScript, InstanceID, ActualClass))
+  data2 <- unique(select(data2, Description, Algorithm, InstanceID, ActualClass))
 
   data2$PredictedClass <- majorityVote
 
@@ -33,10 +33,10 @@ calculateMajority <- function(data, classOptions)
   return(data2)
 }
 
-#Description	AlgorithmScript	InstanceID	ActualClass	PredictedClass	1	2	3
+#Description	Algorithm	InstanceID	ActualClass	PredictedClass	1	2	3
 data <- read.table(inFilePath, stringsAsFactors=TRUE, sep="\t", header=TRUE, row.names=NULL, check.names=FALSE)
 
-if (length(unique(data$AlgorithmScript)) > 1)
+if (length(unique(data$Algorithm)) > 1)
 {
   classOptions <- colnames(data)[(which(colnames(data)=="PredictedClass") + 1):ncol(data)]
 

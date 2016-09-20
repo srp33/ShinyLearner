@@ -26,20 +26,20 @@ rankAggregate <- function(featuresMatrix)
 
   meanRank <- apply(rankMatrix, 1, mean)
 
-  result <- data.frame(Features=uniqueFeatures, MeanRanks=meanRank)
+  result <- data.frame(Feature=uniqueFeatures, Mean_Rank=meanRank)
   return(result[order(meanRank),])
 }
 
-#Description	Iteration	AlgorithmScript	Features
-#Description	Iteration	Fold	AlgorithmScript	Features
-#Description	Iteration	Ensemble_Algorithm	AlgorithmScript	Features
-#Description	Iteration	Fold	Ensemble_Algorithm	AlgorithmScript	Features
+#Description	Iteration	Algorithm	Features
+#Description	Iteration	Fold	Algorithm	Features
+#Description	Iteration	Ensemble_Algorithm	Algorithm	Features
+#Description	Iteration	Fold	Ensemble_Algorithm	Algorithm	Features
 data <- read_tsv(inFilePath)
 
 #groupRankMatrix <- NULL
-#for (algorithmScript in unique(data$AlgorithmScript))
+#for (algorithm in unique(data$Algorithm))
 #{
-#  algorithmData <- filter(data, AlgorithmScript==algorithmScript)
+#  algorithmData <- filter(data, Algorithm==algorithm)
 #  algorithmRanks <- rankAggregate(buildRankMatrix(algorithmData))
 #  groupRankMatrix <- rbind(groupRankMatrix, as.character(algorithmRanks$Features))
 #}

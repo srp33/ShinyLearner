@@ -9,6 +9,7 @@ outputDir=$4
 debug=$5
 numOuterIterations=$6
 numInnerIterations=$7
+outLogFile=$8
 
 source $(dirname $0)/helper
 
@@ -20,6 +21,6 @@ fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default"
 
 outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
 
-UserScripts/featureselection_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$fsAlgo" ${outPrefix}_SelectedFeatures.tsv ${outPrefix}_SelectedFeatures_Summarized.tsv /dev/null
-python BuildTests/CheckSelectedFeatures.py featureselection $validationType $description "$fsAlgo" "${outPrefix}_SelectedFeatures.tsv" AlgorithmScript
-python BuildTests/CheckSummarizedSelectedFeatures.py "${outPrefix}_SelectedFeatures_Summarized.tsv"
+UserScripts/featureselection_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$fsAlgo" ${outPrefix}_SelectedFeatures.tsv ${outPrefix}_SelectedFeatures_Summarized.tsv /dev/null $outLogFile
+python BuildTests/CheckSelectedFeatures.py featureselection $validationType $description "$fsAlgo" "${outPrefix}_SelectedFeatures.tsv" Algorithm 2>&1 | tee -a $outLogFile
+python BuildTests/CheckSummarizedSelectedFeatures.py "${outPrefix}_SelectedFeatures_Summarized.tsv" 2>&1 | tee -a $outLogFile

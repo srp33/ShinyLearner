@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
-import shinylearner.helper.Log;
 import shinylearner.helper.MiscUtilities;
 
 /** This class acts as a wrapper for performing classification tasks. It interprets parameters for executing these tasks, based on what has been configured.
@@ -81,7 +80,7 @@ public class Classification
 
 	public static String GetOutputHeader()
 	{
-		String header = "Description\tAlgorithmScript\tInstanceID\tActualClass\tPredictedClass";
+		String header = "Description\tAlgorithm\tInstanceID\tActualClass\tPredictedClass";
 
 		for (String x : Singletons.InstanceVault.DependentVariableOptions)
 			header += "\t" + MiscUtilities.UnformatClassValue(x);

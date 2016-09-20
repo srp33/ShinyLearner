@@ -3,17 +3,17 @@ package shinylearner;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import shinylearner.core.AnalysisFileCreator;
 import shinylearner.core.Benchmark;
 import shinylearner.core.Classification;
 import shinylearner.core.ExperimentItems;
 import shinylearner.core.FeatureSelection;
 import shinylearner.core.InstanceVault;
+import shinylearner.core.Log;
 import shinylearner.core.Settings;
 import shinylearner.core.Singletons;
-import shinylearner.helper.AnalysisFileCreator;
 import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
-import shinylearner.helper.Log;
 
 /** This is the class that gets invoked when code begins to execute.
  * @author Stephen Piccolo

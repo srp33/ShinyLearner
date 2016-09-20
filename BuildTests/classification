@@ -9,6 +9,7 @@ outputDir=$4
 debug=$5
 numOuterIterations=$6
 numInnerIterations=$7
+outLogFile=$8
 
 source $(dirname $0)/helper
 
@@ -20,5 +21,5 @@ classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
 
 outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
 
-UserScripts/classification_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null
-python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" AlgorithmScript
+UserScripts/classification_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null $outLogFile
+python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Algorithm 2>&1 | tee -a $outLogFile

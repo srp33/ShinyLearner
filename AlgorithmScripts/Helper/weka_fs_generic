@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -o errexit
+set -o pipefail
+
 dataFilePath="$1"
 parameters="$2"
 
