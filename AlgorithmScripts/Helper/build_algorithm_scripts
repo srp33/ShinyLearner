@@ -39,7 +39,7 @@ done
 ##############################
 
 #for algorithm in avNNet boosting cforest ctree naiveBayes cvglmnet glmnet kknn ksvm LiblineaRL1LogReg LiblineaRL1LogReg mlp multinom nnet randomForestSRCSyn ranger rda rpart sda svm xgboost
-for algorithm in avNNet boosting ctree naiveBayes cvglmnet glmnet kknn ksvm LiblineaRL1LogReg LiblineaRL1LogReg mlp multinom nnet randomForestSRCSyn ranger rda rpart sda svm xgboost
+for algorithm in avNNet boosting ctree naiveBayes cvglmnet glmnet kknn ksvm LiblineaRL1LogReg LiblineaRL1LogReg mlp multinom nnet randomForestSRCSyn ranger rpart sda svm xgboost
 do
   createScript Classification mlr mlr_c_template $algorithm default
 done
