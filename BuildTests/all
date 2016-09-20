@@ -16,7 +16,6 @@ fi
 
 debug=false
 #debug=true
-#numOuterIterations=10
 numOuterIterations=2
 numInnerIterations=2
 
@@ -30,7 +29,6 @@ wait
 
 python $(dirname $0)/CheckLogFiles.py "$outputDir/*.log" 4
 rm -f "$outputDir/*.log"
-exit
 
 $(dirname $0)/featureselection StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
 $(dirname $0)/featureselection NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &

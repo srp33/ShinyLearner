@@ -1,0 +1,108 @@
+System command:
+ls /Users/srp33/Dropbox/ShinyLearner/Validation/StrongSignal_Both.tsv.gz
+shinylearner.dataprocessors.DelimitedDataProcessor
+Parsing input data from /Users/srp33/Dropbox/ShinyLearner/Validation/StrongSignal_Both.tsv.gz
+60 dependent variable instances
+Reconciling dependent variable values
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | Do a sanity check to make sure that no instances overlap between the training and test sets
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | Classifying.
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.f3a1b692-5ff2-4e64-8b7c-8423bad74c83.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.f9932c02-1ee0-4258-95a0-49cb0b2dd46c.tsv" "cLaSs___1,cLaSs___2,cLaSs___3"
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | System command:
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.f3a1b692-5ff2-4e64-8b7c-8423bad74c83.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.f9932c02-1ee0-4258-95a0-49cb0b2dd46c.tsv" "cLaSs___1,cLaSs___2,cLaSs___3"
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | cLaSs___1	0.977069495	0.015042769	0.007887737
+cLaSs___1	0.994783294	0.003284739	0.001931966
+cLaSs___1	0.934332276	0.065667660	0.000000064
+cLaSs___1	0.973993294	0.000021512	0.025985194
+cLaSs___1	0.997638941	0.002054398	0.000306661
+cLaSs___1	0.972179108	0.027761419	0.000059473
+cLaSs___1	0.957109407	0.038517621	0.004372971
+cLaSs___1	0.914628597	0.000618514	0.084752889
+cLaSs___1	0.997855068	0.001624932	0.000519999
+cLaSs___2	0.335073881	0.664925808	0.000000310
+cLaSs___2	0.232644657	0.767355341	0.000000003
+cLaSs___2	0.096379441	0.903620553	0.000000007
+cLaSs___2	0.187705858	0.812291932	0.000002210
+cLaSs___2	0.257548308	0.742451670	0.000000022
+cLaSs___3	0.095675028	0.000000328	0.904324644
+cLaSs___3	0.034549971	0.000000077	0.965449951
+cLaSs___3	0.031330435	0.000024531	0.968645035
+cLaSs___3	0.043755859	0.000000464	0.956243677
+cLaSs___3	0.055881694	0.000000621	0.944117685
+cLaSs___1	0.567132551	0.432867445	0.000000004
+
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | cLaSs___1	0.977069495	0.015042769	0.007887737
+cLaSs___1	0.994783294	0.003284739	0.001931966
+cLaSs___1	0.934332276	0.065667660	0.000000064
+cLaSs___1	0.973993294	0.000021512	0.025985194
+cLaSs___1	0.997638941	0.002054398	0.000306661
+cLaSs___1	0.972179108	0.027761419	0.000059473
+cLaSs___1	0.957109407	0.038517621	0.004372971
+cLaSs___1	0.914628597	0.000618514	0.084752889
+cLaSs___1	0.997855068	0.001624932	0.000519999
+cLaSs___2	0.335073881	0.664925808	0.000000310
+cLaSs___2	0.232644657	0.767355341	0.000000003
+cLaSs___2	0.096379441	0.903620553	0.000000007
+cLaSs___2	0.187705858	0.812291932	0.000002210
+cLaSs___2	0.257548308	0.742451670	0.000000022
+cLaSs___3	0.095675028	0.000000328	0.904324644
+cLaSs___3	0.034549971	0.000000077	0.965449951
+cLaSs___3	0.031330435	0.000024531	0.968645035
+cLaSs___3	0.043755859	0.000000464	0.956243677
+cLaSs___3	0.055881694	0.000000621	0.944117685
+cLaSs___1	0.567132551	0.432867445	0.000000004
+
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 20
+StrongSignal_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 20
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | Do a sanity check to make sure that no instances overlap between the training and test sets
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | Classifying.
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.d2ac6465-f78c-4eec-a061-4a3e62684ff3.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.253c6f99-9aec-44c8-8948-c10f6e5d90fe.tsv" "cLaSs___1,cLaSs___2,cLaSs___3"
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | System command:
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.d2ac6465-f78c-4eec-a061-4a3e62684ff3.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RLfl3Udg/id.253c6f99-9aec-44c8-8948-c10f6e5d90fe.tsv" "cLaSs___1,cLaSs___2,cLaSs___3"
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | cLaSs___3	0.295694608	0.000005154	0.704300238
+cLaSs___1	0.999900511	0.000099415	0.000000074
+cLaSs___1	0.999816402	0.000008417	0.000175182
+cLaSs___1	0.998232578	0.001767245	0.000000177
+cLaSs___1	0.999187961	0.000812021	0.000000018
+cLaSs___1	0.996584790	0.000035957	0.003379254
+cLaSs___1	0.861020641	0.009173221	0.129806138
+cLaSs___1	0.981889248	0.018108745	0.000002006
+cLaSs___2	0.303318101	0.696681899	0.000000000
+cLaSs___2	0.161744801	0.838255199	0.000000000
+cLaSs___2	0.333215015	0.666784985	0.000000000
+cLaSs___1	0.985601657	0.000022945	0.014375399
+cLaSs___2	0.153477832	0.846522168	0.000000000
+cLaSs___2	0.346546037	0.653453963	0.000000000
+cLaSs___3	0.016558934	0.000000002	0.983441064
+cLaSs___3	0.009184507	0.000000001	0.990815493
+cLaSs___3	0.013071999	0.000000000	0.986928001
+cLaSs___3	0.009461402	0.000000000	0.990538598
+cLaSs___3	0.018149011	0.000000000	0.981850989
+cLaSs___1	0.989547455	0.010452364	0.000000181
+
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | cLaSs___3	0.295694608	0.000005154	0.704300238
+cLaSs___1	0.999900511	0.000099415	0.000000074
+cLaSs___1	0.999816402	0.000008417	0.000175182
+cLaSs___1	0.998232578	0.001767245	0.000000177
+cLaSs___1	0.999187961	0.000812021	0.000000018
+cLaSs___1	0.996584790	0.000035957	0.003379254
+cLaSs___1	0.861020641	0.009173221	0.129806138
+cLaSs___1	0.981889248	0.018108745	0.000002006
+cLaSs___2	0.303318101	0.696681899	0.000000000
+cLaSs___2	0.161744801	0.838255199	0.000000000
+cLaSs___2	0.333215015	0.666784985	0.000000000
+cLaSs___1	0.985601657	0.000022945	0.014375399
+cLaSs___2	0.153477832	0.846522168	0.000000000
+cLaSs___2	0.346546037	0.653453963	0.000000000
+cLaSs___3	0.016558934	0.000000002	0.983441064
+cLaSs___3	0.009184507	0.000000001	0.990815493
+cLaSs___3	0.013071999	0.000000000	0.986928001
+cLaSs___3	0.009461402	0.000000000	0.990538598
+cLaSs___3	0.018149011	0.000000000	0.981850989
+cLaSs___1	0.989547455	0.010452364	0.000000181
+
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 20
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 20
+StrongSignal_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | Successfully completed!
+WARNING: ignoring environment value of R_HOME
+WARNING: ignoring environment value of R_HOME
+Analysis successfully completed!

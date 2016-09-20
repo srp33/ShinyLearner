@@ -114,7 +114,7 @@ public class MiscUtilities
         Log.Debug(commandText);
         //Log.Exit(1);
 
-        Process p = Runtime.getRuntime().exec(new String[] { "sh", "-c", commandText });
+        Process p = Runtime.getRuntime().exec(new String[] { "bash", "-c", commandText });
 
         // Read the output and error streams from the process
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
