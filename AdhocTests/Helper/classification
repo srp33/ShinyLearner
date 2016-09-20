@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -o errexit
+set -euo pipefail
 
 validationType=$1
 
@@ -20,6 +20,8 @@ rm -rfv $testDir
 mkdir -p $testDir
 
 cp -rv shinylearner.jar $testDir/
+mkdir $testDir/lib
+cp -rv lib/* $testDir/lib/
 cp -rv scripts $testDir/
 cp -rv AlgorithmScripts $testDir/
 cp -rv UserScripts $testDir/
@@ -32,8 +34,10 @@ cd $testDir
 validation=StrongSignal_Both
 #validation=StrongSignalLarge_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
+classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default"
 #classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default
-classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default
+#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/*/default"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
 debug=true
 outPredictionsFile=$outputDir/${validationType}_${validation}_Predictions.tsv

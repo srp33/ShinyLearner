@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -o errexit
+set -euo pipefail
 
 validationType=$1
 
@@ -20,6 +20,8 @@ rm -rfv $testDir
 mkdir -p $testDir
 
 cp -rv shinylearner.jar $testDir/
+mkdir $testDir/lib
+cp -rv lib/* $testDir/lib/
 cp -rv scripts $testDir/
 cp -rv AlgorithmScripts $testDir/
 cp -rv UserScripts $testDir/
@@ -36,7 +38,7 @@ debug=true
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/nestedclassification_${validationType} "$dataFile" $validation 2 2 $debug "$classifAlgo" $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Nested.tsv
+  UserScripts/nestedclassification_${validationType} "$dataFile" $validation 2 2 $debug "$classifAlgo" $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Nested.tsv $outputDir/${validationType}_${validation}.log
 else
-  UserScripts/nestedclassification_${validationType} "$dataFile" $validation 2 2 2 $debug "$classifAlgo" $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Nested.tsv
+  UserScripts/nestedclassification_${validationType} "$dataFile" $validation 2 2 2 $debug "$classifAlgo" $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Nested.tsv $outputDir/${validationType}_${validation}.log
 fi

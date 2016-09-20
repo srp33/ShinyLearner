@@ -2,6 +2,7 @@ package shinylearner.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import shinylearner.dataprocessors.AbstractDataProcessor;
 import shinylearner.dataprocessors.ArffDataProcessor;
@@ -23,20 +24,25 @@ public class InstanceVault
 
     public DataInstanceCollection IndependentVariableInstances = null;
 
-    public InstanceVault PrepareDataInstances() throws Exception
+    public InstanceVault LoadDataInstances() throws Exception
     {
     	for (String dataFilePath : Settings.DATA_FILES)
     	{
     		AbstractDataProcessor dataProcessor = ParseDataProcessor(dataFilePath);
     		Log.Debug(dataProcessor.getClass().getName());
     		Log.Debug("Parsing input data from " + dataFilePath);
-    		
+
     		if (IndependentVariableInstances == null)
     			IndependentVariableInstances = dataProcessor.ParseInputData();
     		else
     			IndependentVariableInstances.Add(dataProcessor.ParseInputData());
     	}
     	
+    	return this;
+    }
+    
+    public void RefineDataInstances() throws Exception
+    {
     	RemoveInstancesWithMissingValues();
     	
         // Look for any data point that contains class information
@@ -44,9 +50,9 @@ public class InstanceVault
         Log.Debug(DependentVariableInstances.size() + " dependent variable instances");
 
         Log.Debug("Reconciling dependent variable values");
-        ArrayList<String> commonInstanceIDs = ListUtilities.Intersect(IndependentVariableInstances.GetInstanceIDs(), new ArrayList<String>(DependentVariableInstances.keySet()));
+        HashSet<String> commonInstanceIDs = ListUtilities.Intersect(IndependentVariableInstances.GetInstanceIDsUnsorted(), DependentVariableInstances.keySet());
         
-        for (String instanceID : IndependentVariableInstances.GetInstanceIDs())
+        for (String instanceID : IndependentVariableInstances.GetInstanceIDsUnsorted())
         	if (!commonInstanceIDs.contains(instanceID))
         		IndependentVariableInstances.RemoveInstance(instanceID);
         
@@ -60,8 +66,6 @@ public class InstanceVault
         	Log.ExceptionFatal("No independent variables were found.");            
         if (DependentVariableInstances.size() == 0)
         	Log.ExceptionFatal("No dependent variable instances were found.");
-        
-        return this;
     }
     
     private AbstractDataProcessor ParseDataProcessor(String dataFilePath) throws Exception
@@ -86,22 +90,33 @@ public class InstanceVault
     
     public void RemoveInstancesWithMissingValues() throws Exception
     {
-    	int numDataPoints = IndependentVariableInstances.GetNumDataPoints();
-    	boolean hasMissingValues = false;
-    	
-    	for (String instanceID : IndependentVariableInstances)
+    	int currentNumInstances = IndependentVariableInstances.GetNumInstances();
+    	HashSet<String> dataPointsToRemove = new HashSet<String>();
+    	for (String dataPointName : IndependentVariableInstances.GetDataPointNamesSorted())
+    		if (IndependentVariableInstances.GetNumValuesForDataPoint(dataPointName) != currentNumInstances)
+    			dataPointsToRemove.add(dataPointName);
+
+    	if (dataPointsToRemove.size() > 0)
     	{
-    		int instanceNumDataPoints = IndependentVariableInstances.GetNumDataPoints(instanceID);
-			
-    		if (instanceNumDataPoints != numDataPoints)
-    		{
-    			IndependentVariableInstances.RemoveInstance(instanceID);
-    			hasMissingValues = true;
-    		}
+    		for (String dataPointName : dataPointsToRemove)
+    			IndependentVariableInstances.RemoveDataPointName(dataPointName);
+    		
+    		Log.Info("WARNING: The following data points were missing a value for at least one instance, so they were removed: " +  ListUtilities.Join(ListUtilities.SortStringList(ListUtilities.CreateStringList(dataPointsToRemove)), "; ") + ". Missing values are not supported at this time.");
     	}
+
+    	int currentNumDataPoints = IndependentVariableInstances.GetNumDataPoints();
+    	HashSet<String> instancesToRemove = new HashSet<String>();
+    	for (String instanceID : IndependentVariableInstances.GetInstanceIDsUnsorted())
+    		if (IndependentVariableInstances.GetNumValuesForInstance(instanceID) != currentNumDataPoints)
+    			dataPointsToRemove.add(instanceID);
     	
-    	if (hasMissingValues)
-    		Log.Info("WARNING: At least one data instance was missing at least one data point, so the instance(s) have been excluded from the analysis. Missing values are not allowed.");
+    	if (instancesToRemove.size() > 0)
+    	{
+    		for (String instanceID : instancesToRemove)
+    			IndependentVariableInstances.RemoveInstance(instanceID);
+    		
+    		Log.Info("WARNING: The following instances were missing a value for at least one data point, so they were removed: " + ListUtilities.Join(ListUtilities.SortStringList(ListUtilities.CreateStringList(instancesToRemove)), "; ") + ". Missing values are not supported at this time.");
+    	}
     }
 
     /** This method looks in a data instance collection a data point that contains class information. If found, this information is extracted and stored separately.
@@ -114,7 +129,7 @@ public class InstanceVault
         if (!dataInstances.HasDataPoint(Settings.DEPENDENT_VARIABLE_NAME))
         	Log.ExceptionFatal("The input data does not contain a variable with the name " + Settings.DEPENDENT_VARIABLE_NAME + ". This is required.");
 
-        for (String instanceID : dataInstances)
+        for (String instanceID : dataInstances.GetInstanceIDsUnsorted())
         {
             String value = dataInstances.GetDataPointValue(instanceID, Settings.DEPENDENT_VARIABLE_NAME);
 
@@ -141,6 +156,6 @@ public class InstanceVault
 
 	public void SaveOutputDataFile() throws Exception
 	{
-		new AnalysisFileCreator(Settings.OUTPUT_DATA_FILE_PATH, IndependentVariableInstances.GetInstanceIDs(), IndependentVariableInstances.GetDataPointNames()).CreateTabDelimitedFile(true);
+		new AnalysisFileCreator(Settings.OUTPUT_DATA_FILE_PATH, IndependentVariableInstances.GetInstanceIDsSorted(), IndependentVariableInstances.GetDataPointNamesSorted()).CreateTabDelimitedFile(true);
 	}
 }

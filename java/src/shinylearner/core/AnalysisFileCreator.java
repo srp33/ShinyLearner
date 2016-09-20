@@ -48,7 +48,7 @@ public class AnalysisFileCreator
         _instanceIDs = instanceIDs;
         
         if (dataPointNames == null)
-        	_dataPointNames = Singletons.InstanceVault.IndependentVariableInstances.GetDataPointNames();
+        	_dataPointNames = Singletons.InstanceVault.IndependentVariableInstances.GetDataPointNamesSorted();
         else
         	_dataPointNames = dataPointNames;
     }

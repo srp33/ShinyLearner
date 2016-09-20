@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -o errexit
+set -euo pipefail
 
 #javaDir="/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Commands"
 javaDir="/usr/bin"
@@ -13,11 +13,14 @@ rm -rfv $buildDir
 mkdir -pv $buildDir/shinylearner/src/shinylearner
 cp -rv java/src/shinylearner/* $buildDir/shinylearner/src/shinylearner
 cp -v build.xml $buildDir/
+mkdir -p $buildDir/lib
+cp -rv lib/* $buildDir/lib/
 
 cd $buildDir
 
 find shinylearner -name *.java > sources_list.txt
-$javaDir/javac @sources_list.txt
+#$javaDir/javac @sources_list.txt
+$javaDir/javac -Djava.ext.dirs=lib @sources_list.txt
 rm sources_list.txt
 
 ant

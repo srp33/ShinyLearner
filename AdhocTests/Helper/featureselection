@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -o errexit
+set -euo pipefail
 
 validationType=$1
 
@@ -20,6 +20,8 @@ rm -rfv $testDir
 mkdir -p $testDir
 
 cp -rv shinylearner.jar $testDir/
+mkdir $testDir/lib
+cp -rv lib/* $testDir/lib/
 cp -rv scripts $testDir/
 cp -rv AlgorithmScripts $testDir/
 cp -rv UserScripts $testDir/
@@ -36,10 +38,11 @@ debug=true
 outFeaturesFile=$outputDir/${validationType}_${validation}_SelectedFeatures.tsv
 outSummarizedFeaturesFile=$outputDir/${validationType}_${validation}_SelectedFeatures_Summarized.tsv
 outBenchmarkFile=$outputDir/${validationType}_${validation}_Benchmark.tsv
+outLogFile=$outputDir/${validationType}_${validation}.log
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/featureselection_${validationType} "$dataFile" "$validation" 2 $debug "$fsAlgo" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile"
+  UserScripts/featureselection_${validationType} "$dataFile" "$validation" 2 $debug "$fsAlgo" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile" "$outLogFile"
 else
-  UserScripts/featureselection_${validationType} "$dataFile" "$validation" 2 2 $debug "$fsAlgo" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile"
+  UserScripts/featureselection_${validationType} "$dataFile" "$validation" 2 2 $debug "$fsAlgo" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile" "$outLogFile"
 fi

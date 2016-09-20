@@ -99,6 +99,12 @@ public class ListUtilities
         intersection.retainAll(new HashSet<String>(list2));
         return new ArrayList<String>(intersection);
     }
+    
+    public static HashSet<String> Intersect(Set<String> set1, Set<String> set2)
+    {
+        set1.retainAll(set2);
+        return new HashSet<String>(set1);
+    }
 
     /** For a list of String objects, this method identifies all objects that contain a given value and replaces that text with another value.
      *

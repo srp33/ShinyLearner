@@ -5,6 +5,7 @@
         includes="**/*.class">
       <manifest>
         <attribute name="Main-Class" value="shinylearner.Main" />
+        <attribute name="Class-Path" value="lib/paldb.jar" />
       </manifest>
     </jar>
   </target>

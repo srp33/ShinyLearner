@@ -1,7 +1,10 @@
 package shinylearner;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.linkedin.paldb.api.PalDB;
 
 import shinylearner.core.AnalysisFileCreator;
 import shinylearner.core.Benchmark;
@@ -14,6 +17,7 @@ import shinylearner.core.Settings;
 import shinylearner.core.Singletons;
 import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
+import shinylearner.helper.MiscUtilities;
 
 /** This is the class that gets invoked when code begins to execute.
  * @author Stephen Piccolo
@@ -31,12 +35,22 @@ public class Main
 			Settings.ParseCommandLineSettings(args);
 			Settings.Check();
 			
-			Singletons.InstanceVault = new InstanceVault().PrepareDataInstances();
+			Singletons.DatabaseFilePath = Settings.TEMP_DIR + "/" + MiscUtilities.GetUniqueID() + ".db";
+			Singletons.DatabaseWriter = PalDB.createWriter(new File(Singletons.DatabaseFilePath));
+			
+			Singletons.InstanceVault = new InstanceVault().LoadDataInstances();
+			Singletons.DatabaseWriter.close();
+			
+			Singletons.DatabaseReader = PalDB.createReader(new File(Singletons.DatabaseFilePath));
+			Singletons.InstanceVault.RefineDataInstances();
+
 			if (!Settings.OUTPUT_DATA_FILE_PATH.equals(""))
 				Singletons.InstanceVault.SaveOutputDataFile();
 			
 			if (!Settings.OUTPUT_PREDICTIONS_FILE_PATH.equals("") || !Settings.OUTPUT_FEATURES_FILE_PATH.equals("") || !Settings.OUTPUT_BENCHMARK_FILE_PATH.equals(""))
 				PerformAnalysis();
+			
+			Singletons.DatabaseReader.close();
 
 			Log.PrintErr(Log.FormatText("Successfully completed!"));
 			System.exit(0); // Not sure if this is necessary, but keeping it just in case
@@ -44,6 +58,13 @@ public class Main
 		catch (Exception ex)
 		{
 			Log.PrintOut(Log.GetStackTrace(ex));
+			
+			if (Singletons.DatabaseWriter != null)
+				Singletons.DatabaseWriter.close();
+			
+			if (Singletons.DatabaseReader != null)
+				Singletons.DatabaseReader.close();
+			
 			System.exit(1); // Not sure if this is necessary, but keeping it just in case
 		}
 	}
@@ -63,7 +84,7 @@ public class Main
 			lineNumber++;
 			
 			CheckTrainTestAssignments(Singletons.ExperimentItems.TrainingIDs, Singletons.ExperimentItems.TestIDs);
-			
+
 			if (!trainingDataFileMap.containsKey(Singletons.ExperimentItems.UniqueKey))
 			{
 				trainingDataFileMap.put(Singletons.ExperimentItems.UniqueKey, AnalysisFileCreator.CreateFile(Singletons.ExperimentItems.AlgorithmDataFormat, Singletons.ExperimentItems.TrainingIDs, Singletons.ExperimentItems.DataPointsToUse, true));
@@ -93,9 +114,6 @@ public class Main
 		if (!Settings.OUTPUT_PREDICTIONS_FILE_PATH.equals(""))
 			FileUtilities.AppendLineToFile(Settings.OUTPUT_PREDICTIONS_FILE_PATH, Classification.GetOutputHeader());
 		
-//		if (!Settings.OUTPUT_METRICS_FILE_PATH.equals(""))
-//			FileUtilities.AppendLineToFile(Settings.OUTPUT_METRICS_FILE_PATH, PredictionResults.GetMetricsOutputHeader());
-		
 		if (!Settings.OUTPUT_BENCHMARK_FILE_PATH.equals(""))
 			FileUtilities.AppendLineToFile(Settings.OUTPUT_BENCHMARK_FILE_PATH, Benchmark.GetBenchmarkHeader());
 	}
@@ -106,8 +124,8 @@ public class Main
             throw new Exception("No predictions can be made because the training and/or test set have no data.");
 
         // Make sure the training and test IDs are in the data set we are working with
-        ArrayList<String> overlappingTrainingIDs = ListUtilities.Intersect(Singletons.InstanceVault.IndependentVariableInstances.GetInstanceIDs(), trainIDs);
-        ArrayList<String> overlappingTestIDs = ListUtilities.Intersect(Singletons.InstanceVault.IndependentVariableInstances.GetInstanceIDs(), testIDs);
+        ArrayList<String> overlappingTrainingIDs = ListUtilities.Intersect(ListUtilities.CreateStringList(Singletons.InstanceVault.IndependentVariableInstances.GetInstanceIDsUnsorted()), trainIDs);
+        ArrayList<String> overlappingTestIDs = ListUtilities.Intersect(ListUtilities.CreateStringList(Singletons.InstanceVault.IndependentVariableInstances.GetInstanceIDsUnsorted()), testIDs);
 
         if (overlappingTrainingIDs.size() != trainIDs.size())
         	Log.ExceptionFatal("At least one of the training IDs was not present in the input data set(s).");

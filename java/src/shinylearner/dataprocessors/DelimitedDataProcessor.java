@@ -3,6 +3,7 @@ package shinylearner.dataprocessors;
 import java.util.ArrayList;
 
 import shinylearner.core.DataInstanceCollection;
+import shinylearner.core.Log;
 import shinylearner.helper.BigFileReader;
 import shinylearner.helper.ListUtilities;
 
@@ -40,7 +41,7 @@ public class DelimitedDataProcessor extends AbstractDataProcessor
         {
         	ArrayList<String> rowValues = ListUtilities.CreateStringList(line.trim().split(_delimiter));
         	String instanceID = rowValues.remove(0);
-        	
+
             for (int j=0; j<rowValues.size(); j++)
 				dataInstances.Add(dataPointNames.get(j), instanceID, rowValues.get(j));
         }

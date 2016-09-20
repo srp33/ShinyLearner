@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -euo pipefail
+
+#javaDir="/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Commands"
+javaDir="/usr/bin"
+
+rm -fv lib/*
+
+currentDir=$(pwd)
+buildDir=/tmp/shinylearner_dependencies
+
+rm -rfv $buildDir
+mkdir -p $buildDir
+
+cd $buildDir
+
+#git clone git@github.com:jankotek/mapdb.git
+#cd mapdb
+#mvn test
+
+#git clone git@github.com:facebook/rocksdb.git
+
+git clone git@github.com:linkedin/PalDB.git
+cd PalDB
+gradle build
+cp paldb/build/libs/paldb-1.2.0.jar $currentDir/lib/paldb.jar
+
+
+#cd $currentDir
+#rm -rf $buildDir

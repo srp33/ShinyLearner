@@ -1,0 +1,462 @@
+System command:
+ls /Users/srp33/Dropbox/ShinyLearner/Validation/StrongSignal_Both.tsv.gz
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StoreImpl createWriter
+INFO: Initialize writer from file id.ff0e519b-edcc-469c-bb1f-ff0c3bfe197e.db
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.WriterImpl <init>
+INFO: Opening writer storage
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter <init>
+INFO: Creating temporary folder at /var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/paldbtempwriter1474408546499-0
+shinylearner.dataprocessors.DelimitedDataProcessor
+Parsing input data from /Users/srp33/Dropbox/ShinyLearner/Validation/StrongSignal_Both.tsv.gz
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.WriterImpl close
+INFO: Closing writer storage, writing to file at /var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.2so5jFsQ/id.ff0e519b-edcc-469c-bb1f-ff0c3bfe197e.db
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter close
+INFO: Number of keys: 9,060
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter close
+INFO: Number of values: 5,111
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index19.dat
+  Max offset length: 1 bytes
+  Slot size: 20 bytes
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index19.dat has been deleted
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index20.dat
+  Max offset length: 1 bytes
+  Slot size: 21 bytes
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index20.dat has been deleted
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index22.dat
+  Max offset length: 2 bytes
+  Slot size: 24 bytes
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index22.dat has been deleted
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index23.dat
+  Max offset length: 3 bytes
+  Slot size: 26 bytes
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index23.dat has been deleted
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index24.dat
+  Max offset length: 3 bytes
+  Slot size: 27 bytes
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index24.dat has been deleted
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index27.dat
+  Max offset length: 2 bytes
+  Slot size: 29 bytes
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index27.dat has been deleted
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index28.dat
+  Max offset length: 2 bytes
+  Slot size: 30 bytes
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index28.dat has been deleted
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index29.dat
+  Max offset length: 1 bytes
+  Slot size: 30 bytes
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index29.dat has been deleted
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index30.dat
+  Max offset length: 2 bytes
+  Slot size: 32 bytes
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index30.dat has been deleted
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index31.dat
+  Max offset length: 2 bytes
+  Slot size: 33 bytes
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index31.dat has been deleted
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index32.dat
+  Max offset length: 1 bytes
+  Slot size: 33 bytes
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index32.dat has been deleted
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter close
+INFO: Number of collisions: 3,427
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter checkFreeDiskSpace
+INFO: Total expected store size is 0.0 Mb
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter checkFreeDiskSpace
+INFO: Usable free space on the system is 137,750.0 Mb
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging metadata.dat size=354
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index19.dat size=240
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index20.dat size=1,428
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index22.dat size=2,592
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index23.dat size=28,704
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index24.dat size=75,276
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index27.dat size=17,052
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index28.dat size=100,320
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index29.dat size=2,040
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index30.dat size=18,816
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index31.dat size=110,352
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index32.dat size=2,244
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data19.dat size=5
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data20.dat size=13
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data22.dat size=1,664
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data23.dat size=16,649
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data24.dat size=42,154
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data27.dat size=461
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data28.dat size=2,733
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data29.dat size=61
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data30.dat size=837
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data31.dat size=4,237
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data32.dat size=105
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Time to merge 0.015 s
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file metadata.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index19.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index20.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index22.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index23.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index24.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index27.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index28.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index29.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index30.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index31.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index32.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data19.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data20.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data22.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data23.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data24.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data27.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data28.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data29.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data30.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data31.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data32.dat
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary folder at /var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/paldbtempwriter1474408546499-0
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StoreImpl createReader
+INFO: Initialize reader from file id.ff0e519b-edcc-469c-bb1f-ff0c3bfe197e.db
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.ReaderImpl <init>
+INFO: Opening reader storage
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageReader <init>
+INFO: Opening file id.ff0e519b-edcc-469c-bb1f-ff0c3bfe197e.db
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageReader <init>
+INFO: Storage metadata
+  Created at: 2016.09.20 AD at 15:55:46 MDT
+  Format version: PALDB_V1
+  Key count: 9060
+  Key count for key length 19: 9
+  Key count for key length 20: 51
+  Key count for key length 22: 81
+  Key count for key length 23: 828
+  Key count for key length 24: 2091
+  Key count for key length 27: 441
+  Key count for key length 28: 2508
+  Key count for key length 29: 51
+  Key count for key length 30: 441
+  Key count for key length 31: 2508
+  Key count for key length 32: 51
+  Index size: 0.34 Mb
+  Data size: 0.07 Mb
+  Number of memory mapped data buffers: 1
+Sep 20, 2016 3:55:46 PM com.linkedin.paldb.impl.StorageCache$DisabledCache <init>
+INFO: Cache disabled
+60 dependent variable instances
+Reconciling dependent variable values
+StrongSignal_Both____Fold1 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | Do a sanity check to make sure that no instances overlap between the training and test sets
+StrongSignal_Both____Fold1 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | Selecting features.
+StrongSignal_Both____Fold1 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.2so5jFsQ/id.3068b0f8-2408-47db-badb-5a95122d9b3d.tsv"
+StrongSignal_Both____Fold1 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | System command:
+StrongSignal_Both____Fold1 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.2so5jFsQ/id.3068b0f8-2408-47db-badb-5a95122d9b3d.tsv"
+StrongSignal_Both____Fold2 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | Do a sanity check to make sure that no instances overlap between the training and test sets
+StrongSignal_Both____Fold2 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | Selecting features.
+StrongSignal_Both____Fold2 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.2so5jFsQ/id.68e584a5-7be1-4e9b-a374-c5f397a2e24c.tsv"
+StrongSignal_Both____Fold2 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | System command:
+StrongSignal_Both____Fold2 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.2so5jFsQ/id.68e584a5-7be1-4e9b-a374-c5f397a2e24c.tsv"
+Sep 20, 2016 3:55:48 PM com.linkedin.paldb.impl.ReaderImpl close
+INFO: Closing reader storage
+StrongSignal_Both____Fold2 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | Successfully completed!
+System command:
+ls /Users/srp33/Dropbox/ShinyLearner/Validation/StrongSignal_Both.tsv.gz
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StoreImpl createWriter
+INFO: Initialize writer from file id.a009bd96-303f-4771-9468-c873857d06b3.db
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.WriterImpl <init>
+INFO: Opening writer storage
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter <init>
+INFO: Creating temporary folder at /var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/paldbtempwriter1474408549298-0
+shinylearner.dataprocessors.DelimitedDataProcessor
+Parsing input data from /Users/srp33/Dropbox/ShinyLearner/Validation/StrongSignal_Both.tsv.gz
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.WriterImpl close
+INFO: Closing writer storage, writing to file at /var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.l71GTovC/id.a009bd96-303f-4771-9468-c873857d06b3.db
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter close
+INFO: Number of keys: 9,060
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter close
+INFO: Number of values: 5,111
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index19.dat
+  Max offset length: 1 bytes
+  Slot size: 20 bytes
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index19.dat has been deleted
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index20.dat
+  Max offset length: 1 bytes
+  Slot size: 21 bytes
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index20.dat has been deleted
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index22.dat
+  Max offset length: 2 bytes
+  Slot size: 24 bytes
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index22.dat has been deleted
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index23.dat
+  Max offset length: 3 bytes
+  Slot size: 26 bytes
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index23.dat has been deleted
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index24.dat
+  Max offset length: 3 bytes
+  Slot size: 27 bytes
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index24.dat has been deleted
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index27.dat
+  Max offset length: 2 bytes
+  Slot size: 29 bytes
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index27.dat has been deleted
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index28.dat
+  Max offset length: 2 bytes
+  Slot size: 30 bytes
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index28.dat has been deleted
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index29.dat
+  Max offset length: 1 bytes
+  Slot size: 30 bytes
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index29.dat has been deleted
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index30.dat
+  Max offset length: 2 bytes
+  Slot size: 32 bytes
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index30.dat has been deleted
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index31.dat
+  Max offset length: 2 bytes
+  Slot size: 33 bytes
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index31.dat has been deleted
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index32.dat
+  Max offset length: 1 bytes
+  Slot size: 33 bytes
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index32.dat has been deleted
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter close
+INFO: Number of collisions: 3,427
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter checkFreeDiskSpace
+INFO: Total expected store size is 0.0 Mb
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter checkFreeDiskSpace
+INFO: Usable free space on the system is 137,750.0 Mb
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging metadata.dat size=354
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index19.dat size=240
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index20.dat size=1,428
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index22.dat size=2,592
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index23.dat size=28,704
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index24.dat size=75,276
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index27.dat size=17,052
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index28.dat size=100,320
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index29.dat size=2,040
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index30.dat size=18,816
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index31.dat size=110,352
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index32.dat size=2,244
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data19.dat size=5
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data20.dat size=13
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data22.dat size=1,664
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data23.dat size=16,649
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data24.dat size=42,154
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data27.dat size=461
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data28.dat size=2,733
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data29.dat size=61
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data30.dat size=837
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data31.dat size=4,237
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data32.dat size=105
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Time to merge 0.022 s
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file metadata.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index19.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index20.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index22.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index23.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index24.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index27.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index28.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index29.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index30.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index31.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index32.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data19.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data20.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data22.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data23.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data24.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data27.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data28.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data29.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data30.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data31.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data32.dat
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary folder at /var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/paldbtempwriter1474408549298-0
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StoreImpl createReader
+INFO: Initialize reader from file id.a009bd96-303f-4771-9468-c873857d06b3.db
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.ReaderImpl <init>
+INFO: Opening reader storage
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageReader <init>
+INFO: Opening file id.a009bd96-303f-4771-9468-c873857d06b3.db
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageReader <init>
+INFO: Storage metadata
+  Created at: 2016.09.20 AD at 15:55:49 MDT
+  Format version: PALDB_V1
+  Key count: 9060
+  Key count for key length 19: 9
+  Key count for key length 20: 51
+  Key count for key length 22: 81
+  Key count for key length 23: 828
+  Key count for key length 24: 2091
+  Key count for key length 27: 441
+  Key count for key length 28: 2508
+  Key count for key length 29: 51
+  Key count for key length 30: 441
+  Key count for key length 31: 2508
+  Key count for key length 32: 51
+  Index size: 0.34 Mb
+  Data size: 0.07 Mb
+  Number of memory mapped data buffers: 1
+Sep 20, 2016 3:55:49 PM com.linkedin.paldb.impl.StorageCache$DisabledCache <init>
+INFO: Cache disabled
+60 dependent variable instances
+Reconciling dependent variable values
+StrongSignal_Both____Fold1 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | Do a sanity check to make sure that no instances overlap between the training and test sets
+StrongSignal_Both____Fold1 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | Selecting features.
+StrongSignal_Both____Fold1 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.l71GTovC/id.43207537-73f4-4fd0-94e6-f272f8fc8fb9.tsv"
+StrongSignal_Both____Fold1 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | System command:
+StrongSignal_Both____Fold1 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.l71GTovC/id.43207537-73f4-4fd0-94e6-f272f8fc8fb9.tsv"
+StrongSignal_Both____Fold2 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | Do a sanity check to make sure that no instances overlap between the training and test sets
+StrongSignal_Both____Fold2 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | Selecting features.
+StrongSignal_Both____Fold2 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.l71GTovC/id.2f0fe9e2-5382-4e08-bb7c-4951081ff0e8.tsv"
+StrongSignal_Both____Fold2 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | System command:
+StrongSignal_Both____Fold2 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.l71GTovC/id.2f0fe9e2-5382-4e08-bb7c-4951081ff0e8.tsv"
+Sep 20, 2016 3:55:51 PM com.linkedin.paldb.impl.ReaderImpl close
+INFO: Closing reader storage
+StrongSignal_Both____Fold2 | AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default | Successfully completed!
+WARNING: ignoring environment value of R_HOME
+Parsed with column specification:
+cols(
+  Description = col_character(),
+  Iteration = col_integer(),
+  Fold = col_integer(),
+  Algorithm = col_character(),
+  Features = col_character()
+)
+Analysis successfully completed!

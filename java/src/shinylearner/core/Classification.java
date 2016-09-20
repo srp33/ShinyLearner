@@ -19,7 +19,7 @@ public class Classification
 
 		String predictionOutput = TrainTest(trainingFilePath, testFilePath);
 		Log.Debug(predictionOutput);
-//		Log.Exit(1);
+		//Log.Exit(1);
 
 		if (!Settings.OUTPUT_BENCHMARK_FILE_PATH.equals(""))
 			FileUtilities.AppendLineToFile(Settings.OUTPUT_BENCHMARK_FILE_PATH, Benchmark.GetBenchmarkValues(startTime));
