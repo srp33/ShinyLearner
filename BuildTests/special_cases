@@ -13,10 +13,16 @@ classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default"
 
 mkdir -p /tmp/special_log
 
+function gz_tmp {
+  rm -f /tmp/${1/\.gz/}
+  cp $inputDir/${1} /tmp/
+  gunzip /tmp/${1}
+}
+
 function testMultipleInputFiles {
   signal=$1
 
-  gzcat $inputDir/${signal}Signal_Continuous.tsv.gz > /tmp/${signal}Signal_Continuous.tsv
+  gz_tmp ${signal}Signal_Continuous.tsv.gz
   python $(dirname $0)/SelectColumns.py /tmp/${signal}Signal_Continuous.tsv 0to-2 /tmp/${signal}Signal_Continuous_NoClass.tsv
 
   description=${signal}SignalMultipleDataFiles
@@ -29,15 +35,15 @@ function testMultipleInputFiles {
   rm /tmp/${signal}Signal_Continuous_NoClass.tsv
 }
 
-#testMultipleInputFiles Strong
-#testMultipleInputFiles No
+testMultipleInputFiles Strong
+testMultipleInputFiles No
 
 #####################################
 # Checks for missing values scenarios
 #####################################
 
 signal=Strong
-gzcat $inputDir/${signal}Signal_Continuous.tsv.gz > /tmp/${signal}Signal_Continuous.tsv
+gz_tmp ${signal}Signal_Continuous.tsv.gz
 
 # Make sure we get a warning when instance is missing class value
 python BuildTests/SelectColumns.py /tmp/${signal}Signal_Continuous.tsv 0to-2 /tmp/${signal}Signal_Continuous_NoClass.tsv

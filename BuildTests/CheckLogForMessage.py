@@ -11,4 +11,4 @@ for line in file(logFilePath):
         break
 
 if not success:
-    print "[FAILED] This message (\"" + message + "\") was expected to be found in " + logFilePath + "."
+    print "[FAILED] This message (\"" + message + "\") was expected to be found in " + logFilePath + " but it was not found."
