@@ -22,26 +22,26 @@ overallLogFile=$outputDir/overall.log
 
 rm -rf $outputDir/*
 
-$(dirname $0)/classification StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
-$(dirname $0)/classification NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &
-$(dirname $0)/classification StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/3.log &
-$(dirname $0)/classification NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/4.log &
+#$(dirname $0)/classification StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
+#$(dirname $0)/classification NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &
+#$(dirname $0)/classification StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/3.log &
+#$(dirname $0)/classification NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/4.log &
+#wait
+#
+##python $(dirname $0)/CheckLogFiles.py "$outputDir/?.log" 4
+#cat $outputDir/?.log >> $overallLogFile
+#rm -f "$outputDir/?.log"
+
+$(dirname $0)/featureselection StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
+$(dirname $0)/featureselection NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &
+$(dirname $0)/featureselection StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/3.log &
+$(dirname $0)/featureselection NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/4.log &
 wait
 
 #python $(dirname $0)/CheckLogFiles.py "$outputDir/?.log" 4
 cat $outputDir/?.log >> $overallLogFile
 rm -f "$outputDir/?.log"
 
-#$(dirname $0)/featureselection StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
-#$(dirname $0)/featureselection NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &
-#$(dirname $0)/featureselection StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/3.log &
-#$(dirname $0)/featureselection NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/4.log &
-#wait
-#
-##python $(dirname $0)/CheckLogFiles.py "$outputDir/?.log" 4
-#cat $outputDir/?.log >> $overallLogFile
-#rm -f "$outputDir/?.log"
-#
 #$(dirname $0)/nestedclassification StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
 #$(dirname $0)/nestedclassification NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &
 #$(dirname $0)/nestedclassification StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/3.log &
