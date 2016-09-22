@@ -23,8 +23,7 @@ script:
   - mkdir input output
   - cp -v Validation/*.tsv.gz input/
   - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version{version} /BuildTests/all
-#  - set -o errexit
-  - set -euo pipefail
+  - set -o errexit
   - python BuildTests/CheckLogFiles.py "output/overall.log" 1
   - echo "\n\nAll tests passed!!!"
 

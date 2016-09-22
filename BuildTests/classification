@@ -13,7 +13,8 @@ outLogFile=$8
 
 source $(dirname $0)/helper
 
-classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
+#classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
+classifAlgo="AlgorithmScripts/Classification/tsv/*/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default"
