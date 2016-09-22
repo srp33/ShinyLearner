@@ -1,0 +1,398 @@
+System command:
+ls /Users/srp33/Dropbox/ShinyLearner/Validation/StrongSignalLarge_Both.tsv.gz
+Sep 22, 2016 9:57:11 AM com.linkedin.paldb.impl.StoreImpl createWriter
+INFO: Initialize writer from file id.445a35b3-242a-400c-858f-3a2141dfb135.db
+Sep 22, 2016 9:57:11 AM com.linkedin.paldb.impl.WriterImpl <init>
+INFO: Opening writer storage
+Sep 22, 2016 9:57:11 AM com.linkedin.paldb.impl.StorageWriter <init>
+INFO: Creating temporary folder at /var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/paldbtempwriter1474559831922-0
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.WriterImpl close
+INFO: Closing writer storage, writing to file at /var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.445a35b3-242a-400c-858f-3a2141dfb135.db
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter close
+INFO: Number of keys: 1,799,940
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter close
+INFO: Number of values: 1,020,549
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index21.dat
+  Max offset length: 2 bytes
+  Slot size: 23 bytes
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index21.dat has been deleted
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index22.dat
+  Max offset length: 3 bytes
+  Slot size: 25 bytes
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index22.dat has been deleted
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index23.dat
+  Max offset length: 3 bytes
+  Slot size: 26 bytes
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index23.dat has been deleted
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index24.dat
+  Max offset length: 4 bytes
+  Slot size: 28 bytes
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index24.dat has been deleted
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index25.dat
+  Max offset length: 4 bytes
+  Slot size: 29 bytes
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index25.dat has been deleted
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index26.dat
+  Max offset length: 2 bytes
+  Slot size: 28 bytes
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index26.dat has been deleted
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index29.dat
+  Max offset length: 3 bytes
+  Slot size: 32 bytes
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index29.dat has been deleted
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index30.dat
+  Max offset length: 3 bytes
+  Slot size: 33 bytes
+Sep 22, 2016 9:57:13 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index30.dat has been deleted
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index32.dat
+  Max offset length: 3 bytes
+  Slot size: 35 bytes
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index32.dat has been deleted
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Built index file index33.dat
+  Max offset length: 3 bytes
+  Slot size: 36 bytes
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter buildIndex
+INFO: Temporary index file temp_index33.dat has been deleted
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter close
+INFO: Number of collisions: 675,233
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter checkFreeDiskSpace
+INFO: Total expected store size is 87.0 Mb
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter checkFreeDiskSpace
+INFO: Usable free space on the system is 138,128.0 Mb
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging metadata.dat size=326
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index21.dat size=2,484
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index22.dat size=42,300
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index23.dat size=439,920
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index24.dat size=4,737,600
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index25.dat size=17,748,696
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index26.dat size=3,808
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index29.dat size=3,839,616
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index30.dat size=22,437,756
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index32.dat size=4,199,580
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging index33.dat size=24,477,552
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data21.dat size=1,662
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data22.dat size=25,475
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data23.dat size=255,756
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data24.dat size=2,558,202
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data25.dat size=9,253,322
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data26.dat size=1,229
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data29.dat size=96,701
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data30.dat size=544,765
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data32.dat size=156,553
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Merging data33.dat size=883,941
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter mergeFiles
+INFO: Time to merge 0.287 s
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file metadata.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index21.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index22.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index23.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index24.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index25.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index26.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index29.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index30.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index32.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file index33.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data21.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data22.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data23.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data24.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data25.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data26.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data29.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data30.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data32.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary file data33.dat
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageWriter cleanup
+INFO: Deleted temporary folder at /var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/paldbtempwriter1474559831922-0
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StoreImpl createReader
+INFO: Initialize reader from file id.445a35b3-242a-400c-858f-3a2141dfb135.db
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.ReaderImpl <init>
+INFO: Opening reader storage
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageReader <init>
+INFO: Opening file id.445a35b3-242a-400c-858f-3a2141dfb135.db
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageReader <init>
+INFO: Storage metadata
+  Created at: 2016.09.22 AD at 09:57:13 MDT
+  Format version: PALDB_V1
+  Key count: 1799940
+  Key count for key length 21: 81
+  Key count for key length 22: 1269
+  Key count for key length 23: 12690
+  Key count for key length 24: 126900
+  Key count for key length 25: 459018
+  Key count for key length 26: 102
+  Key count for key length 29: 89991
+  Key count for key length 30: 509949
+  Key count for key length 32: 89991
+  Key count for key length 33: 509949
+  Index size: 74.32 Mb
+  Data size: 13.14 Mb
+  Number of memory mapped data buffers: 1
+Sep 22, 2016 9:57:14 AM com.linkedin.paldb.impl.StorageCache$DisabledCache <init>
+INFO: Cache disabled
+60 dependent variable instances
+Reconciling dependent variable values
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | Do a sanity check to make sure that no instances overlap between the training and test sets
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | Classifying.
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.4efa4866-033e-4108-8dcd-53ffec40497c.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.d53cac59-9160-47bb-8e17-3a96dcb18f47.tsv" "1,2,3"
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | System command:
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.4efa4866-033e-4108-8dcd-53ffec40497c.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.d53cac59-9160-47bb-8e17-3a96dcb18f47.tsv" "1,2,3"
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 1	0.455797881	0.272133278	0.272068841
+1	0.455111760	0.272900473	0.271987767
+1	0.454726571	0.272190663	0.273082766
+1	0.454761950	0.273263815	0.271974236
+1	0.454099414	0.273300655	0.272599931
+1	0.455339181	0.271419840	0.273240978
+1	0.455302045	0.271174443	0.273523512
+1	0.454432527	0.272341307	0.273226166
+1	0.455870216	0.271225397	0.272904387
+1	0.454398187	0.272824423	0.272777390
+1	0.455060888	0.272783753	0.272155359
+1	0.455670103	0.271818718	0.272511179
+1	0.455099878	0.273057313	0.271842809
+1	0.455524951	0.272466120	0.272008929
+1	0.453841107	0.273051006	0.273107887
+1	0.455940050	0.272504180	0.271555770
+1	0.455751052	0.272191636	0.272057312
+1	0.454421809	0.272171517	0.273406674
+1	0.454739299	0.271715229	0.273545472
+1	0.455235995	0.272386003	0.272378002
+
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 1	0.455797881	0.272133278	0.272068841
+1	0.455111760	0.272900473	0.271987767
+1	0.454726571	0.272190663	0.273082766
+1	0.454761950	0.273263815	0.271974236
+1	0.454099414	0.273300655	0.272599931
+1	0.455339181	0.271419840	0.273240978
+1	0.455302045	0.271174443	0.273523512
+1	0.454432527	0.272341307	0.273226166
+1	0.455870216	0.271225397	0.272904387
+1	0.454398187	0.272824423	0.272777390
+1	0.455060888	0.272783753	0.272155359
+1	0.455670103	0.271818718	0.272511179
+1	0.455099878	0.273057313	0.271842809
+1	0.455524951	0.272466120	0.272008929
+1	0.453841107	0.273051006	0.273107887
+1	0.455940050	0.272504180	0.271555770
+1	0.455751052	0.272191636	0.272057312
+1	0.454421809	0.272171517	0.273406674
+1	0.454739299	0.271715229	0.273545472
+1	0.455235995	0.272386003	0.272378002
+
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 20
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 20
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | Do a sanity check to make sure that no instances overlap between the training and test sets
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | Classifying.
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.4efa4866-033e-4108-8dcd-53ffec40497c.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.d53cac59-9160-47bb-8e17-3a96dcb18f47.tsv" "1,2,3"
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | System command:
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.4efa4866-033e-4108-8dcd-53ffec40497c.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.d53cac59-9160-47bb-8e17-3a96dcb18f47.tsv" "1,2,3"
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | 1	0.904906215	0.046350890	0.048742895
+1	0.905324342	0.037503569	0.057172089
+1	0.932409991	0.028294546	0.039295463
+1	0.908189335	0.045370206	0.046440459
+1	0.911984538	0.052061585	0.035953876
+1	0.957781312	0.022529634	0.019689055
+1	0.937297389	0.037514383	0.025188228
+1	0.830011400	0.073434170	0.096554430
+1	0.945509456	0.035861507	0.018629036
+1	0.899418056	0.082709583	0.017872361
+1	0.940495031	0.028272067	0.031232901
+1	0.923253874	0.044248409	0.032497717
+1	0.903631179	0.057284235	0.039084586
+1	0.932917564	0.044617551	0.022464885
+1	0.947852469	0.023790766	0.028356765
+1	0.912477658	0.057001791	0.030520551
+1	0.932377439	0.026673395	0.040949166
+1	0.854529123	0.072296204	0.073174673
+1	0.939907025	0.027015392	0.033077582
+1	0.940133065	0.039535853	0.020331082
+
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | 1	0.904906215	0.046350890	0.048742895
+1	0.905324342	0.037503569	0.057172089
+1	0.932409991	0.028294546	0.039295463
+1	0.908189335	0.045370206	0.046440459
+1	0.911984538	0.052061585	0.035953876
+1	0.957781312	0.022529634	0.019689055
+1	0.937297389	0.037514383	0.025188228
+1	0.830011400	0.073434170	0.096554430
+1	0.945509456	0.035861507	0.018629036
+1	0.899418056	0.082709583	0.017872361
+1	0.940495031	0.028272067	0.031232901
+1	0.923253874	0.044248409	0.032497717
+1	0.903631179	0.057284235	0.039084586
+1	0.932917564	0.044617551	0.022464885
+1	0.947852469	0.023790766	0.028356765
+1	0.912477658	0.057001791	0.030520551
+1	0.932377439	0.026673395	0.040949166
+1	0.854529123	0.072296204	0.073174673
+1	0.939907025	0.027015392	0.033077582
+1	0.940133065	0.039535853	0.020331082
+
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | 20
+StrongSignalLarge_Both____Iteration1 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | 20
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | Do a sanity check to make sure that no instances overlap between the training and test sets
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | Classifying.
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.23d52036-6185-439b-8d05-137d24d62c54.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.d5479109-d777-470b-9a8b-114ba7ed207e.tsv" "1,2,3"
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | System command:
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.23d52036-6185-439b-8d05-137d24d62c54.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.d5479109-d777-470b-9a8b-114ba7ed207e.tsv" "1,2,3"
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 1	0.454500190	0.272649713	0.272850096
+1	0.455686578	0.271950614	0.272362808
+1	0.455628015	0.273187140	0.271184845
+1	0.454524288	0.272978970	0.272496742
+1	0.455297168	0.271483833	0.273219000
+1	0.455830206	0.271604305	0.272565488
+1	0.454326820	0.271961348	0.273711832
+1	0.455639080	0.272033854	0.272327066
+1	0.455232410	0.272620803	0.272146787
+1	0.455328686	0.272844475	0.271826840
+1	0.454869916	0.272543427	0.272586657
+1	0.455588694	0.271947619	0.272463688
+1	0.454821785	0.273590889	0.271587326
+1	0.454471830	0.272337672	0.273190497
+1	0.454957868	0.273689427	0.271352705
+1	0.454164428	0.273346823	0.272488749
+1	0.454481088	0.272401887	0.273117025
+1	0.455812090	0.272188063	0.271999847
+1	0.454795598	0.272712640	0.272491762
+1	0.455118953	0.273115230	0.271765817
+
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 1	0.454500190	0.272649713	0.272850096
+1	0.455686578	0.271950614	0.272362808
+1	0.455628015	0.273187140	0.271184845
+1	0.454524288	0.272978970	0.272496742
+1	0.455297168	0.271483833	0.273219000
+1	0.455830206	0.271604305	0.272565488
+1	0.454326820	0.271961348	0.273711832
+1	0.455639080	0.272033854	0.272327066
+1	0.455232410	0.272620803	0.272146787
+1	0.455328686	0.272844475	0.271826840
+1	0.454869916	0.272543427	0.272586657
+1	0.455588694	0.271947619	0.272463688
+1	0.454821785	0.273590889	0.271587326
+1	0.454471830	0.272337672	0.273190497
+1	0.454957868	0.273689427	0.271352705
+1	0.454164428	0.273346823	0.272488749
+1	0.454481088	0.272401887	0.273117025
+1	0.455812090	0.272188063	0.271999847
+1	0.454795598	0.272712640	0.272491762
+1	0.455118953	0.273115230	0.271765817
+
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 20
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default | 20
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | Do a sanity check to make sure that no instances overlap between the training and test sets
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | Classifying.
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.23d52036-6185-439b-8d05-137d24d62c54.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.d5479109-d777-470b-9a8b-114ba7ed207e.tsv" "1,2,3"
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | System command:
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.23d52036-6185-439b-8d05-137d24d62c54.tsv" "/var/folders/xh/37l9g3550y1bztlhv6q5ytcw0000gp/T/tmp.RqE71qQR/id.d5479109-d777-470b-9a8b-114ba7ed207e.tsv" "1,2,3"
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | 1	0.944691451	0.036960992	0.018347557
+1	0.943612305	0.037902972	0.018484723
+1	0.946122370	0.024242026	0.029635604
+1	0.951135112	0.021801598	0.027063289
+1	0.965269388	0.017974702	0.016755910
+1	0.939383614	0.038040961	0.022575425
+1	0.868753471	0.069892440	0.061354088
+1	0.933390080	0.037644116	0.028965804
+1	0.925726571	0.026616903	0.047656526
+1	0.959636309	0.029609514	0.010754177
+1	0.918245581	0.042829329	0.038925090
+1	0.944305762	0.033214209	0.022480029
+1	0.938365265	0.024114178	0.037520557
+1	0.939481445	0.029969951	0.030548605
+1	0.940272535	0.021163877	0.038563589
+1	0.914699378	0.053466934	0.031833688
+1	0.962704593	0.019324070	0.017971336
+1	0.954501880	0.012273693	0.033224426
+1	0.941140490	0.019155891	0.039703619
+1	0.928602527	0.044541147	0.026856325
+
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | 1	0.944691451	0.036960992	0.018347557
+1	0.943612305	0.037902972	0.018484723
+1	0.946122370	0.024242026	0.029635604
+1	0.951135112	0.021801598	0.027063289
+1	0.965269388	0.017974702	0.016755910
+1	0.939383614	0.038040961	0.022575425
+1	0.868753471	0.069892440	0.061354088
+1	0.933390080	0.037644116	0.028965804
+1	0.925726571	0.026616903	0.047656526
+1	0.959636309	0.029609514	0.010754177
+1	0.918245581	0.042829329	0.038925090
+1	0.944305762	0.033214209	0.022480029
+1	0.938365265	0.024114178	0.037520557
+1	0.939481445	0.029969951	0.030548605
+1	0.940272535	0.021163877	0.038563589
+1	0.914699378	0.053466934	0.031833688
+1	0.962704593	0.019324070	0.017971336
+1	0.954501880	0.012273693	0.033224426
+1	0.941140490	0.019155891	0.039703619
+1	0.928602527	0.044541147	0.026856325
+
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | 20
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | 20
+Sep 22, 2016 9:57:34 AM com.linkedin.paldb.impl.ReaderImpl close
+INFO: Closing reader storage
+StrongSignalLarge_Both____Iteration2 | /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default | Successfully completed!
+WARNING: ignoring environment value of R_HOME
+WARNING: ignoring environment value of R_HOME
+Analysis successfully completed!

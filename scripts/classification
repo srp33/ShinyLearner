@@ -52,7 +52,7 @@ cleanup
 mkdir -p $tmpDir
 source scripts/helper
 
-trap cleanup INT TERM EXIT
+#trap cleanup INT TERM EXIT
 
 idFile=$tmpDir/id
 classFile=$tmpDir/cl

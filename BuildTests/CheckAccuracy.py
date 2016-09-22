@@ -15,6 +15,7 @@ if len(metricFilePaths) == 0:
     print "[FAILED] No metric files were found!"
     exit(1)
 
+successfulAlgorithms = set()
 failedAlgorithms = set()
 
 for metricFilePath in metricFilePaths:
@@ -43,26 +44,25 @@ for metricFilePath in metricFilePaths:
             lowerThreshold = 0.75
             if meanAUC >= lowerThreshold:
                 print "[PASSED] The mean AUROC was %.3f for %s and %s. {%s}" % (meanAUC, description, algorithm, idText)
+                successfulAlgorithms.add(algorithm)
             else:
                 print "[FAILED] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f. {%s}" % (meanAUC, description, algorithm, lowerThreshold, idText)
-                failedAlgorithms.add(algorithm)
-        elif description.startswith("MediumSignal"):
-            lowerThreshold = 0.6
-            upperThreshold = 0.9
-            if meanAUC >= lowerThreshold and meanAUC <= upperThreshold:
-                print "[PASSED] The mean AUROC was %.3f for %s and %s. {%s}" % (meanAUC, description, algorithm, idText)
-            else:
-                print "[FAILED] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f. The expected upper threshold is %.3f. {%s}" % (meanAUC, description, algorithm, lowerThreshold, upperThreshold, idText)
                 failedAlgorithms.add(algorithm)
         elif description.startswith("NoSignal"):
             upperThreshold = 0.7
             if meanAUC <= upperThreshold:
                 print "[PASSED] The mean AUROC was %.3f for %s and %s. {%s}" % (meanAUC, description, algorithm, idText)
+                successfulAlgorithms.add(algorithm)
             else:
                 print "[FAILED] The mean AUROC was %.3f for %s and %s. The expected upper threshold is %.3f. {%s}" % (meanAUC, description, algorithm, upperThreshold, idText)
                 failedAlgorithms.add(algorithm)
 
 print "\n[TEST SUMMARY]\n"
+
+if len(successfulAlgorithms) == 0:
+    print "[FAILED] No algorithms successfully passed any of the tests."
+    exit(1)
+
 if len(failedAlgorithms) > 0:
     print "The following algorithm(s) failed at least once:"
     for algorithm in failedAlgorithms:

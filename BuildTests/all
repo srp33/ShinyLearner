@@ -14,12 +14,22 @@ else
   mkdir -p $outputDir
 fi
 
-#debug=false
-debug=true
+debug=false
+#debug=true
 numOuterIterations=2
 numInnerIterations=2
 
 rm -rf $outputDir/*
+
+# move this down
+$(dirname $0)/special_cases $inputDir $outputDir $debug $outputDir/special.log
+
+python $(dirname $0)/CheckLogFiles.py "$outputDir/special.log" 1
+rm -f "$outputDir/*.log"
+exit
+
+
+
 
 $(dirname $0)/classification StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
 $(dirname $0)/classification NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &

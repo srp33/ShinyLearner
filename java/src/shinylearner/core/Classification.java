@@ -32,7 +32,7 @@ public class Classification
 
 	private static String TrainTest(String trainingFilePath, String testFilePath) throws Exception
 	{
-		String dependentVariableOptions = ListUtilities.Join(ListUtilities.SortStringList(Singletons.InstanceVault.DependentVariableOptions), ",");
+		String dependentVariableOptions = ListUtilities.Join(ListUtilities.SortStringList(Singletons.DependentVariableOptions), ",");
 		String parameters = "\"" + trainingFilePath + "\" \"" + testFilePath + "\" \"" + dependentVariableOptions + "\"";
 
 		Log.Debug(Singletons.ExperimentItems.AlgorithmScriptFilePath + " " + parameters);
@@ -62,7 +62,7 @@ public class Classification
 			String[] lineItems = predictionLines[i].split("\t");
 
 			String instanceID = tempTestIDs.remove(0);
-			String actualClass = Singletons.InstanceVault.DependentVariableInstances.get(instanceID);
+			String actualClass = Singletons.DependentVariableInstances.get(instanceID);
 			String prediction = lineItems[0];
 
 			ArrayList<Double> probabilities = new ArrayList<Double>();
@@ -73,7 +73,7 @@ public class Classification
 		}
 		
 		if (tempTestIDs.size() > 0)
-			Log.ExceptionFatal("The number of predictions [" + predictionLines.length + "] was not divisible by the number of test samples [" + testIDs.size() + "].\n\n" + predictionOutput);
+			Log.ExceptionFatal("The number of predictions [" + predictionLines.length + "] was not divisible by the number of test samples [" + testIDs.size() + "].\n\nAlgorithm output:\n" + predictionOutput);
 
 		return predictions;
 	}
@@ -82,7 +82,7 @@ public class Classification
 	{
 		String header = "Description\tAlgorithm\tInstanceID\tActualClass\tPredictedClass";
 
-		for (String x : Singletons.InstanceVault.DependentVariableOptions)
+		for (String x : Singletons.DependentVariableOptions)
 			header += "\t" + MiscUtilities.UnformatClassValue(x);
 
 		return header;

@@ -7,15 +7,24 @@ if len(logFilePaths) != expectedNumLogFiles:
     print "An insufficient number of log files was found: %i" % len(logFilePaths)
     exit(1)
 
+successLineCount = 0
 failureOutput = ""
 for logFilePath in logFilePaths:
     for line in file(logFilePath):
         if "Exception" in line or "Error" in line or "[FAILED]" in line:
             failureOutput += "\n" + line
+        else:
+            successLineCount += 1
 
-if failureOutput != "":
-    print "*******************************************************"
+print "\n*******************************************************\n"
+if failureOutput == "":
+    if successLineCount > 0:
+        print "The build test log files look OK!"
+    else:
+        print "The log file contained no successful lines."
+        exit(1)
+else:
     print failureOutput
     print "At least one error occurred. Please address it!!!"
-    print "*******************************************************"
     exit(1)
+print "\n*******************************************************\n"

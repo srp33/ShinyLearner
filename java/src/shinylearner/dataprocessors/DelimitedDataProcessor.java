@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import shinylearner.core.DataInstanceCollection;
 import shinylearner.core.Log;
+import shinylearner.core.Singletons;
 import shinylearner.helper.BigFileReader;
 import shinylearner.helper.ListUtilities;
 
@@ -12,21 +13,18 @@ import shinylearner.helper.ListUtilities;
  */
 public class DelimitedDataProcessor extends AbstractDataProcessor
 {
-    private String _filePath;
     private String _delimiter;
 
     public DelimitedDataProcessor(String filePath, String delimiter)
     {
-        _filePath = filePath;
+        DataFilePath = filePath;
         _delimiter = delimiter;
     }
 
     @Override
-    public DataInstanceCollection ParseInputData() throws Exception
+    public void ParseInputData(String dataSource) throws Exception
     {
-    	DataInstanceCollection dataInstances = new DataInstanceCollection();
-    	
-        BigFileReader reader = new BigFileReader(_filePath);
+        BigFileReader reader = new BigFileReader(DataFilePath);
         
         ArrayList<String> dataPointNames = ListUtilities.CreateStringList(reader.ReadLine().split(_delimiter));
 
@@ -43,11 +41,9 @@ public class DelimitedDataProcessor extends AbstractDataProcessor
         	String instanceID = rowValues.remove(0);
 
             for (int j=0; j<rowValues.size(); j++)
-				dataInstances.Add(dataPointNames.get(j), instanceID, rowValues.get(j));
+				Singletons.IndependentVariableInstances.Add(dataSource, dataPointNames.get(j), instanceID, rowValues.get(j));
         }
         
         reader.Close();
-
-        return dataInstances;
     }
 }

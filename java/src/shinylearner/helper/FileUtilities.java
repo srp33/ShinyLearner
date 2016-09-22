@@ -336,4 +336,9 @@ public class FileUtilities
        else
     	   return "";
    }
+   
+   public static String GetFileName(String filePath)
+   {
+       return new File(filePath).getName();
+   }
 }

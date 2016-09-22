@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
 import shinylearner.helper.MiscUtilities;
 
@@ -17,7 +18,7 @@ public class DataInstanceCollection
 {
 	/** This value is placed at the end of a file that contains a serialized version of this object. It's used to verify that the entire file was stored properly. */
 	private static String COMMA_REPLACE_STRING = "_comma_";
-	private static String KEY_DELIMITER = "___";
+	private static String KEY_DELIMITER = "__";
 
 	private HashSet<String> _dataPointNames = new HashSet<String>();
 	private HashSet<String> _instanceIDs = new HashSet<String>();
@@ -28,22 +29,32 @@ public class DataInstanceCollection
 	 * @param instanceID Data instance ID
 	 * @param value Data value
 	 */
-	public void Add(String dataPointName, String instanceID, String value)
+	public void Add(String dataSource, String dataPointName, String instanceID, String value)
 	{
 		//if (MiscUtilities.IsMissing(value))
 		//	return;
-
-		Singletons.DatabaseWriter.put(dataPointName + KEY_DELIMITER + instanceID, value);
-
-		_dataPointNames.add(dataPointName);
-		_instanceIDs.add(instanceID);
+		
+		if (dataPointName.equals(Settings.DEPENDENT_VARIABLE_NAME))
+		{
+			if (dataSource != null && Singletons.DependentVariableInstances.containsKey(instanceID))
+				Log.ExceptionFatal("Multiple dependent-variable (class) values were detected in the input files for " + instanceID + ". Each instance (sample) may have only one class value.");
+		
+			Singletons.DependentVariableInstances.put(instanceID, value);
+		}
+		else
+		{
+			dataPointName = dataSource == null ? dataPointName : FileUtilities.GetFileName(dataSource) + KEY_DELIMITER + dataPointName;
+	
+			Singletons.DatabaseWriter.put(BuildKey(dataPointName, instanceID), value);
+	
+			_dataPointNames.add(dataPointName);
+			_instanceIDs.add(instanceID);
+		}
 	}
-
-	public void Add(DataInstanceCollection newInstances)
+	
+	private String BuildKey(String dataPointName, String instanceID)
 	{
-		for (String dataPointName : newInstances.GetDataPointNamesUnsorted())
-			for (String instanceID : newInstances.GetInstanceIDsUnsorted())
-				Add(dataPointName, instanceID, newInstances.GetDataPointValue(instanceID, dataPointName));
+		return dataPointName + KEY_DELIMITER + instanceID;
 	}
 
 	/** Gets a list of all data point names across all data instances in the collection.
@@ -66,7 +77,7 @@ public class DataInstanceCollection
 
 	public String GetDataPointValue(String instanceID, String dataPointName)
 	{
-		return Singletons.DatabaseReader.get(dataPointName + KEY_DELIMITER + instanceID);
+		return Singletons.DatabaseReader.get(BuildKey(dataPointName, instanceID));
 	}
 
 	public ArrayList<String> GetDataPointValues(String instanceID, ArrayList<String> dataPointNames)
@@ -166,6 +177,11 @@ public class DataInstanceCollection
 	public boolean HasDataPointValue(String instanceID, String dataPointName)
 	{
 		return GetDataPointValue(instanceID, dataPointName) != null;
+	}
+	
+	public boolean HasInstance(String instanceID)
+	{
+		return _instanceIDs.contains(instanceID);
 	}
 
 	/** Removes the specified data point from all instances in the collection.

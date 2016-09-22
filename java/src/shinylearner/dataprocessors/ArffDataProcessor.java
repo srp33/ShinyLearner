@@ -2,7 +2,7 @@ package shinylearner.dataprocessors;
 
 import java.util.ArrayList;
 
-import shinylearner.core.DataInstanceCollection;
+import shinylearner.core.Singletons;
 import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
 
@@ -11,24 +11,20 @@ import shinylearner.helper.ListUtilities;
  */
 public class ArffDataProcessor extends AbstractDataProcessor
 {
-    private String _filePath;
-
     /** This constructor accepts a relative path to an ARFF file that will be parsed.
      * @param filePath Relative or absolute path where the file is located (under the InputData directory)
      */
     public ArffDataProcessor(String filePath)
     {
-        _filePath = filePath;
+        DataFilePath = filePath;
     }
 
     @Override
-    public DataInstanceCollection ParseInputData() throws Exception
+    public void ParseInputData(String dataSource) throws Exception
     {
-    	DataInstanceCollection dataInstances = new DataInstanceCollection();
-    	
         int overallInstanceCount = 0;
 
-        ArrayList<String> fileLines = FileUtilities.ReadLinesFromFile(_filePath, "%");
+        ArrayList<String> fileLines = FileUtilities.ReadLinesFromFile(DataFilePath, "%");
 
         ArrayList<String> metaRows = ListUtilities.GetValuesStartingWith(fileLines, "@");
         //ArrayList<String> dataRows = ListUtilities.RemoveAll(fileLines, metaRows);
@@ -36,12 +32,13 @@ public class ArffDataProcessor extends AbstractDataProcessor
         metaRows = ListUtilities.Replace(metaRows, "\t", " ");
 
         if (dataRows.size() == 0)
-            throw new Exception("No data rows could be identified in " + _filePath + ".");
+            throw new Exception("No data rows could be identified in " + DataFilePath + ".");
 
-        ArrayList<String> attributeNames = ParseAttributeNames(metaRows, _filePath);
+        ArrayList<String> attributeNames = ParseAttributeNames(metaRows, DataFilePath);
         int idIndex = ListUtilities.ToLowerCase(attributeNames).indexOf("id");
 
-        for (int i=0; i<dataRows.size(); i++) {
+        for (int i=0; i<dataRows.size(); i++)
+        {
             overallInstanceCount++;
 
             ArrayList<String> dataRowItems = ListUtilities.CreateStringList(dataRows.get(i).trim().split(","));
@@ -49,10 +46,8 @@ public class ArffDataProcessor extends AbstractDataProcessor
 
             for (int j = 0; j < dataRowItems.size(); j++)
                 if (j != idIndex)
-                    dataInstances.Add(attributeNames.get(j), instanceID, dataRowItems.get(j));
+                    Singletons.IndependentVariableInstances.Add(dataSource, attributeNames.get(j), instanceID, dataRowItems.get(j));
         }
-        
-        return dataInstances;
     }
 
     /** Parses attribute names from the metadata rows in an ARFF file.

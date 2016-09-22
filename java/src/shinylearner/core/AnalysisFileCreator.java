@@ -48,14 +48,14 @@ public class AnalysisFileCreator
         _instanceIDs = instanceIDs;
         
         if (dataPointNames == null)
-        	_dataPointNames = Singletons.InstanceVault.IndependentVariableInstances.GetDataPointNamesSorted();
+        	_dataPointNames = Singletons.IndependentVariableInstances.GetDataPointNamesSorted();
         else
         	_dataPointNames = dataPointNames;
     }
 
     private String GetDependentVariableValue(String instanceID) throws Exception
     {
-        return Singletons.InstanceVault.DependentVariableInstances.get(instanceID);
+        return Singletons.DependentVariableInstances.get(instanceID);
     }
     
     /** Generates files in the ARFF format.
@@ -72,20 +72,20 @@ public class AnalysisFileCreator
         
         for (String dataPointName : _dataPointNames)
         {
-            HashSet<String> uniqueValues = new HashSet<String>(Singletons.InstanceVault.IndependentVariableInstances.GetUniqueValues(dataPointName));
+            HashSet<String> uniqueValues = new HashSet<String>(Singletons.IndependentVariableInstances.GetUniqueValues(dataPointName));
             AppendArffAttribute(new ArrayList<String>(uniqueValues), dataPointName, outFile);
         }
 
         Log.Debug("Appending ARFF attributes for dependent variable");
         if (includeDependentVariable)
-            AppendArffAttribute(Singletons.InstanceVault.DependentVariableOptions, Settings.DEPENDENT_VARIABLE_NAME, outFile);
+            AppendArffAttribute(Singletons.DependentVariableOptions, Settings.DEPENDENT_VARIABLE_NAME, outFile);
 
         outFile.write("\n@data");
 
         Log.Debug("Creating ARFF output text object");
         for (String instanceID : _instanceIDs)
         {
-			ArrayList<String> dataValues = Singletons.InstanceVault.IndependentVariableInstances.GetDataPointValues(instanceID, _dataPointNames);
+			ArrayList<String> dataValues = Singletons.IndependentVariableInstances.GetDataPointValues(instanceID, _dataPointNames);
 			
 			for (String x : dataValues)
 				if (x == null)
@@ -139,7 +139,7 @@ public class AnalysisFileCreator
             ArrayList<String> rowItems = ListUtilities.CreateStringList(dataPoint);
 
             for (String instanceID : _instanceIDs)
-                rowItems.add(Singletons.InstanceVault.IndependentVariableInstances.GetDataPointValue(instanceID, dataPoint));
+                rowItems.add(Singletons.IndependentVariableInstances.GetDataPointValue(instanceID, dataPoint));
 
 //            rowItems = ListUtilities.ReplaceAllExactMatches(rowItems, Settings.MISSING_VALUE_STRING, "NA");
 
@@ -151,7 +151,7 @@ public class AnalysisFileCreator
             ArrayList<String> rowItems = ListUtilities.CreateStringList(Settings.DEPENDENT_VARIABLE_NAME);
 
             for (String instanceID : _instanceIDs)
-                rowItems.add(Singletons.InstanceVault.DependentVariableInstances.get(instanceID));
+                rowItems.add(Singletons.DependentVariableInstances.get(instanceID));
 
             outFile.write(ListUtilities.Join(rowItems, "\t") + "\n");
         }
@@ -177,7 +177,7 @@ public class AnalysisFileCreator
 
         for (String instanceID : _instanceIDs)
         {
-            ArrayList<String> values = Singletons.InstanceVault.IndependentVariableInstances.GetDataPointValues(instanceID, _dataPointNames);
+            ArrayList<String> values = Singletons.IndependentVariableInstances.GetDataPointValues(instanceID, _dataPointNames);
 
             if (includeDependentVariable)
                 values.add(GetDependentVariableValue(instanceID));

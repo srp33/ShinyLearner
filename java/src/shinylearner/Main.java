@@ -11,7 +11,7 @@ import shinylearner.core.Benchmark;
 import shinylearner.core.Classification;
 import shinylearner.core.ExperimentItems;
 import shinylearner.core.FeatureSelection;
-import shinylearner.core.InstanceVault;
+import shinylearner.core.InstanceManager;
 import shinylearner.core.Log;
 import shinylearner.core.Settings;
 import shinylearner.core.Singletons;
@@ -36,35 +36,53 @@ public class Main
 			Settings.Check();
 			
 			Singletons.DatabaseFilePath = Settings.TEMP_DIR + "/" + MiscUtilities.GetUniqueID() + ".db";
-			Singletons.DatabaseWriter = PalDB.createWriter(new File(Singletons.DatabaseFilePath));
 			
-			Singletons.InstanceVault = new InstanceVault().LoadDataInstances();
+			Singletons.DatabaseWriter = PalDB.createWriter(new File(Singletons.DatabaseFilePath));
+			InstanceManager.LoadDataInstances();
 			Singletons.DatabaseWriter.close();
 			
 			Singletons.DatabaseReader = PalDB.createReader(new File(Singletons.DatabaseFilePath));
-			Singletons.InstanceVault.RefineDataInstances();
+			InstanceManager.RefineDataInstances();
 
 			if (!Settings.OUTPUT_DATA_FILE_PATH.equals(""))
-				Singletons.InstanceVault.SaveOutputDataFile();
+				InstanceManager.SaveOutputDataFile();
 			
 			if (!Settings.OUTPUT_PREDICTIONS_FILE_PATH.equals("") || !Settings.OUTPUT_FEATURES_FILE_PATH.equals("") || !Settings.OUTPUT_BENCHMARK_FILE_PATH.equals(""))
 				PerformAnalysis();
 			
 			Singletons.DatabaseReader.close();
+			
+			FileUtilities.DeleteFile(Singletons.DatabaseFilePath);
 
 			Log.PrintErr(Log.FormatText("Successfully completed!"));
+			
 			System.exit(0); // Not sure if this is necessary, but keeping it just in case
 		}
 		catch (Exception ex)
 		{
 			Log.PrintOut(Log.GetStackTrace(ex));
 			
-			if (Singletons.DatabaseWriter != null)
-				Singletons.DatabaseWriter.close();
+			try
+			{
+				if (Singletons.DatabaseWriter != null)
+					Singletons.DatabaseWriter.close();
+			}
+			catch (Exception ex2) {}
+
+			try
+			{
+				if (Singletons.DatabaseReader != null)
+					Singletons.DatabaseReader.close();
+			}
+			catch (Exception ex3) {}
 			
-			if (Singletons.DatabaseReader != null)
-				Singletons.DatabaseReader.close();
-			
+			try
+			{
+				if (Singletons.DatabaseFilePath != null && FileUtilities.FileExists(Singletons.DatabaseFilePath))
+					FileUtilities.DeleteFile(Singletons.DatabaseFilePath);
+			}
+			catch (Exception ex4) {}
+
 			System.exit(1); // Not sure if this is necessary, but keeping it just in case
 		}
 	}
@@ -124,8 +142,8 @@ public class Main
             throw new Exception("No predictions can be made because the training and/or test set have no data.");
 
         // Make sure the training and test IDs are in the data set we are working with
-        ArrayList<String> overlappingTrainingIDs = ListUtilities.Intersect(ListUtilities.CreateStringList(Singletons.InstanceVault.IndependentVariableInstances.GetInstanceIDsUnsorted()), trainIDs);
-        ArrayList<String> overlappingTestIDs = ListUtilities.Intersect(ListUtilities.CreateStringList(Singletons.InstanceVault.IndependentVariableInstances.GetInstanceIDsUnsorted()), testIDs);
+        ArrayList<String> overlappingTrainingIDs = ListUtilities.Intersect(ListUtilities.CreateStringList(Singletons.IndependentVariableInstances.GetInstanceIDsUnsorted()), trainIDs);
+        ArrayList<String> overlappingTestIDs = ListUtilities.Intersect(ListUtilities.CreateStringList(Singletons.IndependentVariableInstances.GetInstanceIDsUnsorted()), testIDs);
 
         if (overlappingTrainingIDs.size() != trainIDs.size())
         	Log.ExceptionFatal("At least one of the training IDs was not present in the input data set(s).");
