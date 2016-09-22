@@ -1,7 +1,6 @@
 package shinylearner.core;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import shinylearner.dataprocessors.AbstractDataProcessor;
@@ -10,7 +9,6 @@ import shinylearner.dataprocessors.DelimitedDataProcessor;
 import shinylearner.dataprocessors.TransposedDelimitedDataProcessor;
 import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
-import shinylearner.helper.MiscUtilities;
 
 /** This class provides convenience methods for accessing information about data instances that are used for machine-learning analyses.
  * @author Stephen Piccolo

@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.linkedin.paldb.api.PalDB;
-
 import shinylearner.core.AnalysisFileCreator;
 import shinylearner.core.Benchmark;
 import shinylearner.core.Classification;
@@ -18,6 +16,8 @@ import shinylearner.core.Singletons;
 import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
 import shinylearner.helper.MiscUtilities;
+
+import com.linkedin.paldb.api.PalDB;
 
 /** This is the class that gets invoked when code begins to execute.
  * @author Stephen Piccolo

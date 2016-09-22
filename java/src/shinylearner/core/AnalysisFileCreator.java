@@ -73,12 +73,12 @@ public class AnalysisFileCreator
         for (String dataPointName : _dataPointNames)
         {
             HashSet<String> uniqueValues = new HashSet<String>(Singletons.IndependentVariableInstances.GetUniqueValues(dataPointName));
-            AppendArffAttribute(new ArrayList<String>(uniqueValues), dataPointName, outFile);
+            AppendArffAttribute(new ArrayList<String>(uniqueValues), dataPointName, false, outFile);
         }
 
         Log.Debug("Appending ARFF attributes for dependent variable");
         if (includeDependentVariable)
-            AppendArffAttribute(Singletons.DependentVariableOptions, Settings.DEPENDENT_VARIABLE_NAME, outFile);
+            AppendArffAttribute(Singletons.DependentVariableOptions, Settings.DEPENDENT_VARIABLE_NAME, true, outFile);
 
         outFile.write("\n@data");
 
@@ -104,7 +104,7 @@ public class AnalysisFileCreator
         outFile.close();
     }
 
-    private void AppendArffAttribute(ArrayList<String> values, String dataPointName, PrintWriter outFile) throws Exception
+    private void AppendArffAttribute(ArrayList<String> values, String dataPointName, boolean isClassAttribute, PrintWriter outFile) throws Exception
     {
         outFile.write("@attribute " + dataPointName + " ");
 
@@ -112,7 +112,7 @@ public class AnalysisFileCreator
             outFile.write("{" + ListUtilities.Join(ListUtilities.SortStringList(values), ",") + "}");
         else
         {
-            if (DataTypeUtilities.HasOnlyNumeric(values))
+            if (!isClassAttribute && DataTypeUtilities.HasOnlyNumeric(values))
                 outFile.write("real");
             else
             {

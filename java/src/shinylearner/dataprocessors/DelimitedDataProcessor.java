@@ -2,8 +2,6 @@ package shinylearner.dataprocessors;
 
 import java.util.ArrayList;
 
-import shinylearner.core.DataInstanceCollection;
-import shinylearner.core.Log;
 import shinylearner.core.Singletons;
 import shinylearner.helper.BigFileReader;
 import shinylearner.helper.ListUtilities;
