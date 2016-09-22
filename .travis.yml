@@ -19,12 +19,12 @@ script:
   - scripts/build
 #  - scripts/build_dependencies
   - tar -zcvf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests LICENSE UserScripts lib
-  - sudo docker build -t srp33/shinylearner:version124 .
+  - sudo docker build -t srp33/shinylearner:version125 .
   - mkdir input output
   - cp -v Validation/*.tsv.gz input/
 #  - set -euo pipefail
   - set -o errexit
-  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version124 /BuildTests/all | tee output/log
+  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version125 /BuildTests/all | tee output/log
 
 #  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-#  - sudo docker push srp33/shinylearner:version124
+#  - sudo docker push srp33/shinylearner:version125
