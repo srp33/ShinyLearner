@@ -55,7 +55,8 @@ done
 #sparseLDA
 #gbm
 
-for algorithm in cforest.importance kruskal.test rf.importance rf.min.depth
+#for algorithm in cforest.importance kruskal.test rf.importance rf.min.depth
+for algorithm in kruskal.test rf.importance rf.min.depth
 do
   createScript FeatureSelection mlr mlr_fs_template $algorithm default
 done
