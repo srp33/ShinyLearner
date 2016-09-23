@@ -83,7 +83,7 @@ python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie2
 mem=$(getMemAvailable)
 
 ## Classify for inner iterations
-java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ie2 DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/icb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/ip TEMP_DIR=$tmpDir 2>&1 | python scripts/FilterPalDBOutput.py
+java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ie2 DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/icb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/ip TEMP_DIR=$tmpDir 2>&1 | python scripts/FilterOutput.py $debug
 
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/ip" "$tmpDir/im"
 
@@ -94,7 +94,7 @@ python scripts/ReformatInnerResults_Classification.py $tmpDir/im $tmpDir/ibrf
 Rscript --vanilla scripts/SelectBestInnerResults_Classification.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ocle
 
 ## Classify for outer iterations
-java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ocle DEBUG=$debug OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/op TEMP_DIR=$tmpDir 2>&1 | python scripts/FilterPalDBOutput.py
+java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ocle DEBUG=$debug OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/op TEMP_DIR=$tmpDir 2>&1 | python scripts/FilterOutput.py $debug
 
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
 

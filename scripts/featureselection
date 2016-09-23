@@ -74,7 +74,7 @@ python scripts/AddAlgorithmScripts.py $trainTestFile "$fsAlgos" $trainTestFile2
 
 mem=$(getMemAvailable)
 
-java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/of" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir 2>&1 | python scripts/FilterPalDBOutput.py
+java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/of" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir 2>&1 | python scripts/FilterOutput.py $debug
 
 function parseOutputFile {
   if [[ "$2" != "" ]]

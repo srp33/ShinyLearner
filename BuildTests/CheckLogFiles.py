@@ -13,7 +13,7 @@ for logFilePath in logFilePaths:
     for line in file(logFilePath):
         if "Exception" in line or "Error" in line or "[FAILED]" in line:
             failureOutput += "\n" + line
-        else:
+        elif "[PASSED]" in line:
             successLineCount += 1
 
 print "\n*******************************************************\n"

@@ -35,7 +35,7 @@ meanMeanRank = sum(meanRanks) / len(meanRanks)
 success = meanMeanRank > lowerThreshold and meanMeanRank <= upperThreshold
 
 if success:
-    print "[SUCCESS] The mean summarized rank for %s was %.2f." % (inFilePath, meanMeanRank)
+    print "[PASSED] The mean summarized rank for %s was %.2f." % (inFilePath, meanMeanRank)
 else:
     print "[FAILED] The mean summarized rank for %s was %.2f but should have been between %.2f and %.2f." % (inFilePath, meanMeanRank, lowerThreshold, upperThreshold)
     exit(1)
