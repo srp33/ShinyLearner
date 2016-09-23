@@ -28,8 +28,8 @@ $(dirname $0)/classification StrongSignal_Both crossvalidation $inputDir $output
 $(dirname $0)/classification NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/4.log &
 wait
 
-cat $outputDir/?.log >> $overallLogFile
-rm -f "$outputDir/?.log"
+cat $outputDir/*.log >> $overallLogFile
+rm -f $outputDir/*.log
 
 $(dirname $0)/featureselection StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
 $(dirname $0)/featureselection NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &
@@ -37,8 +37,8 @@ $(dirname $0)/featureselection StrongSignal_Both crossvalidation $inputDir $outp
 $(dirname $0)/featureselection NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/4.log &
 wait
 
-cat $outputDir/?.log >> $overallLogFile
-rm -f "$outputDir/?.log"
+cat $outputDir/*.log >> $overallLogFile
+rm -f $outputDir/*.log
 
 $(dirname $0)/nestedclassification StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
 $(dirname $0)/nestedclassification NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &
@@ -46,8 +46,8 @@ $(dirname $0)/nestedclassification StrongSignal_Both crossvalidation $inputDir $
 $(dirname $0)/nestedclassification NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/4.log &
 wait
 
-cat $outputDir/?.log >> $overallLogFile
-rm -f "$outputDir/?.log"
+cat $outputDir/*.log >> $overallLogFile
+rm -f $outputDir/*.log
 
 $(dirname $0)/nestedboth StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
 $(dirname $0)/nestedboth NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &
@@ -55,11 +55,10 @@ $(dirname $0)/nestedboth StrongSignal_Both crossvalidation $inputDir $outputDir 
 $(dirname $0)/nestedboth NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/4.log &
 wait
 
-cat $outputDir/?.log >> $overallLogFile
-rm -f "$outputDir/?.log"
+cat $outputDir/*.log >> $overallLogFile
+rm -f $outputDir/*.log
 
 $(dirname $0)/special_cases $inputDir $outputDir $debug $outputDir/special.log
 
-python $(dirname $0)/CheckLogFiles.py "$outputDir/special.log" 1
 cat $outputDir/special.log >> $overallLogFile
-rm -f "$outputDir/special.log"
+rm -f $outputDir/special.log
