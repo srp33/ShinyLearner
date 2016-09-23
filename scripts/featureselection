@@ -79,7 +79,7 @@ java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES="$dataF
 function parseOutputFile {
   if [[ "$2" != "" ]]
   then
-    python scripts/ParseNonNestedResults.py $1 $iterationOutputHeader "$2"
+    python scripts/ParseNonNestedResults.py $1 $iterationOutputHeader "$2" 2>&1 | python scripts/FilterOutput.py $debug
   fi
 }
 
@@ -88,7 +88,7 @@ parseOutputFile $tmpDir/ob "$outBenchmarkFile"
 
 if [[ "$outSummarizedFeaturesFile" != "" ]]
 then
-  Rscript --vanilla scripts/BordaCountFeatures.R "$outFeaturesFile" "$outSummarizedFeaturesFile"
+  Rscript --vanilla scripts/BordaCountFeatures.R "$outFeaturesFile" "$outSummarizedFeaturesFile" 2>&1 | python scripts/FilterOutput.py $debug
 fi
 
 cleanup

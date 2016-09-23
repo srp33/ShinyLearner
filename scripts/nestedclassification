@@ -85,39 +85,39 @@ mem=$(getMemAvailable)
 ## Classify for inner iterations
 java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ie2 DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/icb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/ip TEMP_DIR=$tmpDir 2>&1 | python scripts/FilterOutput.py $debug
 
-Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/ip" "$tmpDir/im"
+Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/ip" "$tmpDir/im" 2>&1 | python scripts/FilterOutput.py $debug
 
 ## Parse inner classification results
-python scripts/ReformatInnerResults_Classification.py $tmpDir/im $tmpDir/ibrf
+python scripts/ReformatInnerResults_Classification.py $tmpDir/im $tmpDir/ibrf 2>&1 | python scripts/FilterOutput.py $debug
 
 ## Use "ensemble" approach to identify best combination of algorithms
-Rscript --vanilla scripts/SelectBestInnerResults_Classification.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ocle
+Rscript --vanilla scripts/SelectBestInnerResults_Classification.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ocle 2>&1 | python scripts/FilterOutput.py $debug
 
 ## Classify for outer iterations
 java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ocle DEBUG=$debug OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/op TEMP_DIR=$tmpDir 2>&1 | python scripts/FilterOutput.py $debug
 
-Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
+Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om" 2>&1 | python scripts/FilterOutput.py $debug
 
 if [[ "$outPredictionsFile" != "" ]]
 then
-  python scripts/ParseNestedResults.py $tmpDir/op $iterationOutputHeader "$outPredictionsFile"
+  python scripts/ParseNestedResults.py $tmpDir/op $iterationOutputHeader "$outPredictionsFile" 2>&1 | python scripts/FilterOutput.py $debug
 fi
 if [[ "$outMetricsFile" != "" ]]
 then
-  python scripts/ParseNestedResults.py $tmpDir/om $iterationOutputHeader "$outMetricsFile"
+  python scripts/ParseNestedResults.py $tmpDir/om $iterationOutputHeader "$outMetricsFile" 2>&1 | python scripts/FilterOutput.py $debug
 fi
 
 if [[ "$outNestedPredictionsFile" != "" ]]
 then
-  python scripts/ParseNestedResults2.py $tmpDir/ip $iterationOutputHeader "$outNestedPredictionsFile"
+  python scripts/ParseNestedResults2.py $tmpDir/ip $iterationOutputHeader "$outNestedPredictionsFile" 2>&1 | python scripts/FilterOutput.py $debug
 fi
 if [[ "$outNestedMetricsFile" != "" ]]
 then
-  python scripts/ParseNestedResults2.py $tmpDir/im $iterationOutputHeader "$outNestedMetricsFile"
+  python scripts/ParseNestedResults2.py $tmpDir/im $iterationOutputHeader "$outNestedMetricsFile" 2>&1 | python scripts/FilterOutput.py $debug
 fi
 if [[ "$outNestedBenchmarkFile" != "" ]]
 then
-  python scripts/ParseNestedResults2.py $tmpDir/icb $iterationOutputHeader "$outNestedBenchmarkFile"
+  python scripts/ParseNestedResults2.py $tmpDir/icb $iterationOutputHeader "$outNestedBenchmarkFile" 2>&1 | python scripts/FilterOutput.py $debug
 fi
 
 cleanup

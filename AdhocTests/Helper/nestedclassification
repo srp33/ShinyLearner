@@ -16,25 +16,26 @@ currentDir=$(pwd)
 testDir=/tmp/ML_Flex_Lite_Test_NestedCL
 outputDir=$currentDir/TestOutput/nestedclassification
 
-rm -rfv $testDir
+rm -rf $testDir
 mkdir -p $testDir
 
-cp -rv shinylearner.jar $testDir/
+cp -r shinylearner.jar $testDir/
 mkdir $testDir/lib
-cp -rv lib/* $testDir/lib/
-cp -rv scripts $testDir/
-cp -rv AlgorithmScripts $testDir/
-cp -rv UserScripts $testDir/
+cp -r lib/* $testDir/lib/
+cp -r scripts $testDir/
+cp -r AlgorithmScripts $testDir/
+cp -r UserScripts $testDir/
 
 mkdir -p $outputDir
-rm -fv $outputDir/${validationType}*
+rm -f $outputDir/${validationType}*
 
 cd $testDir
 
 validation=StrongSignal_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
 classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
-debug=true
+#debug=true
+debug=false
 
 if [[ "$validationType" == "montecarlo" ]]
 then

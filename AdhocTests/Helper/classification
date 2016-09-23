@@ -16,18 +16,18 @@ currentDir=$(pwd)
 testDir=/tmp/ML_Flex_Lite_Test_CL
 outputDir=$currentDir/TestOutput/classification
 
-rm -rfv $testDir
+rm -rf $testDir
 mkdir -p $testDir
 
-cp -rv shinylearner.jar $testDir/
+cp -r shinylearner.jar $testDir/
 mkdir $testDir/lib
-cp -rv lib/* $testDir/lib/
-cp -rv scripts $testDir/
-cp -rv AlgorithmScripts $testDir/
-cp -rv UserScripts $testDir/
+cp -r lib/* $testDir/lib/
+cp -r scripts $testDir/
+cp -r AlgorithmScripts $testDir/
+cp -r UserScripts $testDir/
 
 mkdir -p $outputDir
-rm -fv $outputDir/${validationType}*
+rm -f $outputDir/${validationType}*
 
 cd $testDir
 
@@ -40,7 +40,8 @@ classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/*/default"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/bagging/default"
-debug=true
+#debug=true
+debug=false
 outPredictionsFile=$outputDir/${validationType}_${validation}_Predictions.tsv
 outMetricsFile=$outputDir/${validationType}_${validation}_Metrics.tsv
 outBenchmarkFile=$outputDir/${validationType}_${validation}_Benchmark.tsv

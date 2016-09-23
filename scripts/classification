@@ -76,13 +76,13 @@ mem=$(getMemAvailable)
 
 java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_PREDICTIONS_FILE_PATH="$tmpDir/op0" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir 2>&1 | python scripts/FilterOutput.py $debug
 
-Rscript --vanilla scripts/MajorityVote.R "$tmpDir/op0" "$tmpDir/op"
-Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
+Rscript --vanilla scripts/MajorityVote.R "$tmpDir/op0" "$tmpDir/op" 2>&1 | python scripts/FilterOutput.py $debug
+Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om" 2>&1 | python scripts/FilterOutput.py $debug
 
 function parseOutputFile {
   if [[ "$2" != "" ]]
   then
-    python scripts/ParseNonNestedResults.py $1 "$iterationOutputHeader" "$2"
+    python scripts/ParseNonNestedResults.py $1 "$iterationOutputHeader" "$2" 2>&1 | python scripts/FilterOutput.py $debug
   fi
 }
 

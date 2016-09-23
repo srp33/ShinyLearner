@@ -8,13 +8,13 @@ javaDir="/usr/bin"
 currentDir=$(pwd)
 buildDir=/tmp/shinylearner_build
 
-rm -rfv $buildDir
+rm -rf $buildDir
 
-mkdir -pv $buildDir/shinylearner/src/shinylearner
-cp -rv java/src/shinylearner/* $buildDir/shinylearner/src/shinylearner
-cp -v build.xml $buildDir/
+mkdir -p $buildDir/shinylearner/src/shinylearner
+cp -r java/src/shinylearner/* $buildDir/shinylearner/src/shinylearner
+cp build.xml $buildDir/
 mkdir -p $buildDir/lib
-cp -rv lib/* $buildDir/lib/
+cp -r lib/* $buildDir/lib/
 
 cd $buildDir
 
@@ -25,7 +25,11 @@ rm sources_list.txt
 
 ant
 
-cp -v shinylearner.jar $currentDir/
+cp shinylearner.jar $currentDir/
 
 cd $currentDir
 rm -rf $buildDir
+
+echo
+echo Successfully built new version of source code!
+echo
