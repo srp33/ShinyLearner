@@ -30,7 +30,8 @@ public class InstanceManager
     
     public static void RefineDataInstances() throws Exception
     {
-        // Look for any data point that contains class information
+    	CheckForMissingValues();
+    	
         CheckDependentVariableValues(Singletons.IndependentVariableInstances);
         Log.Debug(Singletons.DependentVariableInstances.size() + " dependent variable instances");
 
@@ -57,8 +58,6 @@ public class InstanceManager
         
         for (String instanceID : instancesToRemove)
     		Singletons.DependentVariableInstances.remove(instanceID);
-        
-    	CheckForMissingValues();
 
         if (Singletons.IndependentVariableInstances.Size() == 0)
         	Log.ExceptionFatal("No independent variable instances were found.");
@@ -90,28 +89,25 @@ public class InstanceManager
     
     public static void CheckForMissingValues() throws Exception
     {
-//    	int currentNumInstances = Singletons.IndependentVariableInstances.GetNumInstances();
-//    	HashSet<String> dataPointsToRemove = new HashSet<String>();
-//    	for (String dataPointName : Singletons.IndependentVariableInstances.GetDataPointNamesSorted())
-//    		if (Singletons.IndependentVariableInstances.GetNumValuesForDataPoint(dataPointName) != currentNumInstances)
-//    			dataPointsToRemove.add(dataPointName);
-//
-//    	if (dataPointsToRemove.size() > 0)
-//    	{
-//    		for (String dataPointName : dataPointsToRemove)
-//    			Singletons.IndependentVariableInstances.RemoveDataPointName(dataPointName);
-//    		
-//    		Log.Info("WARNING: The following data points were missing a value for at least one instance, so they were removed: " +  ListUtilities.Join(ListUtilities.SortStringList(ListUtilities.CreateStringList(dataPointsToRemove)), "; ") + ". Missing values are not supported at this time.");
-//    	}
-
     	int currentNumDataPoints = Singletons.IndependentVariableInstances.GetNumDataPoints();
+
     	HashSet<String> instancesMissingData = new HashSet<String>();
     	for (String instanceID : Singletons.IndependentVariableInstances.GetInstanceIDsUnsorted())
     		if (Singletons.IndependentVariableInstances.GetNumValuesForInstance(instanceID) != currentNumDataPoints)
     			instancesMissingData.add(instanceID);
     	
     	if (instancesMissingData.size() > 0)
-    		Log.ExceptionFatal("ERROR: The following instances were missing a value for at least one data point: " + ListUtilities.Join(ListUtilities.SortStringList(ListUtilities.CreateStringList(instancesMissingData)), "; ") + ". Missing values are not supported at this time.");
+    	{
+    		for (String instanceID : instancesMissingData)
+    		{
+    			Singletons.IndependentVariableInstances.RemoveInstance(instanceID);
+    			
+    			if (Singletons.DependentVariableInstances.containsKey(instanceID))
+    				Singletons.DependentVariableInstances.remove(instanceID);
+    		}
+
+    		Log.Info("WARNING: The following instances were missing a value for at least one data point, so they were excluded from the analysis: " + ListUtilities.Join(ListUtilities.SortStringList(ListUtilities.CreateStringList(instancesMissingData)), "; ") + ".");
+    	}
     }
 
     /** This method looks in a data instance collection a data point that contains class information. If found, this information is extracted and stored separately.

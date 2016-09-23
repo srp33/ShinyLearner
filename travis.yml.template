@@ -17,7 +17,6 @@ notifications:
   email: true
 script:
   - scripts/build
-#  - scripts/build_dependencies
   - tar -zcvf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests LICENSE UserScripts lib
   - sudo docker build -t srp33/shinylearner:version{version} .
   - mkdir input output
@@ -26,6 +25,5 @@ script:
   - set -o errexit
   - python BuildTests/CheckLogFiles.py "output/overall.log" 1
   - echo "All tests passed!!!"
-
-#  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-#  - sudo docker push srp33/shinylearner:version{version}
+  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+  - sudo docker push srp33/shinylearner:version{version}
