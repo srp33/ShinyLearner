@@ -137,6 +137,7 @@ public class Log
             return;
 
         System.out.println(out);
+        System.out.flush();
     }
     
     public static void PrintErr(Object x)
@@ -147,6 +148,7 @@ public class Log
             return;
 
         System.err.println(out);
+        System.err.flush();
     }
 
 	public static void Exit(int exitCode)
