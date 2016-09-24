@@ -21,7 +21,7 @@ fi
 
 rm -f "$outLogFile"
 
-#scripts/classification "$dataFiles" "$description" "$numIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo 0 2>&1 | tee -a "$outLogFile"
-scripts/classification "$dataFiles" "$description" "$numIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo 0
+scripts/classification "$dataFiles" "$description" "$numIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo 0 2>&1 | tee -a "$outLogFile"
+#scripts/classification "$dataFiles" "$description" "$numIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo 0
 
 echo "Analysis successfully completed!" >> "$outLogFile"

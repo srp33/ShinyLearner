@@ -58,7 +58,7 @@ rm -rf $outputDir/*
 #cat $outputDir/*.log >> $overallLogFile
 #rm -f $outputDir/*.log
 
-#$(dirname $0)/special_cases $inputDir $outputDir $debug $outputDir/special.log
+$(dirname $0)/special_cases $inputDir $outputDir $debug $outputDir/special.log
 
-#cat $outputDir/special.log >> $overallLogFile
-#rm -f $outputDir/special.log
+cat $outputDir/special.log >> $overallLogFile
+rm -f $outputDir/special.log

@@ -58,7 +58,7 @@ dataFiles="/tmp/${signal}Signal_Continuous_NoClass.tsv,/tmp/${signal}Signal_Clas
 outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
 UserScripts/classification_${validationType} "$dataFiles" $description $numIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null /tmp/special_log/$description
 python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Algorithm 2>&1 | tee -a /tmp/special_log/$description
-python BuildTests/CheckLogForMessage.py /tmp/special_log/$description "excluded from this analysis because there is no dependent-variable (class) value for this instance" 2>&1 | tee -a /tmp/special_log/$description
+python BuildTests/CheckLogForMessage.py /tmp/special_log/$description "Data for instance [Instance1] are excluded from this analysis because there is no dependent-variable (class) value for this instance." 2>&1 | tee -a /tmp/special_log/$description
 
 # Make sure we get a warning when instance has class value but no data
 python BuildTests/SelectColumns.py /tmp/${signal}Signal_Continuous.tsv 0to-2 /tmp/${signal}Signal_Continuous_NoClass.tsv
