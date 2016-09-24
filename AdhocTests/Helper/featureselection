@@ -34,7 +34,8 @@ cd $testDir
 validation=StrongSignal_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
 fsAlgo=AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default
-debug=true
+#debug=true
+debug=false
 outFeaturesFile=$outputDir/${validationType}_${validation}_SelectedFeatures.tsv
 outSummarizedFeaturesFile=$outputDir/${validationType}_${validation}_SelectedFeatures_Summarized.tsv
 outBenchmarkFile=$outputDir/${validationType}_${validation}_Benchmark.tsv

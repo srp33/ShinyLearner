@@ -74,12 +74,12 @@ python scripts/AddAlgorithmScripts.py $trainTestFile "$fsAlgos" $trainTestFile2
 
 mem=$(getMemAvailable)
 
-java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/of" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir 2>&1 | python scripts/FilterOutput.py $debug
+java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/of" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
 
 function parseOutputFile {
   if [[ "$2" != "" ]]
   then
-    python scripts/ParseNonNestedResults.py $1 $iterationOutputHeader "$2" 2>&1 | python scripts/FilterOutput.py $debug
+    python scripts/ParseNonNestedResults.py $1 $iterationOutputHeader "$2"
   fi
 }
 
@@ -88,7 +88,8 @@ parseOutputFile $tmpDir/ob "$outBenchmarkFile"
 
 if [[ "$outSummarizedFeaturesFile" != "" ]]
 then
-  Rscript --vanilla scripts/BordaCountFeatures.R "$outFeaturesFile" "$outSummarizedFeaturesFile" 2>&1 | python scripts/FilterOutput.py $debug
+  Rscript --vanilla scripts/BordaCountFeatures.R "$outFeaturesFile" "$outSummarizedFeaturesFile" 2> $errFile
+  printError
 fi
 
 cleanup

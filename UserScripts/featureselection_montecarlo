@@ -23,4 +23,4 @@ rm -f "$outLogFile"
 
 scripts/featureselection "$dataFiles" "$description" "$numIterations" "$debug" "$fsAlgos" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile" montecarlo 0 2>&1 | tee -a "$outLogFile"
 
-echo "Analysis successfully completed!" >> "$outLogFile"
+echo "Analysis successfully completed!" | tee -a "$outLogFile"

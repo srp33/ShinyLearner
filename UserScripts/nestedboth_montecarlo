@@ -34,4 +34,4 @@ rm -f "$outLogFile"
 
 scripts/nestedboth "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$debug" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" montecarlo 0 2>&1 | tee -a "$outLogFile"
 
-echo "Analysis successfully completed!" >> "$outLogFile"
+echo "Analysis successfully completed!" | tee -a "$outLogFile"

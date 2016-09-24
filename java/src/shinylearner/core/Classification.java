@@ -13,7 +13,7 @@ public class Classification
 {
 	public static void Classify(String trainingFilePath, String testFilePath) throws Exception
 	{
-		Log.PrintErr(Log.FormatText("Classifying."));
+		Log.Info("Classifying.");
 
 		long startTime = System.nanoTime();
 

@@ -15,3 +15,16 @@ function getMemAvailable {
 
   echo "$mem"
 }
+
+errFile=/dev/null
+if [[ "$debug" == "true" ]]
+then
+  errFile=/tmp/err
+fi
+
+function printError {
+  if [[ "$debug" == "true" ]]
+  then
+    cat $errFile
+  fi
+}

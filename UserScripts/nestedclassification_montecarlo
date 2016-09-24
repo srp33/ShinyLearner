@@ -26,4 +26,4 @@ rm -f "$outLogFile"
 
 scripts/nestedclassification "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" montecarlo 0 2>&1 | tee -a "$outLogFile"
 
-echo "Analysis successfully completed!" >> "$outLogFile"
+echo "Analysis successfully completed!" | tee -a "$outLogFile"

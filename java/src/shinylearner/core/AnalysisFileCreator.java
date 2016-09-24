@@ -92,7 +92,9 @@ public class AnalysisFileCreator
 				{
 					Log.Exception("null value found!");
 					Log.Exception(_dataPointNames);
-					Log.ExceptionFatal(dataValues);
+					for (String dataValue : dataValues)
+						Log.ExceptionFatal(dataValue);
+					Log.Exit(1);
 				}
 
 			outFile.write("\n" + ListUtilities.Join(dataValues, ","));

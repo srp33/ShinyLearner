@@ -19,7 +19,7 @@ public class Log
     public static void Debug(Object text)
     {
         if (Settings.DEBUG)
-            PrintErr(FormatText(text));
+            PrintOut(FormatText(text));
     }
 
     /** Saves debugging information for a non-fatal error.
@@ -33,7 +33,7 @@ public class Log
 
         if (ex == null)
         {
-            PrintErr("<null Exception>");
+            PrintOut("<null Exception>");
             return;
         }
 
@@ -47,7 +47,7 @@ public class Log
      */
     public static void Info(Object text)
     {
-        PrintErr(FormatText(text));
+        PrintOut(FormatText(text));
     }
 
     /** Saves exception information
@@ -71,9 +71,9 @@ public class Log
     public static void Exception(ArrayList<String> list)
     {
         if (list == null)
-            Debug("<null ArrayList>");
+            Info("<null ArrayList>");
         else
-            Debug("\n" + ListUtilities.Join(ListUtilities.CreateStringList(list), "\n"));
+            Info("\n" + ListUtilities.Join(ListUtilities.CreateStringList(list), "\n"));
     }
 
     /** Saves exception information when the exception is severe enough that execution of the program should be halted.
@@ -86,23 +86,13 @@ public class Log
     }
     
     /** Saves exception information when the exception is severe enough that execution of the program should be halted.
-    *
-    * @param message Exception message
-    */
-   public static void ExceptionFatal(ArrayList<String> message)
-   {
-       Info(message);
-       Log.Exit(1);
-   }
-
-    /** Saves exception information when the exception is severe enough that execution of the program should be halted.
      *
      * @param ex Exception object
      */
     public static void ExceptionFatal(Throwable ex)
     {
         Exception(ex);
-        Log.Exit(1);
+        Exit(1);
      }
 
     /** Obtains stack-trace information when an exception has occurred.
@@ -121,7 +111,7 @@ public class Log
         return result.toString();
     }
 
-    public static String FormatText(Object text)
+    private static String FormatText(Object text)
     {
     	String output = (text == null ? "<null>" : String.valueOf(text));
     	
@@ -140,16 +130,16 @@ public class Log
         System.out.flush();
     }
     
-    public static void PrintErr(Object x)
-    {
-        String out = x == null ? "<null>" : String.valueOf(x);
-
-        if (out.equals(""))
-            return;
-
-        System.err.println(out);
-        System.err.flush();
-    }
+//    public static void PrintErr(Object x)
+//    {
+//        String out = x == null ? "<null>" : String.valueOf(x);
+//
+//        if (out.equals(""))
+//            return;
+//
+//        System.err.println(out);
+//        System.err.flush();
+//    }
 
 	public static void Exit(int exitCode)
 	{

@@ -53,8 +53,10 @@ done
 
 python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfeatures,$tmpDir/*/outbench" "$outFeaturesFile,$outBenchmarkFile" 2>&1 | tee -a "$outLogFile"
 
-Rscript --vanilla scripts/BordaCountFeatures.R $outFeaturesFile $outSummarizedFeaturesFile 2>&1 | tee -a "$outLogFile"
+source scripts/helper
+Rscript --vanilla scripts/BordaCountFeatures.R $outFeaturesFile $outSummarizedFeaturesFile 2> $errFile | tee -a "$outLogFile"
+printError
 
 cleanup
 
-echo "Analysis successfully completed!" >> "$outLogFile"
+echo "Analysis successfully completed!" | tee -a "$outLogFile"

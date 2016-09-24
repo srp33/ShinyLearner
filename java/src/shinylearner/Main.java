@@ -32,15 +32,17 @@ public class Main
 	{
 		try
 		{
+			Log.Info("Parsing command line settings...");
 			Settings.ParseCommandLineSettings(args);
 			Settings.Check();
 			
-			Singletons.DatabaseFilePath = Settings.TEMP_DIR + "/" + MiscUtilities.GetUniqueID() + ".db";
-			
+			Log.Info("Loading data from input files...");
+			Singletons.DatabaseFilePath = Settings.TEMP_DIR + "/" + MiscUtilities.GetUniqueID() + ".db";			
 			Singletons.DatabaseWriter = PalDB.createWriter(new File(Singletons.DatabaseFilePath));
 			InstanceManager.LoadDataInstances();
 			Singletons.DatabaseWriter.close();
 			
+			Log.Info("Refining data instances...");
 			Singletons.DatabaseReader = PalDB.createReader(new File(Singletons.DatabaseFilePath));
 			InstanceManager.RefineDataInstances();
 
@@ -48,13 +50,16 @@ public class Main
 				InstanceManager.SaveOutputDataFile();
 			
 			if (!Settings.OUTPUT_PREDICTIONS_FILE_PATH.equals("") || !Settings.OUTPUT_FEATURES_FILE_PATH.equals("") || !Settings.OUTPUT_BENCHMARK_FILE_PATH.equals(""))
+			{
+				Log.Info("Starting analysis...");
 				PerformAnalysis();
+			}
 			
 			Singletons.DatabaseReader.close();
 			
 			FileUtilities.DeleteFile(Singletons.DatabaseFilePath);
 
-			Log.PrintErr(Log.FormatText("Successfully completed!"));
+			//Log.PrintOut("Successfully completed!");
 			
 			System.exit(0); // Not sure if this is necessary, but keeping it just in case
 		}

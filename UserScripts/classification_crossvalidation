@@ -61,4 +61,4 @@ python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*
 
 cleanup
 
-echo "Analysis successfully completed!" >> "$outLogFile"
+echo "Analysis successfully completed!" | tee -a "$outLogFile"

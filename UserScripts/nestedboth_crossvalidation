@@ -98,8 +98,10 @@ done
 
 python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfs,$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outfsnested,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchfsnested,$tmpDir/*/outbenchclnested" "$outSelectedFeaturesFile,$outPredictionsFile,$outMetricsFile,$outNestedSelectedFeaturesFile,$outNestedPredictionsFile,$outNestedMetricsFile,$outNestedFeatureSelectionBenchmarkFile,$outNestedClassificationBenchmarkFile" 2>&1 | tee -a "$outLogFile"
 
-Rscript --vanilla scripts/BordaCountFeatures.R "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2>&1 | tee -a "$outLogFile"
+source scripts/helper
+Rscript --vanilla scripts/BordaCountFeatures.R "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile | tee -a "$outLogFile"
+printError
 
 cleanup
 
-echo "Analysis successfully completed!" >> "$outLogFile"
+echo "Analysis successfully completed!" | tee -a "$outLogFile"
