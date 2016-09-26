@@ -147,13 +147,13 @@ public class Main
             throw new Exception("No predictions can be made because the training and/or test set have no data.");
 
         // Make sure the training and test IDs are in the data set we are working with
-        ArrayList<String> overlappingTrainingIDs = ListUtilities.Intersect(ListUtilities.CreateStringList(Singletons.IndependentVariableInstances.GetInstanceIDsUnsorted()), trainIDs);
-        ArrayList<String> overlappingTestIDs = ListUtilities.Intersect(ListUtilities.CreateStringList(Singletons.IndependentVariableInstances.GetInstanceIDsUnsorted()), testIDs);
+//        ArrayList<String> overlappingTrainingIDs = ListUtilities.Intersect(ListUtilities.CreateStringList(Singletons.IndependentVariableInstances.GetInstanceIDsUnsorted()), trainIDs);
+//        ArrayList<String> overlappingTestIDs = ListUtilities.Intersect(ListUtilities.CreateStringList(Singletons.IndependentVariableInstances.GetInstanceIDsUnsorted()), testIDs);
 
-        if (overlappingTrainingIDs.size() != trainIDs.size())
-        	Log.ExceptionFatal("At least one of the training IDs was not present in the input data set(s).");
-        if (overlappingTestIDs.size() != testIDs.size())
-        	Log.ExceptionFatal("At least one of the test IDs was not present in the input data set(s).");
+//        if (overlappingTrainingIDs.size() != trainIDs.size())
+//        	Log.ExceptionFatal("At least one of the training IDs was not present in the input data set(s).");
+//        if (overlappingTestIDs.size() != testIDs.size())
+//        	Log.ExceptionFatal("At least one of the test IDs was not present in the input data set(s).");
 
         Log.Debug("Do a sanity check to make sure that no instances overlap between the training and test sets");
         if (ListUtilities.Intersect(trainIDs, testIDs).size() > 0)

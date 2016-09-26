@@ -17,10 +17,10 @@ exp_name <- commandArgs()[9]
 version <- readChar('Version.txt', file.info('Version.txt')$size)
 
 # Predictions
-numeric_classes <- colnames(preds)[9:(8+length(class_options))]
-colnames(preds) <- c(colnames(preds)[0:8],class_options)
+numeric_classes <- colnames(preds)[7:(6+length(class_options))]
+colnames(preds) <- c(colnames(preds)[0:6],class_options)
 for (i in seq(1, length(class_options))){
-  preds[7:8] <- as.data.frame(lapply(preds[7:8], function(x) {gsub(paste("^",numeric_classes[i],"$",sep=""), class_options[i], x)}))
+  preds[5:6] <- as.data.frame(lapply(preds[5:6], function(x) {gsub(paste("^",numeric_classes[i],"$",sep=""), class_options[i], x)}))
 }
 p_table <- preds[,c('InstanceID',class_options)]
 p_table <- aggregate(p_table, by=list(p_table$InstanceID), FUN=mean)[,c('Group.1',class_options)]
@@ -64,7 +64,7 @@ getROCC <- function(classNumber, multiclass){
     class_option <- paste(class_options[classNumber], 'vs', 'All')
   if (!multiclass)
     class_option <- paste(class_options[classNumber], 'vs', class_options[classNumber - 1])	
-  rocc_classNumber <- roc(preds[[(8+classNumber)]],actuals_classNumber)
+  rocc_classNumber <- roc(preds[[(6+classNumber)]],actuals_classNumber)
   rocc_classNumber <- data.frame('class'=class_option,'fpr'=rocc_classNumber$fpr,'tpr'=rocc_classNumber$tpr)
   return(rocc_classNumber)
 }
