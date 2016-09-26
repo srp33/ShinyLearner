@@ -59,12 +59,14 @@ public class InstanceManager
         for (String instanceID : instancesToRemove)
     		Singletons.DependentVariableInstances.remove(instanceID);
 
-        if (Singletons.IndependentVariableInstances.Size() == 0)
-        	Log.ExceptionFatal("No independent variable instances were found.");
+        if (Singletons.IndependentVariableInstances.Size() < 10)
+        	Log.ExceptionFatal("An insufficient number of independent variable instances [" + Singletons.IndependentVariableInstances.Size() + "] was found.");
         if (Singletons.IndependentVariableInstances.GetNumDataPoints() == 0)
         	Log.ExceptionFatal("No independent variables were found.");            
-        if (Singletons.DependentVariableInstances.size() == 0)
-        	Log.ExceptionFatal("No dependent variable instances were found.");
+        if (Singletons.DependentVariableInstances.size() < 10)
+        	Log.ExceptionFatal("An insufficient number of dependent variable instances [" + Singletons.DependentVariableInstances.size() + "] was found.");
+        
+        Log.Info("After filtering, " + Singletons.DependentVariableInstances.size() + " instances and " + Singletons.IndependentVariableInstances.GetNumDataPoints() + " data points are available for the analysis.");
     }
     
     private static AbstractDataProcessor ParseDataProcessor(String dataFilePath) throws Exception

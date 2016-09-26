@@ -14,4 +14,5 @@ algorithm=$(basename $algorithm)
 
 parameterDescription=$(basename $callingScript)
 
-python $dirName/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$algorithm" "$parameterDescription" 2>&1 | python $dirName/ReformatSklearnOutput.py $classOptions
+#python $dirName/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$algorithm" "$parameterDescription" 2>&1 | python $dirName/ReformatSklearnOutput.py $classOptions
+python $dirName/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$algorithm" "$parameterDescription"
