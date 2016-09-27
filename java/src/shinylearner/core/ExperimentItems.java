@@ -1,6 +1,7 @@
 package shinylearner.core;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
@@ -24,8 +25,13 @@ public class ExperimentItems
 		String rawTrainIDs = ParseItem(lineNumber, lineItems, 1);
 		String rawTestIDs = ParseItem(lineNumber, lineItems, 2);
 
-		TrainingIDs = MiscUtilities.FormatNames(ListUtilities.SortStringList(ListUtilities.CreateStringList(rawTrainIDs.split(","))));
-		TestIDs = MiscUtilities.FormatNames(ListUtilities.SortStringList(ListUtilities.CreateStringList(rawTestIDs.split(","))));
+		TrainingIDs = ListUtilities.CreateStringList(rawTrainIDs.split(","));
+		TrainingIDs = ListUtilities.Intersect(TrainingIDs, ListUtilities.CreateStringList(Singletons.IndependentVariableInstances.GetInstanceIDsUnsorted()));
+		TrainingIDs = MiscUtilities.FormatNames(ListUtilities.SortStringList(TrainingIDs));
+		
+		TestIDs = ListUtilities.CreateStringList(rawTestIDs.split(","));
+		TestIDs = ListUtilities.Intersect(TestIDs, ListUtilities.CreateStringList(Singletons.IndependentVariableInstances.GetInstanceIDsUnsorted()));
+		TestIDs = MiscUtilities.FormatNames(ListUtilities.SortStringList(TestIDs));
 
 		AlgorithmScriptFilePath = ParseItem(lineNumber, lineItems, 3);
 		
