@@ -32,7 +32,7 @@ public class Classification
 
 	private static String TrainTest(String trainingFilePath, String testFilePath) throws Exception
 	{
-		String dependentVariableOptions = ListUtilities.Join(ListUtilities.SortStringList(Singletons.DependentVariableOptions), ",");
+		String dependentVariableOptions = ListUtilities.Join(AnalysisFileCreator.FormatClassValues(ListUtilities.SortStringList(Singletons.DependentVariableOptions)), ",");
 		String parameters = "\"" + trainingFilePath + "\" \"" + testFilePath + "\" \"" + dependentVariableOptions + "\"";
 
 		Log.Debug(Singletons.ExperimentItems.AlgorithmScriptFilePath + " " + parameters);
@@ -83,7 +83,7 @@ public class Classification
 		String header = "Description\tAlgorithm\tInstanceID\tActualClass\tPredictedClass";
 
 		for (String x : Singletons.DependentVariableOptions)
-			header += "\t" + MiscUtilities.UnformatClassValue(x);
+			header += "\t" + AnalysisFileCreator.UnformatClassValue(x);
 
 		return header;
 	}
@@ -99,9 +99,9 @@ public class Classification
 
 			outputVals.add(Singletons.ExperimentItems.Description);
 			outputVals.add(Singletons.ExperimentItems.AlgorithmScriptFilePath);
-			outputVals.add(MiscUtilities.UnformatName(prediction.InstanceID));
-			outputVals.add(MiscUtilities.UnformatClassValue(prediction.DependentVariableValue));
-			outputVals.add(MiscUtilities.UnformatClassValue(prediction.Prediction));
+			outputVals.add(AnalysisFileCreator.UnformatName(prediction.InstanceID));
+			outputVals.add(AnalysisFileCreator.UnformatClassValue(prediction.DependentVariableValue));
+			outputVals.add(AnalysisFileCreator.UnformatClassValue(prediction.Prediction));
 
 			for (double classProbability : prediction.ClassProbabilities)
 				outputVals.add(String.valueOf(classProbability));

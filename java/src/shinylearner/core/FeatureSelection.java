@@ -46,7 +46,7 @@ public class FeatureSelection
     			continue;
 
     		String[] outputLineItems = outputLine.split("\t");
-    		String selectedFeatures = MiscUtilities.UnformatName(outputLineItems[0]);
+    		String selectedFeatures = AnalysisFileCreator.UnformatName(outputLineItems[0]);
 		
     		ArrayList<String> outputVals = new ArrayList<String>();
     		outputVals.add(Singletons.ExperimentItems.Description);

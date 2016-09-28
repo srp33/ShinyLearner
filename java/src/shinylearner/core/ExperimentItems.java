@@ -27,11 +27,11 @@ public class ExperimentItems
 
 		TrainingIDs = ListUtilities.CreateStringList(rawTrainIDs.split(","));
 		TrainingIDs = ListUtilities.Intersect(TrainingIDs, ListUtilities.CreateStringList(Singletons.IndependentVariableInstances.GetInstanceIDsUnsorted()));
-		TrainingIDs = MiscUtilities.FormatNames(ListUtilities.SortStringList(TrainingIDs));
+		TrainingIDs = ListUtilities.SortStringList(TrainingIDs);
 		
 		TestIDs = ListUtilities.CreateStringList(rawTestIDs.split(","));
 		TestIDs = ListUtilities.Intersect(TestIDs, ListUtilities.CreateStringList(Singletons.IndependentVariableInstances.GetInstanceIDsUnsorted()));
-		TestIDs = MiscUtilities.FormatNames(ListUtilities.SortStringList(TestIDs));
+		TestIDs = ListUtilities.SortStringList(TestIDs);
 
 		AlgorithmScriptFilePath = ParseItem(lineNumber, lineItems, 3);
 		
@@ -52,7 +52,7 @@ public class ExperimentItems
 		if (lineItems.size() > 4)
 		{
 			rawDataPointsToUse = lineItems.get(4);
-			DataPointsToUse = MiscUtilities.FormatNames(ListUtilities.CreateStringList(rawDataPointsToUse.split(",")));
+			DataPointsToUse = ListUtilities.CreateStringList(rawDataPointsToUse.split(","));
 		}
 		
 		UniqueKey = rawTrainIDs + "____" + rawTestIDs + "____" + AlgorithmDataFormat + "____" + rawDataPointsToUse;
