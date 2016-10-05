@@ -62,14 +62,14 @@ public class DataInstanceCollection
 		return ListUtilities.SortStringList(new ArrayList<String>(_dataPointNames));
 	}
 	
-	/** Gets a list of all data point names across all data instances in the collection.
-	 *
-	 * @return List of all data point names
-	 */
-	public HashSet<String> GetDataPointNamesUnsorted()
-	{
-		return _dataPointNames;
-	}
+//	/** Gets a list of all data point names across all data instances in the collection.
+//	 *
+//	 * @return List of all data point names
+//	 */
+//	public HashSet<String> GetDataPointNamesUnsorted()
+//	{
+//		return _dataPointNames;
+//	}
 
 	public String GetDataPointValue(String instanceID, String dataPointName)
 	{

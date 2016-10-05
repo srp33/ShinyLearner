@@ -32,10 +32,11 @@ rm -f $outputDir/${validationType}*
 cd $testDir
 
 validation=StrongSignal_Both
-dataFile=$currentDir/Validation/${validation}.tsv.gz
+#dataFile=$currentDir/Validation/${validation}.tsv.gz
 #dataFile="$currentDir/debug_data/*.tsv.gz"
-classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
-#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/knn/default"
+dataFile="$currentDir/debug_data/Archive/mrna-sc_stad.tsv.gz,$currentDir/debug_data/stad_cv_surv1_stad.tsv.gz"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
+classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/knn/default"
 #debug=true
 debug=false
 
