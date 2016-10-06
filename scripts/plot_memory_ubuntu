@@ -17,6 +17,5 @@ then
   exit 1
 fi
 
-python scripts/FilterPerfOutput.py $dataFile $tmpFile
+python scripts/FilterPerfOutput_Ubuntu.py $dataFile $tmpFile
 Rscript --vanilla scripts/PerfPlot.R $tmpFile $pdfFile
-open $pdfFile

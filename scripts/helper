@@ -16,10 +16,23 @@ function getMemAvailable {
   echo "$mem"
 }
 
+classPath=lib/paldb.jar
+
+tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
+
+function cleanup {
+  rm -rf $tmpDir
+}
+
+cleanup
+mkdir -p $tmpDir
+
+trap cleanup INT TERM EXIT
+
 errFile=/dev/null
 if [[ "$debug" == "true" ]]
 then
-  errFile=/tmp/err
+  errFile=$(mktemp $tmpDir/XXXXXXXXX)
 fi
 
 function printError {
@@ -28,3 +41,10 @@ function printError {
     cat $errFile
   fi
 }
+
+if [[ "$validationType" == "montecarlo" ]]
+then
+  iterationOutputHeader=Iteration
+else
+  iterationOutputHeader=Fold
+fi

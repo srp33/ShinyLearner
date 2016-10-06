@@ -52,32 +52,18 @@ then
   fi
 fi
 
-classPath=lib/paldb.jar
-
-tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
-
-function cleanup {
-  rm -rf $tmpDir
-}
-
-cleanup
-mkdir -p $tmpDir
 source scripts/helper
-
-trap cleanup INT TERM EXIT
 
 ## Make training and testing assignments
 python scripts/IdentifySamples.py "$dataFiles" "$description" $tmpDir/allid $tmpDir/classes
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  python scripts/AssignTrainingTesting.py $tmpDir/allid $tmpDir/classes "Iteration" $tmpDir/ott $outerNumIterations $randomSeed
+  python scripts/AssignTrainingTesting.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
   python scripts/AssignTrainingTesting.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
-  iterationOutputHeader=Iteration
 else
-  python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "Fold" $tmpDir/ott $outerNumIterations $randomSeed
+  python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
   python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
-  iterationOutputHeader=Fold
 fi
 
 ## Prepare inner experiment files
@@ -118,49 +104,59 @@ java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES=$dataFi
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
 
 function parseOuterFileA {
-  if [[ "$2" != "" ]]
+  if [[ "$3" != "" ]]
   then
-    python scripts/ParseNestedResults.py $1 $iterationOutputHeader $3 "$2"
+    python scripts/ParseNestedResults.py $1 $iterationOutputHeader $3 $1.sorttemp
+    Rscript --vanilla scripts/SortFile.R $1.sorttemp $2 "$3" 2> $errFile
+    printError
   fi
 }
 
 function parseOuterFileB {
-  if [[ "$2" != "" ]]
+  if [[ "$3" != "" ]]
   then
-    python scripts/ParseNestedResults_FeatureSelection.py $1 $iterationOutputHeader "$2"
+    python scripts/ParseNestedResults_FeatureSelection.py $1 $iterationOutputHeader $1.sorttemp
+    Rscript --vanilla scripts/SortFile.R $1.sorttemp $2 "$3" 2> $errFile
+    printError
   fi
 }
 
 function parseOuterFileC {
-  if [[ "$2" != "" ]]
+  if [[ "$3" != "" ]]
   then
-    python scripts/ParseNestedResults_FeatureSelection3.py $1 $iterationOutputHeader "$2"
+    python scripts/ParseNestedResults_FeatureSelection3.py $1 $iterationOutputHeader $1.sorttemp
+    Rscript --vanilla scripts/SortFile.R $1.sorttemp $2 "$3" 2> $errFile
+    printError
   fi
 }
 
-parseOuterFileC $tmpDir/ocle2 "$outSelectedFeaturesFile"
-parseOuterFileB $tmpDir/op "$outPredictionsFile"
-parseOuterFileB $tmpDir/om "$outMetricsFile"
+parseOuterFileC $tmpDir/ocle2 Description,$iterationOutputHeader,Algorithm "$outSelectedFeaturesFile"
+parseOuterFileB $tmpDir/op Description,$iterationOutputHeader,Algorithm,InstanceID "$outPredictionsFile"
+parseOuterFileB $tmpDir/om Description,$iterationOutputHeader,Algorithm,Metric "$outMetricsFile"
 
 function copyInnerFileA {
-  if [[ "$2" != "" ]]
+  if [[ "$3" != "" ]]
   then
-    python scripts/ParseNestedResults2.py $1 $iterationOutputHeader "$2"
+    python scripts/ParseNestedResults2.py $1 $iterationOutputHeader $1.sorttemp
+    Rscript --vanilla scripts/SortFile.R $1.sorttemp $2 "$3" 2> $errFile
+    printError
   fi
 }
 
 function copyInnerFileB {
-  if [[ "$2" != "" ]]
+  if [[ "$3" != "" ]]
   then
-    python scripts/ParseNestedResults_FeatureSelection2.py $1 $iterationOutputHeader "$2"
+    python scripts/ParseNestedResults_FeatureSelection2.py $1 $iterationOutputHeader $1.sorttemp
+    Rscript --vanilla scripts/SortFile.R $1.sorttemp $2 "$3" 2> $errFile
+    printError
   fi
 }
 
-copyInnerFileA $tmpDir/if "$outNestedSelectedFeaturesFile"
-copyInnerFileB $tmpDir/ip "$outNestedPredictionsFile"
-copyInnerFileB $tmpDir/im "$outNestedMetricsFile"
-copyInnerFileA $tmpDir/ifb "$outNestedFeatureSelectionBenchmarkFile"
-copyInnerFileB $tmpDir/icb "$outNestedClassificationBenchmarkFile"
+copyInnerFileA $tmpDir/if Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Algorithm "$outNestedSelectedFeaturesFile"
+copyInnerFileB $tmpDir/ip Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Feature_Selection_Algorithm,Num_Features,Classification_Algorithm,InstanceID "$outNestedPredictionsFile"
+copyInnerFileB $tmpDir/im Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Feature_Selection_Algorithm,Num_Features,Classification_Algorithm,Metric "$outNestedMetricsFile"
+copyInnerFileA $tmpDir/ifb Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Algorithm "$outNestedFeatureSelectionBenchmarkFile"
+copyInnerFileB $tmpDir/icb Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Feature_Selection_Algorithm,Num_Features,Classification_Algorithm "$outNestedClassificationBenchmarkFile"
 
 if [[ "$outNestedSummarizedSelectedFeaturesFile" != "" ]]
 then

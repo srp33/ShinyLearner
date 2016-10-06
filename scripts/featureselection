@@ -40,19 +40,7 @@ then
   fi
 fi
 
-classPath=lib/paldb.jar
-
-tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
-
-function cleanup {
-  rm -rf $tmpDir
-}
-
-cleanup
-mkdir -p $tmpDir
 source scripts/helper
-
-trap cleanup INT TERM EXIT
 
 idFile=$tmpDir/id
 classFile=$tmpDir/cl
@@ -63,11 +51,9 @@ python scripts/IdentifySamples.py $dataFiles $description $idFile $classFile
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  python scripts/AssignTrainingTesting.py $idFile $classFile Iteration $trainTestFile $numIterations $randomSeed
-  iterationOutputHeader=Iteration
+  python scripts/AssignTrainingTesting.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
 else
-  python scripts/AssignCrossValidation.py $idFile $classFile Fold $trainTestFile $numIterations $randomSeed
-  iterationOutputHeader=Fold
+  python scripts/AssignCrossValidation.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
 fi
 
 python scripts/AddAlgorithmScripts.py $trainTestFile "$fsAlgos" $trainTestFile2
@@ -77,14 +63,16 @@ mem=$(getMemAvailable)
 java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/of" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
 
 function parseOutputFile {
-  if [[ "$2" != "" ]]
+  if [[ "$3" != "" ]]
   then
-    python scripts/ParseNonNestedResults.py $1 $iterationOutputHeader "$2"
+    python scripts/ParseNonNestedResults.py $1 $iterationOutputHeader $1.sorttemp
+    Rscript --vanilla scripts/SortFile.R $1.sorttemp $2 "$3" 2> $errFile
+    printError
   fi
 }
 
-parseOutputFile $tmpDir/of "$outFeaturesFile"
-parseOutputFile $tmpDir/ob "$outBenchmarkFile"
+parseOutputFile $tmpDir/of Description,$iterationOutputHeader,Algorithm "$outFeaturesFile"
+parseOutputFile $tmpDir/ob Description,$iterationOutputHeader,Algorithm "$outBenchmarkFile"
 
 if [[ "$outSummarizedFeaturesFile" != "" ]]
 then

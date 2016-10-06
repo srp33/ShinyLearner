@@ -49,32 +49,18 @@ then
   fi
 fi
 
-classPath=lib/paldb.jar
-
-tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
-
-function cleanup {
-  rm -rf $tmpDir
-}
-
-cleanup
-mkdir -p $tmpDir
 source scripts/helper
-
-trap cleanup INT TERM EXIT
 
 ## Make training and testing assignments
 python scripts/IdentifySamples.py "$dataFiles" "$description" $tmpDir/allid $tmpDir/classes
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  python scripts/AssignTrainingTesting.py $tmpDir/allid $tmpDir/classes "Iteration" $tmpDir/ott $outerNumIterations $randomSeed
+  python scripts/AssignTrainingTesting.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
   python scripts/AssignTrainingTesting.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
-  iterationOutputHeader=Iteration
 else
-  python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "Fold" $tmpDir/ott $outerNumIterations $randomSeed
+  python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
   python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
-  iterationOutputHeader=Fold
 fi
 
 ## Prepare inner experiment files
@@ -101,24 +87,34 @@ Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir
 
 if [[ "$outPredictionsFile" != "" ]]
 then
-  python scripts/ParseNestedResults.py $tmpDir/op $iterationOutputHeader "$outPredictionsFile"
+  python scripts/ParseNestedResults.py $tmpDir/op $iterationOutputHeader $tmpDir/op.sorttemp
+  Rscript --vanilla scripts/SortFile.R $tmpDir/op.sorttemp Description,$iterationOutputHeader,Algorithm,InstanceID "$outPredictionsFile" 2> $errFile
+  printError
 fi
 if [[ "$outMetricsFile" != "" ]]
 then
-  python scripts/ParseNestedResults.py $tmpDir/om $iterationOutputHeader "$outMetricsFile"
+  python scripts/ParseNestedResults.py $tmpDir/om $iterationOutputHeader $tmpDir/om.sorttemp
+  Rscript --vanilla scripts/SortFile.R $tmpDir/om.sorttemp Description,$iterationOutputHeader,Algorithm,Metric "$outMetricsFile" 2> $errFile
+  printError
 fi
 
 if [[ "$outNestedPredictionsFile" != "" ]]
 then
-  python scripts/ParseNestedResults2.py $tmpDir/ip $iterationOutputHeader "$outNestedPredictionsFile"
+  python scripts/ParseNestedResults2.py $tmpDir/ip $iterationOutputHeader $tmpDir/ip.sorttemp
+  Rscript --vanilla scripts/SortFile.R $tmpDir/ip.sorttemp Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Algorithm,InstanceID "$outNestedPredictionsFile" 2> $errFile
+  printError
 fi
 if [[ "$outNestedMetricsFile" != "" ]]
 then
-  python scripts/ParseNestedResults2.py $tmpDir/im $iterationOutputHeader "$outNestedMetricsFile"
+  python scripts/ParseNestedResults2.py $tmpDir/im $iterationOutputHeader $tmpDir/im.sorttemp
+  Rscript --vanilla scripts/SortFile.R $tmpDir/im.sorttemp Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Algorithm,Metric "$outNestedMetricsFile" 2> $errFile
+  printError
 fi
 if [[ "$outNestedBenchmarkFile" != "" ]]
 then
-  python scripts/ParseNestedResults2.py $tmpDir/icb $iterationOutputHeader "$outNestedBenchmarkFile"
+  python scripts/ParseNestedResults2.py $tmpDir/icb $iterationOutputHeader $tmpDir/icb.sorttemp
+  Rscript --vanilla scripts/SortFile.R $tmpDir/icb.sorttemp Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Algorithm "$outNestedBenchmarkFile" 2> $errFile
+  printError
 fi
 
 cleanup

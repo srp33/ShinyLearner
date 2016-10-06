@@ -2,7 +2,9 @@ package shinylearner;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import shinylearner.core.AnalysisFileCreator;
 import shinylearner.core.Benchmark;
@@ -11,6 +13,7 @@ import shinylearner.core.ExperimentItems;
 import shinylearner.core.FeatureSelection;
 import shinylearner.core.InstanceManager;
 import shinylearner.core.Log;
+import shinylearner.core.OutputFileProcessor;
 import shinylearner.core.Settings;
 import shinylearner.core.Singletons;
 import shinylearner.helper.FileUtilities;
@@ -94,75 +97,57 @@ public class Main
 
 	private static void PerformAnalysis() throws Exception
 	{
-		SaveOutputHeaders();
+		OutputFileProcessor.DeleteExistingOutputFiles();
+		OutputFileProcessor.AddFeatureSelectionOutputLine(FeatureSelection.GetOutputHeader(), false);
+		OutputFileProcessor.AddPredictionOutputLine(Classification.GetOutputHeader(), false);
+		OutputFileProcessor.AddBenchmarkOutputLine(Benchmark.GetBenchmarkHeader(), false);
 
-		HashMap<String, String> trainingDataFileMap = new HashMap<String, String>();
-		HashMap<String, String> testDataFileMap = new HashMap<String, String>();
-		
+		List<ExperimentItems> experimentItemsList = new ArrayList<ExperimentItems>();
 		int lineNumber = 1;
-
 		for (ArrayList<String> lineItems : FileUtilities.ParseDelimitedFile(Settings.EXPERIMENT_FILE))
 		{
-			Singletons.ExperimentItems = new ExperimentItems(lineNumber, lineItems);
+			experimentItemsList.add(new ExperimentItems(lineNumber, lineItems));
 			lineNumber++;
-			
-			CheckTrainTestAssignments(Singletons.ExperimentItems.TrainingIDs, Singletons.ExperimentItems.TestIDs);
-
-			if (!trainingDataFileMap.containsKey(Singletons.ExperimentItems.UniqueKey))
+		}
+		
+        Collections.sort(experimentItemsList);
+        
+        ExperimentItems previousExperimentItems = null;
+        String trainingFilePath = null;
+        String testFilePath = null;
+        
+        for (ExperimentItems experimentItems : experimentItemsList)
+        {
+        	Singletons.ExperimentItems = experimentItems;
+        	
+        	// Should only create test file if we are doing classification!!
+        	
+        	if (previousExperimentItems == null || !experimentItems.Key.equals(previousExperimentItems.Key))
 			{
-				trainingDataFileMap.put(Singletons.ExperimentItems.UniqueKey, AnalysisFileCreator.CreateFile(Singletons.ExperimentItems.AlgorithmDataFormat, Singletons.ExperimentItems.TrainingIDs, Singletons.ExperimentItems.DataPointsToUse, true));
-				testDataFileMap.put(Singletons.ExperimentItems.UniqueKey, AnalysisFileCreator.CreateFile(Singletons.ExperimentItems.AlgorithmDataFormat, Singletons.ExperimentItems.TestIDs, Singletons.ExperimentItems.DataPointsToUse, false));
+        		// Delete any previous files that were created
+        		if (trainingFilePath != null)
+        			FileUtilities.DeleteFile(trainingFilePath);
+        		
+        		if (experimentItems.IsClassificationAnalysis && testFilePath != null)
+        			FileUtilities.DeleteFile(testFilePath);
+        		
+        		trainingFilePath = AnalysisFileCreator.CreateFile(Singletons.ExperimentItems.AlgorithmDataFormat, Singletons.ExperimentItems.TrainingIDs, Singletons.ExperimentItems.DataPointsToUse, true);
+        		
+        		if (experimentItems.IsClassificationAnalysis)
+        			testFilePath = AnalysisFileCreator.CreateFile(Singletons.ExperimentItems.AlgorithmDataFormat, Singletons.ExperimentItems.TestIDs, Singletons.ExperimentItems.DataPointsToUse, false);
 			}
-
-			String trainingFilePath = trainingDataFileMap.get(Singletons.ExperimentItems.UniqueKey);
-			String testFilePath = testDataFileMap.get(Singletons.ExperimentItems.UniqueKey);
 			
-			if (Singletons.ExperimentItems.AlgorithmType.equals("Classification"))
+			if (experimentItems.IsClassificationAnalysis)
 				Classification.Classify(trainingFilePath, testFilePath);
 			else
 				FeatureSelection.SelectFeatures(trainingFilePath);
+			
+			previousExperimentItems = experimentItems;
 		}
-		
-		for (String filePath : trainingDataFileMap.values())
-			FileUtilities.DeleteFile(filePath);
-		for (String filePath : testDataFileMap.values())
-			FileUtilities.DeleteFile(filePath);
+
+        // Make sure all the output lines are flushed at the end
+		OutputFileProcessor.AddFeatureSelectionOutputLine("", true);
+		OutputFileProcessor.AddPredictionOutputLine("", true);
+		OutputFileProcessor.AddBenchmarkOutputLine("", true);
 	}
-
-	private static void SaveOutputHeaders() throws Exception
-	{
-		if (!Settings.OUTPUT_FEATURES_FILE_PATH.equals(""))
-			FileUtilities.AppendLineToFile(Settings.OUTPUT_FEATURES_FILE_PATH, FeatureSelection.GetOutputHeader());
-		
-		if (!Settings.OUTPUT_PREDICTIONS_FILE_PATH.equals(""))
-			FileUtilities.AppendLineToFile(Settings.OUTPUT_PREDICTIONS_FILE_PATH, Classification.GetOutputHeader());
-		
-		if (!Settings.OUTPUT_BENCHMARK_FILE_PATH.equals(""))
-			FileUtilities.AppendLineToFile(Settings.OUTPUT_BENCHMARK_FILE_PATH, Benchmark.GetBenchmarkHeader());
-	}
-	
-    public static void CheckTrainTestAssignments(ArrayList<String> trainIDs, ArrayList<String> testIDs) throws Exception
-    {
-        if (trainIDs.size() == 0 || testIDs.size() == 0)
-            throw new Exception("No predictions can be made because the training and/or test set have no data.");
-
-        // Make sure the training and test IDs are in the data set we are working with
-//        ArrayList<String> overlappingTrainingIDs = ListUtilities.Intersect(ListUtilities.CreateStringList(Singletons.IndependentVariableInstances.GetInstanceIDsUnsorted()), trainIDs);
-//        ArrayList<String> overlappingTestIDs = ListUtilities.Intersect(ListUtilities.CreateStringList(Singletons.IndependentVariableInstances.GetInstanceIDsUnsorted()), testIDs);
-
-//        if (overlappingTrainingIDs.size() != trainIDs.size())
-//        	Log.ExceptionFatal("At least one of the training IDs was not present in the input data set(s).");
-//        if (overlappingTestIDs.size() != testIDs.size())
-//        	Log.ExceptionFatal("At least one of the test IDs was not present in the input data set(s).");
-
-        Log.Debug("Do a sanity check to make sure that no instances overlap between the training and test sets");
-        if (ListUtilities.Intersect(trainIDs, testIDs).size() > 0)
-        {
-            String errorMessage = "The training and test sets overlap. ";
-            errorMessage += "Training IDs: " + ListUtilities.Join(trainIDs, ", ");
-            errorMessage += "Test IDs: " + ListUtilities.Join(testIDs, ", ") + ".";
-
-            throw new Exception(errorMessage);
-        }
-    }
 }

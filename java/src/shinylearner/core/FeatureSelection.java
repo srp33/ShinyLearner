@@ -20,12 +20,11 @@ public class FeatureSelection
 		long startTime = System.nanoTime();
 
 		String algorithmOutput = SelectFeaturesCommand(trainingFilePath);
+		Log.Debug(algorithmOutput);
+		//Log.Exit(1);
 
-		if (Settings.OUTPUT_BENCHMARK_FILE_PATH != "")
-			FileUtilities.AppendLineToFile(Settings.OUTPUT_BENCHMARK_FILE_PATH, Benchmark.GetBenchmarkValues(startTime));
-		
-		if (!Settings.OUTPUT_FEATURES_FILE_PATH.equals(""))
-			FileUtilities.AppendLineToFile(Settings.OUTPUT_FEATURES_FILE_PATH, GetOutput(algorithmOutput));
+		OutputFileProcessor.AddBenchmarkOutputLine(Benchmark.GetBenchmarkValues(startTime), false);
+		OutputFileProcessor.AddFeatureSelectionOutputLine(GetOutput(algorithmOutput), false);
 	}
 	
     private static String SelectFeaturesCommand(String dataFilePath) throws Exception

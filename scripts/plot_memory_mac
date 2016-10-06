@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -o errexit
+
+dataFile=$1
+tmpFile=$2
+pdfFile=$3
+
+if [[ "$dataFile" == "" ]]
+then
+  echo "No data file specified."
+  exit 1
+fi
+if [[ "$pdfFile" == "" ]]
+then
+  echo "No PDF file specified."
+  exit 1
+fi
+
+python scripts/FilterPerfOutput_Mac.py $dataFile $tmpFile
+Rscript --vanilla scripts/PerfPlot.R $tmpFile $pdfFile
+open $pdfFile

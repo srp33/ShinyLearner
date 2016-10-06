@@ -1,0 +1,12 @@
+#!/bin/bash
+
+outFile=$1
+
+if [[ "$outFile" == "" ]]
+then
+  echo "No output file specified."
+  exit 1
+fi
+
+# This probably only works on a Mac
+vmstat 1 2>&1 | tee -a $outFile

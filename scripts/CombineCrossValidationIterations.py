@@ -28,7 +28,7 @@ def saveOutputFile(inFilePattern, outFilePath):
 
             inFile.close()
 
-        outItems.sort(key=itemgetter(1))
+        #outItems.sort(key=itemgetter(1))
         for lineItems in outItems:
             outFile.write("\t".join([str(x) for x in lineItems]) + "\n")
 

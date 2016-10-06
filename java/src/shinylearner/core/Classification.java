@@ -21,13 +21,8 @@ public class Classification
 		Log.Debug(predictionOutput);
 		//Log.Exit(1);
 
-		if (!Settings.OUTPUT_BENCHMARK_FILE_PATH.equals(""))
-			FileUtilities.AppendLineToFile(Settings.OUTPUT_BENCHMARK_FILE_PATH, Benchmark.GetBenchmarkValues(startTime));
-
-		ArrayList<Prediction> predictions = ParsePredictions(predictionOutput, Singletons.ExperimentItems.TestIDs);
-
-		if (!Settings.OUTPUT_PREDICTIONS_FILE_PATH.equals(""))
-			FileUtilities.AppendLineToFile(Settings.OUTPUT_PREDICTIONS_FILE_PATH, GetPredictionOutput(predictions));
+		OutputFileProcessor.AddBenchmarkOutputLine(Benchmark.GetBenchmarkValues(startTime), false);
+		OutputFileProcessor.AddPredictionOutputLine(GetPredictionOutput(ParsePredictions(predictionOutput, Singletons.ExperimentItems.TestIDs)), false);
 	}
 
 	private static String TrainTest(String trainingFilePath, String testFilePath) throws Exception

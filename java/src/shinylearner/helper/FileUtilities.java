@@ -16,30 +16,6 @@ import shinylearner.core.Log;
  */
 public class FileUtilities
 {
-    /** Convenience method that appends text to an existing file.
-     *
-     * @param filePath Absolute file path
-     * @param text Text to append
-     * @throws Exception
-     */
-    public static void AppendTextToFile(String filePath, String text) throws Exception
-    {
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)));
-        out.write(text);
-        out.close();
-    }
-
-    /** Appends a line to an existing file (incuding a new line character).
-     *
-     * @param filePath Absolute file path
-     * @param text Text to append
-     * @throws Exception
-     */
-    public static void AppendLineToFile(String filePath, String text) throws Exception
-    {
-        AppendTextToFile(filePath, text + "\n");
-    }
-
     /** Writest text to a file.
      *
      * @param filePath Absolute file path
@@ -63,28 +39,6 @@ public class FileUtilities
         printWriter.close();
     }
 
-    /** Writes a new line to a file (including a new line character).
-     *
-     * @param filePath Absolute file path
-     * @param text Text to write
-     * @throws Exception
-     */
-    public static void WriteLineToFile(String filePath, String text) throws Exception
-    {
-        WriteTextToFile(filePath, text + "\n");
-    }
-
-    /** Writes new lines to a file (including new line characters).
-     *
-     * @param filePath Absolute file path
-     * @param rows List of row lists to write
-     * @throws Exception
-     */
-    public static void WriteLinesToFile(String filePath, ArrayList<ArrayList<String>> rows) throws Exception
-    {
-        WriteLinesToFile(filePath, rows, "");
-    }
-
     /** Writes new lines to a file (including new line characters).
      *
      * @param filePath Absolute file path
@@ -92,23 +46,29 @@ public class FileUtilities
      * @param headerComment Descriptive comment that will be placed at the top of the file
      * @throws Exception
      */
-    public static void WriteLinesToFile(String filePath, ArrayList<ArrayList<String>> rows, String headerComment) throws Exception
+    public static void AppendLinesToFile(String filePath, ArrayList<String> lines) throws Exception
     {
-        if (rows == null)
+        if (lines == null | lines.size() == 0)
         {
-        	Log.Debug("The object to be saved to " + filePath + " was null.");
+        	Log.ExceptionFatal("The object to be saved to " + filePath + " was null or empty.");
             return;
         }
+        
+    	PrintWriter printWriter;
+    	
+    	if (filePath.endsWith(".gz"))
+    	{
+    		printWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(new File(filePath), true)), "UTF-8")));
+    	}
+    	else
+    	{
+    		printWriter = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)));
+    	}
 
-        StringBuffer output = new StringBuffer();
+        for (String line : lines)
+            printWriter.write(line + "\n");
 
-        if (headerComment != null && !headerComment.equals(""))
-            output.append("#" + headerComment + "\n");
-
-        for (ArrayList<String> row : rows)
-            output.append(ListUtilities.Join(row, "\t") + "\n");
-
-        WriteTextToFile(filePath, output.toString());
+        printWriter.close();
     }
 
     /** Reads lines from a file.
