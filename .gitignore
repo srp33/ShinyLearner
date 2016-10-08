@@ -6,7 +6,6 @@ Icon?
 Archive
 TestFiles
 release
-*.tsv
 *.txt
 *.pdf
 shinylearner.jar
@@ -15,3 +14,4 @@ TestOutput
 debug_data
 v72_v161
 BuildTestOutput
+scripts/ImbalanceResults

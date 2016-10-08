@@ -1,0 +1,17 @@
+Description	Iteration	Algorithm	Metric	Value
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	Accuracy	0.9
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	AUROC	0.974444444444444
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	BalancedAccuracy	0.872222222222222
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	Brier	0.0677599269132662
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	F1	0.841269841269841
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	FDR	0.143939393939394
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	FNR	0.166666666666667
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	FPR	0.0888888888888889
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	MCC	0.760292246623691
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	MMCE	0.1
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	NPV	0.921296296296296
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	PPV	0.856060606060606
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	Precision	0.856060606060606
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	Recall	0.833333333333333
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	TNR	0.911111111111111
+StrongSignalMultipleDataFiles	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	TPR	0.833333333333333

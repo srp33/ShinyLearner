@@ -1,0 +1,24 @@
+selector	name	script
+w_cfs_subset	CFS Subset (Weka)	AlgorithmScripts/FeatureSelection/arff/weka__cfs_subset
+w_correlation	Correlation (Weka)	AlgorithmScripts/FeatureSelection/arff/weka__correlation
+w_gain_ratio	Gain Ratio (Weka)	AlgorithmScripts/FeatureSelection/arff/weka__gain_ratio
+w_info_gain	Info Gain (Weka)	AlgorithmScripts/FeatureSelection/arff/weka__info_gain
+w_one_r	One R (Weka)	AlgorithmScripts/FeatureSelection/arff/weka__one_r
+w_relief_f	Relief F (Weka)	AlgorithmScripts/FeatureSelection/arff/weka__relief_f
+w_svm_rfe	SVM RFE (Weka)	AlgorithmScripts/FeatureSelection/arff/weka__svm_rfe
+w_symmetrical_uncertainty	Symemetrical Uncertainty (Weka)	AlgorithmScripts/FeatureSelection/arff/weka__symmetrical_uncertainty
+w_decision_tree	Decision Tree (Weka)	AlgorithmScripts/FeatureSelection/arff/weka__wrapper_decision_tree
+w_knn1	KNN (Weka)	AlgorithmScripts/FeatureSelection/arff/weka__wrapper_knn1
+w_naive_bayes	Naive Bayes (Weka)	AlgorithmScripts/FeatureSelection/arff/weka__wrapper_naive_bayes
+w_svm_linear	SVM Linear (Weka)	AlgorithmScripts/FeatureSelection/arff/weka__wrapper_svm_linear
+w_svm_poly	SVM Poly (Weka)	AlgorithmScripts/FeatureSelection/arff/weka__wrapper_svm_poly
+m_svm_rbf	SVM RBF (mlr)	AlgorithmScripts/FeatureSelection/arff/weka__wrapper_svm_rbf
+m_cforest	cForest (mlr)	AlgorithmScripts/FeatureSelection/tsv/mlr__cforest.importance
+m_kruskal	Kruskal (mlr)	AlgorithmScripts/FeatureSelection/tsv/mlr__kruskal.test
+m_rf	Random Forest (mlr)	AlgorithmScripts/FeatureSelection/tsv/mlr__rf.min.depth
+m_univariate	Univariate (mlr)	AlgorithmScripts/FeatureSelection/tsv/mlr__univariate.model.score
+s_anova	Anova (Scikit-Learn)	AlgorithmScripts/FeatureSelection/tsv/sklearn__anova
+s_random_forest_rfe	RFE (Random Forest) (Scikit-Learn)	AlgorithmScripts/FeatureSelection/tsv/sklearn__random_forest_rfe
+s_lasso	LASSO (Scikit-Learn)	AlgorithmScripts/FeatureSelection/tsv/sklearn__random_lasso
+s_logistic_regression	Logistic Regression (Scikit-Learn)	AlgorithmScripts/FeatureSelection/tsv/sklearn__random_logistic_regression
+s_svm_rfe	RFE (SVM) (Scikit-Learn)	AlgorithmScripts/FeatureSelection/tsv/sklearn__svm_rfe

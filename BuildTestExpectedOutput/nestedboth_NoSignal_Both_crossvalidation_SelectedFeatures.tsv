@@ -1,0 +1,5 @@
+Description	Iteration	Fold	Algorithm	Features
+NoSignal_Both	1	1	Ensemble_Select_Best	Feature92.Medium,Feature64.Medium,Feature30,Feature86.Low,Feature2
+NoSignal_Both	1	2	Ensemble_Select_Best	Feature15,Feature27,Feature42,Feature5,Feature7
+NoSignal_Both	2	1	Ensemble_Select_Best	Feature23,Feature92.Low,Feature98.Medium,Feature67.Medium,Feature6,Feature60.Low,Feature97.Medium,Feature92.Medium,Feature64.Medium,Feature59.Medium,Feature70.Medium,Feature5,Feature87.Medium,Feature84.Low,Feature68.Medium,Feature2,Feature57.Low,Feature38,Feature74.Low,Feature71.Medium
+NoSignal_Both	2	2	Ensemble_Select_Best	Feature97.Medium,Feature78.Low,Feature25,Feature83.Medium,Feature46

@@ -1,0 +1,17 @@
+Description	Iteration	Algorithm	Metric	Value
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	Accuracy	0.933333333333333
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	AUROC	0.967777777777778
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	BalancedAccuracy	0.9
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	Brier	0.091192250783767
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	F1	0.886363636363636
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	FDR	0.0555555555555556
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	FNR	0.133333333333333
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	FPR	0.0666666666666667
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	MCC	0.848034485345575
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	MMCE	0.0666666666666667
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	NPV	0.96078431372549
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	PPV	0.944444444444444
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	Precision	0.944444444444444
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	Recall	0.866666666666667
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	TNR	0.933333333333333
+StrongSignal_MissingDependentVariable	1	AlgorithmScripts/Classification/tsv/mlr/svm/default	TPR	0.866666666666667

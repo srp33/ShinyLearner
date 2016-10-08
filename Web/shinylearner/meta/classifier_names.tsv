@@ -1,0 +1,7 @@
+classifier	name	script
+w_naive_bayes	Naive Bayes (Weka)	Classification/arff/weka__bayes__naive_bayes
+w_simplelogistic	Simple Logistic (Weka)	Classification/arff/weka__functions__simplelogistic
+w_svm_linear	SVM Linear (Weka)	Classification/arff/weka__functions__svm_linear
+w_knn1	KNN (Weka)	Classification/arff/weka__lazy__knn1
+w_vfi	VFI (Weka)	Classification/arff/weka__misc__vfi
+w_random_forest	Random Forest (Weka)	Classification/arff/weka__trees__random_forest
