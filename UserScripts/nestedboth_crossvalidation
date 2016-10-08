@@ -37,7 +37,7 @@ then
   exit 1
 fi
 
-rm -f "$outLogFile"
+source scripts/print_args
 
 for iteration in $(seq 1 $numIterations)
 do
@@ -93,15 +93,27 @@ do
     outNestedClassificationBenchmarkFileIteration=$outDir/outbenchclnested
   fi
 
+  echo
+  echo "**************************************************************" | tee -a "$outLogFile"
+  echo "Beginning analysis for cross-validation fold ${iteration}" | tee -a "$outLogFile"
+  echo "**************************************************************" | tee -a "$outLogFile"
   scripts/nestedboth "$dataFiles" "$description" "$outerNumFolds" "$innerNumFolds" "$debug" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFileIteration" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedSelectedFeaturesFileIteration" "" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedFeatureSelectionBenchmarkFileIteration" "$outNestedClassificationBenchmarkFileIteration" crossvalidation $iteration 2>&1 | tee -a "$outLogFile"
 done
 
+echo
+echo "**************************************************************" | tee -a "$outLogFile"
+echo "Finalizing analysis" | tee -a "$outLogFile"
+echo "**************************************************************" | tee -a "$outLogFile"
+echo
+
+echo "Combining results across cross-validation iterations..." | tee -a "$outLogFile"
 python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfs,$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outfsnested,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchfsnested,$tmpDir/*/outbenchclnested" "$outSelectedFeaturesFile,$outPredictionsFile,$outMetricsFile,$outNestedSelectedFeaturesFile,$outNestedPredictionsFile,$outNestedMetricsFile,$outNestedFeatureSelectionBenchmarkFile,$outNestedClassificationBenchmarkFile" 2>&1 | tee -a "$outLogFile"
 
+echo "Summarizing feature ranks..."
 source scripts/helper
 Rscript --vanilla scripts/BordaCountFeatures.R "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile | tee -a "$outLogFile"
 printError
 
 cleanup
 
-echo "Analysis successfully completed!" | tee -a "$outLogFile"
+source scripts/success_message

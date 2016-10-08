@@ -22,8 +22,8 @@ then
   exit 1
 fi
 
-rm -f "$outLogFile"
+source scripts/print_args
 
 scripts/nestedclassification "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" montecarlo 0 2>&1 | tee -a "$outLogFile"
 
-echo "Analysis successfully completed!" | tee -a "$outLogFile"
+source scripts/success_message

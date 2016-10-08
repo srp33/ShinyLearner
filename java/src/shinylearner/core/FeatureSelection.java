@@ -2,7 +2,6 @@ package shinylearner.core;
 
 import java.util.ArrayList;
 
-import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
 import shinylearner.helper.MiscUtilities;
 
@@ -15,7 +14,7 @@ public class FeatureSelection
 	
 	public static void SelectFeatures(String trainingFilePath) throws Exception
 	{
-		Log.Info("Selecting features.");
+		Log.Debug("Selecting features.");
 
 		long startTime = System.nanoTime();
 

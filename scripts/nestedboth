@@ -54,7 +54,7 @@ fi
 
 source scripts/helper
 
-## Make training and testing assignments
+echo "Preparing for analysis..."
 python scripts/IdentifySamples.py "$dataFiles" "$description" $tmpDir/allid $tmpDir/classes
 
 if [[ "$validationType" == "montecarlo" ]]
@@ -72,35 +72,35 @@ python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie3
 
 mem=$(getMemAvailable)
 
-## Select features for inner iterations
+echo "Selecting features for inner iterations..."
 java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$tmpDir/ie2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/if" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ifb" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
 
 ## Add selected features to inner classification files
 python scripts/AppendInnerSelectedFeatures.py $tmpDir/if $tmpDir/ie3 "$numFeaturesOptions" $tmpDir/isftt
 
-## Classify using selected features for inner iterations
+echo "Performing classification using selected features for inner iterations..."
 java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/isftt DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/icb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/ip TEMP_DIR=$tmpDir 2> /dev/null
 
-## Calculate performance metrics for inner folds
+echo "Calculating performance metrics for inner iterations..."
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/ip" "$tmpDir/im"
 
-## Parse inner classification results
+echo "Parsing inner classification results..."
 python scripts/ReformatInnerResults_FeatureSelection.py $tmpDir/im $tmpDir/ibrf
 
-## Use "ensemble" approach to identify best combination of algorithms and number of features
+echo "Identifying best combination of algorithms and number of features for inner iterations..."
 Rscript --vanilla scripts/SelectBestInnerResults_FeatureSelection.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ofse $tmpDir/onfe $tmpDir/ocle 2> $errFile
 printError
 
-## Select features on outer iterations
+echo "Selecting features on outer iterations"
 java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ofse DEBUG=$debug OUTPUT_FEATURES_FILE_PATH=$tmpDir/of TEMP_DIR=$tmpDir 2> /dev/null
 
 ## Add selected features to outer classification files
 python scripts/AppendOuterSelectedFeatures.py $tmpDir/of $tmpDir/ocle $tmpDir/onfe $tmpDir/ocle2
 
-## Classify using selected features for outer iterations
+echo "Performing classification using selected features for outer iterations..."
 java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ocle2 DEBUG=$debug OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/op TEMP_DIR=$tmpDir 2> /dev/null
 
-## Calculate performance metrics for outer folds
+echo "Calculating performance metrics for outer iterations..."
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
 
 function parseOuterFileA {
@@ -130,6 +130,7 @@ function parseOuterFileC {
   fi
 }
 
+echo "Preparing output files..."
 parseOuterFileC $tmpDir/ocle2 Description,$iterationOutputHeader,Algorithm "$outSelectedFeaturesFile"
 parseOuterFileB $tmpDir/op Description,$iterationOutputHeader,Algorithm,InstanceID "$outPredictionsFile"
 parseOuterFileB $tmpDir/om Description,$iterationOutputHeader,Algorithm,Metric "$outMetricsFile"

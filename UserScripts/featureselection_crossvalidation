@@ -28,7 +28,7 @@ then
   exit 1
 fi
 
-rm -f "$outLogFile"
+source scripts/print_args
 
 for iteration in $(seq 1 $numIterations)
 do
@@ -48,15 +48,27 @@ do
     outBenchmarkFileIteration=$outDir/outbench
   fi
 
+  echo
+  echo "**************************************************************" | tee -a "$outLogFile"
+  echo "Beginning analysis for cross-validation fold ${iteration}" | tee -a "$outLogFile"
+  echo "**************************************************************" | tee -a "$outLogFile"
   scripts/featureselection "$dataFiles" "$description" "$numFolds" "$debug" "$fsAlgos" "$outFeaturesFileIteration" "" "$outBenchmarkFileIteration" crossvalidation $iteration 2>&1 | tee -a "$outLogFile"
 done
 
+echo
+echo "**************************************************************" | tee -a "$outLogFile"
+echo "Finalizing analysis" | tee -a "$outLogFile"
+echo "**************************************************************" | tee -a "$outLogFile"
+echo
+
+echo "Combining results across cross-validation iterations..." | tee -a "$outLogFile"
 python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfeatures,$tmpDir/*/outbench" "$outFeaturesFile,$outBenchmarkFile" 2>&1 | tee -a "$outLogFile"
 
+echo "Summarizing feature ranks..."
 source scripts/helper
 Rscript --vanilla scripts/BordaCountFeatures.R $outFeaturesFile $outSummarizedFeaturesFile 2> $errFile | tee -a "$outLogFile"
 printError
 
 cleanup
 
-echo "Analysis successfully completed!" | tee -a "$outLogFile"
+source scripts/success_message

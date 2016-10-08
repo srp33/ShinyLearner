@@ -3,7 +3,6 @@ package shinylearner;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import shinylearner.core.AnalysisFileCreator;
@@ -17,7 +16,6 @@ import shinylearner.core.OutputFileProcessor;
 import shinylearner.core.Settings;
 import shinylearner.core.Singletons;
 import shinylearner.helper.FileUtilities;
-import shinylearner.helper.ListUtilities;
 import shinylearner.helper.MiscUtilities;
 
 import com.linkedin.paldb.api.PalDB;
@@ -115,13 +113,41 @@ public class Main
         ExperimentItems previousExperimentItems = null;
         String trainingFilePath = null;
         String testFilePath = null;
-        
-        for (ExperimentItems experimentItems : experimentItemsList)
+
+        double progressBarStepSize = (double)experimentItemsList.size() / 100.0;
+        ArrayList<Integer> progressBarThresholds = new ArrayList<Integer>();
+        for (double x=0.0; x<=(double)experimentItemsList.size(); x+=progressBarStepSize)
         {
+        	int step = (int)x;
+        	
+        	if (!progressBarThresholds.contains(step))
+        		progressBarThresholds.add(step);
+        }
+
+        for (int i=0; i<experimentItemsList.size(); i++)
+        {
+        	ExperimentItems experimentItems = experimentItemsList.get(i);
+
+        	if (progressBarThresholds.contains(i))
+        	{
+        		int thresholdIndex = progressBarThresholds.indexOf(i);
+        		int percent = (int)((float)progressBarThresholds.get(thresholdIndex) * 100.0 / progressBarThresholds.get(progressBarThresholds.size() - 1));
+        		
+        		String progressOutput = "Progress: " + Integer.toString(percent) + "% ";
+        		for (int j=0; j<thresholdIndex; j++)
+        			progressOutput += "#";
+        		
+        		if (percent < 100)
+        			System.out.print(progressOutput += "\r");
+        		else
+        			System.out.println(progressOutput + "                                                                   ");
+        			
+                System.out.flush();
+        	}
+        	
         	Singletons.ExperimentItems = experimentItems;
-        	
-        	// Should only create test file if we are doing classification!!
-        	
+
+        	// Should only create test file if we are doing classification        	
         	if (previousExperimentItems == null || !experimentItems.Key.equals(previousExperimentItems.Key))
 			{
         		// Delete any previous files that were created

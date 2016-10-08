@@ -19,8 +19,8 @@ then
   exit 1
 fi
 
-rm -f "$outLogFile"
+source scripts/print_args
 
 scripts/classification "$dataFiles" "$description" "$numIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo 0 2>&1 | tee -a "$outLogFile"
 
-echo "Analysis successfully completed!" | tee -a "$outLogFile"
+source scripts/success_message

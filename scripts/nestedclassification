@@ -51,7 +51,7 @@ fi
 
 source scripts/helper
 
-## Make training and testing assignments
+echo "Preparing for analysis..."
 python scripts/IdentifySamples.py "$dataFiles" "$description" $tmpDir/allid $tmpDir/classes
 
 if [[ "$validationType" == "montecarlo" ]]
@@ -68,22 +68,26 @@ python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie2
 
 mem=$(getMemAvailable)
 
-## Classify for inner iterations
+echo "Classifying for inner iterations..."
 java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ie2 DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/icb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/ip TEMP_DIR=$tmpDir 2> /dev/null
 
+echo "Calculating classification metrics for inner iterations..."
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/ip" "$tmpDir/im"
 
-## Parse inner classification results
+echo "Parsing inner classification results..."
 python scripts/ReformatInnerResults_Classification.py $tmpDir/im $tmpDir/ibrf
 
-## Use "ensemble" approach to identify best combination of algorithms
+echo "Identifying best combination of algorithms..."
 Rscript --vanilla scripts/SelectBestInnerResults_Classification.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ocle 2> $errFile
 printError
 
-## Classify for outer iterations
+echo "Classifying for outer iterations..."
 java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ocle DEBUG=$debug OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/op TEMP_DIR=$tmpDir 2> /dev/null
 
+echo "Calculating classification metrics for outer iterations..."
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
+
+echo "Preparing output files..."
 
 if [[ "$outPredictionsFile" != "" ]]
 then

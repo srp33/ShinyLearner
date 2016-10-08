@@ -47,6 +47,7 @@ classFile=$tmpDir/cl
 trainTestFile=$tmpDir/tt
 trainTestFile2=$tmpDir/tt2
 
+echo "Preparing for analysis..."
 python scripts/IdentifySamples.py "$dataFiles" "$description" $idFile $classFile
 
 if [[ "$validationType" == "montecarlo" ]]
@@ -60,9 +61,13 @@ python scripts/AddAlgorithmScripts.py $trainTestFile "$classifAlgos" $trainTestF
 
 mem=$(getMemAvailable)
 
+echo "Starting classification..."
 java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_PREDICTIONS_FILE_PATH="$tmpDir/op0" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
 
+echo "Making aggregate predictions..."
 Rscript --vanilla scripts/MajorityVote.R "$tmpDir/op0" "$tmpDir/op"
+
+echo "Calculating classification metrics..."
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
 
 function parseOutputFile {
@@ -74,6 +79,7 @@ function parseOutputFile {
   fi
 }
 
+echo "Preparing output files..."
 parseOutputFile $tmpDir/op Description,$iterationOutputHeader,Algorithm,InstanceID "$outPredictionsFile"
 parseOutputFile $tmpDir/om Description,$iterationOutputHeader,Algorithm,Metric "$outMetricsFile"
 parseOutputFile $tmpDir/ob Description,$iterationOutputHeader,Algorithm "$outBenchmarkFile"

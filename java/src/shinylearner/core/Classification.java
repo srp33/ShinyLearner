@@ -2,7 +2,6 @@ package shinylearner.core;
 
 import java.util.ArrayList;
 
-import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
 import shinylearner.helper.MiscUtilities;
 
@@ -13,7 +12,7 @@ public class Classification
 {
 	public static void Classify(String trainingFilePath, String testFilePath) throws Exception
 	{
-		Log.Info("Classifying.");
+		Log.Debug("Classifying.");
 
 		long startTime = System.nanoTime();
 
