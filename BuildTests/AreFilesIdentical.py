@@ -25,13 +25,13 @@ if not areIdentical:
     print "  ======================================"
     print "  %s" % inFilePath1
     for line in file(inFilePath1):
-        print "  " % line
+        print "  %s" % line
 
     print "  ======================================"
 
     print "  %s" % inFilePath2
     for line in file(inFilePath2):
-        print "  " % line
+        print "  %s" % line
     print "  ======================================"
 
 #    inFile1 = open(inFilePath1)
