@@ -25,6 +25,7 @@ cp -r lib/* $testDir/lib/
 cp -r scripts $testDir/
 cp -r AlgorithmScripts $testDir/
 cp -r UserScripts $testDir/
+cp -r VERSION $testDir/
 
 mkdir -p $outputDir
 rm -f $outputDir/${validationType}*

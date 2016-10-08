@@ -134,13 +134,15 @@ public class Main
         		int percent = (int)((float)progressBarThresholds.get(thresholdIndex) * 100.0 / progressBarThresholds.get(progressBarThresholds.size() - 1));
         		
         		String progressOutput = "Progress: " + Integer.toString(percent) + "% ";
-        		for (int j=0; j<thresholdIndex; j++)
-        			progressOutput += "#";
-        		
+        		//for (int j=0; j<thresholdIndex; j++)
+        		//	progressOutput += "#";
+        		for (int j=0; j<=percent; j+=2)
+            		progressOutput += "#";
+
         		if (percent < 100)
         			System.out.print(progressOutput += "\r");
         		else
-        			System.out.println(progressOutput + "                                                                   ");
+        			System.out.println(progressOutput + "                                           ");
         			
                 System.out.flush();
         	}

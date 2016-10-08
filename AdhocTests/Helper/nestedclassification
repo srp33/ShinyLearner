@@ -25,6 +25,7 @@ cp -r lib/* $testDir/lib/
 cp -r scripts $testDir/
 cp -r AlgorithmScripts $testDir/
 cp -r UserScripts $testDir/
+cp -r VERSION $testDir/
 
 mkdir -p $outputDir
 rm -f $outputDir/${validationType}*
@@ -35,8 +36,8 @@ validation=StrongSignal_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
 #dataFile="$currentDir/debug_data/*.tsv.gz"
 #dataFile="$currentDir/debug_data/Archive/mrna-sc_stad.tsv.gz,$currentDir/debug_data/stad_cv_surv1_stad.tsv.gz"
-#classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default"
-classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
+classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/knn/default"
 #debug=true
 debug=false

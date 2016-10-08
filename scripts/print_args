@@ -4,5 +4,7 @@ echo "***********************************************************************" |
 echo "Command that was executed for analysis on $(date):" | tee -a $outLogFile
 echo | tee -a $outLogFile
 echo "$0 $@" | tee -a $outLogFile
+echo
+echo "ShinyLearner version: $(cat $(dirname $0)/../VERSION)" | tee -a $outLogFile
 echo "***********************************************************************" | tee -a $outLogFile
 echo
