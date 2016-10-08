@@ -114,38 +114,14 @@ public class Main
         String trainingFilePath = null;
         String testFilePath = null;
 
-        double progressBarStepSize = (double)experimentItemsList.size() / 100.0;
-        ArrayList<Integer> progressBarThresholds = new ArrayList<Integer>();
-        for (double x=0.0; x<=(double)experimentItemsList.size(); x+=progressBarStepSize)
-        {
-        	int step = (int)x;
-        	
-        	if (!progressBarThresholds.contains(step))
-        		progressBarThresholds.add(step);
-        }
+        ArrayList<Integer> progressBarThresholds = GetProgressBarThresholds(experimentItemsList);
 
         for (int i=0; i<experimentItemsList.size(); i++)
         {
         	ExperimentItems experimentItems = experimentItemsList.get(i);
 
-        	if (progressBarThresholds.contains(i))
-        	{
-        		int thresholdIndex = progressBarThresholds.indexOf(i);
-        		int percent = (int)((float)progressBarThresholds.get(thresholdIndex) * 100.0 / progressBarThresholds.get(progressBarThresholds.size() - 1));
-        		
-        		String progressOutput = "Progress: " + Integer.toString(percent) + "% ";
-        		//for (int j=0; j<thresholdIndex; j++)
-        		//	progressOutput += "#";
-        		for (int j=0; j<=percent; j+=2)
-            		progressOutput += "#";
-
-        		if (percent < 100)
-        			System.out.print(progressOutput += "\r");
-        		else
-        			System.out.println(progressOutput + "                                           ");
-        			
-                System.out.flush();
-        	}
+        	if (!Settings.DEBUG && progressBarThresholds.contains(i))
+        		ShowProgress(progressBarThresholds, i);
         	
         	Singletons.ExperimentItems = experimentItems;
 
@@ -177,5 +153,38 @@ public class Main
 		OutputFileProcessor.AddFeatureSelectionOutputLine("", true);
 		OutputFileProcessor.AddPredictionOutputLine("", true);
 		OutputFileProcessor.AddBenchmarkOutputLine("", true);
+	}
+
+	private static ArrayList<Integer> GetProgressBarThresholds(List<ExperimentItems> experimentItemsList)
+	{
+		double progressBarStepSize = (double)experimentItemsList.size() / 100.0;
+        ArrayList<Integer> progressBarThresholds = new ArrayList<Integer>();
+        
+        for (double x=0.0; x<=(double)experimentItemsList.size(); x+=progressBarStepSize)
+        {
+        	int step = (int)x;
+        	
+        	if (!progressBarThresholds.contains(step))
+        		progressBarThresholds.add(step);
+        }
+        
+		return progressBarThresholds;
+	}
+
+	private static void ShowProgress(ArrayList<Integer> progressBarThresholds, int i)
+	{
+		int thresholdIndex = progressBarThresholds.indexOf(i);
+		int percent = (int)((float)progressBarThresholds.get(thresholdIndex) * 100.0 / progressBarThresholds.get(progressBarThresholds.size() - 1));
+		
+		String progressOutput = "Progress: " + Integer.toString(percent) + "% ";
+		for (int j=0; j<=percent; j+=2)
+			progressOutput += "#";
+
+		if (percent < 100)
+			System.out.print(progressOutput += "\r");
+		else
+			System.out.println(progressOutput + "                                                          ");
+
+		System.out.flush();
 	}
 }
