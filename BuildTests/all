@@ -10,7 +10,7 @@ then
 else
   # We are running the tests locally
   inputDir=Validation
-  outputDir=/tmp/output
+  outputDir=BuildTestOutput
   mkdir -p $outputDir
 fi
 
@@ -62,3 +62,5 @@ $(dirname $0)/special_cases $inputDir $outputDir $debug $outputDir/special.log
 
 cat $outputDir/special.log >> $overallLogFile
 rm -f $outputDir/special.log
+
+source $(dirname $0)/check_identical
