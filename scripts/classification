@@ -41,6 +41,7 @@ then
 fi
 
 source scripts/helper
+source scripts/sort_function
 
 idFile=$tmpDir/id
 classFile=$tmpDir/cl
@@ -70,12 +71,14 @@ Rscript --vanilla scripts/MajorityVote.R "$tmpDir/op0" "$tmpDir/op"
 echo "Calculating classification metrics..."
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
 
+
 function parseOutputFile {
   if [[ "$3" != "" ]]
   then
     python scripts/ParseNonNestedResults.py $1 "$iterationOutputHeader" $1.sorttemp
-    Rscript --vanilla scripts/SortFile.R $1.sorttemp "$2" "$3" 2> $errFile
-    printError
+    sortFile $1.sorttemp "-k1,1 -k2,2n -k3" "$3"
+    #Rscript --vanilla scripts/SortFile.R $1.sorttemp "$2" "$3" 2> $errFile
+    #printError
   fi
 }
 

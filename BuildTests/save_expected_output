@@ -1,4 +1,4 @@
 #!/bin/bash
 
-rm -fv BuildTestExpectedOutput/*
+rm -f BuildTestExpectedOutput/*
 cp -v BuildTestOutput/*.tsv BuildTestExpectedOutput/

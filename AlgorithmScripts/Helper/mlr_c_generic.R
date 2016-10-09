@@ -14,7 +14,8 @@ task <- makeClassifTask(data = trainingData, target = "Class")
 
 learn <- function(learner)
 {
-  set.seed(0)
+  #set.seed(0)
+  set.seed(123, "L'Ecuyer")
   mod <- train(learner, task)
 
   task.pred <- predict(mod, newdata = testData)
