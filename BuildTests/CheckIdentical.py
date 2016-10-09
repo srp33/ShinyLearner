@@ -26,3 +26,5 @@ inFile1.close()
 
 if misMatchCount > 0:
     sys.exit(1)
+else:
+    print "[SUCCESS] Current results match previous results"
