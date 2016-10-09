@@ -8,13 +8,14 @@ then
   inputDir=input
   #outputDir=output
   outputDir=BuildTestOutput
+  mkdir -p $outputDir
   expectedOutputDir=/BuildTestExpectedOutput
 else
   # We are running the tests locally
   inputDir=Validation
   outputDir=BuildTestOutput
-  expectedOutputDir=BuildTestExpectedOutput
   mkdir -p $outputDir
+  expectedOutputDir=BuildTestExpectedOutput
 fi
 
 debug=false
