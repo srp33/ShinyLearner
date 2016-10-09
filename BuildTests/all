@@ -16,8 +16,8 @@ else
   mkdir -p $outputDir
 fi
 
-debug=false
-#debug=true
+#debug=false
+debug=true
 numOuterIterations=2
 numInnerIterations=2
 overallLogFile=$outputDir/overall.log

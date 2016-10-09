@@ -13,7 +13,7 @@ misMatchCount = 0
 for line1 in inFile1:
     line2 = inFile2.readline()
     if line1 != line2:
-        print "[FAILED] Mismatch between %s and %s:" (inFilePath1, inFilePath2)
+        print "[FAILED] Mismatch between %s and %s:" % (inFilePath1, inFilePath2)
         print "  %s" % line1.rstrip()
         print "  %s" % line2.rstrip()
 
