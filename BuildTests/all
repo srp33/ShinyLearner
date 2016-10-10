@@ -6,8 +6,8 @@ if [ -d input ]
 then
   # We are running the tests inside a Docker container
   inputDir=input
-  #outputDir=output
-  outputDir=BuildTestOutput
+  outputDir=output
+  #outputDir=BuildTestOutput
   mkdir -p $outputDir
   expectedOutputDir=/BuildTestExpectedOutput
 else
