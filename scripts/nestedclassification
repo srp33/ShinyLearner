@@ -50,6 +50,7 @@ then
 fi
 
 source scripts/helper
+source scripts/sort_function
 
 echo "Preparing for analysis..."
 python scripts/IdentifySamples.py "$dataFiles" "$description" $tmpDir/allid $tmpDir/classes
@@ -92,33 +93,28 @@ echo "Preparing output files..."
 if [[ "$outPredictionsFile" != "" ]]
 then
   python scripts/ParseNestedResults.py $tmpDir/op $iterationOutputHeader $tmpDir/op.sorttemp
-  Rscript --vanilla scripts/SortFile.R $tmpDir/op.sorttemp Description,$iterationOutputHeader,Algorithm,InstanceID "$outPredictionsFile" 2> $errFile
-  printError
+  sortFile $tmpDir/op.sorttemp "-k1,1 -k2,2n -k3" "$outPredictionsFile"
 fi
 if [[ "$outMetricsFile" != "" ]]
 then
   python scripts/ParseNestedResults.py $tmpDir/om $iterationOutputHeader $tmpDir/om.sorttemp
-  Rscript --vanilla scripts/SortFile.R $tmpDir/om.sorttemp Description,$iterationOutputHeader,Algorithm,Metric "$outMetricsFile" 2> $errFile
-  printError
+  sortFile $tmpDir/om.sorttemp "-k1,1 -k2,2n -k3" "$outMetricsFile"
 fi
 
 if [[ "$outNestedPredictionsFile" != "" ]]
 then
   python scripts/ParseNestedResults2.py $tmpDir/ip $iterationOutputHeader $tmpDir/ip.sorttemp
-  Rscript --vanilla scripts/SortFile.R $tmpDir/ip.sorttemp Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Algorithm,InstanceID "$outNestedPredictionsFile" 2> $errFile
-  printError
+  sortFile $tmpDir/ip.sorttemp "-k1,1 -k2,2n -k3,3n -k4" "$outNestedPredictionsFile"
 fi
 if [[ "$outNestedMetricsFile" != "" ]]
 then
   python scripts/ParseNestedResults2.py $tmpDir/im $iterationOutputHeader $tmpDir/im.sorttemp
-  Rscript --vanilla scripts/SortFile.R $tmpDir/im.sorttemp Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Algorithm,Metric "$outNestedMetricsFile" 2> $errFile
-  printError
+  sortFile $tmpDir/im.sorttemp "-k1,1 -k2,2n -k3,3n -k4" "$outNestedMetricsFile"
 fi
 if [[ "$outNestedBenchmarkFile" != "" ]]
 then
   python scripts/ParseNestedResults2.py $tmpDir/icb $iterationOutputHeader $tmpDir/icb.sorttemp
-  Rscript --vanilla scripts/SortFile.R $tmpDir/icb.sorttemp Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Algorithm "$outNestedBenchmarkFile" 2> $errFile
-  printError
+  sortFile $tmpDir/icb.sorttemp "-k1,1 -k2,2n -k3,3n -k4" "$outNestedBenchmarkFile"
 fi
 
 cleanup

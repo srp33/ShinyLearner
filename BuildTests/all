@@ -26,16 +26,16 @@ overallLogFile=$outputDir/overall.log
 
 rm -rf $outputDir/*
 
-#$(dirname $0)/classification StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
-#$(dirname $0)/classification NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &
-#$(dirname $0)/classification StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/3.log &
+$(dirname $0)/classification StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
+$(dirname $0)/classification NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &
+$(dirname $0)/classification StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/3.log &
 $(dirname $0)/classification NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/4.log &
 wait
-$(dirname $0)/save_expected_output
-$(dirname $0)/classification NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/4.log &
-wait
-source $(dirname $0)/check_identical
-exit
+#$(dirname $0)/save_expected_output
+#$(dirname $0)/classification NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/4.log &
+#wait
+#source $(dirname $0)/check_identical
+#exit
 
 cat $outputDir/*.log >> $overallLogFile
 rm -f $outputDir/*.log
@@ -72,4 +72,4 @@ $(dirname $0)/special_cases $inputDir $outputDir $debug $outputDir/special.log
 cat $outputDir/special.log >> $overallLogFile
 rm -f $outputDir/special.log
 
-source $(dirname $0)/check_identical
+#source $(dirname $0)/check_identical

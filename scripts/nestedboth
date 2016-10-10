@@ -53,6 +53,7 @@ then
 fi
 
 source scripts/helper
+source scripts/sort_function
 
 echo "Preparing for analysis..."
 python scripts/IdentifySamples.py "$dataFiles" "$description" $tmpDir/allid $tmpDir/classes
@@ -107,8 +108,7 @@ function parseOuterFileA {
   if [[ "$3" != "" ]]
   then
     python scripts/ParseNestedResults.py $1 $iterationOutputHeader $3 $1.sorttemp
-    Rscript --vanilla scripts/SortFile.R $1.sorttemp $2 "$3" 2> $errFile
-    printError
+    sortFile $1.sorttemp "$2" "$3"
   fi
 }
 
@@ -116,8 +116,7 @@ function parseOuterFileB {
   if [[ "$3" != "" ]]
   then
     python scripts/ParseNestedResults_FeatureSelection.py $1 $iterationOutputHeader $1.sorttemp
-    Rscript --vanilla scripts/SortFile.R $1.sorttemp $2 "$3" 2> $errFile
-    printError
+    sortFile $1.sorttemp "$2" "$3"
   fi
 }
 
@@ -125,22 +124,20 @@ function parseOuterFileC {
   if [[ "$3" != "" ]]
   then
     python scripts/ParseNestedResults_FeatureSelection3.py $1 $iterationOutputHeader $1.sorttemp
-    Rscript --vanilla scripts/SortFile.R $1.sorttemp $2 "$3" 2> $errFile
-    printError
+    sortFile $1.sorttemp "$2" "$3"
   fi
 }
 
 echo "Preparing output files..."
-parseOuterFileC $tmpDir/ocle2 Description,$iterationOutputHeader,Algorithm "$outSelectedFeaturesFile"
-parseOuterFileB $tmpDir/op Description,$iterationOutputHeader,Algorithm,InstanceID "$outPredictionsFile"
-parseOuterFileB $tmpDir/om Description,$iterationOutputHeader,Algorithm,Metric "$outMetricsFile"
+parseOuterFileC $tmpDir/ocle2 "-k1,1 -k2,2n -k3" "$outSelectedFeaturesFile"
+parseOuterFileB $tmpDir/op "-k1,1 -k2,2n -k3" "$outPredictionsFile"
+parseOuterFileB $tmpDir/om "-k1,1 -k2,2n -k3" "$outMetricsFile"
 
 function copyInnerFileA {
   if [[ "$3" != "" ]]
   then
     python scripts/ParseNestedResults2.py $1 $iterationOutputHeader $1.sorttemp
-    Rscript --vanilla scripts/SortFile.R $1.sorttemp $2 "$3" 2> $errFile
-    printError
+    sortFile $1.sorttemp "$2" "$3"
   fi
 }
 
@@ -148,16 +145,16 @@ function copyInnerFileB {
   if [[ "$3" != "" ]]
   then
     python scripts/ParseNestedResults_FeatureSelection2.py $1 $iterationOutputHeader $1.sorttemp
-    Rscript --vanilla scripts/SortFile.R $1.sorttemp $2 "$3" 2> $errFile
-    printError
+cp $1.sorttemp ~/Downloads/icb
+    sortFile $1.sorttemp "$2" "$3"
   fi
 }
 
-copyInnerFileA $tmpDir/if Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Algorithm "$outNestedSelectedFeaturesFile"
-copyInnerFileB $tmpDir/ip Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Feature_Selection_Algorithm,Num_Features,Classification_Algorithm,InstanceID "$outNestedPredictionsFile"
-copyInnerFileB $tmpDir/im Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Feature_Selection_Algorithm,Num_Features,Classification_Algorithm,Metric "$outNestedMetricsFile"
-copyInnerFileA $tmpDir/ifb Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Algorithm "$outNestedFeatureSelectionBenchmarkFile"
-copyInnerFileB $tmpDir/icb Description,Outer_${iterationOutputHeader},Inner_${iterationOutputHeader},Feature_Selection_Algorithm,Num_Features,Classification_Algorithm "$outNestedClassificationBenchmarkFile"
+copyInnerFileA $tmpDir/if "-k1,1 -k2,2n -k3,3n -k4" "$outNestedSelectedFeaturesFile"
+copyInnerFileB $tmpDir/ip "-k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6" "$outNestedPredictionsFile"
+copyInnerFileB $tmpDir/im "-k1,1 -k2,2n -k3,3n -k4" "$outNestedMetricsFile"
+copyInnerFileA $tmpDir/ifb "-k1,1 -k2,2n -k3,3n -k4,4" "$outNestedFeatureSelectionBenchmarkFile"
+copyInnerFileB $tmpDir/icb "-k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6" "$outNestedClassificationBenchmarkFile"
 
 if [[ "$outNestedSummarizedSelectedFeaturesFile" != "" ]]
 then

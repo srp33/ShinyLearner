@@ -62,7 +62,12 @@ echo "**************************************************************" | tee -a "
 echo
 
 echo "Combining results across cross-validation iterations..." | tee -a "$outLogFile"
-python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfeatures,$tmpDir/*/outbench" "$outFeaturesFile,$outBenchmarkFile" 2>&1 | tee -a "$outLogFile"
+python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfeatures,$tmpDir/*/outbench" "$tmpDir/outfeatures,$tmpDir/outbenchmark" 2>&1 | tee -a "$outLogFile"
+
+source scripts/sort_function
+sortCriteria="-k1,1 -k2,2n -k3,3n -k4"
+sortFile $tmpDir/outfeatures "$sortCriteria" "$outFeaturesFile"
+sortFile $tmpDir/outbenchmark "$sortCriteria" "$outBenchmarkFile"
 
 echo "Summarizing feature ranks..."
 source scripts/helper

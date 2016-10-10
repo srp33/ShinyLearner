@@ -41,6 +41,7 @@ then
 fi
 
 source scripts/helper
+source scripts/sort_function
 
 idFile=$tmpDir/id
 classFile=$tmpDir/cl
@@ -65,17 +66,16 @@ echo "Starting feature selection..."
 java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/of" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
 
 function parseOutputFile {
-  if [[ "$3" != "" ]]
+  if [[ "$2" != "" ]]
   then
     python scripts/ParseNonNestedResults.py $1 $iterationOutputHeader $1.sorttemp
-    Rscript --vanilla scripts/SortFile.R $1.sorttemp $2 "$3" 2> $errFile
-    printError
+    sortFile $1.sorttemp "-k1,1 -k2,2n -k3" "$2"
   fi
 }
 
 echo "Preparing output files..."
-parseOutputFile $tmpDir/of Description,$iterationOutputHeader,Algorithm "$outFeaturesFile"
-parseOutputFile $tmpDir/ob Description,$iterationOutputHeader,Algorithm "$outBenchmarkFile"
+parseOutputFile "$tmpDir/of" "$outFeaturesFile"
+parseOutputFile "$tmpDir/ob" "$outBenchmarkFile"
 
 if [[ "$outSummarizedFeaturesFile" != "" ]]
 then

@@ -70,32 +70,8 @@ echo
 echo "Combining results across cross-validation iterations..." | tee -a "$outLogFile"
 python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outbench" "$tmpDir/outpreds,$tmpDir/outmetrics,$tmpDir/outbenchmark" 2>&1 | tee -a "$outLogFile"
 
-#######################
-## Sort output files
-#######################
-
-#errFile=/dev/null
-#if [[ "$debug" == "true" ]]
-#then
-#  errFile=$(mktemp $tmpDir/XXXXXXXXX)
-#fi
-
-#function printError {
-#  if [[ "$debug" == "true" ]]
-#  then
-#    cat $errFile
-#  fi
-#}
-
 source scripts/sort_function
 sortCriteria="-k1,1 -k2,2n -k3,3n -k4"
-
-#Rscript --vanilla scripts/SortFile.R $tmpDir/outpreds "Description,Iteration,Fold,Algorithm,InstanceID" "$outPredictionsFile" 2> $errFile
-#printError
-#Rscript --vanilla scripts/SortFile.R $tmpDir/outmetrics "Description,Iteration,Fold,Algorithm,Metric" "$outMetricsFile" 2> $errFile
-#printError
-#Rscript --vanilla scripts/SortFile.R $tmpDir/outbenchmark "Description,Iteration,Fold,Algorithm" "$outBenchmarkFile" 2> $errFile
-#printError
 sortFile $tmpDir/outpreds "$sortCriteria" "$outPredictionsFile"
 sortFile $tmpDir/outmetrics "$sortCriteria" "$outMetricsFile"
 sortFile $tmpDir/outbenchmark "$sortCriteria" "$outBenchmarkFile"

@@ -83,7 +83,14 @@ echo "**************************************************************" | tee -a "
 echo
 
 echo "Combining results across cross-validation iterations..." | tee -a "$outLogFile"
-python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchnested" "$outPredictionsFile,$outMetricsFile,$outNestedPredictionsFile,$outNestedMetricsFile,$outNestedBenchmarkFile" 2>&1 | tee -a "$outLogFile"
+python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchnested" "$tmpDir/outpreds,$tmpDir/outmetrics,$tmpDir/outnestedpreds,$tmpDir/outnestedmetrics,$tmpDir/outnestedbenchmark" 2>&1 | tee -a "$outLogFile"
+
+source scripts/sort_function
+sortFile $tmpDir/outpreds "-k1,1 -k2,2n -k3,3n -k4" "$outPredictionsFile"
+sortFile $tmpDir/outmetrics "-k1,1 -k2,2n -k3,3n -k4" "$outMetricsFile"
+sortFile $tmpDir/outnestedpreds "-k1,1 -k2,2n -k3,3n -k4,4n -k5" "$outNestedPredictionsFile"
+sortFile $tmpDir/outnestedmetrics "-k1,1 -k2,2n -k3,3n -k4,4n -k5" "$outNestedMetricsFile"
+sortFile $tmpDir/outnestedbenchmark "-k1,1 -k2,2n -k3,3n -k4,4n -k5" "$outNestedBenchmarkFile"
 
 cleanup
 

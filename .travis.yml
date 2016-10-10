@@ -18,13 +18,13 @@ notifications:
 script:
   - scripts/build
   - tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests BuildTestExpectedOutput LICENSE UserScripts lib
-  - sudo docker build -t srp33/shinylearner:version186 .
+  - sudo docker build -t srp33/shinylearner:version187 .
   - mkdir input output
   - cp Validation/*.tsv.gz input/
-  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version186 /BuildTests/all
+  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version187 /BuildTests/all
 #  - set -o errexit
 #  - python BuildTests/CheckLogFiles.py "output/overall.log" 1
 #  - echo "All tests passed!!!"
-#  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version186 rm -rf /BuildTest*
+#  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version187 rm -rf /BuildTest*
 #  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-#  - sudo docker push srp33/shinylearner:version186
+#  - sudo docker push srp33/shinylearner:version187

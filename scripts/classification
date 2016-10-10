@@ -73,18 +73,16 @@ Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir
 
 
 function parseOutputFile {
-  if [[ "$3" != "" ]]
+  if [[ "$2" != "" ]]
   then
     python scripts/ParseNonNestedResults.py $1 "$iterationOutputHeader" $1.sorttemp
-    sortFile $1.sorttemp "-k1,1 -k2,2n -k3" "$3"
-    #Rscript --vanilla scripts/SortFile.R $1.sorttemp "$2" "$3" 2> $errFile
-    #printError
+    sortFile $1.sorttemp "-k1,1 -k2,2n -k3" "$2"
   fi
 }
 
 echo "Preparing output files..."
-parseOutputFile $tmpDir/op Description,$iterationOutputHeader,Algorithm,InstanceID "$outPredictionsFile"
-parseOutputFile $tmpDir/om Description,$iterationOutputHeader,Algorithm,Metric "$outMetricsFile"
-parseOutputFile $tmpDir/ob Description,$iterationOutputHeader,Algorithm "$outBenchmarkFile"
+parseOutputFile $tmpDir/op "$outPredictionsFile"
+parseOutputFile $tmpDir/om "$outMetricsFile"
+parseOutputFile $tmpDir/ob "$outBenchmarkFile"
 
 cleanup

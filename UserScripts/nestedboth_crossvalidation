@@ -107,7 +107,17 @@ echo "**************************************************************" | tee -a "
 echo
 
 echo "Combining results across cross-validation iterations..." | tee -a "$outLogFile"
-python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfs,$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outfsnested,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchfsnested,$tmpDir/*/outbenchclnested" "$outSelectedFeaturesFile,$outPredictionsFile,$outMetricsFile,$outNestedSelectedFeaturesFile,$outNestedPredictionsFile,$outNestedMetricsFile,$outNestedFeatureSelectionBenchmarkFile,$outNestedClassificationBenchmarkFile" 2>&1 | tee -a "$outLogFile"
+python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfs,$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outfsnested,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchfsnested,$tmpDir/*/outbenchclnested" "$tmpDir/outfs,$tmpDir/outpreds,$tmpDir/outmetrics,$tmpDir/outfsnested,$tmpDir/outpredsnested,$tmpDir/outmetricsnested,$tmpDir/outbenchfsnested,$tmpDir/outbenchclnested" 2>&1 | tee -a "$outLogFile"
+
+source scripts/sort_function
+sortFile $tmpDir/outfs "-k1,1 -k2,2n -k3,3n -k4" "$outSelectedFeaturesFile"
+sortFile $tmpDir/outpreds "-k1,1 -k2,2n -k3,3n -k4" "$outPredictionsFile"
+sortFile $tmpDir/outmetrics "-k1,1 -k2,2n -k3,3n -k4" "$outMetricsFile"
+sortFile $tmpDir/outfsnested "-k1,1 -k2,2n -k3,3n -k4,4n -k5" "$outNestedSelectedFeaturesFile"
+sortFile $tmpDir/outpredsnested "-k1,1 -k2,2n -k3,3n -k4,4n -k5" "$outNestedPredictionsFile"
+sortFile $tmpDir/outmetricsnested "-k1,1 -k2,2n -k3,3n -k4,4n -k5 -k6,6n -k7" "$outNestedMetricsFile"
+sortFile $tmpDir/outbenchfsnested "-k1,1 -k2,2n -k3,3n -k4,4n -k5" "$outNestedFeatureSelectionBenchmarkFile"
+sortFile $tmpDir/outbenchclnested "-k1,1 -k2,2n -k3,3n -k4,4n -k5,4n -k5 -k6,6n -k7" "$outNestedClassificationBenchmarkFile"
 
 echo "Summarizing feature ranks..."
 source scripts/helper
