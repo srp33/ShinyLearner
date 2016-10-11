@@ -17,7 +17,7 @@ notifications:
   email: true
 script:
   - scripts/build
-  - cat "testing" > testing
+  - echo "testing" > testing
 #  - tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests BuildTestExpectedOutput LICENSE UserScripts lib
 #  - sudo docker build -t srp33/shinylearner:version{version} .
 #  - mkdir input output
