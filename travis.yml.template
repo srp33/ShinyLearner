@@ -36,5 +36,5 @@ deploy:
   api_key: "GITHUB OAUTH TOKEN"
   file: testing
   skip_cleanup: true
-  on:
-    tags: true
+#  on:
+#    tags: true
