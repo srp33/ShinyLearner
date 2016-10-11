@@ -35,7 +35,7 @@ deploy:
    provider: releases
    api_key:
      secure: knkptEI0di81+ohjMJjcGT/jLMB3s+Q66NKty+Z97SF5cM3/VOgCAc9Ztj5krvHcIQw0nn6QKZTrwiLBnGem+Rk9ZN8DbG3vnDUqkORiku+tMBuwkOzZebcVaY4Ko9NxfAB+ehLeEuulqGBdi4G214RyHl4GMU3mxzEJVOI9tPRbDtfjSLxt/uDOoIZZHPRj3VBkl2170YGmK+SjLgcY2rQxj5oj1drN1IR8UtGBKPv3U6zg2ReoOZJFzwBsjMqmprcM+8hGLXTyb22ke4EP0IXhundxAZVNxcB5RPTVEYi9xnZo1PkmKeKzfMJxPyNsbv+3rOxEKxBrq3s8VvxZcj2pIBovowEMt4Yzc5fFKolfIAt1bS+1dBrpcctyxVRxftoMXwDwaCGLeBAp5nEKJHYwJOqy4CVVXZqHiSafUMrqTejiSJvw86f0lw8viVdUmLG+Lzth9wgva+OTVT9KPPpYzT1IOrRxUPQxrQEpc3QNwQqCIO7TAAnIOkjKXLdf/fogbLSRPy5wcMS+EcI5zXxSD8s7FG9s5CqSX1DUJNeWKb7qtsduIbzAbOYMDFMIvPf0UOatMuDCGXa9aolVs7H3/NICrKuX8e0+VcGz4dJavb/WZfbnd6TTLYVFbA/TaGI19XQ32ygQEJaoGYacEqwxS1m8MCokDZk2Na07ELM=
-   file: README.md
+   file: testing
    on:
      repo: srp33/ShinyLearner
 #deploy:
