@@ -19,18 +19,18 @@ script:
   - scripts/build
   - echo "testing" > testing
 #  - tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests BuildTestExpectedOutput LICENSE UserScripts lib
-#  - sudo docker build -t srp33/shinylearner:version192 .
+#  - sudo docker build -t srp33/shinylearner:version193 .
 #  - mkdir input output
 #  - cp Validation/*.tsv.gz input/
-#  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version192 /BuildTests/all
+#  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version193 /BuildTests/all
 #  - set -o errexit
 #  - python BuildTests/CheckLogFiles.py "output/overall.log" 1
 #  - echo "All tests passed!!!"
-#  - git tag $(cat VERSION)
-#  - git push origin $(cat VERSION)
-#  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version192 rm -rf /BuildTest*
+  - git tag $(cat VERSION)
+  - git push origin $(cat VERSION)
+#  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version193 rm -rf /BuildTest*
 #  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-#  - sudo docker push srp33/shinylearner:version192
+#  - sudo docker push srp33/shinylearner:version193
 deploy:
   provider: releases
   api_key: "GITHUB OAUTH TOKEN"

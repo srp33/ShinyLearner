@@ -26,8 +26,8 @@ script:
 #  - set -o errexit
 #  - python BuildTests/CheckLogFiles.py "output/overall.log" 1
 #  - echo "All tests passed!!!"
-#  - git tag $(cat VERSION)
-#  - git push origin $(cat VERSION)
+  - git tag $(cat VERSION)
+  - git push origin $(cat VERSION)
 #  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version{version} rm -rf /BuildTest*
 #  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
 #  - sudo docker push srp33/shinylearner:version{version}
