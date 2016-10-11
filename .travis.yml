@@ -18,26 +18,28 @@ notifications:
 script:
   - scripts/build
   - echo "testing" > testing
+  - git add testing
+  - git commit -m "This is a test"
 #  - tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests BuildTestExpectedOutput LICENSE UserScripts lib
-#  - sudo docker build -t srp33/shinylearner:version198 .
+#  - sudo docker build -t srp33/shinylearner:version199 .
 #  - mkdir input output
 #  - cp Validation/*.tsv.gz input/
-#  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version198 /BuildTests/all
+#  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version199 /BuildTests/all
 #  - set -o errexit
 #  - python BuildTests/CheckLogFiles.py "output/overall.log" 1
 #  - echo "All tests passed!!!"
 #  - git tag $(cat VERSION)
 #  - git push origin $(cat VERSION)
-#  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version198 rm -rf /BuildTest*
+#  - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version199 rm -rf /BuildTest*
 #  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-#  - sudo docker push srp33/shinylearner:version198
+#  - sudo docker push srp33/shinylearner:version199
 deploy:
    provider: releases
    api_key:
      secure: knkptEI0di81+ohjMJjcGT/jLMB3s+Q66NKty+Z97SF5cM3/VOgCAc9Ztj5krvHcIQw0nn6QKZTrwiLBnGem+Rk9ZN8DbG3vnDUqkORiku+tMBuwkOzZebcVaY4Ko9NxfAB+ehLeEuulqGBdi4G214RyHl4GMU3mxzEJVOI9tPRbDtfjSLxt/uDOoIZZHPRj3VBkl2170YGmK+SjLgcY2rQxj5oj1drN1IR8UtGBKPv3U6zg2ReoOZJFzwBsjMqmprcM+8hGLXTyb22ke4EP0IXhundxAZVNxcB5RPTVEYi9xnZo1PkmKeKzfMJxPyNsbv+3rOxEKxBrq3s8VvxZcj2pIBovowEMt4Yzc5fFKolfIAt1bS+1dBrpcctyxVRxftoMXwDwaCGLeBAp5nEKJHYwJOqy4CVVXZqHiSafUMrqTejiSJvw86f0lw8viVdUmLG+Lzth9wgva+OTVT9KPPpYzT1IOrRxUPQxrQEpc3QNwQqCIO7TAAnIOkjKXLdf/fogbLSRPy5wcMS+EcI5zXxSD8s7FG9s5CqSX1DUJNeWKb7qtsduIbzAbOYMDFMIvPf0UOatMuDCGXa9aolVs7H3/NICrKuX8e0+VcGz4dJavb/WZfbnd6TTLYVFbA/TaGI19XQ32ygQEJaoGYacEqwxS1m8MCokDZk2Na07ELM=
    file: testing
   skip_cleanup: true
-  overwrite: true
+#  overwrite: true
    on:
      repo: srp33/ShinyLearner
 #  api_key: "GITHUB OAUTH TOKEN"
