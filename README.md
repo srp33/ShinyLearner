@@ -79,13 +79,15 @@ Below is a description of the parameters that you would specify, in the order yo
 8. Path to an output file that will contain benchmark values (the length of time it takes for each algorithm to execute. Example: ```OutputData/Benchmark.tsv```.
 9. Path to a log file that will be created. Example: ```OutputData/log```.
 
+#### Example
+
 Below is an example of how you would execute the analysis, using the above parameters, at the command line, from a UNIX-based operating system. Note that you also need to *share* the directories that will contain your input and output files with the Docker container. This will enable Docker to see your input files and store your output files outside of the container. This is done via the ```-v``` parameter. The ```-v``` parameter can be specified multiple times.
 
 ```
 sudo docker run --rm \
   -v $(pwd)/InputData:/InputData \
   -v $(pwd)/OutputData:/OutputData \
-  srp33/shinylearner:version216 \
+  srp33/shinylearner:version217 \
   InputData/MyData.csv.gz \
   My_Interesting_Analysis \
   10 \
