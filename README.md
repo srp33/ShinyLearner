@@ -42,3 +42,23 @@ ShinyLearner acts as a software "wrapper" for existing machine-learning librarie
 #### Machine-Learning
 
 Machine-learning classification is an analytic technique used by data scientists within a variety of disciplines. Classification algorithms attempt to place data instances into known categories based on data observations. A classic example is the challenge of classifying [iris flowers](https://en.wikipedia.org/wiki/Iris_flower_data_set) into their correct species based on visually observable factors, such as petal length, petal width, sepal length, and sepal width. Rather than examine these factors individually, classification algorithms seek to identify multifactorial patterns within the data that discriminate the categories. Classification has been applied in various contexts, including computational biology, speech recognition, computer vision, spam filtering, credit scoring, etc. See more [here](https://en.wikipedia.org/wiki/Statistical_classification#Application_domains).
+
+## Example
+
+Below is a simple example of how to execute *ShinyLearner* for a basic classification analysis using [Monte Carlo cross-validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics)#Repeated_random_sub-sampling_validation). It uses the test data files present in the Validation folder.
+
+```
+version=211
+
+dataFiles=/Validation/StrongSignal_Both.tsv.gz # Path to the input data file(s)
+description=ValidationTest # A short description of the analysis
+numIterations=10 # The number of Monte Carlo iterations
+debug=false # Whether to show debug information
+classifAlgos="/AlgorithmScripts/Classification/arff/weka/Random*/default" # The algorithm(s) that should be executed (wildcards allowed)
+outPredictionsFile="/Validation/Test_Predictions.tsv" # Path to output file containing predictions (will be created)
+outMetricsFile="/Validation/Test_Metrics.tsv" # Path to output file containing performance metrics (will be created)
+outBenchmarkFile="/Validation/Test_Benchmark.tsv" # Path to output file containing benchmark results (will be created)
+outLogFile="/Validation/Test.log" # Path to output log file that will be created (will be created)
+
+sudo docker run --rm --name inputdata -v $(pwd)/Validation:/Validation srp33/shinylearner:version${version} /UserScripts/classification_montecarlo "$dataFiles" "$description" "$numIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" "$outLogFile"
+```
