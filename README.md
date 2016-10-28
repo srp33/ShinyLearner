@@ -82,8 +82,19 @@ Below is a description of the parameters that you would specify, in the order yo
 Below is an example of how you would execute the analysis, using the above parameters, at the command line, from a UNIX-based operating system. Note that you also need to *share* the directories that will contain your input and output files with the Docker container. This will enable Docker to see your input files and store your output files outside of the container. This is done via the ```-v``` parameter. The ```-v``` parameter can be specified multiple times.
 
 ```
-sudo docker run --rm -v $(pwd)/InputData:/InputData -v $(pwd)/OutputData:/OutputData \
-  srp33/shinylearner:version215 InputData/MyData.csv.gz My_Interesting_Analysis 10 false "AlgorithmScripts/Classification/arff/weka/Random*/default" OutputData/Test_Predictions.tsv OutputData/Test_Metrics.tsv OutputData/Test_Benchmark.tsv OutputData/Test.log
+sudo docker run --rm \
+  -v $(pwd)/InputData:/InputData \
+  -v $(pwd)/OutputData:/OutputData \
+  srp33/shinylearner:version216 \
+  InputData/MyData.csv.gz \
+  My_Interesting_Analysis \
+  10 \
+  false \
+  "AlgorithmScripts/Classification/arff/weka/Random*/default" \
+  OutputData/Test_Predictions.tsv \
+  OutputData/Test_Metrics.tsv \
+  OutputData/Test_Benchmark.tsv \
+  OutputData/Test.log
 ```
 
 We are working on additional examples. Please contact us with any suggestions about examples you may want. We are also working on a user interface to make it easier to specify these parameters.
