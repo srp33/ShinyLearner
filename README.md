@@ -5,7 +5,7 @@
 
 ## Introduction
 
-ShinyLearner is a software framework for performing machine-learning classification in a flexible and tidy manner. It includes 30+ machine-learning algorithms accross multiple libraries.
+*ShinyLearner* is a software framework for performing machine-learning classification in a flexible and tidy manner. It includes 30+ machine-learning algorithms accross multiple libraries.
 
 ## Quick Overview
 
@@ -43,22 +43,46 @@ ShinyLearner acts as a software "wrapper" for existing machine-learning librarie
 
 Machine-learning classification is an analytic technique used by data scientists within a variety of disciplines. Classification algorithms attempt to place data instances into known categories based on data observations. A classic example is the challenge of classifying [iris flowers](https://en.wikipedia.org/wiki/Iris_flower_data_set) into their correct species based on visually observable factors, such as petal length, petal width, sepal length, and sepal width. Rather than examine these factors individually, classification algorithms seek to identify multifactorial patterns within the data that discriminate the categories. Classification has been applied in various contexts, including computational biology, speech recognition, computer vision, spam filtering, credit scoring, etc. See more [here](https://en.wikipedia.org/wiki/Statistical_classification#Application_domains).
 
-## Example
+## Installation
 
-Below is a simple example of how to execute *ShinyLearner* for a basic classification analysis using [Monte Carlo cross-validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics)#Repeated_random_sub-sampling_validation). It uses the test data files present in the Validation folder.
+To execute analyses using ShinyLearner, you will need to [install the Docker software](https://docs.docker.com/engine/installation) appropriate for your operation system. That is the only software you need to install!
+
+## Executing ShinyLearner
+
+Next you will need to prepare your input data in one of the file formats supported by ShinyLearner: ```.csv```, ```.tsv```, or ```.arff```.
+
+A ```.csv``` file would contain comma-separated values. Instances would be represented as rows, features (independent variables) would be represented as columns. A ```.tsv``` file would have the same structure as a ```.csv``` file, but values would be separated by tabs rather than commas. The ```.arff``` file format is described [here](http://www.cs.waikato.ac.nz/ml/weka/arff.html). No matter what format you use, your input data should contain one feature called "Class" that contains the class (dependent-variable) values. Below is an example.
+
+#### .csv example input file
 
 ```
-version=211
-
-dataFiles=/Validation/StrongSignal_Both.tsv.gz # Path to the input data file(s)
-description=ValidationTest # A short description of the analysis
-numIterations=10 # The number of Monte Carlo iterations
-debug=false # Whether to show debug information
-classifAlgos="/AlgorithmScripts/Classification/arff/weka/Random*/default" # The algorithm(s) that should be executed (wildcards allowed)
-outPredictionsFile="/Validation/Test_Predictions.tsv" # Path to output file containing predictions (will be created)
-outMetricsFile="/Validation/Test_Metrics.tsv" # Path to output file containing performance metrics (will be created)
-outBenchmarkFile="/Validation/Test_Benchmark.tsv" # Path to output file containing benchmark results (will be created)
-outLogFile="/Validation/Test.log" # Path to output log file that will be created (will be created)
-
-sudo docker run --rm --name inputdata -v $(pwd)/Validation:/Validation srp33/shinylearner:version${version} /UserScripts/classification_montecarlo "$dataFiles" "$description" "$numIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" "$outLogFile"
+InstanceID,FeatureA,FeatureB,FeatureC,Class
+Instance1,1.23,3.45,4.56,-1
+Instance2,0.98,8.76,7.65,-1
+Instance3,2.21,5.42,9.90,1
+Instance4,1.74,6.65,8.81,1
 ```
+
+#### Specifying parameters
+
+Your data can be split across multiple input data files. ShinyLearner will identify instance identifiers that overlap between these files and perform an analysis on those overlapping instances.
+
+Below is a description of the parameters that you would specify, in the order you would specify them, to perform a basic classification analysis at the command line. (Additional examples and a user interface are forthcoming.)
+
+1. Path to the input data file(s). Wildcards are allowed (surround by quotes). You can also specify multiple paths, separated by commas. Input files can be gzipped. Example: ```InputData/MyData.csv.gz```.
+2. A short, text-based description of the analysis (no spaces allowed). Example: ```My_Interesting_Analysis```.
+3. The number of Monte Carlo iterations. Example: ```l0```.
+4. Whether to show debug information. Example: ```false```. Alternative: ```true```.
+5. The algorithm(s) that should be executed. Wildcards are allowed. All available algorithms can be found within the ShinyLearner code base. Example: ```AlgorithmScripts/Classification/arff/weka/Random*/default```.
+6. Path to an output file that will contain predictions for each instance. Example: ```OutputData/Predictions.tsv```.
+7. Path to an output file that will contain performance metrics for each algorithm. Example: ```OutputData/Metrics.tsv```.
+8. Path to an output file that will contain benchmark values (the length of time it takes for each algorithm to execute. Example: ```OutputData/Benchmark.tsv```.
+9. Path to a log file that will be created. Example: ```OutputData/log```.
+
+Below is an example of how you would execute the analysis, using the above parameters, at the command line, from a UNIX-based operating system. Note that you also need to *share* the directories that will contain your input and output files with the Docker container. This will enable Docker to see your input files and store your output files outside of the container. This is done via the ```-v``` parameter. The ```-v``` parameter can be specified multiple times.
+
+```
+sudo docker run --rm -v $(pwd)/InputData:/InputData -v $(pwd)/OutputData:/OutputData srp33/shinylearner:version213 InputData/MyData.csv.gz My_Interesting_Analysis 10 false "AlgorithmScripts/Classification/arff/weka/Random*/default" OutputData/Test_Predictions.tsv OutputData/Test_Metrics.tsv OutputData/Test_Benchmark.tsv OutputData/Test.log
+```
+
+We are working on additional examples. Please contact us with any suggestions about examples you may want. We are also working on a user interface to make it easier to specify these parameters.

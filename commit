@@ -12,7 +12,8 @@ cd AlgorithmScripts/Helper
 ./build_algorithm_scripts
 cd ../..
 
-python UpdateVersion.py travis.yml.template VERSION .travis.yml
+python scripts/UpdateVersion.py travis.yml.template VERSION .travis.yml
+python scripts/UpdateVersion.py README_template.md VERSION README.md
 
 git add .travis.yml
 git add --all .

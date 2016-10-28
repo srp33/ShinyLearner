@@ -15,3 +15,5 @@ debug_data
 v72_v161
 BuildTestOutput
 scripts/ImbalanceResults
+test*
+README_template.md
