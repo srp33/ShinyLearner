@@ -87,7 +87,7 @@ Below is an example of how you would execute the analysis, using the above param
 sudo docker run --rm \
   -v $(pwd)/InputData:/InputData \
   -v $(pwd)/OutputData:/OutputData \
-  srp33/shinylearner:version217 \
+  srp33/shinylearner:version218 \
   InputData/MyData.csv.gz \
   My_Interesting_Analysis \
   10 \
@@ -100,3 +100,16 @@ sudo docker run --rm \
 ```
 
 We are working on additional examples. Please contact us with any suggestions about examples you may want. We are also working on a user interface to make it easier to specify these parameters.
+
+## Adding your own algorithm
+
+It is easy to integrate your own classification (or feature-selection) algorithm into ShinyLearner. To do so, you would complete the following steps:
+
+1. Create a bash script that accepts the following arguments:
+  1. Path to input training data file.
+  2. Path to output training data file.
+  3. A sorted list of class values, separated by commas. (This ensures that all algorithms output predictions in the same order for the classes.)
+2. Contact us with details about any additional software dependencies that need to be added to the ShinyLearner Docker environment to support execution of this script.
+3. Create a pull request to merge this bash script into the ShinyLearner project. Algorithm scripts in ShinyLearner are specified by convention, depending on the expected input format of the algorithm. For example, Weka-implemented algorithms process algorithms in ```.arff``` format, so the Weka scripts in ShinyLearner are stored within ```ClassificationScripts/arff/weka```. Let us know if you have any questions.
+
+After validating your script, we will release a new version of ShinyLearner that includes your script in the master branch.
