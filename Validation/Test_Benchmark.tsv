@@ -1,0 +1,7 @@
+***********************************************************************
+Command that was executed for analysis on Fri Oct 28 04:25:29 UTC 2016:
+
+/UserScripts/classification_montecarlo /Validation/StrongSignal_Both.tsv.gz ValidationTest 10 false /AlgorithmScripts/Classification/arff/weka/RandomForest/default /AlgorithmScripts/Classification/arff/weka/RandomTree/default /Validation/Test_Predictions.tsv /Validation/Test_Metrics.tsv /Validation/Test_Benchmark.tsv /Validation/Test.log
+ShinyLearner version: 205
+***********************************************************************
+Preparing for analysis...
