@@ -19,11 +19,6 @@ then
   exit 1
 fi
 
-echo "classifAlgos"
-echo "$classifAlgos"
-echo "outPredictionsFile"
-echo "$outPredictionsFile"
-
 source scripts/print_args
 
 scripts/classification "$dataFiles" "$description" "$numIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo 0 2>&1 | tee -a "$outLogFile"
