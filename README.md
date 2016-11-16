@@ -87,7 +87,7 @@ Below is an example of how you would execute the analysis, using the above param
 sudo docker run --rm \
   -v $(pwd)/InputData:/InputData \
   -v $(pwd)/OutputData:/OutputData \
-  srp33/shinylearner:version221 \
+  srp33/shinylearner:version222 \
   InputData/MyData.csv.gz \
   My_Interesting_Analysis \
   10 \
