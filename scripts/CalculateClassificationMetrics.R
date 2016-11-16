@@ -7,7 +7,7 @@ outMetricsFilePath <- commandArgs()[8]
 
 calculateMetrics <- function(predictionData)
 {
-  levels <- sort(unique(c(predictionData$ActualClass, predictionData$PredictedClass)))
+  levels <- sort(unique(c(as.character(predictionData$ActualClass), as.character(predictionData$PredictedClass))))
   truth <- factor(predictionData$ActualClass, levels=levels)
   response <- factor(predictionData$PredictedClass, levels=levels)
   probabilities <- predictionData$Probabilities
@@ -61,17 +61,19 @@ for (i in 1:nrow(uniqueCombinations))
   combinationPredictionData <- filter(predictionsData, Description==description & Algorithm==algorithm)
 
   if (length(classOptions) == 2) {
-    combinationPredictionData$Probabilities <- combinationPredictionData[,"1"]
-    metrics <- calculateMetrics(combinationPredictionData)
-
-    for (metric in names(metrics))
-    {
-      outDescriptions <- c(outDescriptions, description)
-      outAlgorithms <- c(outAlgorithms, algorithm)
-      outMetrics <- c(outMetrics, metric)
-      outValues <- c(outValues, metrics[[metric]])
-    }
-  } else {
+    classOptions <- classOptions[1]
+  }
+#    combinationPredictionData$Probabilities <- combinationPredictionData[,classOptions[2]]
+#    metrics <- calculateMetrics(combinationPredictionData)
+#
+#    for (metric in names(metrics))
+#    {
+#      outDescriptions <- c(outDescriptions, description)
+#      outAlgorithms <- c(outAlgorithms, algorithm)
+#      outMetrics <- c(outMetrics, metric)
+#      outValues <- c(outValues, metrics[[metric]])
+#    }
+#  } else {
     for (classOption in classOptions)
     {
       tmpPred <- combinationPredictionData
@@ -98,7 +100,7 @@ for (i in 1:nrow(uniqueCombinations))
         outValues <- c(outValues, metrics[[metric]])
       }
     }
-  }
+#  }
 }
 
 outData <- data.frame(Description=outDescriptions, Algorithm=outAlgorithms, Metric=outMetrics, Value=outValues)

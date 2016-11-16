@@ -6,31 +6,36 @@ outFilePath <- commandArgs()[8]
 
 calculateMajority <- function(data, classOptions)
 {
-  tbl <- table(data$PredictedClass)
+  data2 <- as.data.frame(data)
+
+  tbl <- table(data2$PredictedClass)
   classesMatchingMax <- names(tbl)[which(tbl==max(tbl))]
 
   set.seed(0)
   majorityVote <- sample(classesMatchingMax, size=1)
 
-  data2 <- data
-  data2$Algorithm <- rep("Ensemble_Majority_Vote", nrow(data2))
-
-  data2 <- unique(select(data2, Description, Algorithm, InstanceID, ActualClass))
-
-  data2$PredictedClass <- majorityVote
-
   totalPredictions <- sum(tbl)
 
+  classProbs <- NULL
   for (classOption in classOptions)
   {
     numVotes <- sum(data2$PredictedClass == classOption)
-    classPrediction <- numVotes / totalPredictions
-    data2 <- cbind(data2, classPrediction)
+    classProb <- numVotes / totalPredictions
+    classProbs <- c(classProbs, classProb)
   }
 
-  colnames(data2)[(ncol(data) - length(classOptions) + 1):ncol(data)] <- classOptions
+  description <- unique(as.character(data2$Description))
+  instanceID <- unique(as.character(data2$InstanceID))
+  actualClass <- unique(as.character(data2$ActualClass))
 
-  return(data2)
+  outData <- data.frame(Description=description, Algorithm="Ensemble_Majority_Vote", InstanceID=instanceID, ActualClass=actualClass, PredictedClass=majorityVote)
+
+  for (classProb in classProbs)
+    outData <- cbind(outData, classProb)
+
+  colnames(outData) <- c("Description", "Algorithm", "InstanceID", "ActualClass", "PredictedClass", classOptions)
+
+  return(outData)
 }
 
 #Description	Algorithm	InstanceID	ActualClass	PredictedClass	1	2	3
@@ -40,9 +45,10 @@ if (length(unique(data$Algorithm)) > 1)
 {
   classOptions <- colnames(data)[(which(colnames(data)=="PredictedClass") + 1):ncol(data)]
 
-  majorityVoteData <- do(group_by(data, Description, InstanceID), calculateMajority(., classOptions))
+  majorityVoteData <- suppressWarnings(do(group_by(data, Description, InstanceID), calculateMajority(., classOptions)))
+  majorityVoteData <- as.data.frame(majorityVoteData)
 
-  data <- rbind(data, as.data.frame(majorityVoteData))
+  data <- rbind(data, majorityVoteData)
 }
 
 write_tsv(data, outFilePath)

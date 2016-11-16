@@ -66,15 +66,15 @@ discretize <- function(x)
 }
 
 generate(95, 5, 0, 0, 60, "NoSignal_Continuous", 0)
-generate(95, 5, 0, 0, 60, "MediumSignal_Continuous", 1)
+#generate(95, 5, 0, 0, 60, "MediumSignal_Continuous", 1)
 generate(95, 5, 0, 0, 60, "StrongSignal_Continuous", 5)
 
 generate(0, 0, 95, 5, 60, "NoSignal_Discrete", 0)
-generate(0, 0, 95, 5, 60, "MediumSignal_Discrete", 1)
+#generate(0, 0, 95, 5, 60, "MediumSignal_Discrete", 1)
 generate(0, 0, 95, 5, 60, "StrongSignal_Discrete", 5)
 
 generate(45, 5, 45, 5, 60, "NoSignal_Both", 0)
-generate(45, 5, 45, 5, 60, "MediumSignal_Both", 1)
+#generate(45, 5, 45, 5, 60, "MediumSignal_Both", 1)
 generate(45, 5, 45, 5, 60, "StrongSignal_Both", 5)
 
 generate(9995, 5, 9995, 5, 60, "StrongSignalLarge_Both", 5)

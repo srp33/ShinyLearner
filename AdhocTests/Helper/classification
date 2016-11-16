@@ -32,17 +32,17 @@ rm -f $outputDir/${validationType}*
 
 cd $testDir
 
-#validation=StrongSignal_Both
+validation=StrongSignal_Both_2Class
 #validation=StrongSignalLarge_Both
-validation=NoSignal_Both
+#validation=NoSignal_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default"
 #classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default
 #classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/*/default
 #classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/*/default"
-#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
-classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/bagging/default"
+classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/bagging/default"
 #debug=true
 debug=false
 outPredictionsFile=$outputDir/${validationType}_${validation}_Predictions.tsv

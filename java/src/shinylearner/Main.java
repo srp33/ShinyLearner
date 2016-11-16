@@ -18,6 +18,7 @@ import shinylearner.core.Singletons;
 import shinylearner.helper.FileUtilities;
 import shinylearner.helper.MiscUtilities;
 
+import com.linkedin.paldb.api.Configuration;
 import com.linkedin.paldb.api.PalDB;
 
 /** This is the class that gets invoked when code begins to execute.
@@ -44,7 +45,10 @@ public class Main
 			Singletons.DatabaseWriter.close();
 			
 			Log.Info("Refining data instances...");
-			Singletons.DatabaseReader = PalDB.createReader(new File(Singletons.DatabaseFilePath));
+			Configuration config = PalDB.newConfiguration();
+//			config.set(Configuration.COMPRESSION_ENABLED, "false");
+			Singletons.DatabaseReader = PalDB.createReader(new File(Singletons.DatabaseFilePath), config);
+
 			InstanceManager.RefineDataInstances();
 
 			if (!Settings.OUTPUT_DATA_FILE_PATH.equals(""))

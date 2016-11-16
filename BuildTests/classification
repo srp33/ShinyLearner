@@ -4,21 +4,15 @@ set -euo pipefail
 
 description=$1
 validationType=$2
-inputDir=$3
-outputDir=$4
-debug=$5
-numOuterIterations=$6
-numInnerIterations=$7
-outLogFile=$8
+classifAlgo="$3"
+inputDir=$4
+outputDir=$5
+debug=$6
+numOuterIterations=$7
+numInnerIterations=$8
+outLogFile=$9
 
 source $(dirname $0)/helper
-
-classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
-#classifAlgo="AlgorithmScripts/Classification/tsv/*/*/default"
-#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
-#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_*/default"
-#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default"
-#classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default"
 
 outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
 

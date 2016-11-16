@@ -18,3 +18,9 @@ do
   gzip /tmp/4
   mv /tmp/4.gz $f
 done
+
+Rscript --vanilla CreateTwoClassFile.R NoSignal_Both.tsv.gz NoSignal_Both_2Class.tsv
+Rscript --vanilla CreateTwoClassFile.R StrongSignal_Both.tsv.gz StrongSignal_Both_2Class.tsv
+
+rm -f *_2Class.tsv.gz
+gzip *.tsv

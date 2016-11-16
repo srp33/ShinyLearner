@@ -1,115 +1,0 @@
-***********************************************************************
-Command that was executed for analysis on Fri Oct 28 05:15:22 UTC 2016:
-
-/UserScripts/classification_montecarlo /Validation/StrongSignal_Both.tsv.gz ValidationTest 10 false /AlgorithmScripts/Classification/arff/weka/Random*/default /Validation/Test_Predictions.tsv /Validation/Test_Metrics.tsv /Validation/Test_Benchmark.tsv /Validation/Test.log
-ShinyLearner version: 209
-***********************************************************************
-Preparing for analysis...
-***********************************************************************
-Command that was executed for analysis on Fri Oct 28 05:25:29 UTC 2016:
-
-/UserScripts/classification_montecarlo /Validation/StrongSignal_Both.tsv.gz ValidationTest 10 false /AlgorithmScripts/Classification/arff/weka/Random*/default /Validation/Test_Predictions.tsv /Validation/Test_Metrics.tsv /Validation/Test_Benchmark.tsv /Validation/Test.log
-ShinyLearner version: 210
-***********************************************************************
-Preparing for analysis...
-Starting classification...
-Parsing command line settings...
-Loading data from input files...
-Refining data instances...
-After filtering, 60 instances and 150 data points are available for the analysis.
-Starting analysis...
-Progress: 0% #Progress: 5% ###Progress: 10% ######Progress: 15% ########Progress: 21% ###########Progress: 26% ##############Progress: 31% ################Progress: 36% ###################Progress: 42% ######################Progress: 47% ########################Progress: 52% ###########################Progress: 57% #############################Progress: 63% ################################Progress: 68% ###################################Progress: 73% #####################################Progress: 78% ########################################Progress: 84% ###########################################Progress: 89% #############################################Progress: 94% ################################################Progress: 100% ###################################################                                                          
-Making aggregate predictions...
-Calculating classification metrics...
-Preparing output files...
-Analysis successfully completed!
-***********************************************************************
-Command that was executed for analysis on Fri Oct 28 05:25:44 UTC 2016:
-
-/UserScripts/classification_montecarlo /Validation/StrongSignal_Both.tsv.gz ValidationTest 10 false /AlgorithmScripts/Classification/arff/weka/Random*/default /Validation/Test_Predictions.tsv /Validation/Test_Metrics.tsv /Validation/Test_Benchmark.tsv /Validation/Test.log
-ShinyLearner version: 210
-***********************************************************************
-Preparing for analysis...
-Starting classification...
-Parsing command line settings...
-Loading data from input files...
-Refining data instances...
-After filtering, 60 instances and 150 data points are available for the analysis.
-Starting analysis...
-Progress: 0% #Progress: 5% ###Progress: 10% ######Progress: 15% ########Progress: 21% ###########Progress: 26% ##############Progress: 31% ################Progress: 36% ###################Progress: 42% ######################Progress: 47% ########################Progress: 52% ###########################Progress: 57% #############################Progress: 63% ################################Progress: 68% ###################################Progress: 73% #####################################Progress: 78% ########################################Progress: 84% ###########################################Progress: 89% #############################################Progress: 94% ################################################Progress: 100% ###################################################                                                          
-Making aggregate predictions...
-Calculating classification metrics...
-Preparing output files...
-Analysis successfully completed!
-***********************************************************************
-Command that was executed for analysis on Fri Oct 28 13:31:46 UTC 2016:
-
-/UserScripts/classification_montecarlo /Validation/StrongSignal_Both.tsv.gz ValidationTest 10 false /AlgorithmScripts/Classification/arff/weka/Random*/default /Validation/Test_Predictions.tsv /Validation/Test_Metrics.tsv /Validation/Test_Benchmark.tsv /Validation/Test.log
-ShinyLearner version: 211
-***********************************************************************
-Preparing for analysis...
-Starting classification...
-Parsing command line settings...
-Loading data from input files...
-Refining data instances...
-After filtering, 60 instances and 150 data points are available for the analysis.
-Starting analysis...
-Progress: 0% #Progress: 5% ###Progress: 10% ######Progress: 15% ########Progress: 21% ###########Progress: 26% ##############Progress: 31% ################Progress: 36% ###################Progress: 42% ######################Progress: 47% ########################Progress: 52% ###########################Progress: 57% #############################Progress: 63% ################################Progress: 68% ###################################Progress: 73% #####################################Progress: 78% ########################################Progress: 84% ###########################################Progress: 89% #############################################Progress: 94% ################################################Progress: 100% ###################################################                                                          
-Making aggregate predictions...
-Calculating classification metrics...
-Preparing output files...
-Analysis successfully completed!
-***********************************************************************
-Command that was executed for analysis on Fri Oct 28 13:33:54 UTC 2016:
-
-/UserScripts/classification_montecarlo /Validation/StrongSignal_Both.tsv.gz ValidationTest 10 false /AlgorithmScripts/Classification/arff/weka/Random*/default /Validation/Test_Predictions.tsv /Validation/Test_Metrics.tsv /Validation/Test_Benchmark.tsv /Validation/Test.log
-ShinyLearner version: 211
-***********************************************************************
-Preparing for analysis...
-Starting classification...
-Parsing command line settings...
-Loading data from input files...
-Refining data instances...
-After filtering, 60 instances and 150 data points are available for the analysis.
-Starting analysis...
-Progress: 0% #Progress: 5% ###Progress: 10% ######Progress: 15% ########Progress: 21% ###########Progress: 26% ##############Progress: 31% ################Progress: 36% ###################Progress: 42% ######################Progress: 47% ########################Progress: 52% ###########################Progress: 57% #############################Progress: 63% ################################Progress: 68% ###################################Progress: 73% #####################################Progress: 78% ########################################Progress: 84% ###########################################Progress: 89% #############################################Progress: 94% ################################################Progress: 100% ###################################################                                                          
-Making aggregate predictions...
-Calculating classification metrics...
-Preparing output files...
-Analysis successfully completed!
-***********************************************************************
-Command that was executed for analysis on Fri Oct 28 13:45:03 UTC 2016:
-
-/UserScripts/classification_montecarlo Validation/StrongSignal_Both.tsv.gz ValidationTest 10 false /AlgorithmScripts/Classification/arff/weka/Random*/default /Validation/Test_Predictions.tsv /Validation/Test_Metrics.tsv /Validation/Test_Benchmark.tsv /Validation/Test.log
-ShinyLearner version: 211
-***********************************************************************
-Preparing for analysis...
-Starting classification...
-Parsing command line settings...
-Loading data from input files...
-Refining data instances...
-After filtering, 60 instances and 150 data points are available for the analysis.
-Starting analysis...
-Progress: 0% #Progress: 5% ###Progress: 10% ######Progress: 15% ########Progress: 21% ###########Progress: 26% ##############Progress: 31% ################Progress: 36% ###################Progress: 42% ######################Progress: 47% ########################Progress: 52% ###########################Progress: 57% #############################Progress: 63% ################################Progress: 68% ###################################Progress: 73% #####################################Progress: 78% ########################################Progress: 84% ###########################################Progress: 89% #############################################Progress: 94% ################################################Progress: 100% ###################################################                                                          
-Making aggregate predictions...
-Calculating classification metrics...
-Preparing output files...
-Analysis successfully completed!
-***********************************************************************
-Command that was executed for analysis on Fri Oct 28 13:45:31 UTC 2016:
-
-/UserScripts/classification_montecarlo Validation/StrongSignal_Both.tsv.gz ValidationTest 10 false AlgorithmScripts/Classification/arff/weka/Random*/default Validation/Test_Predictions.tsv Validation/Test_Metrics.tsv Validation/Test_Benchmark.tsv Validation/Test.log
-ShinyLearner version: 211
-***********************************************************************
-Preparing for analysis...
-Starting classification...
-Parsing command line settings...
-Loading data from input files...
-Refining data instances...
-After filtering, 60 instances and 150 data points are available for the analysis.
-Starting analysis...
-Progress: 0% #Progress: 5% ###Progress: 10% ######Progress: 15% ########Progress: 21% ###########Progress: 26% ##############Progress: 31% ################Progress: 36% ###################Progress: 42% ######################Progress: 47% ########################Progress: 52% ###########################Progress: 57% #############################Progress: 63% ################################Progress: 68% ###################################Progress: 73% #####################################Progress: 78% ########################################Progress: 84% ###########################################Progress: 89% #############################################Progress: 94% ################################################Progress: 100% ###################################################                                                          
-Making aggregate predictions...
-Calculating classification metrics...
-Preparing output files...
-Analysis successfully completed!
