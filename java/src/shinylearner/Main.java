@@ -45,8 +45,9 @@ public class Main
 			Singletons.DatabaseWriter.close();
 			
 			Log.Info("Refining data instances...");
+			
 			Configuration config = PalDB.newConfiguration();
-//			config.set(Configuration.COMPRESSION_ENABLED, "false");
+			config.set(Configuration.COMPRESSION_ENABLED, "true");
 			Singletons.DatabaseReader = PalDB.createReader(new File(Singletons.DatabaseFilePath), config);
 
 			InstanceManager.RefineDataInstances();
@@ -64,7 +65,7 @@ public class Main
 			
 			FileUtilities.DeleteFile(Singletons.DatabaseFilePath);
 
-			//Log.PrintOut("Successfully completed!");
+			Log.PrintOut("Successfully completed!");
 			
 			System.exit(0); // Not sure if this is necessary, but keeping it just in case
 		}

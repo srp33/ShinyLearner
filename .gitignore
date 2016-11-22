@@ -17,3 +17,9 @@ BuildTestOutput
 scripts/ImbalanceResults
 test*
 README_template.md
+dev_docker
+java/bin
+java/target
+java/.settings/*
+java/.project
+JavaCode
