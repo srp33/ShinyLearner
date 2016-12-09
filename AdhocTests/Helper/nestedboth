@@ -20,8 +20,6 @@ rm -rf $testDir
 mkdir -p $testDir
 
 cp -r shinylearner.jar $testDir/
-mkdir $testDir/lib
-cp -r lib/* $testDir/lib/
 cp -r scripts $testDir/
 cp -r AlgorithmScripts $testDir/
 cp -r UserScripts $testDir/
@@ -33,8 +31,8 @@ rm -f $outputDir/${validationType}*
 cd $testDir
 
 validation=StrongSignal_Both
-#dataFile=$currentDir/Validation/${validation}.tsv.gz
-dataFile="$currentDir/debug_data/*.tsv.gz"
+dataFile=$currentDir/Validation/${validation}.tsv.gz
+#dataFile="$currentDir/debug_data/*.tsv.gz"
 fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default"
 numFeaturesOptions="5,20"
 classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/l*/default"

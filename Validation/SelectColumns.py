@@ -1,4 +1,4 @@
-import os, sys, glob
+import os, sys, glob, gzip
 
 def parseColumnIndices(entries, lastIndex):
     indices = []
@@ -29,11 +29,12 @@ columnIndexInput = sys.argv[2]
 outFilePath = sys.argv[3]
 
 lineCount = 0
-outFile = open(outFilePath, 'w')
+outFile = gzip.open(outFilePath, 'w')
 out = ""
 columnIndices = None
 
-for line in file(inFilePath):
+inFile = gzip.open(inFilePath)
+for line in inFile:
     lineCount += 1
     lineItems = line.rstrip().split("\t")
 
@@ -56,3 +57,4 @@ for line in file(inFilePath):
 
 outFile.write(out)
 outFile.close()
+inFile.close()

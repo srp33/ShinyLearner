@@ -55,8 +55,12 @@ fi
 source scripts/helper
 source scripts/sort_function
 
+analysisDataFile=$tmpDir/data.gz
+mem=$(getMemAvailable)
+
 echo "Preparing for analysis..."
-python scripts/IdentifySamples.py "$dataFiles" "$description" $tmpDir/allid $tmpDir/classes
+java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
+python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $tmpDir/allid $tmpDir/classes
 
 if [[ "$validationType" == "montecarlo" ]]
 then
@@ -71,16 +75,14 @@ fi
 python scripts/AddAlgorithmScripts.py $tmpDir/ie "$fsAlgos" $tmpDir/ie2
 python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie3
 
-mem=$(getMemAvailable)
-
 echo "Selecting features for inner iterations..."
-java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$tmpDir/ie2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/if" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ifb" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
+java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$tmpDir/ie2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/if" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ifb" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
 
 ## Add selected features to inner classification files
 python scripts/AppendInnerSelectedFeatures.py $tmpDir/if $tmpDir/ie3 "$numFeaturesOptions" $tmpDir/isftt
 
 echo "Performing classification using selected features for inner iterations..."
-java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/isftt DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/icb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/ip TEMP_DIR=$tmpDir 2> /dev/null
+java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE=$analysisDataFile EXPERIMENT_FILE=$tmpDir/isftt DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/icb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/ip TEMP_DIR=$tmpDir 2> /dev/null
 
 echo "Calculating performance metrics for inner iterations..."
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/ip" "$tmpDir/im"
@@ -93,13 +95,13 @@ Rscript --vanilla scripts/SelectBestInnerResults_FeatureSelection.R $tmpDir/ibrf
 printError
 
 echo "Selecting features on outer iterations"
-java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ofse DEBUG=$debug OUTPUT_FEATURES_FILE_PATH=$tmpDir/of TEMP_DIR=$tmpDir 2> /dev/null
+java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE=$analysisDataFile EXPERIMENT_FILE=$tmpDir/ofse DEBUG=$debug OUTPUT_FEATURES_FILE_PATH=$tmpDir/of TEMP_DIR=$tmpDir 2> /dev/null
 
 ## Add selected features to outer classification files
 python scripts/AppendOuterSelectedFeatures.py $tmpDir/of $tmpDir/ocle $tmpDir/onfe $tmpDir/ocle2
 
 echo "Performing classification using selected features for outer iterations..."
-java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpDir/ocle2 DEBUG=$debug OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/op TEMP_DIR=$tmpDir 2> /dev/null
+java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE=$analysisDataFile EXPERIMENT_FILE=$tmpDir/ocle2 DEBUG=$debug OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/op TEMP_DIR=$tmpDir 2> /dev/null
 
 echo "Calculating performance metrics for outer iterations..."
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
@@ -145,7 +147,6 @@ function copyInnerFileB {
   if [[ "$3" != "" ]]
   then
     python scripts/ParseNestedResults_FeatureSelection2.py $1 $iterationOutputHeader $1.sorttemp
-cp $1.sorttemp ~/Downloads/icb
     sortFile $1.sorttemp "$2" "$3"
   fi
 }

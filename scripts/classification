@@ -43,13 +43,16 @@ fi
 source scripts/helper
 source scripts/sort_function
 
+analysisDataFile=$tmpDir/data.gz
 idFile=$tmpDir/id
 classFile=$tmpDir/cl
 trainTestFile=$tmpDir/tt
 trainTestFile2=$tmpDir/tt2
+mem=$(getMemAvailable)
 
 echo "Preparing for analysis..."
-python scripts/IdentifySamples.py "$dataFiles" "$description" $idFile $classFile
+java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
+python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $idFile $classFile
 
 if [[ "$validationType" == "montecarlo" ]]
 then
@@ -60,17 +63,14 @@ fi
 
 python scripts/AddAlgorithmScripts.py $trainTestFile "$classifAlgos" $trainTestFile2
 
-mem=$(getMemAvailable)
-
 echo "Starting classification..."
-java -Xmx${mem} -classpath "$classPath" -jar shinylearner.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_PREDICTIONS_FILE_PATH="$tmpDir/op0" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
+java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_PREDICTIONS_FILE_PATH="$tmpDir/op0" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
 
 echo "Making aggregate predictions..."
 Rscript --vanilla scripts/MajorityVote.R "$tmpDir/op0" "$tmpDir/op"
 
 echo "Calculating classification metrics..."
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
-
 
 function parseOutputFile {
   if [[ "$2" != "" ]]

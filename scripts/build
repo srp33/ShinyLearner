@@ -11,16 +11,14 @@ buildDir=/tmp/shinylearner_build
 rm -rf $buildDir
 
 mkdir -p $buildDir/shinylearner/src/shinylearner
-cp -r java/src/shinylearner/* $buildDir/shinylearner/src/shinylearner
+#cp -r java/src/shinylearner/* $buildDir/shinylearner/src/shinylearner
+cp -r JavaCode/src/shinylearner/* $buildDir/shinylearner/src/shinylearner
 cp build.xml $buildDir/
-mkdir -p $buildDir/lib
-cp -r lib/* $buildDir/lib/
 
 cd $buildDir
 
 find shinylearner -name *.java > sources_list.txt
-#$javaDir/javac @sources_list.txt
-$javaDir/javac -Djava.ext.dirs=lib @sources_list.txt
+$javaDir/javac @sources_list.txt
 rm sources_list.txt
 
 ant

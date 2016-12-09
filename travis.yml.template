@@ -15,7 +15,7 @@ branches:
     - master
 script:
   - scripts/build
-  - tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests BuildTestExpectedOutput LICENSE UserScripts lib
+  - tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests BuildTestExpectedOutput LICENSE UserScripts
   - sudo docker build -t srp33/shinylearner:version{version} .
   - mkdir input output
   - cp Validation/*.tsv.gz input/
