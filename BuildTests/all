@@ -25,10 +25,10 @@ overallLogFile=$outputDir/log.overall
 
 rm -rf $outputDir/*
 
-#classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
+classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/*/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
-classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_rbf/default"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_rbf/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default"
 
