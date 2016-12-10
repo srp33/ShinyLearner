@@ -18,7 +18,7 @@ script:
   - tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests BuildTestExpectedOutput LICENSE UserScripts
   - sudo docker build -t srp33/shinylearner:version{version} .
   - mkdir input output
-  - cp Validation/*.tsv.gz input/
+  - cp Validation/*.gz input/
   - sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version{version} /BuildTests/all
   - set -o errexit
   - python BuildTests/CheckLogFiles.py "output/log.overall" 1
