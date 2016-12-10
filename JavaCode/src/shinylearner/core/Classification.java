@@ -26,7 +26,7 @@ public class Classification
 
 	private static String TrainTest(String trainingFilePath, String testFilePath) throws Exception
 	{
-		String dependentVariableOptions = ListUtilities.Join(AnalysisFileCreator.FormatClassValues(ListUtilities.SortStringList(Singletons.DependentVariableOptions)), ",");
+		String dependentVariableOptions = ListUtilities.Join(AnalysisFileCreator.FormatClassValues(Singletons.Data.GetClassOptions()), ",");
 		String parameters = "\"" + trainingFilePath + "\" \"" + testFilePath + "\" \"" + dependentVariableOptions + "\"";
 
 		Log.Debug(Singletons.ExperimentItems.AlgorithmScriptFilePath + " " + parameters);
@@ -56,7 +56,7 @@ public class Classification
 			String[] lineItems = predictionLines[i].split("\t");
 
 			String instanceID = tempTestIDs.remove(0);
-			String actualClass = Singletons.DependentVariableInstances.get(instanceID);
+			String actualClass = Singletons.Data.GetClassValue(instanceID);
 			String prediction = lineItems[0];
 
 			ArrayList<Double> probabilities = new ArrayList<Double>();
@@ -76,7 +76,7 @@ public class Classification
 	{
 		String header = "Description\tAlgorithm\tInstanceID\tActualClass\tPredictedClass";
 
-		for (String x : Singletons.DependentVariableOptions)
+		for (String x : Singletons.Data.GetClassOptions())
 			header += "\t" + AnalysisFileCreator.UnformatClassValue(x);
 
 		return header;

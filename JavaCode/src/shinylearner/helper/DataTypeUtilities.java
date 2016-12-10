@@ -55,35 +55,6 @@ public class DataTypeUtilities
         return true;
     }
 
-    /** Indicates whether a list of String objects contains only integer values. Missing values are ignored.
-     *
-     * @param values List of values
-     * @return Whether the list only contains integer values
-     */
-    public static boolean HasOnlyIntegers(ArrayList<String> values)
-    {
-        for (String value : values)
-        {
-//            if (value.equals(Settings.MISSING_VALUE_STRING))
-//                continue;
-
-            if (!IsInteger(value))
-                return false;
-        }
-
-        return true;
-    }
-
-    /** Indicates whether a String value contains either "true" or "false."
-     *
-     * @param value Value to be tested.
-     * @return Whether the value contains either "true" or "false."
-     */
-    public static boolean IsBoolean(String value)
-    {
-        return value.toLowerCase().equals("true") || value.toLowerCase().equals("false");
-    }
-
     /** Indicates whether a String value can be converted to a double value.
      *
      * @param value Value to be tested

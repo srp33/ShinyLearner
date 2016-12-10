@@ -21,16 +21,6 @@ public class BigFileReader implements Iterable<String>
 
     /** Constructor
      *
-     * @param file File indicating location of file to be read
-     * @throws Exception
-     */
-    public BigFileReader(File file) throws Exception
-    {
-        this(file.getAbsolutePath());
-    }
-
-    /** Constructor
-     *
      * @param filePath Absolute file path of file to be read
      * @throws Exception
      */
@@ -75,17 +65,6 @@ public class BigFileReader implements Iterable<String>
     public String ReadLine() throws Exception
     {
         return _reader.readLine();
-    }
-
-    /** Reads multiple lines of the file.
-     *
-     * @param numLines Number of lines to read
-     * @throws Exception
-     */
-    public void ReadLines(int numLines) throws Exception
-    {
-        for (int i=0; i<numLines; i++)
-            ReadLine();
     }
 
     /** This class iterates over the lines of a (potentially big) file

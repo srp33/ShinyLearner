@@ -25,11 +25,11 @@ public class ExperimentItems implements Comparable<ExperimentItems>
 		String rawTestIDs = ParseItem(lineNumber, lineItems, 2);
 
 		TrainingIDs = ListUtilities.CreateStringList(rawTrainIDs.split(","));
-		TrainingIDs = ListUtilities.Intersect(TrainingIDs, ListUtilities.CreateStringList(Singletons.IndependentVariableInstances.GetInstanceIDsUnsorted()));
+		TrainingIDs = ListUtilities.Intersect(TrainingIDs, ListUtilities.CreateStringList(Singletons.Data.InstanceIDs));
 		TrainingIDs = ListUtilities.SortStringList(TrainingIDs);
 		
 		TestIDs = ListUtilities.CreateStringList(rawTestIDs.split(","));
-		TestIDs = ListUtilities.Intersect(TestIDs, ListUtilities.CreateStringList(Singletons.IndependentVariableInstances.GetInstanceIDsUnsorted()));
+		TestIDs = ListUtilities.Intersect(TestIDs, ListUtilities.CreateStringList(Singletons.Data.InstanceIDs));
 		TestIDs = ListUtilities.SortStringList(TestIDs);
 		
 		CheckTrainTestAssignments();

@@ -39,51 +39,7 @@ public class ListUtilities
 
         return results;
     }
-
-    /** Identifies all unique String values in a list.
-     *
-     * @param values List of String values
-     * @return Unique values
-     */
-    public static ArrayList<String> GetUniqueValues(ArrayList<String> values)
-    {
-        return new ArrayList<String>(new LinkedHashSet<String>(values));
-    }
-
-    /** Identifies all values in a String list that start with a given String value.
-     *
-     * @param values List of values to be tested
-     * @param pattern String value to be matched
-     * @return List subset
-     */
-    public static ArrayList<String> GetValuesStartingWith(ArrayList<String> values, String pattern)
-    {
-        ArrayList<String> results = new ArrayList<String>();
-
-        for (String value : values)
-            if (value.startsWith(pattern))
-                results.add(value);
-
-        return results;
-    }
     
-    /** Identifies all values in a String list that do not start with a given String value.
-    *
-    * @param values List of values to be tested
-    * @param pattern String value to be matched
-    * @return List subset
-    */
-   public static ArrayList<String> GetValuesNotStartingWith(ArrayList<String> values, String pattern)
-   {
-       ArrayList<String> results = new ArrayList<String>();
-
-       for (String value : values)
-           if (!value.startsWith(pattern))
-               results.add(value);
-
-       return results;
-   }
-
     /** Finds the intersection between two lists of String objects.
      *
      * @param list1 First list
@@ -98,29 +54,6 @@ public class ListUtilities
         Set<String> intersection = new HashSet<String>(list1);
         intersection.retainAll(new HashSet<String>(list2));
         return new ArrayList<String>(intersection);
-    }
-    
-    public static HashSet<String> Intersect(Set<String> set1, Set<String> set2)
-    {
-        set1.retainAll(set2);
-        return new HashSet<String>(set1);
-    }
-
-    /** For a list of String objects, this method identifies all objects that contain a given value and replaces that text with another value.
-     *
-     * @param list List of String objects
-     * @param from Value to search for
-     * @param to Value with which to replace matches
-     * @return Replaced list of String objects
-     */
-    public static ArrayList<String> Replace(ArrayList<String> list, String from, String to)
-    {
-        ArrayList<String> newList = new ArrayList<String>();
-
-        for (String x : list)
-            newList.add(x.replace(from, to));
-
-        return newList;
     }
 
     /** This method converts a list of String objects to a single String representation and inserts a delimiter between each object.
@@ -164,20 +97,5 @@ public class ListUtilities
 	public static ArrayList<String> SortStringList(ArrayList<String> list)
     {
     	return (ArrayList<String>)Sort(list);
-    }
-
-    /** This method creates a new list with each element of the input list in its lower-case representation.
-     *
-     * @param list List to be converted to lower case
-     * @return New list converted to lower case
-     */
-    public static ArrayList<String> ToLowerCase(ArrayList<String> list)
-    {
-        ArrayList<String> newList = new ArrayList<String>();
-
-        for (String x : list)
-            newList.add(x.toLowerCase());
-
-        return newList;
     }
 }

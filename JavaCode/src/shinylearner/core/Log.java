@@ -22,25 +22,6 @@ public class Log
             PrintOut(FormatText(text));
     }
 
-    /** Saves debugging information for a non-fatal error.
-     *
-     * @param ex Exception that occurred.
-     */
-    public static void Debug(Throwable ex)
-    {
-        if (!Settings.DEBUG)
-            return;
-
-        if (ex == null)
-        {
-            PrintOut("<null Exception>");
-            return;
-        }
-
-        Debug("A non-fatal error occurred. It will be logged but may not affect processing of this program.");
-        Debug(GetStackTrace(ex));
-    }
-
     /** Saves logging information
      *
      * @param text Logging text
@@ -129,17 +110,6 @@ public class Log
         System.out.println(out);
         System.out.flush();
     }
-    
-//    public static void PrintErr(Object x)
-//    {
-//        String out = x == null ? "<null>" : String.valueOf(x);
-//
-//        if (out.equals(""))
-//            return;
-//
-//        System.err.println(out);
-//        System.err.flush();
-//    }
 
 	public static void Exit(int exitCode)
 	{

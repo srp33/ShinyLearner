@@ -1,25 +1,11 @@
 package shinylearner;
 
-import java.io.File;
+import shinylearner.core.*;
+import shinylearner.helper.FileUtilities;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import shinylearner.core.AnalysisFileCreator;
-import shinylearner.core.Benchmark;
-import shinylearner.core.Classification;
-import shinylearner.core.ExperimentItems;
-import shinylearner.core.FeatureSelection;
-import shinylearner.core.InstanceManager;
-import shinylearner.core.Log;
-import shinylearner.core.OutputFileProcessor;
-import shinylearner.core.Settings;
-import shinylearner.core.Singletons;
-import shinylearner.helper.FileUtilities;
-import shinylearner.helper.MiscUtilities;
-
-import com.linkedin.paldb.api.Configuration;
-import com.linkedin.paldb.api.PalDB;
 
 /** This is the class that gets invoked when code begins to execute.
  * @author Stephen Piccolo
@@ -34,65 +20,46 @@ public class Main
 	{
 		try
 		{
-			Log.Info("Parsing command line settings...");
 			Settings.ParseCommandLineSettings(args);
-			Settings.Check();
-			
-			Log.Info("Loading data from input files...");
-			Singletons.DatabaseFilePath = Settings.TEMP_DIR + "/" + MiscUtilities.GetUniqueID() + ".db";			
-			Singletons.DatabaseWriter = PalDB.createWriter(new File(Singletons.DatabaseFilePath));
-			InstanceManager.LoadDataInstances();
-			Singletons.DatabaseWriter.close();
-			
-			Log.Info("Refining data instances...");
-			
-			Configuration config = PalDB.newConfiguration();
-			config.set(Configuration.COMPRESSION_ENABLED, "true");
-			Singletons.DatabaseReader = PalDB.createReader(new File(Singletons.DatabaseFilePath), config);
 
-			InstanceManager.RefineDataInstances();
+			if (Settings.ANALYSIS_DATA_FILE.equals(""))
+				Log.ExceptionFatal("No value was specified for ANALYSIS_DATA_FILE.");
 
-			if (!Settings.OUTPUT_DATA_FILE_PATH.equals(""))
-				InstanceManager.SaveOutputDataFile();
-			
-			if (!Settings.OUTPUT_PREDICTIONS_FILE_PATH.equals("") || !Settings.OUTPUT_FEATURES_FILE_PATH.equals("") || !Settings.OUTPUT_BENCHMARK_FILE_PATH.equals(""))
+			if (Settings.RAW_DATA_FILES.size() > 0)
 			{
+				InstanceManager.ParseRawInputData();
+				InstanceManager.SaveRawInputDataToFile();
+			}
+			else
+			{
+				if (!FileUtilities.DirectoryExists(Settings.TEMP_DIR))
+					Log.ExceptionFatal("No directory exists at " + Settings.TEMP_DIR + ".");
+
+				if (!FileUtilities.FileExists(Settings.EXPERIMENT_FILE))
+					Log.ExceptionFatal("No file exists at " + Settings.EXPERIMENT_FILE);
+
+				if (Settings.OUTPUT_PREDICTIONS_FILE_PATH.equals("") && Settings.OUTPUT_FEATURES_FILE_PATH.equals("") && Settings.OUTPUT_BENCHMARK_FILE_PATH.equals(""))
+					Log.ExceptionFatal("No output files have been specified.");
+
+				if (!Settings.OUTPUT_PREDICTIONS_FILE_PATH.equals(""))
+					FileUtilities.CreateFileDirectoryIfNotExists(Settings.OUTPUT_PREDICTIONS_FILE_PATH);
+
+				if (!Settings.OUTPUT_FEATURES_FILE_PATH.equals(""))
+					FileUtilities.CreateFileDirectoryIfNotExists(Settings.OUTPUT_FEATURES_FILE_PATH);
+
+				if (!Settings.OUTPUT_BENCHMARK_FILE_PATH.equals(""))
+					FileUtilities.CreateFileDirectoryIfNotExists(Settings.OUTPUT_BENCHMARK_FILE_PATH);
+
+				InstanceManager.LoadAnalysisData();
+
 				Log.Info("Starting analysis...");
 				PerformAnalysis();
 			}
-			
-			Singletons.DatabaseReader.close();
-			
-			FileUtilities.DeleteFile(Singletons.DatabaseFilePath);
-
-			Log.PrintOut("Successfully completed!");
-			
 			System.exit(0); // Not sure if this is necessary, but keeping it just in case
 		}
 		catch (Exception ex)
 		{
 			Log.PrintOut(Log.GetStackTrace(ex));
-			
-			try
-			{
-				if (Singletons.DatabaseWriter != null)
-					Singletons.DatabaseWriter.close();
-			}
-			catch (Exception ex2) {}
-
-			try
-			{
-				if (Singletons.DatabaseReader != null)
-					Singletons.DatabaseReader.close();
-			}
-			catch (Exception ex3) {}
-			
-			try
-			{
-				if (Singletons.DatabaseFilePath != null && FileUtilities.FileExists(Singletons.DatabaseFilePath))
-					FileUtilities.DeleteFile(Singletons.DatabaseFilePath);
-			}
-			catch (Exception ex4) {}
 
 			System.exit(1); // Not sure if this is necessary, but keeping it just in case
 		}
@@ -139,9 +106,9 @@ public class Main
         		
         		if (experimentItems.IsClassificationAnalysis && testFilePath != null)
         			FileUtilities.DeleteFile(testFilePath);
-        		
+
         		trainingFilePath = AnalysisFileCreator.CreateFile(Singletons.ExperimentItems.AlgorithmDataFormat, Singletons.ExperimentItems.TrainingIDs, Singletons.ExperimentItems.DataPointsToUse, true);
-        		
+
         		if (experimentItems.IsClassificationAnalysis)
         			testFilePath = AnalysisFileCreator.CreateFile(Singletons.ExperimentItems.AlgorithmDataFormat, Singletons.ExperimentItems.TestIDs, Singletons.ExperimentItems.DataPointsToUse, false);
 			}

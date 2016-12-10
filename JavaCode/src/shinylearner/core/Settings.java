@@ -11,12 +11,11 @@ import shinylearner.helper.FileUtilities;
 public class Settings
 {
 	public static boolean DEBUG;
-    public static String MAIN_DIR;
     public static String TEMP_DIR;
-    public static ArrayList<String> DATA_FILES = new ArrayList<String>();
-    public static String DEPENDENT_VARIABLE_NAME;
+    public static ArrayList<String> RAW_DATA_FILES = new ArrayList<String>();
+	public static String ANALYSIS_DATA_FILE;
+    public static String DEPENDENT_VARIABLE_NAME = "Class";
     public static String EXPERIMENT_FILE;
-    public static String OUTPUT_DATA_FILE_PATH;
     public static String OUTPUT_PREDICTIONS_FILE_PATH;
     public static String OUTPUT_FEATURES_FILE_PATH;
     public static String OUTPUT_BENCHMARK_FILE_PATH;
@@ -29,16 +28,23 @@ public class Settings
 	public static void ParseCommandLineSettings(String[] args) throws Exception
 	{
 		DEBUG = Boolean.parseBoolean(GetArgValue(args, "DEBUG", "false"));
-		MAIN_DIR = GetArgValue(args, "MAIN_DIRECTORY", System.getProperty("user.dir"));
+
 		TEMP_DIR = FileUtilities.CreateDirectoryIfNotExists(GetArgValue(args, "TEMP_DIR", null));
-		
-		for (String x : GetArgValue(args, "DATA_FILES", null).split(","))
-			for (String filePath : FileUtilities.GetFilesMatchingPattern(x))
-				DATA_FILES.add(filePath);			
-		
-		DEPENDENT_VARIABLE_NAME = GetArgValue(args, "DEPENDENT_VARIABLE_NAME", "Class");
-		EXPERIMENT_FILE = GetArgValue(args, "EXPERIMENT_FILE", null);
-		OUTPUT_DATA_FILE_PATH = GetArgValue(args, "OUTPUT_DATA_FILE_PATH", "");
+		if (TEMP_DIR.endsWith("/"))
+			TEMP_DIR = TEMP_DIR.substring(0, TEMP_DIR.lastIndexOf("/"));
+
+		String dataFilesArg = GetArgValue(args, "RAW_DATA_FILES", "");
+		if (!dataFilesArg.equals(""))
+			for (String x : dataFilesArg.split(","))
+				for (String filePath : FileUtilities.GetFilesMatchingPattern(x))
+				{
+					if (!FileUtilities.FileExists(filePath))
+						Log.ExceptionFatal("No file exists at " + filePath);
+					RAW_DATA_FILES.add(filePath);
+				}
+
+		ANALYSIS_DATA_FILE = GetArgValue(args, "ANALYSIS_DATA_FILE", "");
+		EXPERIMENT_FILE = GetArgValue(args, "EXPERIMENT_FILE", "");
 		OUTPUT_PREDICTIONS_FILE_PATH = GetArgValue(args, "OUTPUT_PREDICTIONS_FILE_PATH", "");
 		OUTPUT_FEATURES_FILE_PATH = GetArgValue(args, "OUTPUT_FEATURES_FILE_PATH", "");
 		OUTPUT_BENCHMARK_FILE_PATH = GetArgValue(args, "OUTPUT_BENCHMARK_FILE_PATH", "");
@@ -73,40 +79,5 @@ public class Settings
 			else
 				return defaultValue;
 		}
-	}
-	
-	public static void Check() throws Exception
-	{
-		if (!FileUtilities.DirectoryExists(MAIN_DIR))
-			Log.ExceptionFatal("No directory exists at " + MAIN_DIR + ".");
-		if (!FileUtilities.DirectoryExists(TEMP_DIR))
-			Log.ExceptionFatal("No directory exists at " + TEMP_DIR + ".");
-		
-		if (TEMP_DIR.endsWith("/"))
-			TEMP_DIR = TEMP_DIR.substring(0, TEMP_DIR.lastIndexOf("/"));
-		
-		if (DATA_FILES.size() == 0)
-			Log.ExceptionFatal("No data files were specified.");
-		for (String dataFilePath : DATA_FILES)
-			if (!FileUtilities.FileExists(dataFilePath))
-				Log.ExceptionFatal("No file exists at " + dataFilePath);
-
-		if (!FileUtilities.FileExists(EXPERIMENT_FILE))
-			Log.ExceptionFatal("No file exists at " + EXPERIMENT_FILE);
-		
-		if (OUTPUT_DATA_FILE_PATH.equals("") && OUTPUT_PREDICTIONS_FILE_PATH.equals("") && OUTPUT_FEATURES_FILE_PATH.equals("") && OUTPUT_BENCHMARK_FILE_PATH.equals(""))
-			Log.ExceptionFatal("No output files have been specified.");
-
-		if (!OUTPUT_DATA_FILE_PATH.equals(""))
-			FileUtilities.CreateFileDirectoryIfNotExists(OUTPUT_DATA_FILE_PATH);
-		
-		if (!OUTPUT_PREDICTIONS_FILE_PATH.equals(""))
-			FileUtilities.CreateFileDirectoryIfNotExists(OUTPUT_PREDICTIONS_FILE_PATH);
-
-		if (!OUTPUT_FEATURES_FILE_PATH.equals(""))
-			FileUtilities.CreateFileDirectoryIfNotExists(OUTPUT_FEATURES_FILE_PATH);
-		
-		if (!OUTPUT_BENCHMARK_FILE_PATH.equals(""))
-			FileUtilities.CreateFileDirectoryIfNotExists(OUTPUT_BENCHMARK_FILE_PATH);
 	}
 }

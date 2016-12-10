@@ -13,16 +13,6 @@ import shinylearner.core.Settings;
  */
 public class MiscUtilities
 {
-    /** Indicates the IP address of the machine where this software is being run
-     *
-     * @return IP address
-     * @throws Exception
-     */
-    public static String GetMachineAddress() throws Exception
-    {
-        return InetAddress.getLocalHost().getHostAddress();
-    }
-
     /** Generates a unique identifier randomly
      *
      * @return Random unique identifier
@@ -31,16 +21,6 @@ public class MiscUtilities
     {
         return "id." + UUID.randomUUID();
     }
-
-//    /** Indicates whether a string value is either null or equal to the missing character
-//     *
-//     * @param value Value to be tested
-//     * @return Whether or not it is considered missing
-//     */
-//    public static boolean IsMissing(String value)
-//    {
-//        return value == null || value.equals(Settings.MISSING_VALUE_STRING);
-//    }
 
     public static String ExecuteShellCommand(String commandText) throws Exception
     {

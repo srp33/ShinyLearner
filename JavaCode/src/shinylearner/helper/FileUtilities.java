@@ -39,74 +39,29 @@ public class FileUtilities
         printWriter.close();
     }
 
-    /** Writes new lines to a file (including new line characters).
-     *
-     * @param filePath Absolute file path
-     * @param rows List of row lists to write
-     * @param headerComment Descriptive comment that will be placed at the top of the file
-     * @throws Exception
-     */
     public static void AppendLinesToFile(String filePath, ArrayList<String> lines) throws Exception
     {
         if (lines == null | lines.size() == 0)
         {
-        	Log.ExceptionFatal("The object to be saved to " + filePath + " was null or empty.");
+            Log.ExceptionFatal("The object to be saved to " + filePath + " was null or empty.");
             return;
         }
-        
-    	PrintWriter printWriter;
-    	
-    	if (filePath.endsWith(".gz"))
-    	{
-    		printWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(new File(filePath), true)), "UTF-8")));
-    	}
-    	else
-    	{
-    		printWriter = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)));
-    	}
+
+        PrintWriter printWriter;
+
+        if (filePath.endsWith(".gz"))
+        {
+            printWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(new File(filePath), true)), "UTF-8")));
+        }
+        else
+        {
+            printWriter = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)));
+        }
 
         for (String line : lines)
             printWriter.write(line + "\n");
 
         printWriter.close();
-    }
-
-    /** Reads lines from a file.
-     *
-     * @param filePath Absolute file path
-     * @param commentChar Comment character (lines starting with this character are ignored)
-     * @return Each line in the file
-     * @throws Exception
-     */
-    public static ArrayList<String> ReadLinesFromFile(String filePath, String commentChar) throws Exception
-    {
-        ArrayList<String> rows = new ArrayList<String>();
-
-        for (String line : new BigFileReader(filePath))
-        {
-            if (line.trim().length() == 0 || (commentChar != null && line.startsWith(commentChar)))
-                continue;
-
-            rows.add(line.trim());
-        }
-
-        return rows;
-    }
-
-    /** Reads all text from a file.
-     *
-     * @param filePath Absolute file path
-     * @return String representation of text in a file
-     * @throws Exception
-     */
-    public static String ReadTextFile(String filePath) throws Exception
-    {
-        StringBuilder text = new StringBuilder();
-
-        for (String line : new BigFileReader(filePath))
-            text.append(line + "\n");
-
-        return text.toString();
     }
 
     /** Parses a delimited file.
@@ -281,24 +236,4 @@ public class FileUtilities
 
         CreateDirectoryIfNotExists(dirPath);
     }
-
-    /** This method parses the file extensions from a file path.
-    *
-    * @param filePath Full or relative file path
-    * @return File extension
-    */
-   public static String GetFileExtension(String filePath)
-   {
-       String simpleName = new File(filePath).getName();
-
-       if (simpleName.contains("."))
-           return simpleName.substring(simpleName.lastIndexOf('.') + 1);
-       else
-    	   return "";
-   }
-   
-   public static String GetFileName(String filePath)
-   {
-       return new File(filePath).getName();
-   }
 }
