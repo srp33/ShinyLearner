@@ -87,7 +87,7 @@ Below is an example of how you would execute the analysis, using the above param
 sudo docker run --rm \
   -v $(pwd)/InputData:/InputData \
   -v $(pwd)/OutputData:/OutputData \
-  srp33/shinylearner:version226 \
+  srp33/shinylearner:version227 \
   /UserScripts/classification_montecarlo \
   InputData/MyData.csv.gz \
   My_Interesting_Analysis \
