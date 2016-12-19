@@ -58,7 +58,7 @@ public class MiscUtilities
             if (output.length() > 0)
                 Log.Exception("Command output: " + output.toString());
 
-            if (!error.toString().equals(""))
+            if (!error.toString().equals("") && Settings.DEBUG)
             {
             	Log.Exception("Command error: " + error.toString());
             	Log.Exit(1);

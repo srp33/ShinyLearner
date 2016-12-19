@@ -12,5 +12,4 @@ algorithm=$(basename $algorithm)
 
 parameterDescription=$(basename $callingScript)
 
-#python $dirName/sklearn_fs_generic.py "$dataFilePath" "$algorithm" "$parameterDescription"
 python $dirName/sklearn_fs_generic.py "$dataFilePath" "$algorithm" "$parameterDescription" 2>&1 | python $dirName/ReformatSklearnOutput.py

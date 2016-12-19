@@ -26,4 +26,4 @@ mem=$(getMemAvailable)
 wekaLibPath=$(dirname $0)/lib
 classPath="$wekaLibPath/*:$wekaLibPath/wekalib/*"
 
-echo java -Xmx${mem} -classpath $classPath $parameters -i $dataFilePath | python $(dirname $0)/ReformatFeatureSelectionParameters.py | bash | python $(dirname $0)/ParseFeatureSelectionResults.py
+echo java -Xmx${mem} -classpath $classPath $parameters -i $dataFilePath | python $(dirname $0)/ReformatWekaFSParams.py | bash | python $(dirname $0)/ParseWekaFSResults.py

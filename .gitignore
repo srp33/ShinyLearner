@@ -23,3 +23,5 @@ java/target
 java/.settings/*
 java/.project
 Windows
+*.zip
+TestFiles
