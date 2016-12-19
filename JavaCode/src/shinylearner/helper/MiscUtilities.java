@@ -52,13 +52,13 @@ public class MiscUtilities
         p.destroy();
 
         // Print the error, including parameters that had been specified, to aid in troubleshooting
-        if (error.length() > 0)
+        if (error.length() > 0 && Settings.DEBUG)
         {
             // Print the output
             if (output.length() > 0)
                 Log.Exception("Command output: " + output.toString());
 
-            if (!error.toString().equals("") && Settings.DEBUG)
+            if (!error.toString().equals(""))
             {
             	Log.Exception("Command error: " + error.toString());
             	Log.Exit(1);
