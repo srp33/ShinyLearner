@@ -1,3 +1,5 @@
+## Incorporating new algorithms
+
 ShinyLearner can be extended to support additional machine-learning algorithms. Users who wish to do this must do the following:
 
 1. Identify any software dependencies that are necessary to support the algorithm. This might include third-party machine-learning libraries or more generic dependencies. Software already included in ShinyLearner can be found [here](https://github.com/srp33/ShinyLearner_Environment/blob/master/Dockerfile). If you need to add dependencies, [clone](https://help.github.com/articles/cloning-a-repository/) [this repository](https://github.com/srp33/ShinyLearner_Environment) and modify the Dockerfile so that it downloads and installs the needed dependencies.

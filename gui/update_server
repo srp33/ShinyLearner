@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -o errexit
+
 server=lspiccolo.byu.edu
 serverShinyDir=/srv/shiny-server/shinylearner
 
@@ -14,6 +16,5 @@ rsync -av www $server:$serverShinyDir
 
 # Get latest algorithm scripts
 ssh $server "cd /tmp; rm -rf ShinyLearner; git clone https://github.com/srp33/ShinyLearner.git"
-ssh $server "mkdir -p ~/shinylearner/ShinyLearner"
 ssh $server "cp -rv /tmp/ShinyLearner/AlgorithmScripts $serverShinyDir/ShinyLearner/"
 ssh $server "rm -rf /tmp/ShinyLearner"
