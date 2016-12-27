@@ -3,13 +3,18 @@
 set -o errexit
 
 server=lspiccolo.byu.edu
+serverTempDir=/tmp/shinylearner
 serverShinyDir=/srv/shiny-server/shinylearner
 
 # Server config
-rsync -av server_config/shiny-server.conf $server:/etc/shiny-server/shiny-server.conf
-ssh $server "mkdir -p $serverShinyDir"
+ssh $server "mkdir -pv $serverTempDir"
+ssh $server "rm -rfv $serverTempDir/*"
+rsync -av server_config/shiny-server.conf $server:$serverTempDir/
+ssh -t $server "sudo cp -v $serverTempDir/shiny-server.conf /etc/shiny-server/"
+exit
 
 # Copy Shiny files
+ssh $server "sudo mkdir -p $serverShinyDir"
 rsync -av server.R $server:$serverShinyDir
 rsync -av ui.R $server:$serverShinyDir
 rsync -av www $server:$serverShinyDir
@@ -18,3 +23,6 @@ rsync -av www $server:$serverShinyDir
 ssh $server "cd /tmp; rm -rf ShinyLearner; git clone https://github.com/srp33/ShinyLearner.git"
 ssh $server "cp -rv /tmp/ShinyLearner/AlgorithmScripts $serverShinyDir/ShinyLearner/"
 ssh $server "rm -rf /tmp/ShinyLearner"
+
+# Remove temp files
+ssh $server "rm -rfv $serverTempDir"
