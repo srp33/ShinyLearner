@@ -3,7 +3,7 @@
 set -o errexit
 
 server=lspiccolo.byu.edu
-serverTempDir=/tmp/shinylearner
+serverTempDir=/tmp/shinylearner_srv
 serverShinyDir=/srv/shiny-server/shinylearner
 
 # Server config
@@ -11,17 +11,20 @@ ssh $server "mkdir -pv $serverTempDir"
 ssh $server "rm -rfv $serverTempDir/*"
 rsync -av server_config/shiny-server.conf $server:$serverTempDir/
 ssh -t $server "sudo cp -v $serverTempDir/shiny-server.conf /etc/shiny-server/"
-exit
 
 # Copy Shiny files
-ssh $server "sudo mkdir -p $serverShinyDir"
-rsync -av server.R $server:$serverShinyDir
-rsync -av ui.R $server:$serverShinyDir
-rsync -av www $server:$serverShinyDir
+ssh -t $server "sudo mkdir -p $serverShinyDir"
+ssh -t $server "sudo rm -rfv $serverShinyDir/*"
+rsync -av server.R $server:$serverTempDir
+rsync -av ui.R $server:$serverTempDir
+rsync -av www $server:$serverTempDir
+ssh -t $server "sudo cp -v $serverTempDir/server.R $serverShinyDir"
+ssh -t $server "sudo cp -v $serverTempDir/ui.R $serverShinyDir"
+ssh -t $server "sudo cp -rv $serverTempDir/www $serverShinyDir"
 
 # Get latest algorithm scripts
 ssh $server "cd /tmp; rm -rf ShinyLearner; git clone https://github.com/srp33/ShinyLearner.git"
-ssh $server "cp -rv /tmp/ShinyLearner/AlgorithmScripts $serverShinyDir/ShinyLearner/"
+ssh -t $server "sudo cp -rv /tmp/ShinyLearner/AlgorithmScripts $serverShinyDir/ShinyLearner/"
 ssh $server "rm -rf /tmp/ShinyLearner"
 
 # Remove temp files

@@ -103,4 +103,4 @@ for i in range(len(probs)):
 
     print "%s\t%s" % (prediction, "\t".join(["%.9f" % iProb for iProb in iProbs]))
 
-sys.exit(0)
+exit(0)
