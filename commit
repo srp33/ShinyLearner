@@ -14,6 +14,7 @@ cd ../..
 
 python scripts/UpdateVersion.py travis.yml.template VERSION True .travis.yml
 python scripts/UpdateVersion.py README_template.md VERSION False README.md
+python scripts/UpdateVersion.py GettingStarted_template.md VERSION False GettingStarted.md
 
 git add .travis.yml
 git add --all .

@@ -38,8 +38,9 @@ done
 ## mlr
 ##############################
 
-#for algorithm in avNNet boosting cforest ctree naiveBayes cvglmnet glmnet kknn ksvm LiblineaRL1LogReg LiblineaRL1LogReg mlp multinom nnet randomForestSRCSyn ranger rda rpart sda svm xgboost
-for algorithm in avNNet boosting ctree naiveBayes cvglmnet glmnet kknn ksvm LiblineaRL1LogReg LiblineaRL1LogReg mlp multinom nnet randomForestSRCSyn ranger rpart sda svm xgboost
+# Focused on algorithms that support probabilistic predictions, multiclass and numerical + factor values. Some have been excluded because they don't work.
+# Didn't work with default params: cforest nnet gbm mda qda
+for algorithm in avNNet boosting C50 ctree cvglmnet gausspr glmnet h2o.deeplearning h2o.gbm h2o.randomForest kknn ksvm lda mlp multinom naiveBayes randomForest randomForestSRC ranger rda rpart sda svm xgboost
 do
   createScript Classification mlr mlr_c_template $algorithm default
 done

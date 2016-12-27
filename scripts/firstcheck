@@ -1,0 +1,26 @@
+helpMessage="Please see documentation for ShinyLearner here: https://github.com/srp33/ShinyLearner."
+
+if [ $# -eq 0 ]; then
+    echo No arguments provided.
+	echo "$helpMessage"
+    exit 1
+fi
+
+for i in "$@"
+do
+  case $i in
+    -h)
+        echo "$helpMessage"
+        quickExit=TRUE
+    ;;
+    -v)
+        echo ShinyLearner version $(cat $(pwd)/VERSION).
+        quickExit=TRUE
+    ;;
+  esac
+done
+
+if [[ "$quickExit" == "TRUE" ]]
+then
+  exit 0
+fi

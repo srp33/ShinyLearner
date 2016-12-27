@@ -1,0 +1,42 @@
+---
+output: html_document
+params:
+  p: 'NULL'
+  m: 'NULL'
+  v: 'NULL'
+  r: 'NULL'
+---
+
+```{r echo=F, results='hide',  message=FALSE}
+  library(ggplot2)
+```
+
+```{r echo=F, results='asis'}
+ cat("#","ShinyLearner Results","\n")
+ cat(paste("* Version:",params$v),"\n","\n")
+```
+
+### Receiver Operating Characteristic Plot
+```{r echo=F, fig.width=6.5, fig.height=4.5}
+  cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+  ggplot(data=params$r, aes(x=fpr,y=tpr,group=class,color=class)) +
+    theme_bw() +
+    geom_line(size=1) +
+    scale_colour_manual(values=cbPalette,name='Classes') +
+    labs(x="1 - Specificity", y="Sensitivity") +
+    theme(axis.text=element_text(size=11),axis.title=element_text(size=14)) +
+    theme(legend.text=element_text(size=11),legend.title=element_text(size=14)) +
+    theme(legend.justification=c(1,0),legend.position=c(1,0))
+    #guides(colour = guide_legend(override.aes = list(size=14, title='Class')))
+```
+
+
+### Metrics
+```{r, echo=F}
+  kable(params$m, format='markdown', digits=3)
+```
+
+### Predictions
+```{r, echo=F, message=F, warning=F}
+  kable(params$p, format='markdown', row.names=T, digits=3)
+```

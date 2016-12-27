@@ -1,6 +1,6 @@
 # Input Data File Formats
 
-ShinyLearner uses convention over configuration. In other words, the file extension determines how ShinyLearner will parse the files. Currently ShinyLearner supports five different file extensions including ```.tsv```, ```.ttsv```, ```.csv```, ```.tcsv```, and ```.arff```. Each has a unique way of organizing instances and features. An *instance* is a single observation in the data set, while a feature is one type of measurement on that instance. For example, an instance could be a patient, and that patient may have data accros multiple features such as age, height, sex, and so forth. One of the features must be named 'Class'. Input files may be gzipped (append '.gz' to file name).
+ShinyLearner uses convention over configuration. In other words, the file extension determines how ShinyLearner will parse the files. Currently ShinyLearner supports five different file extensions including ```.tsv```, ```.ttsv```, ```.csv```, ```.tcsv```, and ```.arff```. Each has a unique way of organizing instances and features. An *instance* is a single observation in the data set, while a feature is one type of measurement on that instance. For example, an instance could be a patient, and that patient may have data across multiple features such as age, height, sex, and so forth. One of the features must be named 'Class'. Input files may be gzipped (append '.gz' to file name).
 
 ## Tab-Separated Values File (.tsv)
 

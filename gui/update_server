@@ -1,0 +1,19 @@
+#!/bin/bash
+
+server=lspiccolo.byu.edu
+serverShinyDir=/srv/shiny-server/shinylearner
+
+# Server config
+rsync -av server_config/shiny-server.conf $server:/etc/shiny-server/shiny-server.conf
+ssh $server "mkdir -p $serverShinyDir"
+
+# Copy Shiny files
+rsync -av server.R $server:$serverShinyDir
+rsync -av ui.R $server:$serverShinyDir
+rsync -av www $server:$serverShinyDir
+
+# Get latest algorithm scripts
+ssh $server "cd /tmp; rm -rf ShinyLearner; git clone https://github.com/srp33/ShinyLearner.git"
+ssh $server "mkdir -p ~/shinylearner/ShinyLearner"
+ssh $server "cp -rv /tmp/ShinyLearner/AlgorithmScripts $serverShinyDir/ShinyLearner/"
+ssh $server "rm -rf /tmp/ShinyLearner"

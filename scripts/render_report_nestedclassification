@@ -1,0 +1,13 @@
+#!/bin/bash
+set -euo pipefail
+
+predictionsFile="$1"
+metricsFile="$2"
+outputReportFile="$3"
+# (output is in html)
+
+Rscript scripts/render_report_nestedclassification.R \
+$predictionsFile \
+$metricsFile \
+$outputReportFile
+

@@ -3,6 +3,8 @@
 set -o errexit
 set -o pipefail
 
+source scripts/firstcheck
+
 dataFiles="$1"
 description="$2"
 outerNumIterations="$3"
