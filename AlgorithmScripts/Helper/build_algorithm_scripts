@@ -39,10 +39,10 @@ done
 ##############################
 
 # Focused on algorithms that support probabilistic predictions, multiclass and numerical + factor values. Some have been excluded because they don't work.
-# Didn't work with default params: cforest nnet gbm mda qda
+# Didn't work with default params: cforest nnet gbm mda qda lda
 # Need to troubleshoot:
 #   h2o.deeplearning h2o.gbm h2o.randomForest
-for algorithm in avNNet boosting C50 ctree cvglmnet gausspr glmnet kknn ksvm lda mlp multinom naiveBayes randomForest randomForestSRC ranger rda rpart sda svm xgboost
+for algorithm in avNNet boosting C50 ctree cvglmnet gausspr glmnet kknn ksvm mlp multinom naiveBayes randomForest randomForestSRC ranger rda rpart sda svm xgboost
 do
   createScript Classification mlr mlr_c_template $algorithm default
 done
