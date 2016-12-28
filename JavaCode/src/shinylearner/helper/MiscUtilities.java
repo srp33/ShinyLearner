@@ -52,7 +52,7 @@ public class MiscUtilities
         p.destroy();
 
         // Print the error, including parameters that had been specified, to aid in troubleshooting
-        if (error.length() > 0 && Settings.DEBUG)
+        if (error.length() > 0)
         {
             // Print the output
             if (output.length() > 0)
