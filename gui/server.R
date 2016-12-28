@@ -398,6 +398,7 @@ shinyServer(function(input, output, session) {
   	## Linux/Mac  
 	} else if (os == 'linux/mac') {
 	  lines <- c(lines, 'sudo docker run --rm')
+	  lines <- c(lines, '-v $(pwd)/.:')
 	  ## Mount Input Dirs
 	  for (i in 1:length(hostInputDir[[1]])){
 	    if (i > 1) {break}

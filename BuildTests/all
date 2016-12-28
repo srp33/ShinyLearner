@@ -17,8 +17,8 @@ else
   expectedOutputDir=BuildTestExpectedOutput
 fi
 
-#debug=false
-debug=true
+debug=false
+#debug=true
 numOuterIterations=2
 numInnerIterations=2
 overallLogFile=$outputDir/log.overall
@@ -30,6 +30,7 @@ classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_rbf/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default"
 
 $(dirname $0)/classification StrongSignal_Both montecarlo "$classifAlgo" $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &

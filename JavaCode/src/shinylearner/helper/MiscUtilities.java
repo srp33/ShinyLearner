@@ -56,13 +56,10 @@ public class MiscUtilities
         {
             // Print the output
             if (output.length() > 0)
-                Log.Exception("Command output: " + output.toString());
+                Log.Debug("Command stdput: " + output.toString());
 
             if (!error.toString().equals(""))
-            {
-            	Log.Exception("Command error: " + error.toString());
-            	Log.Exit(1);
-            }
+            	Log.Debug("Command stderr: " + error.toString());
         }
 
         return output.toString();

@@ -23,8 +23,10 @@ ssh -t $server "sudo cp -v $serverTempDir/ui.R $serverShinyDir"
 ssh -t $server "sudo cp -rv $serverTempDir/www $serverShinyDir"
 
 # Get latest algorithm scripts
-ssh $server "cd /tmp; rm -rf ShinyLearner; git clone https://github.com/srp33/ShinyLearner.git"
-ssh -t $server "sudo cp -rv /tmp/ShinyLearner/AlgorithmScripts $serverShinyDir/ShinyLearner/"
+ssh $server "mkdir -pv /tmp/ShinyLearner; rm -rf /tmp/ShinyLearner/*"
+ssh $server "cd /tmp; git clone https://github.com/srp33/ShinyLearner.git"
+ssh -t $server "sudo mkdir -pv $serverShinyDir/ShinyLearner/AlgorithmScripts"
+ssh -t $server "sudo cp -rv /tmp/ShinyLearner/AlgorithmScripts/* $serverShinyDir/ShinyLearner/AlgorithmScripts"
 ssh $server "rm -rf /tmp/ShinyLearner"
 
 # Remove temp files
