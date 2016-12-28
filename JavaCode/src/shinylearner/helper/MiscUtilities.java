@@ -58,8 +58,7 @@ public class MiscUtilities
             if (output.length() > 0)
                 Log.Debug("Command stdput: " + output.toString());
 
-            if (!error.toString().equals(""))
-            	Log.Debug("Command stderr: " + error.toString());
+            Log.Info("Command stderr: " + error.toString());
         }
 
         return output.toString();
