@@ -1,6 +1,6 @@
 # Output Data Files
 
-ShinyLearner follows the priniciples of (tidy data)[http://vita.had.co.nz/papers/tidy-data.pdf]. This affords extra flexibility when interpreting the results. These tab-delineated text files can be imported directly into third-party analytic tools--such as Microsoft Excel or R--for further analysis.
+ShinyLearner follows the principles of [tidy data](http://vita.had.co.nz/papers/tidy-data.pdf). This affords extra flexibility when interpreting the results. These tab-delineated text files can be imported directly into third-party analytic tools--such as Microsoft Excel or R--for further analysis.
 
 ## Metrics.tsv
 
@@ -19,7 +19,14 @@ ShinyLearner follows the priniciples of (tidy data)[http://vita.had.co.nz/papers
 
 ## SelectedFeatures.tsv
 
+* Selected features for the analyses.
 * [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/SelectedFeatures.tsv)
+
+
+## SelectedFeatures_Summarized_Nested.tsv
+
+* Mean ranking of features across internal validation folds.
+* [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/SelectedFeatures_Summarized_Nested.tsv)
 
 ## Nested Prefix
 
@@ -33,5 +40,4 @@ ShinyLearner follows the priniciples of (tidy data)[http://vita.had.co.nz/papers
 
 * Output from the terminal. 
 * [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/Log.txt)
-
 

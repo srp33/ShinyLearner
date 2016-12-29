@@ -18,7 +18,7 @@ Instance3,2.21,5.42,9.90,1
 Instance4,1.74,6.65,8.81,1
 ```
 
-See [InputData.md](https://github.com/srp33/ShinyLearner/blob/master/InputFormats.md) for more information about input-data formats.
+See [InputFormats.md](https://github.com/srp33/ShinyLearner/blob/master/InputFormats.md) for more information about input-data formats.
 
 #### Specifying parameters
 
@@ -49,7 +49,7 @@ Below is an example of how you would execute the analysis, using the above param
 sudo docker run --rm \
   -v $(pwd)/InputData:/InputData \
   -v $(pwd)/OutputData:/OutputData \
-  srp33/shinylearner:version248 \
+  srp33/shinylearner:version249 \
   /UserScripts/nestedclassification_montecarlo \
   InputData/MyData.csv.gz \
   My_Interesting_Analysis \

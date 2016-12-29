@@ -41,7 +41,7 @@ The third-party machine-learning libraries incorporated into ShinyLearner are wr
 
 ShinyLearner supports commonly used [input-data formats](https://github.com/srp33/ShinyLearner/blob/master/InputFormats.md). It then translates these input data to the formats required by individual algorithms. If you would like to request that we support any additional formats, please [contact us](https://github.com/srp33/ShinyLearner/blob/master/Contact.md).
 
-Output files are consistently formatted using the "[tidy data](http://vita.had.co.nz/papers/tidy-data.pdf)" approach. Therefore, these files can be imported directly into third-party analytic tools, such as Microsoft Excel or [R](http://www.r-project.org). [Outut files](https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md)indicate predictions for each data instance as well an array of evaluation metrics, including accuracy, sensitivity, specificity, positive predictive value, AUROC, etc. [see Metrics.md](https://github.com/srp33/ShinyLearner/blob/master/Metrics.md).
+Output files are consistently formatted using the "[tidy data](http://vita.had.co.nz/papers/tidy-data.pdf)" approach. Therefore, these files can be imported directly into third-party analytic tools, such as Microsoft Excel or [R](http://www.r-project.org). [Output files](https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md) indicate predictions for each data instance as well an array of evaluation metrics, including accuracy, sensitivity, specificity, positive predictive value, AUROC, etc. [see Metrics.md](https://github.com/srp33/ShinyLearner/blob/master/Metrics.md).
 
 #### Many algorithms
 
@@ -61,4 +61,4 @@ ShinyLearner supports [k-fold cross validation](https://en.wikipedia.org/wiki/Cr
 
 ## Getting Started
 
-To get started in using ShinyLearner, please read [these instructions](https://github.com/srp33/ShinyLearner/blob/master/IncorporatingNewAlgorithms.md).
+To get started in using ShinyLearner, please read [these instructions](https://github.com/srp33/ShinyLearner/blob/master/GettingStarted.md).
