@@ -1,7 +1,0 @@
-mol_type	name	prep	default
-cnv	Copy Number Variations (Genome-Wide SNP Array 6.0)	'Raw'='ra'	ra
-methyl	DNA Methylation (Infinium HumanMethylation450)	'Raw'='ra','Standardized'='sc','Normalized'='nm','Batch Corrected'='bc'	sc
-mirna	miRNA Expression (HiSeq miRNASeq)	'Raw'='ra','Standardized'='sc','Normalized'='nm','Batch Corrected'='bc'	sc
-mrna	mRNA Expression (HiSeq RNASeqV2)	'Raw'='ra','Standardized'='sc','Normalized'='nm','Batch Corrected'='bc'	sc
-mut	Somatic Mutations (Genome Analyzer DNASeq)	'Raw'='ra'	ra
-rppa	Protein Expression (MD Anderson RPPA)	'Raw'='ra','Standardized'='sc','Normalized'='nm','Batch Corrected'='bc'	sc

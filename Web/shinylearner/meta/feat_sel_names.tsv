@@ -1,4 +1,0 @@
-selector	name	script
-w_info_gain	Info Gain (Weka)	FeatureSelection/arff/weka__info_gain
-w_svm_rfe	SVM RFE (Weka)	FeatureSelection/arff/weka__svm_rfe
-w_relief_f	Relief F (Weka)	FeatureSelection/arff/weka__relief_f

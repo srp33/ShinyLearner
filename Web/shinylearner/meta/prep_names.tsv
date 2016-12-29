@@ -1,5 +1,0 @@
-prep	name
-ra	Raw (minimal preprocessing)
-sc	Standardized (sklearn Scale)
-nm	Normalized (sklearn Normalize)
-bc	Batch Corrected (R ComBat)

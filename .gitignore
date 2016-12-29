@@ -6,7 +6,7 @@ Icon?
 Archive
 TestFiles
 release
-*.txt
+./*.txt
 *.pdf
 shinylearner.jar
 Docker_and_Rendering
