@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -euo pipefail
+
+tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
+
+cleanup $tmpDir
+mkdir -p $tmpDir
+
+trap "cleanup $tmpDir" INT TERM EXIT
+
+errFile=/dev/null
+if [[ "$debug" == "true" ]]
+then
+  errFile=$(mktemp $tmpDir/XXXXXXXXX)
+fi
+
+if [[ "$validationType" == "montecarlo" ]]
+then
+  iterationOutputHeader=Iteration
+else
+  iterationOutputHeader=Fold
+fi
+
+mem=$(getMemAvailable)

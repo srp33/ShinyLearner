@@ -1,0 +1,94 @@
+#!/bin/bash
+
+set -euo pipefail
+
+#################################################
+# Functions used across multiple scripts
+#################################################
+
+command_exists () {
+    type "$1" &> /dev/null ;
+}
+
+## Find out amount of memory available
+function getMemAvailable {
+  if command_exists free
+  then
+    mem=$(free -m | tail -n3 | awk '{print $2}' | head -n1)M # Gives total memory in MB (preferred over GB because it always rounds down)
+  else
+    mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
+  fi
+
+  echo "$mem"
+}
+
+function cleanup {
+  tmpDir="$1"
+
+  rm -rf $tmpDir
+}
+
+function printError {
+  debug=$1
+  errFile=$2
+
+  if [[ "$debug" == "true" ]]
+  then
+    cat $errFile
+  fi
+}
+
+body() {
+  # See http://unix.stackexchange.com/questions/11856/sort-but-keep-header-line-at-the-top
+  IFS= read -r header
+  printf '%s\n' "$header"
+  "$@"
+}
+
+function sortFile {
+  inSortFile="$1"
+  sortCriteria="$2"
+  outSortFile="$3"
+
+  if [[ "$inSortFile" == "" ]]
+  then
+    echo No input sort file specified.
+    exit 1
+  fi
+  if [[ "$sortCriteria" == "" ]]
+  then
+    echo No sort criteria specified.
+    exit 1
+  fi
+  if [[ "$outSortFile" == "" ]]
+  then
+    echo No output sort file specified.
+    exit 1
+  fi
+
+  cat "$inSortFile" | body sort $sortCriteria > $outSortFile
+}
+
+function checkParam {
+  value="$1"
+  messageDescription="$2"
+
+  if [ "$value" == "" ]
+  then
+    echo "No value was specified for $messageDescription."
+    exit 1
+  fi
+}
+
+function checkValidationType {
+  validationType="$1"
+
+  if [[ "$validationType" != "montecarlo" ]]
+  then
+    if [[ "$validationType" != "crossvalidation" ]]
+    then
+      echo "Invalid validation type: ${validationType}."
+      exit 1
+    fi
+  fi
+}

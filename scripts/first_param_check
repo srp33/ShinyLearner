@@ -1,3 +1,11 @@
+#!/bin/bash
+
+set -euo pipefail
+
+#################################################
+# Evaluate input parameters
+#################################################
+
 helpMessage="Please see documentation for ShinyLearner here: https://github.com/srp33/ShinyLearner."
 
 if [ $# -eq 0 ]; then
@@ -5,6 +13,8 @@ if [ $# -eq 0 ]; then
 	echo "$helpMessage"
     exit 1
 fi
+
+quickExit=FALSE
 
 for i in "$@"
 do

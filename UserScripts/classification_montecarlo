@@ -1,9 +1,8 @@
 #!/bin/bash
 
-set -o errexit
-set -o pipefail
+set -euo pipefail
 
-source scripts/firstcheck
+source scripts/first_param_check
 
 dataFiles="$1"
 description="$2"

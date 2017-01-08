@@ -1,9 +1,8 @@
 #!/bin/bash
 
-set -o errexit
-set -o pipefail
+set -euo pipefail
 
-source scripts/firstcheck
+source scripts/first_param_check
 
 dataFiles="$1"
 description="$2"
@@ -18,11 +17,11 @@ outLogFile="${10}"
 
 tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 
-function cleanup {
+function cleanup_cv {
   rm -rf $tmpDir
 }
 
-cleanup
+cleanup_cv
 
 if [[ "$outLogFile" == "" ]]
 then
@@ -72,12 +71,12 @@ echo
 echo "Combining results across cross-validation iterations..." | tee -a "$outLogFile"
 python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outbench" "$tmpDir/outpreds,$tmpDir/outmetrics,$tmpDir/outbenchmark" 2>&1 | tee -a "$outLogFile"
 
-source scripts/sort_function
+source scripts/shared_functions
 sortCriteria="-k1,1 -k2,2n -k3,3n -k4"
 sortFile $tmpDir/outpreds "$sortCriteria" "$outPredictionsFile"
 sortFile $tmpDir/outmetrics "$sortCriteria" "$outMetricsFile"
 sortFile $tmpDir/outbenchmark "$sortCriteria" "$outBenchmarkFile"
 
-cleanup
+cleanup_cv
 
 source scripts/success_message

@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+source scripts/shared_functions
+
 dataFiles="$1"
 description="$2"
 outerNumIterations="$3"
@@ -22,17 +24,6 @@ outNestedClassificationBenchmarkFile="${17}"
 validationType="${18}"
 randomSeed="${19}"
 
-function checkParam {
-  value="$1"
-  messageDescription="$2"
-
-  if [ "$value" == "" ]
-  then
-    echo "No value was specified for $messageDescription."
-    exit 1
-  fi
-}
-
 checkParam "$dataFiles" "data files"
 checkParam "$description" "description"
 checkParam "$outerNumIterations" "outer number of iterations"
@@ -42,21 +33,11 @@ checkParam "$fsAlgos" "feature selection algorithm(s)"
 checkParam "$numFeaturesOptions" "number of features options"
 checkParam "$classifAlgos" "classification algorithm(s)"
 checkParam "$validationType" "validation type"
+checkValidationType "$validationType"
 
-if [[ "$validationType" != "montecarlo" ]]
-then
-  if [[ "$validationType" != "crossvalidation" ]]
-  then
-    echo "Invalid validation type: ${validationType}."
-    exit 1
-  fi
-fi
-
-source scripts/helper
-source scripts/sort_function
+source scripts/setup
 
 analysisDataFile=$tmpDir/data.gz
-mem=$(getMemAvailable)
 
 echo "Preparing for analysis..."
 java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
@@ -92,7 +73,7 @@ python scripts/ReformatInnerResults_FeatureSelection.py $tmpDir/im $tmpDir/ibrf
 
 echo "Identifying best combination of algorithms and number of features for inner iterations..."
 Rscript --vanilla scripts/SelectBestInnerResults_FeatureSelection.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ofse $tmpDir/onfe $tmpDir/ocle 2> $errFile
-printError
+printError $debug $errFile
 
 echo "Selecting features on outer iterations"
 java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE=$analysisDataFile EXPERIMENT_FILE=$tmpDir/ofse DEBUG=$debug OUTPUT_FEATURES_FILE_PATH=$tmpDir/of TEMP_DIR=$tmpDir 2> /dev/null
@@ -160,7 +141,7 @@ copyInnerFileB $tmpDir/icb "-k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6" "$outNestedCla
 if [[ "$outNestedSummarizedSelectedFeaturesFile" != "" ]]
 then
   Rscript --vanilla scripts/BordaCountFeatures.R "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile
-  printError
+  printError $debug $errFile
 fi
 
-cleanup
+cleanup $tmpDir

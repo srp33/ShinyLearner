@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+source scripts/shared_functions
+
 dataFiles="$1"
 description="$2"
 numIterations="$3"
@@ -13,42 +15,21 @@ outBenchmarkFile="$8"
 validationType="$9"
 randomSeed="${10}"
 
-function checkParam {
-  value="$1"
-  messageDescription="$2"
-
-  if [ "$value" == "" ]
-  then
-    echo "No value was specified for $messageDescription."
-    exit 1
-  fi
-}
-
 checkParam "$dataFiles" "data files"
 checkParam "$description" "description"
 checkParam "$numIterations" "number of iterations"
 checkParam "$debug" "debug"
 checkParam "$fsAlgos" "feature selection algorithm(s)"
 checkParam "$validationType" "validation type"
+checkValidationType "$validationType"
 
-if [[ "$validationType" != "montecarlo" ]]
-then
-  if [[ "$validationType" != "crossvalidation" ]]
-  then
-    echo "Invalid validation type: ${validationType}."
-    exit 1
-  fi
-fi
-
-source scripts/helper
-source scripts/sort_function
+source scripts/setup
 
 analysisDataFile=$tmpDir/data.gz
 idFile=$tmpDir/id
 classFile=$tmpDir/cl
 trainTestFile=$tmpDir/tt
 trainTestFile2=$tmpDir/tt2
-mem=$(getMemAvailable)
 
 echo "Preparing for analysis..."
 java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
@@ -82,7 +63,7 @@ if [[ "$outSummarizedFeaturesFile" != "" ]]
 then
   echo "Summarizing feature ranks..."
   Rscript --vanilla scripts/BordaCountFeatures.R "$outFeaturesFile" "$outSummarizedFeaturesFile" 2> $errFile
-  printError
+  printError $debug $errFile
 fi
 
-cleanup
+cleanup $tmpDir

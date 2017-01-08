@@ -1,9 +1,8 @@
 #!/bin/bash
 
-set -o errexit
-set -o pipefail
+set -euo pipefail
 
-source scripts/firstcheck
+source scripts/first_param_check
 
 dataFiles="$1"
 description="$2"
@@ -27,11 +26,11 @@ outLogFile="${19}"
 
 tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 
-function cleanup {
+function cleanup_cv {
   rm -rf $tmpDir
 }
 
-cleanup
+cleanup_cv
 
 if [[ "$outLogFile" == "" ]]
 then
@@ -111,7 +110,7 @@ echo
 echo "Combining results across cross-validation iterations..." | tee -a "$outLogFile"
 python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfs,$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outfsnested,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchfsnested,$tmpDir/*/outbenchclnested" "$tmpDir/outfs,$tmpDir/outpreds,$tmpDir/outmetrics,$tmpDir/outfsnested,$tmpDir/outpredsnested,$tmpDir/outmetricsnested,$tmpDir/outbenchfsnested,$tmpDir/outbenchclnested" 2>&1 | tee -a "$outLogFile"
 
-source scripts/sort_function
+source scripts/shared_functions
 sortFile $tmpDir/outfs "-k1,1 -k2,2n -k3,3n -k4" "$outSelectedFeaturesFile"
 sortFile $tmpDir/outpreds "-k1,1 -k2,2n -k3,3n -k4" "$outPredictionsFile"
 sortFile $tmpDir/outmetrics "-k1,1 -k2,2n -k3,3n -k4" "$outMetricsFile"
@@ -122,10 +121,14 @@ sortFile $tmpDir/outbenchfsnested "-k1,1 -k2,2n -k3,3n -k4,4n -k5" "$outNestedFe
 sortFile $tmpDir/outbenchclnested "-k1,1 -k2,2n -k3,3n -k4,4n -k5,4n -k5 -k6,6n -k7" "$outNestedClassificationBenchmarkFile"
 
 echo "Summarizing feature ranks..."
-source scripts/helper
+errFile=/dev/null
+if [[ "$debug" == "true" ]]
+then
+  errFile=$(mktemp $tmpDir/XXXXXXXXX)
+fi
 Rscript --vanilla scripts/BordaCountFeatures.R "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile | tee -a "$outLogFile"
-printError
+printError $debug $errFile
 
-cleanup
+cleanup_cv
 
 source scripts/success_message
