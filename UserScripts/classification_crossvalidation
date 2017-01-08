@@ -2,6 +2,7 @@
 
 set -euo pipefail
 
+source scripts/shared_functions
 source scripts/first_param_check
 
 dataFiles="$1"
@@ -71,7 +72,6 @@ echo
 echo "Combining results across cross-validation iterations..." | tee -a "$outLogFile"
 python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outbench" "$tmpDir/outpreds,$tmpDir/outmetrics,$tmpDir/outbenchmark" 2>&1 | tee -a "$outLogFile"
 
-source scripts/shared_functions
 sortCriteria="-k1,1 -k2,2n -k3,3n -k4"
 sortFile $tmpDir/outpreds "$sortCriteria" "$outPredictionsFile"
 sortFile $tmpDir/outmetrics "$sortCriteria" "$outMetricsFile"

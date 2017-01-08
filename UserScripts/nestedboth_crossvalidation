@@ -2,6 +2,7 @@
 
 set -euo pipefail
 
+source scripts/shared_functions
 source scripts/first_param_check
 
 dataFiles="$1"
@@ -110,7 +111,6 @@ echo
 echo "Combining results across cross-validation iterations..." | tee -a "$outLogFile"
 python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfs,$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outfsnested,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchfsnested,$tmpDir/*/outbenchclnested" "$tmpDir/outfs,$tmpDir/outpreds,$tmpDir/outmetrics,$tmpDir/outfsnested,$tmpDir/outpredsnested,$tmpDir/outmetricsnested,$tmpDir/outbenchfsnested,$tmpDir/outbenchclnested" 2>&1 | tee -a "$outLogFile"
 
-source scripts/shared_functions
 sortFile $tmpDir/outfs "-k1,1 -k2,2n -k3,3n -k4" "$outSelectedFeaturesFile"
 sortFile $tmpDir/outpreds "-k1,1 -k2,2n -k3,3n -k4" "$outPredictionsFile"
 sortFile $tmpDir/outmetrics "-k1,1 -k2,2n -k3,3n -k4" "$outMetricsFile"
