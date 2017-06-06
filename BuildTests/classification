@@ -2,19 +2,19 @@
 
 set -euo pipefail
 
-description=$1
-validationType=$2
-classifAlgo="$3"
-inputDir=$4
-outputDir=$5
-debug=$6
-numOuterIterations=$7
-numInnerIterations=$8
-outLogFile=$9
+analysisType="$1"
+description="$2"
+validationType="$3"
+iterationsFolds="$4"
+classifAlgo="$5"
+inputDir="$6"
+outputDir="$7"
+verbose="$8"
+logFile="$9"
 
-source $(dirname $0)/helper
+dataFile="$inputDir/$description.tsv.gz"
+specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
-outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
+UserScripts/classification_${validationType} --data "$dataFile" --description "$description" $iterationsFolds --classif-algo "$classifAlgo" --output-dir $specificOutputDir $verbose
 
-UserScripts/classification_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null $outLogFile
-python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Algorithm 2>&1 | tee -a $outLogFile
+python BuildTests/CheckAccuracy.py $analysisType $validationType $description "$classifAlgo" ${specificOutputDir}/Metrics.tsv Algorithm 2>&1 | tee -a $logFile

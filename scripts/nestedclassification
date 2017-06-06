@@ -18,20 +18,6 @@ outNestedBenchmarkFile="${11}"
 validationType="${12}"
 randomSeed="${13}"
 
-checkParam "$dataFiles" "data files"
-checkParam "$description" "description"
-checkParam "$outerNumIterations" "outer number of iterations"
-checkParam "$innerNumIterations" "inner number of iterations"
-checkParam "$debug" "debug"
-checkParam "$classifAlgos" "classification algorithm(s)"
-#checkParam "$outPredictionsFile" "output predictions file"
-#checkParam "$outMetricsFile" "output metrics file"
-#checkParam "$outNestedPredictionsFile" "output nested predictions file"
-#checkParam "$outNestedMetricsFile" "output nested metrics file"
-#checkParam "$outNestedBenchmarkFile" "output nested benchmark file"
-checkParam "$validationType" "validation type"
-checkValidationType "$validationType"
-
 source scripts/setup
 
 analysisDataFile=$tmpDir/data.gz

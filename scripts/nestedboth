@@ -24,17 +24,6 @@ outNestedClassificationBenchmarkFile="${17}"
 validationType="${18}"
 randomSeed="${19}"
 
-checkParam "$dataFiles" "data files"
-checkParam "$description" "description"
-checkParam "$outerNumIterations" "outer number of iterations"
-checkParam "$innerNumIterations" "inner number of iterations"
-checkParam "$debug" "debug"
-checkParam "$fsAlgos" "feature selection algorithm(s)"
-checkParam "$numFeaturesOptions" "number of features options"
-checkParam "$classifAlgos" "classification algorithm(s)"
-checkParam "$validationType" "validation type"
-checkValidationType "$validationType"
-
 source scripts/setup
 
 analysisDataFile=$tmpDir/data.gz

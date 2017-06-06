@@ -69,26 +69,45 @@ function sortFile {
   cat "$inSortFile" | body sort $sortCriteria > $outSortFile
 }
 
-function checkParam {
+function checkParamParseOutput {
   value="$1"
-  messageDescription="$2"
 
-  if [ "$value" == "" ]
+  if [[ "$value" == ERROR* ]]
   then
-    echo "No value was specified for $messageDescription."
+    echo "$value"
     exit 1
   fi
 }
 
-function checkValidationType {
-  validationType="$1"
-
-  if [[ "$validationType" != "montecarlo" ]]
+function convertVerboseToDebug {
+  if [[ "$1" == "--verbose" ]]
   then
-    if [[ "$validationType" != "crossvalidation" ]]
-    then
-      echo "Invalid validation type: ${validationType}."
-      exit 1
-    fi
+    echo true
+  else
+    echo false
   fi
 }
+
+#function checkParam {
+#  value="$1"
+#  messageDescription="$2"
+#
+#  if [ "$value" == "" ]
+#  then
+#    echo "No value was specified for $messageDescription."
+#    exit 1
+#  fi
+#}
+
+#function checkValidationType {
+#  validationType="$1"
+#
+#  if [[ "$validationType" != "montecarlo" ]]
+#  then
+#    if [[ "$validationType" != "crossvalidation" ]]
+#    then
+#      echo "Invalid validation type: ${validationType}."
+#      exit 1
+#    fi
+#  fi
+#}

@@ -72,7 +72,11 @@ public class DataInstanceCollection
 		String value = _data[instanceIndex][dataPointIndex];
 
 		if (value == null)
+		{
+			Log.Debug(InstanceIDs);
+			Log.Debug(DataPointNames);
 			Log.ExceptionFatal("No data value has been stored in internal data structure at indices " + instanceIndex + ", " + dataPointIndex);
+		}
 
 		return value;
 	}

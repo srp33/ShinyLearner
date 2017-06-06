@@ -5,24 +5,31 @@ set -euo pipefail
 source scripts/shared_functions
 source scripts/first_param_check
 
-dataFiles="$1"
-description="$2"
-outerNumIterations="$3"
-innerNumIterations="$4"
-debug="$5"
-classifAlgos="$6"
-outPredictionsFile="$7"
-outMetricsFile="$8"
-outNestedPredictionsFile="${9}"
-outNestedMetricsFile="${10}"
-outNestedBenchmarkFile="${11}"
-outLogFile="${12}"
+dataFiles="$(python scripts/ParseArgs.py --data TRUE TRUE $@)"
+description="$(python scripts/ParseArgs.py --description TRUE TRUE $@)"
+outerNumIterations="$(python scripts/ParseArgs.py --outer-iterations TRUE TRUE $@)"
+innerNumIterations="$(python scripts/ParseArgs.py --inner-iterations TRUE TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE FALSE $@)"
+classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE TRUE "$@")"
+outputDir="$(python scripts/ParseArgs.py --output-dir TRUE TRUE $@)"
 
-if [[ "$outLogFile" == "" ]]
-then
-  echo An output log file must be specified.
-  exit 1
-fi
+checkParamParseOutput "$dataFiles"
+checkParamParseOutput "$description"
+checkParamParseOutput "$outerNumIterations"
+checkParamParseOutput "$innerNumIterations"
+checkParamParseOutput "$verbose"
+checkParamParseOutput "$classifAlgos"
+checkParamParseOutput "$outputDir"
+
+debug="$(convertVerboseToDebug "$verbose")"
+outPredictionsFile="$outputDir/Predictions.tsv"
+outMetricsFile="$outputDir/Metrics.tsv"
+outNestedPredictionsFile="$outputDir/Nested_Predictions.tsv"
+outNestedMetricsFile="$outputDir/Nested_Metrics.tsv"
+outNestedBenchmarkFile="$outputDir/Nested_ElapsedTime.tsv"
+outLogFile="$outputDir/Log.txt"
+
+mkdir -p $outputDir
 
 source scripts/print_args
 

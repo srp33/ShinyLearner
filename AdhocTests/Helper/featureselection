@@ -14,7 +14,7 @@ fi
 
 currentDir=$(pwd)
 testDir=/tmp/ML_Flex_Lite_Test_FS
-outputDir=$currentDir/TestOutput/featureselection
+outputDir=$currentDir/TestOutput/featureselection/$validationType
 
 rm -rf $testDir
 mkdir -p $testDir
@@ -25,24 +25,20 @@ cp -r AlgorithmScripts $testDir/
 cp -r UserScripts $testDir/
 cp -r VERSION $testDir/
 
+rm -f $outputDir
 mkdir -p $outputDir
-rm -f $outputDir/${validationType}*
 
 cd $testDir
 
 validation=StrongSignal_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
 fsAlgo=AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default
-#debug=true
-debug=false
-outFeaturesFile=$outputDir/${validationType}_${validation}_SelectedFeatures.tsv
-outSummarizedFeaturesFile=$outputDir/${validationType}_${validation}_SelectedFeatures_Summarized.tsv
-outBenchmarkFile=$outputDir/${validationType}_${validation}_Benchmark.tsv
-outLogFile=$outputDir/${validationType}_${validation}.log
+#verbose="  --verbose  "
+verbose=""
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/featureselection_${validationType} "$dataFile" "$validation" 2 $debug "$fsAlgo" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile" "$outLogFile"
+  UserScripts/featureselection_${validationType} --data "$dataFile" --description "$validation" --iterations 2 $verbose --fs-algo "$fsAlgo" --output-dir "$outputDir"
 else
-  UserScripts/featureselection_${validationType} "$dataFile" "$validation" 2 2 $debug "$fsAlgo" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile" "$outLogFile"
+  UserScripts/featureselection_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --folds 2 $verbose --fs-algo "$fsAlgo" --output-dir "$outputDir"
 fi

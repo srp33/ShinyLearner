@@ -5,25 +5,43 @@ set -euo pipefail
 source scripts/shared_functions
 source scripts/first_param_check
 
-dataFiles="$1"
-description="$2"
-numIterations="$3"
-outerNumFolds="$4"
-innerNumFolds="$5"
-debug="$6"
-fsAlgos="$7"
-numFeaturesOptions="$8"
-classifAlgos="$9"
-outSelectedFeaturesFile="${10}"
-outPredictionsFile="${11}"
-outMetricsFile="${12}"
-outNestedSelectedFeaturesFile="${13}"
-outNestedSummarizedSelectedFeaturesFile="${14}"
-outNestedPredictionsFile="${15}"
-outNestedMetricsFile="${16}"
-outNestedFeatureSelectionBenchmarkFile="${17}"
-outNestedClassificationBenchmarkFile="${18}"
-outLogFile="${19}"
+dataFiles="$(python scripts/ParseArgs.py --data TRUE TRUE $@)"
+description="$(python scripts/ParseArgs.py --description TRUE TRUE $@)"
+numIterations="$(python scripts/ParseArgs.py --iterations TRUE TRUE $@)"
+outerNumFolds="$(python scripts/ParseArgs.py --outer-folds TRUE TRUE $@)"
+innerNumFolds="$(python scripts/ParseArgs.py --inner-folds TRUE TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE FALSE $@)"
+classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE TRUE "$@")"
+numFeaturesOptions="$(python scripts/ParseArgs.py --num-features TRUE TRUE "$@")"
+fsAlgos="$(python scripts/ParseArgs.py --fs-algo TRUE TRUE "$@")"
+outputDir="$(python scripts/ParseArgs.py --output-dir TRUE TRUE $@)"
+
+checkParamParseOutput "$dataFiles"
+checkParamParseOutput "$description"
+checkParamParseOutput "$numIterations"
+checkParamParseOutput "$outerNumFolds"
+checkParamParseOutput "$innerNumFolds"
+checkParamParseOutput "$verbose"
+checkParamParseOutput "$classifAlgos"
+checkParamParseOutput "$numFeaturesOptions"
+checkParamParseOutput "$fsAlgos"
+checkParamParseOutput "$outputDir"
+
+debug="$(convertVerboseToDebug "$verbose")"
+outSelectedFeaturesFile="$outputDir/SelectedFeatures.tsv"
+outPredictionsFile="$outputDir/Predictions.tsv"
+outMetricsFile="$outputDir/Metrics.tsv"
+outNestedSelectedFeaturesFile="$outputDir/NestedSelectedFeatures.tsv"
+outNestedSummarizedSelectedFeaturesFile="$outputDir/NestedSelectedFeatures_Summarized.tsv"
+outNestedPredictionsFile="$outputDir/Nested_Predictions.tsv"
+outNestedMetricsFile="$outputDir/Nested_Metrics.tsv"
+outNestedFeatureSelectionBenchmarkFile="$outputDir/Nested_FeatureSelection_ElapsedTime.tsv"
+outNestedClassificationBenchmarkFile="$outputDir/Nested_Classification_ElapsedTime.tsv"
+outLogFile="$outputDir/Log.txt"
+
+mkdir -p $outputDir
+
+source scripts/print_args
 
 tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 
@@ -38,8 +56,6 @@ then
   echo An output log file must be specified.
   exit 1
 fi
-
-source scripts/print_args
 
 for iteration in $(seq 1 $numIterations)
 do

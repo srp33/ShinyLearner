@@ -1,0 +1,6 @@
+Description	Outer_Iteration	Inner_Iteration	Algorithm	ElapsedSeconds
+My_Interesting_Analysis	1	1	AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default	0.589460032
+My_Interesting_Analysis	1	2	AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default	0.73839136
+My_Interesting_Analysis	1	3	AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default	0.576809856
+My_Interesting_Analysis	1	4	AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default	0.570307392
+My_Interesting_Analysis	1	5	AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default	0.591006976

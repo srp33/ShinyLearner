@@ -10,6 +10,20 @@ suppressPackageStartupMessages(library(methods))
 trainingData <- read.table(trainingFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, row.names = 1, check.names=FALSE, quote=NULL)
 testData <- read.table(testFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, row.names = 1, check.names=FALSE, quote=NULL)
 
+# Make sure factor levels overlap between the training and test data
+##combinedData <- rbind(trainingData, testData)
+
+#for (i in 1:(ncol(trainingData)-1))
+#{
+#  if (class(trainingData[,i]) == "factor")
+#  {
+#    overlappingLevels <- unique(c(levels(trainingData[,i]), levels(testData[,i])))
+#
+#    trainingData[,i] <- factor(trainingData[,i], levels=overlappingLevels)
+#    testData[,i] <- factor(testData[,i], levels=overlappingLevels)
+#  }
+#}
+
 task <- makeClassifTask(data = trainingData, target = "Class")
 
 learn <- function(learner)
@@ -18,7 +32,10 @@ learn <- function(learner)
   set.seed(123, "L'Ecuyer")
   mod <- train(learner, task)
 
+#print(head(trainingData))
+#print(head(testData))
   task.pred <- predict(mod, newdata = testData)
+#stop("got here")
   #classtypes <- as.vector(task.pred$task.desc$class.levels)
 
   p1 <- getPredictionProbabilities(task.pred, classOptions)

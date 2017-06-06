@@ -14,7 +14,7 @@ fi
 
 currentDir=$(pwd)
 testDir=/tmp/ML_Flex_Lite_Test_NestedCL
-outputDir=$currentDir/TestOutput/nestedclassification
+outputDir=$currentDir/TestOutput/nestedclassification/$validationType
 
 rm -rf $testDir
 mkdir -p $testDir
@@ -25,25 +25,25 @@ cp -r AlgorithmScripts $testDir/
 cp -r UserScripts $testDir/
 cp -r VERSION $testDir/
 
+rm -f $outputDir
 mkdir -p $outputDir
-rm -f $outputDir/${validationType}*
 
 cd $testDir
 
 validation=StrongSignal_Both
-#dataFile=$currentDir/Validation/${validation}.tsv.gz
+dataFile=$currentDir/Validation/${validation}.tsv.gz
 #dataFile="$currentDir/debug_data/*.tsv.gz"
-dataFile="$currentDir/TestFiles/*.tsv.gz"
+#dataFile="$currentDir/TestFiles/*.tsv.gz"
 #dataFile="$currentDir/debug_data/Archive/mrna-sc_stad.tsv.gz,$currentDir/debug_data/stad_cv_surv1_stad.tsv.gz"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
 classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/knn/default"
-#debug=true
-debug=false
+#verbose="  --verbose  "
+verbose=""
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/nestedclassification_${validationType} "$dataFile" $validation 2 2 $debug "$classifAlgo" $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Nested.tsv $outputDir/${validationType}_${validation}.log
+  UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --outer-iterations 2 --inner-iterations 2 $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir"
 else
-  UserScripts/nestedclassification_${validationType} "$dataFile" $validation 2 2 2 $debug "$classifAlgo" $outputDir/${validationType}_${validation}_Predictions.tsv $outputDir/${validationType}_${validation}_Metrics.tsv $outputDir/${validationType}_${validation}_Predictions_Nested.tsv $outputDir/${validationType}_${validation}_Metrics_Nested.tsv $outputDir/${validationType}_${validation}_Benchmark_Nested.tsv $outputDir/${validationType}_${validation}.log
+  UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --iterations 2 --inner-folds 2 --outer-folds 2 $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir"
 fi

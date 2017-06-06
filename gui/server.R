@@ -63,22 +63,19 @@ shinyServer(function(input, output, session) {
   short_names <- function(x) {
     return(paste(strsplit(x, '/')[[1]][c(4,5,6)], collapse='/'))
   }
+  # Get Classifier and Features Selector options from files system and sort by name
   classifAlgosOptions <-  list.files(path='./ShinyLearner/AlgorithmScripts/Classification', recursive=TRUE)
   classifAlgosOptions <- lapply(classifAlgosOptions, prefixClassif)
   names(classifAlgosOptions) <- lapply(classifAlgosOptions, short_names)
+  classifAlgosOptions <- classifAlgosOptions[order(unlist(names(classifAlgosOptions)))]
   fsAlgosOptions <-  list.files(path='./ShinyLearner/AlgorithmScripts/FeatureSelection', recursive=TRUE)
   fsAlgosOptions <- lapply(fsAlgosOptions, prefixFS)
   names(fsAlgosOptions) <- lapply(fsAlgosOptions, short_names)
-
-  #classifAlgosOptions <- list('AlgorithmScripts/Classification/tsv/sklearn/bagging/default','AlgorithmScripts/Classification/tsv/sklearn/extra_trees/default','AlgorithmScripts/Classification/tsv/sklearn/knn/default','AlgorithmScripts/Classification/tsv/sklearn/lda/default','AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default','AlgorithmScripts/Classification/tsv/sklearn/random_forest/default','AlgorithmScripts/Classification/tsv/sklearn/sgd/default','AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default','AlgorithmScripts/Classification/tsv/sklearn/svm_poly/default','AlgorithmScripts/Classification/tsv/sklearn/svm_rbf/default','AlgorithmScripts/Classification/tsv/mlr/LiblineaRL1LogReg/default','AlgorithmScripts/Classification/tsv/mlr/avNNet/default','AlgorithmScripts/Classification/tsv/mlr/boosting/default','AlgorithmScripts/Classification/tsv/mlr/ctree/default','AlgorithmScripts/Classification/tsv/mlr/cvglmnet/default','AlgorithmScripts/Classification/tsv/mlr/glmnet/default','AlgorithmScripts/Classification/tsv/mlr/kknn/default','AlgorithmScripts/Classification/tsv/mlr/ksvm/default','AlgorithmScripts/Classification/tsv/mlr/mlp/default','AlgorithmScripts/Classification/tsv/mlr/multinom/default','AlgorithmScripts/Classification/tsv/mlr/naiveBayes/default','AlgorithmScripts/Classification/tsv/mlr/nnet/default','AlgorithmScripts/Classification/tsv/mlr/randomForestSRCSyn/default','AlgorithmScripts/Classification/tsv/mlr/ranger/default','AlgorithmScripts/Classification/tsv/mlr/rpart/default','AlgorithmScripts/Classification/tsv/mlr/sda/default','AlgorithmScripts/Classification/tsv/mlr/svm/default','AlgorithmScripts/Classification/tsv/mlr/xgboost/default','AlgorithmScripts/Classification/arff/weka/Bagging/default','AlgorithmScripts/Classification/arff/weka/BayesNet/default','AlgorithmScripts/Classification/arff/weka/DecisionTable/default','AlgorithmScripts/Classification/arff/weka/HoeffdingTable/default','AlgorithmScripts/Classification/arff/weka/HyperPipes/default','AlgorithmScripts/Classification/arff/weka/J48/default','AlgorithmScripts/Classification/arff/weka/JRip/default','AlgorithmScripts/Classification/arff/weka/LibLINEAR/default','AlgorithmScripts/Classification/arff/weka/MultilayerPerceptron/default','AlgorithmScripts/Classification/arff/weka/NaiveBayes/default','AlgorithmScripts/Classification/arff/weka/OneR/default','AlgorithmScripts/Classification/arff/weka/RBFNetwork/default','AlgorithmScripts/Classification/arff/weka/REPTree/default','AlgorithmScripts/Classification/arff/weka/RandomForest/default','AlgorithmScripts/Classification/arff/weka/RandomTree/default','AlgorithmScripts/Classification/arff/weka/SMO/default','AlgorithmScripts/Classification/arff/weka/SVM_Linear/default','AlgorithmScripts/Classification/arff/weka/SVM_Poly/default','AlgorithmScripts/Classification/arff/weka/SVM_RBF/default','AlgorithmScripts/Classification/arff/weka/SimpleLogistic/default','AlgorithmScripts/Classification/arff/weka/VFI/default','AlgorithmScripts/Classification/arff/weka/ZeroR/default')
-  #fsAlgosOptions <- list('AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default','AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default','AlgorithmScripts/FeatureSelection/tsv/sklearn/random_forest_rfe/default','AlgorithmScripts/FeatureSelection/tsv/sklearn/svm_rfe/default','AlgorithmScripts/FeatureSelection/tsv/mlr/kruskal.test/default','AlgorithmScripts/FeatureSelection/tsv/mlr/rf.importance/default','AlgorithmScripts/FeatureSelection/tsv/mlr/rf.min.depth/default','AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default','AlgorithmScripts/FeatureSelection/arff/weka/GainRatio/default','AlgorithmScripts/FeatureSelection/arff/weka/InfoGain/default','AlgorithmScripts/FeatureSelection/arff/weka/OneR/default','AlgorithmScripts/FeatureSelection/arff/weka/ReliefF/default','AlgorithmScripts/FeatureSelection/arff/weka/SVMRFE/default','AlgorithmScripts/FeatureSelection/arff/weka/SymetricalUncertainty/default')
+  fsAlgosOptions <- fsAlgosOptions[order(unlist(names(fsAlgosOptions)))]
 
   # Initializations    
   shiny_script <- ''
   
-  # (#) Testing File Upload
-  #output$
-
   # (1) Subpage
   ## Experiment Description
   output$exp_desc_textbox_ui <-renderUI({
@@ -352,8 +349,18 @@ shinyServer(function(input, output, session) {
     hostInputFileName <- strsplit(hostInputFileName, ',')
     
 	## Replace '\' with '/' and parse directories/filenames
-	hostInputDir <- lapply(hostInputDir, FUN = function(x) dirname(gsub('\\\\', '/', x)))
-	hostInputFileName <- lapply(hostInputFileName, FUN = function(x) basename(gsub('\\\\', '/', x)))
+	## Check for '~' and do not allow dirname/basename to transform '~' to the home directory
+	## Check for '.' when used as a file extension.
+	hostInputDir <- lapply(hostInputDir, FUN = function(x) gsub('~', 'TILDE_ESCAPE', x))
+	hostInputDir <- lapply(hostInputDir, FUN = function(x) gsub('\\.', 'DOT_ESCAPE', x))
+	hostInputFileName <- lapply(hostInputFileName, FUN = function(x) gsub('~', 'TILDE_ESCAPE', x))
+	hostInputFileName <- lapply(hostInputFileName, FUN = function(x) gsub('\\.', 'DOT_ESCAPE', x))
+	hostInputDir <- lapply(hostInputDir, FUN = function(x) gsub('\\.', '', dirname(gsub('\\\\', '/', x))))
+	hostInputFileName <- lapply(hostInputFileName, FUN = function(x) gsub('\\.', '', (basename(gsub('\\\\', '/', x)))))
+	hostInputDir <- lapply(hostInputDir, FUN = function(x) gsub('TILDE_ESCAPE', '~', x))
+	hostInputDir <- lapply(hostInputDir, FUN = function(x) gsub('DOT_ESCAPE', '\\.', x))
+	hostInputFileName <- lapply(hostInputFileName, FUN = function(x) gsub('TILDE_ESCAPE', '~', x))
+	hostInputFileName <- lapply(hostInputFileName, FUN = function(x) gsub('DOT_ESCAPE', '\\.', x))
 	hostOutputDir = gsub('\\\\', '/', hostOutputDir)
 	
 	## Trim trailing '/'
@@ -371,48 +378,53 @@ shinyServer(function(input, output, session) {
 	  lines <- c(lines, 'docker run --rm')
 	  ## Mount Input Dirs
 	  for (i in 1:length(hostInputDir[[1]])){
-	    if (i > 1) {break}
-	    ## do not use os_pwd if root directory
+	    if (i > 1) {break} # currently only support one input direcory
 		if (substr(hostInputDir[[1]][i], 2, 2) == ':') {
+		  ## Root Directory ('C:')
 		  if (nchar(hostInputDir[[1]][i]) == 2) {
 		    lines <- c(lines, paste('-v ', hostInputDir[[1]][i] , '\\',  ':/', containerInputDir, sep=''))
+		  ## Absolute Path
 		  } else {
 			lines <- c(lines, paste('-v ', hostInputDir[[1]][i] , ':/', containerInputDir, sep=''))
 		  }
+		  ## Relative Path
 		} else {
 		  lines <- c(lines, paste('-v ', os_pwd, hostInputDir[[1]][i], ':/', containerInputDir, sep=''))
 		}
 	  }
 	  ## Mount Output Dir
-	  ## do not use os_pwd if root directory
 	  if (substr(hostOutputDir, 2, 2) == ':') {
+	    ## Root Directory ('C:')
 	    if (nchar(hostOutputDir) == 2) {
 	      lines <- c(lines, paste('-v ', hostOutputDir, '\\', ':/', containerOutputDir, sep=''))
+	    ## Absolute Path
 	    } else {
 		  lines <- c(lines, paste('-v ', hostOutputDir,':/', containerOutputDir, sep=''))
 		}
+	  ## Relative Path
 	  } else {
 		lines <- c(lines, paste('-v ', os_pwd, hostOutputDir,':/',containerOutputDir, sep=''))
 	  }
   	  
   	## Linux/Mac  
 	} else if (os == 'linux/mac') {
-	  lines <- c(lines, 'sudo docker run --rm')
-	  lines <- c(lines, '-v $(pwd)/.:')
+      lines <- c(lines, 'sudo docker run --rm')
 	  ## Mount Input Dirs
 	  for (i in 1:length(hostInputDir[[1]])){
-	    if (i > 1) {break}
-		## do not use os_pwd if root directory
-		if (substr(hostInputDir[[1]][i], 1, 1) == '/') {
+        if (i > 1) {break} # currently only supports one input directory
+		## Absolute Path/Home Path
+		if (substr(hostInputDir[[1]][i], 1, 1) == '/' || substr(hostInputDir[[1]][i], 1, 1) == '~') {
 			lines <- c(lines, paste('-v ', hostInputDir[[1]][i], ':/', containerInputDir, sep=''))
+		## Relative Path
 		} else {
 		  lines <- c(lines, paste('-v ', os_pwd, hostInputDir[[1]][i], ':/', containerInputDir, sep=''))
 		}
 	  }
 	  ## Mount Output Dir
-	  ## do not use os_pwd if root directory
-	  if (substr(hostOutputDir, 1, 1) == '/') {
+	  ## Absolute Path/Home Path
+	  if (substr(hostOutputDir, 1, 1) == '/' || substr(hostOutputDir, 1, 1) == '~') {
 		  lines <- c(lines, paste('-v ', hostOutputDir,':/',containerOutputDir, sep=''))
+	  ## Relative Path
 	  } else {
 		lines <- c(lines, paste('-v ', os_pwd, hostOutputDir,':/',containerOutputDir, sep=''))
 	  }

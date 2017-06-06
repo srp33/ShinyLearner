@@ -13,9 +13,9 @@ outLogFile=$8
 
 source $(dirname $0)/helper
 
-fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default"
+#fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default"
 #fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default"
-#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default"
+fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default"
 #fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/*/default"
 #fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/*/default"
 

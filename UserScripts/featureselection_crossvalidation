@@ -5,16 +5,31 @@ set -euo pipefail
 source scripts/shared_functions
 source scripts/first_param_check
 
-dataFiles="$1"
-description="$2"
-numIterations="$3"
-numFolds="$4"
-debug="$5"
-fsAlgos="$6"
-outFeaturesFile="$7"
-outSummarizedFeaturesFile="$8"
-outBenchmarkFile="$9"
-outLogFile="${10}"
+dataFiles="$(python scripts/ParseArgs.py --data TRUE TRUE $@)"
+description="$(python scripts/ParseArgs.py --description TRUE TRUE $@)"
+numIterations="$(python scripts/ParseArgs.py --iterations TRUE TRUE $@)"
+numFolds="$(python scripts/ParseArgs.py --folds TRUE TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE FALSE $@)"
+fsAlgos="$(python scripts/ParseArgs.py --fs-algo TRUE TRUE "$@")"
+outputDir="$(python scripts/ParseArgs.py --output-dir TRUE TRUE $@)"
+
+checkParamParseOutput "$dataFiles"
+checkParamParseOutput "$description"
+checkParamParseOutput "$numIterations"
+checkParamParseOutput "$numFolds"
+checkParamParseOutput "$verbose"
+checkParamParseOutput "$fsAlgos"
+checkParamParseOutput "$outputDir"
+
+debug="$(convertVerboseToDebug "$verbose")"
+outFeaturesFile="$outputDir/SelectedFeatures.tsv"
+outSummarizedFeaturesFile="$outputDir/SelectedFeatures_Summarized.tsv"
+outBenchmarkFile="$outputDir/ElapsedTime.tsv"
+outLogFile="$outputDir/Log.txt"
+
+mkdir -p $outputDir
+
+source scripts/print_args
 
 tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 
@@ -29,8 +44,6 @@ then
   echo An output log file must be specified.
   exit 1
 fi
-
-source scripts/print_args
 
 for iteration in $(seq 1 $numIterations)
 do

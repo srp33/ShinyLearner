@@ -15,14 +15,6 @@ outBenchmarkFile="$8"
 validationType="${9}"
 randomSeed="${10}"
 
-checkParam "$dataFiles" "data files"
-checkParam "$description" "description"
-checkParam "$numIterations" "number of iterations"
-checkParam "$debug" "debug"
-checkParam "$classifAlgos" "classification algorithm(s)"
-checkParam "$validationType" "validation type"
-checkValidationType "$validationType"
-
 source scripts/setup
 
 analysisDataFile=$tmpDir/data.gz

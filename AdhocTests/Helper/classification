@@ -14,7 +14,7 @@ fi
 
 currentDir=$(pwd)
 testDir=/tmp/ML_Flex_Lite_Test_CL
-outputDir=$currentDir/TestOutput/classification
+outputDir=$currentDir/TestOutput/classification/$validationType
 
 rm -rf $testDir
 mkdir -p $testDir
@@ -25,8 +25,8 @@ cp -r AlgorithmScripts $testDir/
 cp -r UserScripts $testDir/
 cp -r VERSION $testDir/
 
+rm -f $outputDir
 mkdir -p $outputDir
-rm -f $outputDir/${validationType}*
 
 cd $testDir
 
@@ -36,23 +36,19 @@ validation=StrongSignal_Both
 #validation=NoSignal_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default"
-#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default
+classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default
 #classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/*/default
 #classifAlgo=$currentDir/AlgorithmScripts/Classification/arff/weka/*/default
-classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default
+#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/*/default"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/bagging/default"
-#debug=true
-debug=false
-outPredictionsFile=$outputDir/${validationType}_${validation}_Predictions.tsv
-outMetricsFile=$outputDir/${validationType}_${validation}_Metrics.tsv
-outBenchmarkFile=$outputDir/${validationType}_${validation}_Benchmark.tsv
-outLogFile=$outputDir/${validationType}_${validation}.log
+#verbose="  --verbose  "
+verbose=""
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/classification_${validationType} "$dataFile" "$validation" 2 $debug "$classifAlgo" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" "$outLogFile"
+  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations 2 "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir"
 else
-  UserScripts/classification_${validationType} "$dataFile" "$validation" 2 2 $debug "$classifAlgo" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" "$outLogFile"
+  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --folds 2 "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir"
 fi

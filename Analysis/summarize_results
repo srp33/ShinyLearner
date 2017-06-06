@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -euo pipefail
+
+python3 SummarizeResults.py "Results/*/Metrics.tsv" Results/Metrics_Summary.tsv

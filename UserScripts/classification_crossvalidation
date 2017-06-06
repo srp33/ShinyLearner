@@ -5,16 +5,31 @@ set -euo pipefail
 source scripts/shared_functions
 source scripts/first_param_check
 
-dataFiles="$1"
-description="$2"
-numIterations="$3"
-numFolds="$4"
-debug="$5"
-classifAlgos="$6"
-outPredictionsFile="$7"
-outMetricsFile="$8"
-outBenchmarkFile="$9"
-outLogFile="${10}"
+dataFiles="$(python scripts/ParseArgs.py --data TRUE TRUE $@)"
+description="$(python scripts/ParseArgs.py --description TRUE TRUE $@)"
+numIterations="$(python scripts/ParseArgs.py --iterations TRUE TRUE $@)"
+numFolds="$(python scripts/ParseArgs.py --folds TRUE TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE FALSE $@)"
+classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE TRUE "$@")"
+outputDir="$(python scripts/ParseArgs.py --output-dir TRUE TRUE $@)"
+
+checkParamParseOutput "$dataFiles"
+checkParamParseOutput "$description"
+checkParamParseOutput "$numIterations"
+checkParamParseOutput "$numFolds"
+checkParamParseOutput "$verbose"
+checkParamParseOutput "$classifAlgos"
+checkParamParseOutput "$outputDir"
+
+debug="$(convertVerboseToDebug "$verbose")"
+outPredictionsFile="$outputDir/Predictions.tsv"
+outMetricsFile="$outputDir/Metrics.tsv"
+outBenchmarkFile="$outputDir/ElapsedTime.tsv"
+outLogFile="$outputDir/Log.txt"
+
+mkdir -p $outputDir
+
+source scripts/print_args
 
 tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 
@@ -23,14 +38,6 @@ function cleanup_cv {
 }
 
 cleanup_cv
-
-if [[ "$outLogFile" == "" ]]
-then
-  echo An output log file must be specified.
-  exit 1
-fi
-
-source scripts/print_args
 
 for iteration in $(seq 1 $numIterations)
 do

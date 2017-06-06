@@ -5,19 +5,35 @@ set -euo pipefail
 source scripts/shared_functions
 source scripts/first_param_check
 
-dataFiles="$1"
-description="$2"
-numIterations="$3"
-outerNumFolds="$4"
-innerNumFolds="$5"
-debug="$6"
-classifAlgos="$7"
-outPredictionsFile="$8"
-outMetricsFile="$9"
-outNestedPredictionsFile="${10}"
-outNestedMetricsFile="${11}"
-outNestedBenchmarkFile="${12}"
-outLogFile="${13}"
+dataFiles="$(python scripts/ParseArgs.py --data TRUE TRUE $@)"
+description="$(python scripts/ParseArgs.py --description TRUE TRUE $@)"
+numIterations="$(python scripts/ParseArgs.py --iterations TRUE TRUE $@)"
+outerNumFolds="$(python scripts/ParseArgs.py --outer-folds TRUE TRUE $@)"
+innerNumFolds="$(python scripts/ParseArgs.py --inner-folds TRUE TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE FALSE $@)"
+classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE TRUE "$@")"
+outputDir="$(python scripts/ParseArgs.py --output-dir TRUE TRUE $@)"
+
+checkParamParseOutput "$dataFiles"
+checkParamParseOutput "$description"
+checkParamParseOutput "$numIterations"
+checkParamParseOutput "$outerNumFolds"
+checkParamParseOutput "$innerNumFolds"
+checkParamParseOutput "$verbose"
+checkParamParseOutput "$classifAlgos"
+checkParamParseOutput "$outputDir"
+
+debug="$(convertVerboseToDebug "$verbose")"
+outPredictionsFile="$outputDir/Predictions.tsv"
+outMetricsFile="$outputDir/Metrics.tsv"
+outNestedPredictionsFile="$outputDir/Nested_Predictions.tsv"
+outNestedMetricsFile="$outputDir/Nested_Metrics.tsv"
+outNestedBenchmarkFile="$outputDir/Nested_ElapsedTime.tsv"
+outLogFile="$outputDir/Log.txt"
+
+mkdir -p $outputDir
+
+source scripts/print_args
 
 tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 
@@ -26,14 +42,6 @@ function cleanup_cv {
 }
 
 cleanup_cv
-
-if [[ "$outLogFile" == "" ]]
-then
-  echo An output log file must be specified.
-  exit 1
-fi
-
-source scripts/print_args
 
 for iteration in $(seq 1 $numIterations)
 do

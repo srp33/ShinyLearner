@@ -5,21 +5,27 @@ set -euo pipefail
 source scripts/shared_functions
 source scripts/first_param_check
 
-dataFiles="$1"
-description="$2"
-numIterations="$3"
-debug="$4"
-fsAlgos="$5"
-outFeaturesFile="$6"
-outSummarizedFeaturesFile="$7"
-outBenchmarkFile="$8"
-outLogFile="$9"
+dataFiles="$(python scripts/ParseArgs.py --data TRUE TRUE $@)"
+description="$(python scripts/ParseArgs.py --description TRUE TRUE $@)"
+numIterations="$(python scripts/ParseArgs.py --iterations TRUE TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE FALSE $@)"
+fsAlgos="$(python scripts/ParseArgs.py --fs-algo TRUE TRUE "$@")"
+outputDir="$(python scripts/ParseArgs.py --output-dir TRUE TRUE $@)"
 
-if [[ "$outLogFile" == "" ]]
-then
-  echo An output log file must be specified.
-  exit 1
-fi
+checkParamParseOutput "$dataFiles"
+checkParamParseOutput "$description"
+checkParamParseOutput "$numIterations"
+checkParamParseOutput "$verbose"
+checkParamParseOutput "$fsAlgos"
+checkParamParseOutput "$outputDir"
+
+debug="$(convertVerboseToDebug "$verbose")"
+outFeaturesFile="$outputDir/SelectedFeatures.tsv"
+outSummarizedFeaturesFile="$outputDir/SelectedFeatures_Summarized.tsv"
+outBenchmarkFile="$outputDir/ElapsedTime.tsv"
+outLogFile="$outputDir/Log.txt"
+
+mkdir -p $outputDir
 
 source scripts/print_args
 
