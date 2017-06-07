@@ -4,24 +4,20 @@ set -euo pipefail
 
 inputDir=$1
 outputDir=$2
-debug=$3
-outLogFile=$4
+verbose=$3
+logFile=$4
 
-validationType=montecarlo
-numIterations=1
 classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default"
-
-mkdir -p /tmp/special_log
 
 function testMultipleInputFiles {
   signal=$1
 
   description=${signal}SignalMultipleDataFiles
   dataFiles="$inputDir/${signal}Signal_Continuous_NoClass.tsv.gz,$inputDir/${signal}Signal_Discrete.tsv.gz"
-  outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
+  specificOutputDir=$outputDir/$(basename $0)_${description}_montecarlo
 
-  UserScripts/classification_${validationType} "$dataFiles" $description $numIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null /tmp/special_log/$description
-  python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Algorithm 2>&1 | tee -a /tmp/special_log/$description
+  UserScripts/classification_montecarlo --data "$dataFiles" --description $description --iterations 1 --classif-algo "$classifAlgo" --output-dir $specificOutputDir "$verbose" 2>&1 | tee -a $logFile
+  python BuildTests/CheckAccuracy.py classification montecarlo $description "$classifAlgo" "$specificOutputDir/Metrics.tsv" Algorithm 2>&1 | tee -a $logFile
 }
 
 testMultipleInputFiles Strong
@@ -36,22 +32,22 @@ python BuildTests/KeepAllButLastLine.py $inputDir/StrongSignal_Class.tsv.gz /tmp
 
 description=StrongSignal_MissingDependentVariable
 dataFiles="$inputDir/StrongSignal_Continuous_NoClass.tsv.gz,/tmp/StrongSignal_Class.tsv.gz"
-outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
+specificOutputDir=$outputDir/$(basename $0)_${description}_montecarlo
 
-UserScripts/classification_${validationType} "$dataFiles" $description $numIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null /tmp/special_log/$description
-python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Algorithm 2>&1 | tee -a /tmp/special_log/$description
-python BuildTests/CheckLogForMessage.py /tmp/special_log/$description "After filtering, data were available for 59 instances and 101 data points" 2>&1 | tee -a /tmp/special_log/$description
+UserScripts/classification_montecarlo --data "$dataFiles" --description $description --iterations 1 --classif-algo "$classifAlgo" --output-dir $specificOutputDir "$verbose" 2>&1 | tee -a $logFile
+python BuildTests/CheckAccuracy.py classification montecarlo $description "$classifAlgo" "$specificOutputDir/Metrics.tsv" Algorithm 2>&1 | tee -a $logFile
+python BuildTests/CheckLogForMessage.py $specificOutputDir/Log.txt "After filtering, data were available for 59 instances and 101 data points" 2>&1 | tee -a $logFile
 
 # Make sure we get a warning when instance has class value but no data
 python BuildTests/KeepAllButLastLine.py $inputDir/StrongSignal_Continuous_NoClass.tsv.gz /tmp/StrongSignal_Continuous_NoClass.tsv.gz
 
 description=StrongSignal_MissingIndependentVariable
 dataFiles="/tmp/StrongSignal_Continuous_NoClass.tsv.gz,$inputDir/StrongSignal_Class.tsv.gz"
-outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
+specificOutputDir=$outputDir/$(basename $0)_${description}_montecarlo
 
-UserScripts/classification_${validationType} "$dataFiles" $description $numIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null /tmp/special_log/$description
-python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Algorithm 2>&1 | tee -a /tmp/special_log/$description
-python BuildTests/CheckLogForMessage.py /tmp/special_log/$description "After filtering, data were available for 59 instances and 101 data points" 2>&1 | tee -a /tmp/special_log/$description
+UserScripts/classification_montecarlo --data "$dataFiles" --description $description --iterations 1 --classif-algo "$classifAlgo" --output-dir $specificOutputDir "$verbose" 2>&1 | tee -a $logFile
+python BuildTests/CheckAccuracy.py classification montecarlo $description "$classifAlgo" "$specificOutputDir/Metrics.tsv" Algorithm 2>&1 | tee -a $logFile
+python BuildTests/CheckLogForMessage.py $specificOutputDir/Log.txt "After filtering, data were available for 59 instances and 101 data points" 2>&1 | tee -a $logFile
 
 #####################################
 # Test different file formats
@@ -59,19 +55,16 @@ python BuildTests/CheckLogForMessage.py /tmp/special_log/$description "After fil
 
 description=StrongSignal_arff
 dataFiles="$inputDir/StrongSignal_Both.arff.gz"
-outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
+specificOutputDir=$outputDir/$(basename $0)_${description}_montecarlo
 
-UserScripts/classification_${validationType} "$dataFiles" $description $numIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null /tmp/special_log/$description
-python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Algorithm 2>&1 | tee -a /tmp/special_log/$description
+UserScripts/classification_montecarlo --data "$dataFiles" --description $description --iterations 1 --classif-algo "$classifAlgo" --output-dir $specificOutputDir "$verbose" 2>&1 | tee -a $logFile
+python BuildTests/CheckAccuracy.py classification montecarlo $description "$classifAlgo" "$specificOutputDir/Metrics.tsv" Algorithm 2>&1 | tee -a $logFile
 
 description=StrongSignal_ttsv
 dataFiles="$inputDir/StrongSignal_Both.ttsv.gz"
-outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
+specificOutputDir=$outputDir/$(basename $0)_${description}_montecarlo
 
-UserScripts/classification_${validationType} "$dataFiles" $description $numIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null /tmp/special_log/$description
-python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Algorithm 2>&1 | tee -a /tmp/special_log/$description
+UserScripts/classification_montecarlo --data "$dataFiles" --description $description --iterations 1 --classif-algo "$classifAlgo" --output-dir $specificOutputDir "$verbose" 2>&1 | tee -a $logFile
+python BuildTests/CheckAccuracy.py classification montecarlo $description "$classifAlgo" "$specificOutputDir/Metrics.tsv" Algorithm 2>&1 | tee -a $logFile
 
 rm -f /tmp/StrongSignal*
-
-cat /tmp/special_log/* >> $outLogFile
-rm -rf /tmp/special_log

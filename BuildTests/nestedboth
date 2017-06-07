@@ -2,23 +2,23 @@
 
 set -euo pipefail
 
-description=$1
-validationType=$2
-inputDir=$3
-outputDir=$4
-debug=$5
-numOuterIterations=$6
-numInnerIterations=$7
-outLogFile=$8
+description="$1"
+validationType="$2"
+iterationsFolds="$3"
+fsAlgo="$4"
+numFeaturesOptions="$5"
+classifAlgo="$6"
+inputDir="$7"
+outputDir="$8"
+verbose="$9"
+logFile="${10}"
 
-source $(dirname $0)/helper
+analysisType=$(basename $0)
+dataFile="$inputDir/$description.tsv.gz"
+specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
-classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/l*/default"
-fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default"
+UserScripts/${analysisType}_${validationType} --data "$dataFile" --description $description $iterationsFolds --fs-algo "$fsAlgo" --num-features "$numFeaturesOptions" --classif-algo "$classifAlgo" --output-dir $specificOutputDir $verbose
 
-outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
-
-UserScripts/nestedboth_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $numInnerIterations $debug "$fsAlgo" "5,20" "$classifAlgo" ${outPrefix}_SelectedFeatures.tsv ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv ${outPrefix}_Nested_SelectedFeatures.tsv ${outPrefix}_Nested_Summarized_SelectedFeatures.tsv ${outPrefix}_Nested_Predictions.tsv ${outPrefix}_Nested_Metrics.tsv /dev/null /dev/null $outLogFile
-python BuildTests/CheckAccuracy.py nestedboth $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Algorithm 2>&1 | tee -a $outLogFile
-python BuildTests/CheckSelectedFeatures.py nestedboth $validationType $description "$fsAlgo" "${outPrefix}_SelectedFeatures.tsv" Algorithm 2>&1 | tee -a $outLogFile
-python BuildTests/CheckSummarizedSelectedFeatures.py "${outPrefix}_Nested_Summarized_SelectedFeatures.tsv" 2>&1 | tee -a $outLogFile
+python BuildTests/CheckAccuracy.py $analysisType $validationType $description "$classifAlgo" "$specificOutputDir/Metrics.tsv" Algorithm 2>&1 | tee -a $logFile
+python BuildTests/CheckSelectedFeatures.py $analysisType $validationType $description "$fsAlgo" "$specificOutputDir/SelectedFeatures.tsv" Algorithm 2>&1 | tee -a $logFile
+python BuildTests/CheckSummarizedSelectedFeatures.py "$specificOutputDir/Nested_SelectedFeatures_Summarized.tsv" 2>&1 | tee -a $logFile

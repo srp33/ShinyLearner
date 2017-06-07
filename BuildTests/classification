@@ -2,19 +2,19 @@
 
 set -euo pipefail
 
-analysisType="$1"
-description="$2"
-validationType="$3"
-iterationsFolds="$4"
-classifAlgo="$5"
-inputDir="$6"
-outputDir="$7"
-verbose="$8"
-logFile="$9"
+description="$1"
+validationType="$2"
+iterationsFolds="$3"
+classifAlgo="$4"
+inputDir="$5"
+outputDir="$6"
+verbose="$7"
+logFile="$8"
 
+analysisType=$(basename $0)
 dataFile="$inputDir/$description.tsv.gz"
 specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
-UserScripts/classification_${validationType} --data "$dataFile" --description "$description" $iterationsFolds --classif-algo "$classifAlgo" --output-dir $specificOutputDir $verbose
+UserScripts/${analysisType}_${validationType} --data "$dataFile" --description "$description" $iterationsFolds --classif-algo "$classifAlgo" --output-dir $specificOutputDir $verbose
 
 python BuildTests/CheckAccuracy.py $analysisType $validationType $description "$classifAlgo" ${specificOutputDir}/Metrics.tsv Algorithm 2>&1 | tee -a $logFile

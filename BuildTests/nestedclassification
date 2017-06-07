@@ -2,20 +2,18 @@
 
 set -euo pipefail
 
-description=$1
-validationType=$2
-inputDir=$3
-outputDir=$4
-debug=$5
-numOuterIterations=$6
-numInnerIterations=$7
-outLogFile=$8
+description="$1"
+validationType="$2"
+iterationsFolds="$3"
+classifAlgo="$4"
+inputDir="$5"
+outputDir="$6"
+verbose="$7"
+logFile="$8"
 
-source $(dirname $0)/helper
+analysisType=$(basename $0)
+dataFile="$inputDir/$description.tsv.gz"
+specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
-classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/l*/default"
-
-outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
-
-UserScripts/nestedclassification_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $numInnerIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv ${outPrefix}_Nested_Predictions.tsv ${outPrefix}_Nested_Metrics.tsv /dev/null $outLogFile
-python BuildTests/CheckAccuracy.py nestedclassification $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Algorithm 2>&1 | tee -a $outLogFile
+UserScripts/${analysisType}_${validationType} --data "$dataFile" --description "$description" $iterationsFolds --classif-algo "$classifAlgo" --output-dir $specificOutputDir $verbose
+python BuildTests/CheckAccuracy.py $analysisType $validationType $description "$classifAlgo" "$specificOutputDir/Metrics.tsv" Algorithm 2>&1 | tee -a $logFile

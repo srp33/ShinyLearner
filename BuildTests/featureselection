@@ -2,25 +2,20 @@
 
 set -euo pipefail
 
-description=$1
-validationType=$2
-inputDir=$3
-outputDir=$4
-debug=$5
-numOuterIterations=$6
-numInnerIterations=$7
-outLogFile=$8
+description="$1"
+validationType="$2"
+iterationsFolds="$3"
+fsAlgo="$4"
+inputDir="$5"
+outputDir="$6"
+verbose="$7"
+logFile="$8"
 
-source $(dirname $0)/helper
+analysisType=$(basename $0)
+dataFile="$inputDir/$description.tsv.gz"
+specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
-#fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default"
-#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default"
-fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default"
-#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/*/default"
-#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/*/default"
+UserScripts/${analysisType}_${validationType} --data "$dataFile" --description "$description" $iterationsFolds --fs-algo "$fsAlgo" --output-dir $specificOutputDir $verbose
 
-outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
-
-UserScripts/featureselection_${validationType} "$dataFile" $description $numCVIterations $numOuterIterations $debug "$fsAlgo" ${outPrefix}_SelectedFeatures.tsv ${outPrefix}_SelectedFeatures_Summarized.tsv /dev/null $outLogFile
-python BuildTests/CheckSelectedFeatures.py featureselection $validationType $description "$fsAlgo" "${outPrefix}_SelectedFeatures.tsv" Algorithm 2>&1 | tee -a $outLogFile
-python BuildTests/CheckSummarizedSelectedFeatures.py "${outPrefix}_SelectedFeatures_Summarized.tsv" 2>&1 | tee -a $outLogFile
+python BuildTests/CheckSelectedFeatures.py $analysisType $validationType $description "$fsAlgo" "$specificOutputDir/SelectedFeatures.tsv" Algorithm 2>&1 | tee -a $logFile
+python BuildTests/CheckSummarizedSelectedFeatures.py "$specificOutputDir/SelectedFeatures_Summarized.tsv" 2>&1 | tee -a $logFile

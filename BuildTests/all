@@ -31,10 +31,10 @@ classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_rbf/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default"
 
-$(dirname $0)/classification classification StrongSignal_Both montecarlo "--iterations 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/1.log &
-$(dirname $0)/classification classification NoSignal_Both montecarlo "--iterations 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/2.log &
-$(dirname $0)/classification classification StrongSignal_Both crossvalidation "--iterations 2 --folds 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/3.log &
-$(dirname $0)/classification classification NoSignal_Both crossvalidation "--iterations 2 --folds 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/4.log &
+$(dirname $0)/classification StrongSignal_Both montecarlo "--iterations 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/1.log &
+$(dirname $0)/classification NoSignal_Both montecarlo "--iterations 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/2.log &
+$(dirname $0)/classification StrongSignal_Both crossvalidation "--iterations 2 --folds 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/3.log &
+$(dirname $0)/classification NoSignal_Both crossvalidation "--iterations 2 --folds 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/4.log &
 wait
 
 ##$(dirname $0)/save_expected_output
@@ -45,44 +45,57 @@ wait
 
 cat $outputDir/*.log >> $overallLogFile
 rm -f $outputDir/*.log
-exit
 
 classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_*/default"
-$(dirname $0)/classification StrongSignal_Both_2Class montecarlo "$classifAlgo" $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
-$(dirname $0)/classification NoSignal_Both_2Class montecarlo "$classifAlgo" $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &
+
+$(dirname $0)/classification StrongSignal_Both_2Class montecarlo "--iterations 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/1.log &
+$(dirname $0)/classification NoSignal_Both_2Class montecarlo "--iterations 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/2.log &
 wait
 
 cat $outputDir/*.log >> $overallLogFile
 rm -f $outputDir/*.log
 
-$(dirname $0)/featureselection StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
-$(dirname $0)/featureselection NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &
-$(dirname $0)/featureselection StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/3.log &
-$(dirname $0)/featureselection NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/4.log &
+#fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default"
+fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/*/default"
+#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/*/default"
+
+$(dirname $0)/featureselection StrongSignal_Both montecarlo "--iterations 2" "$fsAlgo" $inputDir $outputDir "$verbose" $outputDir/1.log &
+$(dirname $0)/featureselection NoSignal_Both montecarlo "--iterations 2" "$fsAlgo" $inputDir $outputDir "$verbose" $outputDir/2.log &
+$(dirname $0)/featureselection StrongSignal_Both crossvalidation "--iterations 2 --folds 2" $inputDir $outputDir "$verbose" $outputDir/3.log &
+$(dirname $0)/featureselection NoSignal_Both crossvalidation "--iterations 2 --folds 2" $inputDir $outputDir "$verbose" $outputDir/4.log &
 wait
 
 cat $outputDir/*.log >> $overallLogFile
 rm -f $outputDir/*.log
 
-$(dirname $0)/nestedclassification StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
-$(dirname $0)/nestedclassification NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &
-$(dirname $0)/nestedclassification StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/3.log &
-$(dirname $0)/nestedclassification NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/4.log &
+classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/l*/default"
+
+$(dirname $0)/nestedclassification StrongSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/1.log &
+$(dirname $0)/nestedclassification NoSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/2.log &
+$(dirname $0)/nestedclassification StrongSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/3.log &
+$(dirname $0)/nestedclassification NoSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/4.log &
 wait
 
 cat $outputDir/*.log >> $overallLogFile
 rm -f $outputDir/*.log
 
-$(dirname $0)/nestedboth StrongSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/1.log &
-$(dirname $0)/nestedboth NoSignal_Both montecarlo $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/2.log &
-$(dirname $0)/nestedboth StrongSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/3.log &
-$(dirname $0)/nestedboth NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/4.log &
+fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default"
+numFeaturesOptions="5,20"
+classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/l*/default"
+
+$(dirname $0)/nestedboth StrongSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/1.log &
+$(dirname $0)/nestedboth NoSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/2.log &
+$(dirname $0)/nestedboth StrongSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/3.log &
+$(dirname $0)/nestedboth NoSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/4.log &
 wait
 
 cat $outputDir/*.log >> $overallLogFile
 rm -f $outputDir/*.log
 
-$(dirname $0)/special_cases $inputDir $outputDir $debug $outputDir/special.log
+$(dirname $0)/special_cases $inputDir $outputDir "$verbose" $outputDir/special.log
+cat $outputDir/special.log
 
 cat $outputDir/special.log >> $overallLogFile
 rm -f $outputDir/special.log
