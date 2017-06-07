@@ -23,10 +23,10 @@ overallLogFile=$outputDir/log.overall
 
 rm -rf $outputDir/*
 
-#classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
+classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/*/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
-classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_rbf/default"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_rbf/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default"
@@ -55,9 +55,9 @@ wait
 cat $outputDir/*.log >> $overallLogFile
 rm -f $outputDir/*.log
 
-#fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default"
+fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default"
 #fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default"
-fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default"
 #fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/*/default"
 #fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/*/default"
 
