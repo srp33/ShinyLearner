@@ -1,0 +1,31 @@
+DESCRIPTION
+
+    This command will execute each specified algorithm using a Monte Carlo cross-validation strategy. It will perform classification but not feature selection or algorithm optimization. It will output the performance of each algorithm and will use a majority-vote method to make multiple-classifier predictions.
+
+REQUIRED ARGUMENTS
+
+    --data [file_path]
+    --description [description]
+    --iterations [number]
+    --classif-algo [file_path]
+    --output-dir [dir_path]
+
+OPTIONAL ARGUMENT
+
+    --verbose
+
+NOTES
+
+    The --data argument allows you to specify input data files in one of the supported formats. The GitHub page provides details on these formats.
+
+    The --description value should be a user-friendly description of the analysis that will be performed. This description will be specified in the output files.
+
+    The --classif-algo argument allows you to specify classification algorithm(s) to be used in the analysis. The value(s) should be a relative path to a script specified under AlgorithmScripts. See the GitHub site for available algorithms.
+
+    The --data and --classif-algo arguments must be used at least once but could be used multiple times. Wildcards may be used (in quotations).
+
+    The --iterations value must be a positive integer. It indicates the number of times that a round of cross-validation should be performed.
+
+    The --output-dir argument allows you to indicate where output files will be stored. If this file does not already exist, ShinyLearner will create it. For information about the output files that will be created, see the GitHub site.
+
+    If the --verbose flag is specified, extra information will be printed to standard out. This flag is typically used for debugging purposes.

@@ -2,11 +2,16 @@
 
 set -euo pipefail
 
-helpMessage="Please see documentation for ShinyLearner here: https://github.com/srp33/ShinyLearner."
+callingDir=$(dirname $0)
+callingFile=$(basename $0)
+helpFile=$callingDir/docs/$callingFile
+helpMessage="$(cat $helpFile)"
 
 if [ $# -eq 0 ]; then
     echo No arguments provided.
+    echo
 	echo "$helpMessage"
+    echo
     exit 1
 fi
 
@@ -16,7 +21,9 @@ for i in "$@"
 do
   case $i in
     -h)
+        echo
         echo "$helpMessage"
+        echo
         quickExit=TRUE
     ;;
     -v)
