@@ -2,11 +2,18 @@ library(shiny)
 
 shinyServer(function(input, output, session) {
   
-  dockerhub_address <- 'srp33/shinylearner:version248'
+  dockerhub_address <- 'srp33/shinylearner:version262'
   numFeaturesOptions <- '5,10,50,100,500,1000'
   defaultInputFiles <- 'Data.tsv.gz'
   defaultOutputDir <- 'Output'
   defaultExpDesc <- 'My_Interesting_Analysis'
+  #
+  #
+  #defaultInputFiles <- 'StrongSignal_Both.tsv.gz'
+  #defaultOutputDir <- 'Output'
+  #defaultExpDesc <- 'My_Interesting_Analysis'
+  #
+  #
   defaultValidation <- 'mc'
   validationChoices <- list('Monte-Carlo Cross Validation' = 'mc', 'k-Fold Cross Validation' = 'kf')
   defaultFS <- 'no_fs'
@@ -37,7 +44,6 @@ shinyServer(function(input, output, session) {
   outNestedClassificationBenchmarkFile <- 'NestedClassificationBenchmarkFile.tsv'
   outNestedBenchmarkFile <- 'NestedBenchmarkFile.tsv'
   outLogFile <- 'LogFile.txt'
-  debug <- 'false'
   
   exp_desc_help_text <- 'Please enter a short, unique description of the analysis.'
   input_files_help_text <- 'Please indicate the location on your computer of the input data files that will be used in the analysis. If the file(s) are located in a subdirectory, please also specify the name of that subdirectory in the file path(s). Wildcards are allowed, and the files may be gzipped. Input files can be in comma-separated (.csv), tab-separated (.tsv) or Attribute-Relation File Format (.arff). If you use .csv or .tsv files, rows should be samples, and columns should be features (independent variables). If you specify multiple paths, separate them by commas. [If you wish to use an input file format that is not supported, please contact us.]'
@@ -444,80 +450,48 @@ shinyServer(function(input, output, session) {
 	  ## nestedboth_montecarlo
 	  if (validation == 'mc') {
 		lines <- c(lines, '/UserScripts/nestedboth_montecarlo')
-		lines <- c(lines, hostInputFilePaths)
-		lines <- c(lines, expDesc)
-		lines <- c(lines, mc_outer)
-		lines <- c(lines, mc_inner)
-		lines <- c(lines, debug)
-		lines <- c(lines, fsAlgos)
-		lines <- c(lines, numFeaturesOptions)
-		lines <- c(lines, classifAlgos)
-		lines <- c(lines, paste(containerOutputDir,outSelectedFeaturesFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outPredictionsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outMetricsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedSelectedFeaturesFiles,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedSummarizedSelectedFeaturesFiles,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedPredictionsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedMetricsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedFeatureSelectionBenchmarkFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedClassificationBenchmarkFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outLogFile,sep='/'))
+		lines <- c(lines, paste('--data', hostInputFilePaths))
+		lines <- c(lines, paste('--description', expDesc))
+		lines <- c(lines, paste('--outer-iterations', mc_outer))
+		lines <- c(lines, paste('--inner-iterations', mc_inner))
+		lines <- c(lines, paste('--classif-algo', classifAlgos))
+		lines <- c(lines, paste('--fs-algo', fsAlgos))
+		lines <- c(lines, paste('--num-features', numFeaturesOptions))
+        lines <- c(lines, paste('--output-dir', containerOutputDir))
 	  ## nestedboth_crossvalidation  
 	  } else if (validation == 'kf') {
 		lines <- c(lines, '/UserScripts/nestedboth_crossvalidation')
-		lines <- c(lines, hostInputFilePaths)
-		lines <- c(lines, expDesc)
-		lines <- c(lines, kf_iterations)
-		lines <- c(lines, kf_outer)
-		lines <- c(lines, kf_inner)
-		lines <- c(lines, debug)
-		lines <- c(lines, fsAlgos)
-		lines <- c(lines, numFeaturesOptions)
-		lines <- c(lines, classifAlgos)
-		lines <- c(lines, paste(containerOutputDir,outSelectedFeaturesFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outPredictionsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outMetricsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedSelectedFeaturesFiles,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedSummarizedSelectedFeaturesFiles,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedPredictionsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedMetricsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedFeatureSelectionBenchmarkFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedClassificationBenchmarkFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outLogFile,sep='/'))
+		lines <- c(lines, paste('--data', hostInputFilePaths))
+		lines <- c(lines, paste('--description', expDesc))
+		lines <- c(lines, paste('--iterations', kf_iterations))
+		lines <- c(lines, paste('--outer-folds', kf_outer))
+		lines <- c(lines, paste('--inner-folds', kf_inner))
+		lines <- c(lines, paste('--classif-algo', classifAlgos))
+		lines <- c(lines, paste('--fs-algo', fsAlgos))
+		lines <- c(lines, paste('--num-features', numFeaturesOptions))
+        lines <- c(lines, paste('--output-dir', containerOutputDir))
 	  }
 	}
 	else if (fs == 'no_fs') {
 	  ## nestedclassification_montecarlo
 	  if (validation == 'mc') {
 		lines <- c(lines, '/UserScripts/nestedclassification_montecarlo')
-		lines <- c(lines, hostInputFilePaths)
-		lines <- c(lines, expDesc)
-		lines <- c(lines, mc_outer)
-		lines <- c(lines, mc_inner)
-		lines <- c(lines, debug)
-		lines <- c(lines, classifAlgos)
-		lines <- c(lines, paste(containerOutputDir,outPredictionsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outMetricsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedPredictionsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedMetricsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedBenchmarkFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outLogFile,sep='/'))
+		lines <- c(lines, paste('--data', hostInputFilePaths))
+		lines <- c(lines, paste('--description', expDesc))
+		lines <- c(lines, paste('--outer-iterations', mc_outer))
+		lines <- c(lines, paste('--inner-iterations', mc_inner))
+		lines <- c(lines, paste('--classif-algo', classifAlgos))
+        lines <- c(lines, paste('--output-dir', containerOutputDir))
 	  ## nestedclassification_crossvalidation
 	  } else if (validation == 'kf') {
 		lines <- c(lines, '/UserScripts/nestedclassification_crossvalidation')
-		lines <- c(lines, hostInputFilePaths)
-		lines <- c(lines, expDesc)
-		lines <- c(lines, kf_iterations)
-		lines <- c(lines, kf_outer)
-		lines <- c(lines, kf_inner)
-		lines <- c(lines, debug)
-		lines <- c(lines, classifAlgos)
-		lines <- c(lines, paste(containerOutputDir,outPredictionsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outMetricsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedPredictionsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedMetricsFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outNestedBenchmarkFile,sep='/'))
-		lines <- c(lines, paste(containerOutputDir,outLogFile,sep='/'))
+		lines <- c(lines, paste('--data', hostInputFilePaths))
+		lines <- c(lines, paste('--description', expDesc))
+		lines <- c(lines, paste('--iterations', kf_iterations))
+		lines <- c(lines, paste('--outer-folds', kf_outer))
+		lines <- c(lines, paste('--inner-folds', kf_inner))
+		lines <- c(lines, paste('--classif-algo', classifAlgos))
+        lines <- c(lines, paste('--output-dir', containerOutputDir))
 	  }
 	}
 	# Linux/Mac use '\' and '\n'
@@ -590,3 +564,38 @@ shinyServer(function(input, output, session) {
 	  updateTabsetPanel(session, 'main_panel', selected = '4')
   })
 })
+#		lines <- c(lines, paste(containerOutputDir,outSelectedFeaturesFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outPredictionsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outMetricsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedSelectedFeaturesFiles,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedSummarizedSelectedFeaturesFiles,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedPredictionsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedMetricsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedFeatureSelectionBenchmarkFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedClassificationBenchmarkFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outLogFile,sep='/'))
+#
+#		lines <- c(lines, paste(containerOutputDir,outSelectedFeaturesFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outPredictionsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outMetricsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedSelectedFeaturesFiles,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedSummarizedSelectedFeaturesFiles,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedPredictionsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedMetricsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedFeatureSelectionBenchmarkFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedClassificationBenchmarkFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outLogFile,sep='/'))
+#
+#		lines <- c(lines, paste(containerOutputDir,outPredictionsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outMetricsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedPredictionsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedMetricsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedBenchmarkFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outLogFile,sep='/'))
+#
+#		lines <- c(lines, paste(containerOutputDir,outPredictionsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outMetricsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedPredictionsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedMetricsFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outNestedBenchmarkFile,sep='/'))
+#		lines <- c(lines, paste(containerOutputDir,outLogFile,sep='/'))
