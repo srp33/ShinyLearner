@@ -2,7 +2,7 @@ library(shiny)
 
 shinyServer(function(input, output, session) {
   
-  dockerhub_address <- 'srp33/shinylearner:version262'
+  dockerhub_address <- 'srp33/shinylearner:version267'
   numFeaturesOptions <- '5,10,50,100,500,1000'
   defaultInputFiles <- 'Data.tsv.gz'
   defaultOutputDir <- 'Output'

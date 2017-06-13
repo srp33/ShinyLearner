@@ -38,6 +38,9 @@ public class Settings
 			for (String x : dataFilesArg.split(","))
 				for (String filePath : FileUtilities.GetFilesMatchingPattern(x))
 				{
+					if (filePath.equals(""))
+						Log.ExceptionFatal("An empty file path was found. The full value specified for RAW_DATA_FILES was " + dataFilesArg + ".");
+
 					if (!FileUtilities.FileExists(filePath))
 						Log.ExceptionFatal("No file exists at " + filePath);
 					RAW_DATA_FILES.add(filePath);
