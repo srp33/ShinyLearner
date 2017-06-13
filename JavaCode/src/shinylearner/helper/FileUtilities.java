@@ -172,7 +172,8 @@ public class FileUtilities
     	String shellOutput = MiscUtilities.ExecuteShellCommand("ls " + pattern);
     	
     	for (String match : shellOutput.split("\n"))
-    		filePaths.add(match);
+    	    if (FileExists(match))
+        		filePaths.add(match);
     	
     	return filePaths;
     }

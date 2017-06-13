@@ -36,15 +36,20 @@ public class Settings
 		String dataFilesArg = GetArgValue(args, "RAW_DATA_FILES", "");
 		if (!dataFilesArg.equals(""))
 			for (String x : dataFilesArg.split(","))
-				for (String filePath : FileUtilities.GetFilesMatchingPattern(x))
-				{
-					if (filePath.equals(""))
-						Log.ExceptionFatal("An empty file path was found. The full value specified for RAW_DATA_FILES was " + dataFilesArg + ".");
+			{
+				ArrayList<String> filePaths = FileUtilities.GetFilesMatchingPattern(x);
 
+				if (filePaths.size() == 0)
+					Log.ExceptionFatal("No input data was found that matches this pattern: " + dataFilesArg + ".");
+
+				for (String filePath : filePaths)
+				{
 					if (!FileUtilities.FileExists(filePath))
 						Log.ExceptionFatal("No file exists at " + filePath);
+
 					RAW_DATA_FILES.add(filePath);
 				}
+			}
 
 		ANALYSIS_DATA_FILE = GetArgValue(args, "ANALYSIS_DATA_FILE", "");
 		EXPERIMENT_FILE = GetArgValue(args, "EXPERIMENT_FILE", "");

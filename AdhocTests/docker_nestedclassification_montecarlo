@@ -2,10 +2,10 @@
 
 sudo docker run --rm \
   -v $(pwd)/Validation:/InputData \
-  -v $(pwd)/TestOutput/Docker/nestedboth/montecarlo:/OutputData \
-  srp33/shinylearner:version267 \
-  /UserScripts/nestedboth_montecarlo \
-  --data InputData/StrongSignal_Both.tsv.gz \
+  -v $(pwd)/TestOutput/Docker/nestedclassification/montecarlo:/OutputData \
+  srp33/shinylearner:version268 \
+  /UserScripts/nestedclassification_montecarlo \
+  --data InputData/StrongSignal_Both.tsv.gz2 \
   --description StrongSignal_Both_Docker \
   --outer-iterations 2 \
   --inner-iterations 2 \
