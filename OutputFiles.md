@@ -25,7 +25,7 @@ ShinyLearner produces output files that follows the principles of [tidy data](ht
 ## ElapsedTime.tsv
 
 * Indicates how long it took for each algorithm to execute.
-* [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/Elapsed.tsv)
+* [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/ElapsedTime.tsv)
 
 When nested cross validation is used to optimize algorithm or feature selection, ShinyLearner produces output files that describe algorithm performance within the training sets used for optimization. The following descriptions indicate what these files contain.
 
