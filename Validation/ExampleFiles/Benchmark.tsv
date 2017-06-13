@@ -1,5 +1,0 @@
-Description	Iteration	Algorithm	ElapsedSeconds
-My_Interesting_Analysis	1	AlgorithmScripts/Classification/arff/weka/RandomForest/default	0.706157056
-My_Interesting_Analysis	1	AlgorithmScripts/Classification/arff/weka/RandomTree/default	0.547482304
-My_Interesting_Analysis	2	AlgorithmScripts/Classification/arff/weka/RandomForest/default	0.907636352
-My_Interesting_Analysis	2	AlgorithmScripts/Classification/arff/weka/RandomTree/default	0.617989376

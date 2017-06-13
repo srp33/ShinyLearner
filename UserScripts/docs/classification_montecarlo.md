@@ -14,6 +14,15 @@ OPTIONAL ARGUMENT
 
     --verbose
 
+EXAMPLE
+
+    UserScripts/classification_montecarlo \
+      --data Data.tsv.gz \
+      --description "My_Interesting_Analysis" \
+      --iterations 10 \
+      --classif-algo "AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default" \
+      --output-dir Output/
+
 NOTES
 
     The --data argument allows you to specify input data files in one of the supported formats (see https://github.com/srp33/ShinyLearner/blob/master/InputFormats.md).
@@ -29,3 +38,15 @@ NOTES
     The --output-dir argument allows you to indicate where output files will be stored. If this directory does not already exist, ShinyLearner will create it. For information about the output files that will be created, see https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md.
 
     If the --verbose flag is specified, detailed information about the processing steps will be printed to standard out. This flag is typically used for debugging purposes.
+
+OUTPUTS
+
+    Metrics.tsv
+
+    Predictions.tsv
+
+    ElapsedTime.tsv
+
+    Log.txt
+
+    (Please see https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md for descriptions of what these files contain.)

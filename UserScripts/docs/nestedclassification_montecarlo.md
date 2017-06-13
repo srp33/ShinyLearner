@@ -1,6 +1,6 @@
 DESCRIPTION
 
-    This command will execute each specified algorithm using a k-fold cross-validation strategy. It will perform classification and feature selection. It will use nested cross validation for algorithm selection and to select features and to optimize the number of selected features. It will output the predictive performance and selected features for each algorithm for the inner (nested) folds and will use a select-best method to make predictions for the outer folds.
+    This command will execute each specified algorithm using a Monte Carlo cross-validation strategy. It will perform classification but not feature selection. It will use nested, Monte Carlo cross validation for algorithm selection. It will output the performance of each algorithm for the inner (nested) folds and will use a select-best method for predictions in the outer folds.
 
 REQUIRED ARGUMENTS
 
@@ -9,13 +9,21 @@ REQUIRED ARGUMENTS
     --outer-iterations [number]
     --inner-iterations [number]
     --classif-algo [file_path]
-    --fs-algo [file_path]
-    --num-features [file_path]
     --output-dir [dir_path]
 
 OPTIONAL ARGUMENT
 
     --verbose
+
+EXAMPLE
+
+    UserScripts/nestedclassification_montecarlo \
+      --data Data.tsv.gz \
+      --description "My_Interesting_Analysis" \
+      --outer-iterations 10 \
+      --inner-iteration 5 \
+      --classif-algo "AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default" \
+      --output-dir Output/
 
 NOTES
 
@@ -25,14 +33,26 @@ NOTES
 
     The --classif-algo argument allows you to specify classification algorithm(s) to be used in the analysis. The value should be a relative path to a script specified under AlgorithmScripts (see https://github.com/srp33/ShinyLearner/blob/master/Algorithms.md).
 
-    The --fs-algo argument allows you to specify feature-selection algorithm(s) to be used in the analysis. The value(s) should be a relative path to a script specified under AlgorithmScripts (see https://github.com/srp33/ShinyLearner/blob/master/Algorithms.md).
-
-    The --data, --classif-algo, and --fs-algo arguments must be used at least once but can be used multiple times. Wildcards may be used (in quotations).
-
-    The --num-features argument should be used once. Multiple values should be separated by commas.
+    The --data and --classif-algo arguments must be used at least once but can be used multiple times. Wildcards may be used (in quotations).
 
     The --outer-iterations and --inner-iterations values must be positive integers. These values indicate the number of times that cross-validation should be performed. The inner iterations are used for algorithm selection, while the outer iterations are used to assess generalizability of the selected models.
 
     The --output-dir argument allows you to indicate where output files will be stored. If this directory does not already exist, ShinyLearner will create it. For information about the output files that will be created, see https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md.
 
     If the --verbose flag is specified, detailed information about the processing steps will be printed to standard out. This flag is typically used for debugging purposes.
+
+OUTPUTS
+
+    Metrics.tsv
+
+    Predictions.tsv
+
+    Nested_Metrics.tsv
+    
+    Nested_Predictions.tsv
+    
+    Nested_ElapsedTime.tsv
+
+    Log.txt
+
+    (Please see https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md for descriptions of what these files contain.)

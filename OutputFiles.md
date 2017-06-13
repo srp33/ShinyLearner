@@ -1,43 +1,65 @@
 # Output Data Files
 
-ShinyLearner follows the principles of [tidy data](http://vita.had.co.nz/papers/tidy-data.pdf). This affords extra flexibility when interpreting the results. These tab-delineated text files can be imported directly into third-party analytic tools--such as Microsoft Excel or R--for further analysis.
+ShinyLearner produces output files that follows the principles of [tidy data](http://vita.had.co.nz/papers/tidy-data.pdf). This affords extra flexibility and consistency when interpreting the results. These tab-delimited text files can be imported directly into third-party analytic tools, such as Microsoft Excel, R or Python, for further analysis. The descriptions below indicate what each output file contains. The [UserScripts documentation](https://github.com/srp33/ShinyLearner/tree/master/UserScripts/docs) indicates which output files are produced by each type of analysis.
 
 ## Metrics.tsv
 
-* There are various measures to interpret prediction accuracy. For a comprehensive list [see here](https://github.com/srp33/ShinyLearner/blob/master/Metrics.md).
+* Indicates various [classification accuracy measures](https://github.com/srp33/ShinyLearner/blob/master/Metrics.md).
 * [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/Metrics.tsv)
 
 ## Predictions.tsv
 
-* Describes individual-level predictions for each instance that was analyzed.
+* Contains individual-level predictions for each sample/instance for which predictions were made for each algorithm.
 * [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/Predictions.tsv)
-
-## Benchmark.tsv
-
-* ShinyLearner records the runtimes for each the prediction in the experiment.
-* [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/Benchmark.tsv)
 
 ## SelectedFeatures.tsv
 
-* Selected features for the analyses.
+* A ranked list of features for each feature-selection algorithm.
 * [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/SelectedFeatures.tsv)
 
+## SelectedFeatures_Summarized.tsv
 
-## SelectedFeatures_Summarized_Nested.tsv
+* A ranked list of features, averaged (Borda count) across all feature-selection algorithms used.
+* [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/SelectedFeatures_Summarized.tsv)
 
-* Mean ranking of features across internal validation folds.
-* [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/SelectedFeatures_Summarized_Nested.tsv)
+## ElapsedTime.tsv
 
-## Nested Prefix
+* Indicates how long it took for each algorithm to execute.
+* [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/Elapsed.tsv)
 
-* Output files with the "Nested" prefix include data for the internal validation folds. 
-* [Nested Metrics Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/NestedMetricsFile.tsv)
-* [Nested Predictions Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/NestedPredictionsFile.tsv)
-* [Nested Benchmarks Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/NestedBenchmarkFile.tsv)
-* [Nested Selected Features Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/NestedSelectedFeaturesFile.tsv)
+When nested cross validation is used to optimize algorithm or feature selection, ShinyLearner produces output files that describe algorithm performance within the training sets used for optimization. The following descriptions indicate what these files contain.
+
+## Nested_Metrics.tsv
+
+* Indicates various [classification accuracy measures](https://github.com/srp33/ShinyLearner/blob/master/Metrics.md).
+* [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/Nested_Metrics.tsv)
+
+## Nested_Predictions.tsv
+
+* Contains individual-level predictions for each sample/instance for which predictions were made for each algorithm.
+* [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/Nested_Predictions.tsv)
+
+## Nested_SelectedFeatures.tsv
+
+* A ranked list of features for each feature-selection algorithm.
+* [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/Nested_SelectedFeatures.tsv)
+
+## Nested_SelectedFeatures_Summarized.tsv
+
+* A ranked list of features, averaged (Borda count) across all feature-selection algorithms used.
+* [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/Nested_SelectedFeatures_Summarized.tsv)
+
+## Nested_Classification_ElapsedTime.tsv
+
+* Indicates how long it took for each classification algorithm to execute.
+* [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/Nested_Classification_ElapsedTime.tsv)
+
+## Nested_FeatureSelection_ElapsedTime.tsv
+
+* Indicates how long it took for each feature-selection algorithm to execute.
+* [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/Nested_FeatureSelection_ElapsedTime.tsv)
 
 ## Log.txt
 
-* Output from the terminal. 
+* Standard output from the terminal. 
 * [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/Log.txt)
-
