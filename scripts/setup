@@ -2,15 +2,8 @@
 
 set -euo pipefail
 
-tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
-
-cleanup $tmpDir
-mkdir -p $tmpDir
-
-trap "cleanup $tmpDir" INT TERM EXIT
-
 errFile=/dev/null
-if [[ "$debug" == "true" ]]
+if [[ "$verbose" == "true" ]]
 then
   errFile=$(mktemp $tmpDir/XXXXXXXXX)
 fi

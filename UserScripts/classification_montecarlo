@@ -5,12 +5,13 @@ set -euo pipefail
 source scripts/shared_functions
 source scripts/first_param_check
 
-dataFiles="$(python scripts/ParseArgs.py --data TRUE TRUE $@)"
-description="$(python scripts/ParseArgs.py --description TRUE TRUE $@)"
-numIterations="$(python scripts/ParseArgs.py --iterations TRUE TRUE $@)"
-verbose="$(python scripts/ParseArgs.py --verbose FALSE FALSE $@)"
-classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE TRUE "$@")"
-outputDir="$(python scripts/ParseArgs.py --output-dir TRUE TRUE $@)"
+dataFiles="$(python scripts/ParseArgs.py --data TRUE $@)"
+description="$(python scripts/ParseArgs.py --description TRUE $@)"
+numIterations="$(python scripts/ParseArgs.py --iterations TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
+classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE "$@")"
+outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
+tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
 checkParamParseOutput "$description"
@@ -18,17 +19,28 @@ checkParamParseOutput "$numIterations"
 checkParamParseOutput "$verbose"
 checkParamParseOutput "$classifAlgos"
 checkParamParseOutput "$outputDir"
+checkParamParseOutput "$tmpDir"
 
-debug="$(convertVerboseToDebug "$verbose")"
+mkdir -p $outputDir
 outPredictionsFile="$outputDir/Predictions.tsv"
 outMetricsFile="$outputDir/Metrics.tsv"
 outBenchmarkFile="$outputDir/ElapsedTime.tsv"
 outLogFile="$outputDir/Log.txt"
 
-mkdir -p $outputDir
+tmpDir="$(getTempDir "$tmpDir")"
 
 source scripts/print_args
 
-scripts/classification "$dataFiles" "$description" "$numIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo 0 2>&1 | tee -a "$outLogFile"
+function cleanup {
+  rm -rf $tmpDir
+}
+
+cleanup
+
+trap cleanup INT TERM EXIT
+
+scripts/classification "$dataFiles" "$description" "$numIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo 1 "$tmpDir" 0 2>&1 | tee -a "$outLogFile"
+
+cleanup
 
 source scripts/success_message

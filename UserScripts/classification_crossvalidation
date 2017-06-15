@@ -5,13 +5,14 @@ set -euo pipefail
 source scripts/shared_functions
 source scripts/first_param_check
 
-dataFiles="$(python scripts/ParseArgs.py --data TRUE TRUE $@)"
-description="$(python scripts/ParseArgs.py --description TRUE TRUE $@)"
-numIterations="$(python scripts/ParseArgs.py --iterations TRUE TRUE $@)"
-numFolds="$(python scripts/ParseArgs.py --folds TRUE TRUE $@)"
-verbose="$(python scripts/ParseArgs.py --verbose FALSE FALSE $@)"
-classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE TRUE "$@")"
-outputDir="$(python scripts/ParseArgs.py --output-dir TRUE TRUE $@)"
+dataFiles="$(python scripts/ParseArgs.py --data TRUE $@)"
+description="$(python scripts/ParseArgs.py --description TRUE $@)"
+numIterations="$(python scripts/ParseArgs.py --iterations TRUE $@)"
+numFolds="$(python scripts/ParseArgs.py --folds TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
+classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE "$@")"
+outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
+tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
 checkParamParseOutput "$description"
@@ -20,24 +21,32 @@ checkParamParseOutput "$numFolds"
 checkParamParseOutput "$verbose"
 checkParamParseOutput "$classifAlgos"
 checkParamParseOutput "$outputDir"
+checkParamParseOutput "$tmpDir"
 
-debug="$(convertVerboseToDebug "$verbose")"
+mkdir -p $outputDir
 outPredictionsFile="$outputDir/Predictions.tsv"
 outMetricsFile="$outputDir/Metrics.tsv"
 outBenchmarkFile="$outputDir/ElapsedTime.tsv"
 outLogFile="$outputDir/Log.txt"
 
-mkdir -p $outputDir
+tmpDir="$(getTempDir "$tmpDir")"
 
 source scripts/print_args
 
-tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
-
-function cleanup_cv {
+function cleanup {
   rm -rf $tmpDir
 }
 
-cleanup_cv
+cleanup
+
+trap cleanup INT TERM EXIT
+
+validationType=crossvalidation
+source scripts/setup
+
+echo "Parsing data..."
+analysisDataFile=$tmpDir/data.gz
+java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null
 
 for iteration in $(seq 1 $numIterations)
 do
@@ -67,7 +76,8 @@ do
   echo "**************************************************************" | tee -a "$outLogFile"
   echo "Beginning analysis for cross-validation fold ${iteration}" | tee -a "$outLogFile"
   echo "**************************************************************" | tee -a "$outLogFile"
-  scripts/classification "$dataFiles" "$description" "$numFolds" "$debug" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outBenchmarkFileIteration" crossvalidation $iteration 2>&1 | tee -a "$outLogFile"
+
+  scripts/classification "$analysisDataFile" "$description" "$numFolds" "$verbose" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outBenchmarkFileIteration" crossvalidation $iteration "$outDir" 2>&1 | tee -a "$outLogFile"
 done
 
 echo
@@ -84,6 +94,6 @@ sortFile $tmpDir/outpreds "$sortCriteria" "$outPredictionsFile"
 sortFile $tmpDir/outmetrics "$sortCriteria" "$outMetricsFile"
 sortFile $tmpDir/outbenchmark "$sortCriteria" "$outBenchmarkFile"
 
-cleanup_cv
+cleanup
 
 source scripts/success_message

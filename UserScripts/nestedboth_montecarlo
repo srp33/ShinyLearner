@@ -5,15 +5,16 @@ set -euo pipefail
 source scripts/shared_functions
 source scripts/first_param_check
 
-dataFiles="$(python scripts/ParseArgs.py --data TRUE TRUE $@)"
-description="$(python scripts/ParseArgs.py --description TRUE TRUE $@)"
-outerNumIterations="$(python scripts/ParseArgs.py --outer-iterations TRUE TRUE $@)"
-innerNumIterations="$(python scripts/ParseArgs.py --inner-iterations TRUE TRUE $@)"
-verbose="$(python scripts/ParseArgs.py --verbose FALSE FALSE $@)"
-classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE TRUE "$@")"
-numFeaturesOptions="$(python scripts/ParseArgs.py --num-features TRUE TRUE "$@")"
-fsAlgos="$(python scripts/ParseArgs.py --fs-algo TRUE TRUE "$@")"
-outputDir="$(python scripts/ParseArgs.py --output-dir TRUE TRUE $@)"
+dataFiles="$(python scripts/ParseArgs.py --data TRUE $@)"
+description="$(python scripts/ParseArgs.py --description TRUE $@)"
+outerNumIterations="$(python scripts/ParseArgs.py --outer-iterations TRUE $@)"
+innerNumIterations="$(python scripts/ParseArgs.py --inner-iterations TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
+classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE "$@")"
+numFeaturesOptions="$(python scripts/ParseArgs.py --num-features TRUE "$@")"
+fsAlgos="$(python scripts/ParseArgs.py --fs-algo TRUE "$@")"
+outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
+tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
 checkParamParseOutput "$description"
@@ -24,8 +25,9 @@ checkParamParseOutput "$classifAlgos"
 checkParamParseOutput "$numFeaturesOptions"
 checkParamParseOutput "$fsAlgos"
 checkParamParseOutput "$outputDir"
+checkParamParseOutput "$tmpDir"
 
-debug="$(convertVerboseToDebug "$verbose")"
+mkdir -p $outputDir
 outSelectedFeaturesFile="$outputDir/SelectedFeatures.tsv"
 outPredictionsFile="$outputDir/Predictions.tsv"
 outMetricsFile="$outputDir/Metrics.tsv"
@@ -37,19 +39,20 @@ outNestedFeatureSelectionBenchmarkFile="$outputDir/Nested_FeatureSelection_Elaps
 outNestedClassificationBenchmarkFile="$outputDir/Nested_Classification_ElapsedTime.tsv"
 outLogFile="$outputDir/Log.txt"
 
-validationType="montecarlo"
-randomSeed="0"
-
-if [[ "$outLogFile" == "" ]]
-then
-  echo An output log file must be specified.
-  exit 1
-fi
-
-mkdir -p $outputDir
+tmpDir="$(getTempDir "$tmpDir")"
 
 source scripts/print_args
 
-scripts/nestedboth "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$debug" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" montecarlo 0 2>&1 | tee -a "$outLogFile"
+function cleanup {
+  rm -rf $tmpDir
+}
+
+cleanup
+
+trap cleanup INT TERM EXIT
+
+scripts/nestedboth "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" montecarlo 0 "$tmpDir" 2>&1 | tee -a "$outLogFile"
+
+cleanup
 
 source scripts/success_message

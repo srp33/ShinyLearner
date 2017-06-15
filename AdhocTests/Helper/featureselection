@@ -25,7 +25,7 @@ cp -r AlgorithmScripts $testDir/
 cp -r UserScripts $testDir/
 cp -r VERSION $testDir/
 
-rm -f $outputDir
+rm -rf $outputDir
 mkdir -p $outputDir
 
 cd $testDir
@@ -33,12 +33,12 @@ cd $testDir
 validation=StrongSignal_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
 fsAlgo=AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default
-#verbose="  --verbose  "
-verbose=""
+#verbose=true
+verbose=false
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/featureselection_${validationType} --data "$dataFile" --description "$validation" --iterations 2 $verbose --fs-algo "$fsAlgo" --output-dir "$outputDir"
+  UserScripts/featureselection_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --verbose $verbose --fs-algo "$fsAlgo" --output-dir "$outputDir"
 else
-  UserScripts/featureselection_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --folds 2 $verbose --fs-algo "$fsAlgo" --output-dir "$outputDir"
+  UserScripts/featureselection_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --folds 2 --verbose $verbose --fs-algo "$fsAlgo" --output-dir "$outputDir"
 fi

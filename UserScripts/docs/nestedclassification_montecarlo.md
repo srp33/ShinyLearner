@@ -11,9 +11,10 @@ REQUIRED ARGUMENTS
     --classif-algo [file_path]
     --output-dir [dir_path]
 
-OPTIONAL ARGUMENT
+OPTIONAL ARGUMENTS
 
-    --verbose
+    --verbose [false|true]
+    --temp-dir [dir_path]
 
 EXAMPLE
 
@@ -39,7 +40,9 @@ NOTES
 
     The --output-dir argument allows you to indicate where output files will be stored. If this directory does not already exist, ShinyLearner will create it. For information about the output files that will be created, see https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md.
 
-    If the --verbose flag is specified, detailed information about the processing steps will be printed to standard out. This flag is typically used for debugging purposes.
+    If the --verbose argument is set to true, detailed information about the processing steps will be printed to standard out. This flag is typically used for debugging purposes.
+
+    When a value is specified for --temp-dir, temporary files will be stored in the specified location; otherwise, temporary files will be stored in the operating system's default location for temporary files. WARNING: **Any** file that is currently present in this directory will be removed when ShinyLearner executes.
 
 OUTPUTS
 

@@ -5,13 +5,14 @@ set -euo pipefail
 source scripts/shared_functions
 source scripts/first_param_check
 
-dataFiles="$(python scripts/ParseArgs.py --data TRUE TRUE $@)"
-description="$(python scripts/ParseArgs.py --description TRUE TRUE $@)"
-outerNumIterations="$(python scripts/ParseArgs.py --outer-iterations TRUE TRUE $@)"
-innerNumIterations="$(python scripts/ParseArgs.py --inner-iterations TRUE TRUE $@)"
-verbose="$(python scripts/ParseArgs.py --verbose FALSE FALSE $@)"
-classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE TRUE "$@")"
-outputDir="$(python scripts/ParseArgs.py --output-dir TRUE TRUE $@)"
+dataFiles="$(python scripts/ParseArgs.py --data TRUE $@)"
+description="$(python scripts/ParseArgs.py --description TRUE $@)"
+outerNumIterations="$(python scripts/ParseArgs.py --outer-iterations TRUE $@)"
+innerNumIterations="$(python scripts/ParseArgs.py --inner-iterations TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
+classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE "$@")"
+outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
+tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
 checkParamParseOutput "$description"
@@ -20,8 +21,9 @@ checkParamParseOutput "$innerNumIterations"
 checkParamParseOutput "$verbose"
 checkParamParseOutput "$classifAlgos"
 checkParamParseOutput "$outputDir"
+checkParamParseOutput "$tmpDir"
 
-debug="$(convertVerboseToDebug "$verbose")"
+mkdir -p $outputDir
 outPredictionsFile="$outputDir/Predictions.tsv"
 outMetricsFile="$outputDir/Metrics.tsv"
 outNestedPredictionsFile="$outputDir/Nested_Predictions.tsv"
@@ -29,10 +31,20 @@ outNestedMetricsFile="$outputDir/Nested_Metrics.tsv"
 outNestedBenchmarkFile="$outputDir/Nested_ElapsedTime.tsv"
 outLogFile="$outputDir/Log.txt"
 
-mkdir -p $outputDir
+tmpDir="$(getTempDir "$tmpDir")"
 
 source scripts/print_args
 
-scripts/nestedclassification "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$debug" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" montecarlo 0 2>&1 | tee -a "$outLogFile"
+function cleanup {
+  rm -rf $tmpDir
+}
+
+cleanup
+
+trap cleanup INT TERM EXIT
+
+scripts/nestedclassification "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" montecarlo 0 "$tmpDir" 2>&1 | tee -a "$outLogFile"
+
+cleanup
 
 source scripts/success_message

@@ -7,37 +7,41 @@ source scripts/shared_functions
 dataFiles="$1"
 description="$2"
 numIterations="$3"
-debug="$4"
+verbose="$4"
 classifAlgos="$5"
 outPredictionsFile="$6"
 outMetricsFile="$7"
 outBenchmarkFile="$8"
 validationType="${9}"
 randomSeed="${10}"
+tmpDir="${11}"
 
 source scripts/setup
 
-analysisDataFile=$tmpDir/data.gz
 idFile=$tmpDir/id
 classFile=$tmpDir/cl
 trainTestFile=$tmpDir/tt
 trainTestFile2=$tmpDir/tt2
 
-echo "Preparing for analysis..."
-java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
-python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $idFile $classFile
-
 if [[ "$validationType" == "montecarlo" ]]
 then
+  analysisDataFile=$tmpDir/data.gz
+
+  echo "Preparing for analysis..."
+  java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null
+
+  python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $idFile $classFile
   python scripts/AssignTrainingTesting.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
 else
+  analysisDataFile="$dataFiles"
+  python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $idFile $classFile
   python scripts/AssignCrossValidation.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
 fi
 
 python scripts/AddAlgorithmScripts.py $trainTestFile "$classifAlgos" $trainTestFile2
 
 echo "Starting classification..."
-java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_PREDICTIONS_FILE_PATH="$tmpDir/op0" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
+java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_PREDICTIONS_FILE_PATH="$tmpDir/op0" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null
 
 echo "Making aggregate predictions..."
 Rscript --vanilla scripts/MajorityVote.R "$tmpDir/op0" "$tmpDir/op"
@@ -57,5 +61,3 @@ echo "Preparing output files..."
 parseOutputFile $tmpDir/op "$outPredictionsFile"
 parseOutputFile $tmpDir/om "$outMetricsFile"
 parseOutputFile $tmpDir/ob "$outBenchmarkFile"
-
-cleanup $tmpDir

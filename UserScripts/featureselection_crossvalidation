@@ -5,13 +5,14 @@ set -euo pipefail
 source scripts/shared_functions
 source scripts/first_param_check
 
-dataFiles="$(python scripts/ParseArgs.py --data TRUE TRUE $@)"
-description="$(python scripts/ParseArgs.py --description TRUE TRUE $@)"
-numIterations="$(python scripts/ParseArgs.py --iterations TRUE TRUE $@)"
-numFolds="$(python scripts/ParseArgs.py --folds TRUE TRUE $@)"
-verbose="$(python scripts/ParseArgs.py --verbose FALSE FALSE $@)"
-fsAlgos="$(python scripts/ParseArgs.py --fs-algo TRUE TRUE "$@")"
-outputDir="$(python scripts/ParseArgs.py --output-dir TRUE TRUE $@)"
+dataFiles="$(python scripts/ParseArgs.py --data TRUE $@)"
+description="$(python scripts/ParseArgs.py --description TRUE $@)"
+numIterations="$(python scripts/ParseArgs.py --iterations TRUE $@)"
+numFolds="$(python scripts/ParseArgs.py --folds TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
+fsAlgos="$(python scripts/ParseArgs.py --fs-algo TRUE "$@")"
+outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
+tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
 checkParamParseOutput "$description"
@@ -20,30 +21,34 @@ checkParamParseOutput "$numFolds"
 checkParamParseOutput "$verbose"
 checkParamParseOutput "$fsAlgos"
 checkParamParseOutput "$outputDir"
+checkParamParseOutput "$tmpDir"
 
-debug="$(convertVerboseToDebug "$verbose")"
+mkdir -p $outputDir
 outFeaturesFile="$outputDir/SelectedFeatures.tsv"
 outSummarizedFeaturesFile="$outputDir/SelectedFeatures_Summarized.tsv"
 outBenchmarkFile="$outputDir/ElapsedTime.tsv"
 outLogFile="$outputDir/Log.txt"
 
-mkdir -p $outputDir
+source scripts/print_args
+
+tmpDir="$(getTempDir "$tmpDir")"
 
 source scripts/print_args
 
-tmpDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
-
-function cleanup_cv {
+function cleanup {
   rm -rf $tmpDir
 }
 
-cleanup_cv
+cleanup
 
-if [[ "$outLogFile" == "" ]]
-then
-  echo An output log file must be specified.
-  exit 1
-fi
+trap cleanup INT TERM EXIT
+
+validationType=crossvalidation
+source scripts/setup
+
+echo "Parsing data..."
+analysisDataFile=$tmpDir/data.gz
+java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null
 
 for iteration in $(seq 1 $numIterations)
 do
@@ -67,7 +72,7 @@ do
   echo "**************************************************************" | tee -a "$outLogFile"
   echo "Beginning analysis for cross-validation fold ${iteration}" | tee -a "$outLogFile"
   echo "**************************************************************" | tee -a "$outLogFile"
-  scripts/featureselection "$dataFiles" "$description" "$numFolds" "$debug" "$fsAlgos" "$outFeaturesFileIteration" "" "$outBenchmarkFileIteration" crossvalidation $iteration 2>&1 | tee -a "$outLogFile"
+  scripts/featureselection "$analysisDataFile" "$description" "$numFolds" "$verbose" "$fsAlgos" "$outFeaturesFileIteration" "" "$outBenchmarkFileIteration" crossvalidation $iteration "$outDir" 2>&1 | tee -a "$outLogFile"
 done
 
 echo
@@ -85,13 +90,13 @@ sortFile $tmpDir/outbenchmark "$sortCriteria" "$outBenchmarkFile"
 
 echo "Summarizing feature ranks..."
 errFile=/dev/null
-if [[ "$debug" == "true" ]]
+if [[ "$verbose" == "true" ]]
 then
   errFile=$(mktemp $tmpDir/XXXXXXXXX)
 fi
 Rscript --vanilla scripts/BordaCountFeatures.R $outFeaturesFile $outSummarizedFeaturesFile 2> $errFile | tee -a "$outLogFile"
-printError $debug $errFile
+printError $verbose $errFile
 
-cleanup_cv
+cleanup
 
 source scripts/success_message

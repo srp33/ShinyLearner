@@ -7,37 +7,41 @@ source scripts/shared_functions
 dataFiles="$1"
 description="$2"
 numIterations="$3"
-debug="$4"
+verbose="$4"
 fsAlgos="$5"
 outFeaturesFile="$6"
 outSummarizedFeaturesFile="$7"
 outBenchmarkFile="$8"
 validationType="$9"
 randomSeed="${10}"
+tmpDir="${11}"
 
 source scripts/setup
 
-analysisDataFile=$tmpDir/data.gz
 idFile=$tmpDir/id
 classFile=$tmpDir/cl
 trainTestFile=$tmpDir/tt
 trainTestFile2=$tmpDir/tt2
 
-echo "Preparing for analysis..."
-java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
-python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $idFile $classFile
-
 if [[ "$validationType" == "montecarlo" ]]
 then
+  analysisDataFile=$tmpDir/data.gz
+
+  echo "Preparing for analysis..."
+  java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null
+
+  python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $idFile $classFile
   python scripts/AssignTrainingTesting.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
 else
+  analysisDataFile="$dataFiles"
+  python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $idFile $classFile
   python scripts/AssignCrossValidation.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
 fi
 
 python scripts/AddAlgorithmScripts.py $trainTestFile "$fsAlgos" $trainTestFile2
 
 echo "Starting feature selection..."
-java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/of" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$debug TEMP_DIR=$tmpDir 2> /dev/null
+java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/of" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null
 
 function parseOutputFile {
   if [[ "$2" != "" ]]
@@ -55,7 +59,5 @@ if [[ "$outSummarizedFeaturesFile" != "" ]]
 then
   echo "Summarizing feature ranks..."
   Rscript --vanilla scripts/BordaCountFeatures.R "$outFeaturesFile" "$outSummarizedFeaturesFile" 2> $errFile
-  printError $debug $errFile
+  printError $verbose $errFile
 fi
-
-cleanup $tmpDir
