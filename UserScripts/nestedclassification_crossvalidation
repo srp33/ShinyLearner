@@ -33,8 +33,6 @@ outNestedMetricsFile="$outputDir/Nested_Metrics.tsv"
 outNestedBenchmarkFile="$outputDir/Nested_ElapsedTime.tsv"
 outLogFile="$outputDir/Log.txt"
 
-tmpDir="$(getTempDir "$tmpDir")"
-
 source scripts/print_args
 
 function cleanup {
@@ -42,6 +40,7 @@ function cleanup {
 }
 
 cleanup
+tmpDir="$(getTempDir "$tmpDir")"
 
 trap cleanup INT TERM EXIT
 

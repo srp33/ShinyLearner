@@ -30,7 +30,11 @@ function getTempDir {
     tmpDir="$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')"
     echo "$tmpDir"
   else
-    echo "$previousValue"
+    mkdir -p $previousValue
+    tmpDir=$(mktemp $previousValue/XXXXXXXXX)
+    rm $tmpDir
+    mkdir -p $tmpDir
+    echo "$tmpDir"
   fi
 }
 

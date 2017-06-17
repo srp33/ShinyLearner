@@ -27,6 +27,7 @@ do
 
   cd $currentDir
 done
+exit
 
 ###################################################
 # Clean and convert data files

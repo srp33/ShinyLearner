@@ -34,7 +34,8 @@ validation=StrongSignal_Both
 #validation=StrongSignal_Both_2Class
 #validation=StrongSignalLarge_Both
 #validation=NoSignal_Both
-dataFile="$currentDir/Validation/${validation}.*tsv.gz"
+dataFile="/tmp/ml_data/breast.cancer.arff"
+#dataFile="$currentDir/Validation/${validation}.*tsv.gz"
 #dataFile=$currentDir/Validation/${validation}.tsv.gz
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default"
 classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default
@@ -44,12 +45,13 @@ classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/*/default"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/bagging/default"
-#verbose=true
-verbose=false
+verbose=true
+#verbose=false
+tmpDir=/Users/srp33/Downloads/Temp
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir"
+  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir" --temp-dir $tmpDir
 else
   UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --folds 2 --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir"
 fi

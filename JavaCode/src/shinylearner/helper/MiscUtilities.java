@@ -68,4 +68,15 @@ public class MiscUtilities
     {
     	return Settings.TEMP_DIR + "/" + MiscUtilities.GetUniqueID();
     }
+
+    public static String trimSpecific(String str, String toTrim)
+    {
+        if (str.startsWith(toTrim))
+            str = str.substring(toTrim.length());
+
+        if (str.endsWith(toTrim))
+            str = str.substring(0, str.length() - toTrim.length());
+
+        return str;
+    }
 }

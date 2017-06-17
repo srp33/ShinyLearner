@@ -31,8 +31,6 @@ outLogFile="$outputDir/Log.txt"
 
 source scripts/print_args
 
-tmpDir="$(getTempDir "$tmpDir")"
-
 source scripts/print_args
 
 function cleanup {
@@ -40,6 +38,7 @@ function cleanup {
 }
 
 cleanup
+tmpDir="$(getTempDir "$tmpDir")"
 
 trap cleanup INT TERM EXIT
 

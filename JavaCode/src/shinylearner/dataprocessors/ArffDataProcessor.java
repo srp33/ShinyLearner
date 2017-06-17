@@ -7,6 +7,7 @@ import shinylearner.core.DataInstanceCollection;
 import shinylearner.core.Singletons;
 import shinylearner.helper.BigFileReader;
 import shinylearner.helper.ListUtilities;
+import shinylearner.helper.MiscUtilities;
 
 /** This data processor class is designed to parse text files in the ARFF format.
  * @author Stephen Piccolo
@@ -24,8 +25,7 @@ public class ArffDataProcessor extends AbstractDataProcessor
     @Override
     public ArrayList<String> ParseInstanceIDs() throws Exception
     {
-        ArrayList<String> dataPointNames = ParseDataPointNames("");
-        int idIndex = dataPointNames.indexOf("ID");
+        int idIndex = ParseDataPointNames("").indexOf("ID");
 
         if (idIndex != -1)
         {
@@ -36,6 +36,9 @@ public class ArffDataProcessor extends AbstractDataProcessor
             boolean data = false;
             for (String line : reader)
             {
+                if (line.startsWith("%"))
+                    continue;
+
                 if (line.toUpperCase().startsWith("@DATA"))
                 {
                     data = true;
@@ -57,6 +60,9 @@ public class ArffDataProcessor extends AbstractDataProcessor
 
         for (String line : reader)
         {
+            if (line.startsWith("%"))
+                continue;
+
             if (line.toUpperCase().startsWith("@DATA"))
                 instanceIDs = new ArrayList<String>();
             else
@@ -87,6 +93,7 @@ public class ArffDataProcessor extends AbstractDataProcessor
                         rowItems.add(item);
 
                 String dataPointName = rowItems.get(1).trim();
+                dataPointName = MiscUtilities.trimSpecific(dataPointName, "'");
 
                 if (dataPointName.toUpperCase().equals("ID"))
                     dataPointName = "ID";
@@ -118,6 +125,9 @@ public class ArffDataProcessor extends AbstractDataProcessor
         HashMap<String, String> nameValueMap;
         for (String line : reader)
         {
+            if (line.startsWith("%"))
+                continue;
+
             if (line.toUpperCase().startsWith("@DATA"))
                 instanceCount = 0;
             else
@@ -139,7 +149,7 @@ public class ArffDataProcessor extends AbstractDataProcessor
                         String dataPointName = dataPointNames.get(i);
 
                         if (dataPointName != "ID")
-                            nameValueMap.put(dataPointNames.get(i), rowValues.get(i));
+                            nameValueMap.put(dataPointNames.get(i), MiscUtilities.trimSpecific(rowValues.get(i), "'"));
                     }
 
                     dataInstanceCollection.SetValues(masterInstanceIndex, nameValueMap);

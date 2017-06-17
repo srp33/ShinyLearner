@@ -42,7 +42,7 @@ NOTES
 
     If the --verbose argument is set to true, detailed information about the processing steps will be printed to standard out. This flag is typically used for debugging purposes.
 
-    When a value is specified for --temp-dir, temporary files will be stored in the specified location; otherwise, temporary files will be stored in the operating system's default location for temporary files. WARNING: **Any** file that is currently present in this directory will be removed when ShinyLearner executes.
+    When a value is specified for --temp-dir, temporary files will be stored in the specified location; otherwise, temporary files will be stored in the operating system's default location for temporary files.
 
 OUTPUTS
 
