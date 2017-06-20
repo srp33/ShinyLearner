@@ -17,6 +17,7 @@ REQUIRED ARGUMENTS
 OPTIONAL ARGUMENTS
 
     --verbose [false|true]
+    --ohe [false|true]
     --temp-dir [dir_path]
 
 EXAMPLE
@@ -52,8 +53,10 @@ NOTES
 
     The --output-dir argument allows you to indicate where output files will be stored. If this directory does not already exist, ShinyLearner will create it. For information about the output files that will be created, see https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md.
 
-    If the --verbose argument is set to true, detailed information about the processing steps will be printed to standard out. This flag is typically used for debugging purposes.
+    The --verbose argument is set to false by default. If set to true, detailed information about the processing steps will be printed to standard out. This flag is typically used for debugging purposes.
 
+    The --ohe argument is set to true by default. This means that any categorical variables will be [one-hot encoded](https://www.quora.com/What-is-one-hot-encoding-and-when-is-it-used-in-data-science).
+    
     When a value is specified for --temp-dir, temporary files will be stored in the specified location; otherwise, temporary files will be stored in the operating system's default location for temporary files.
 
 OUTPUTS

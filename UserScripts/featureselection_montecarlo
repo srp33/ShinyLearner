@@ -8,17 +8,19 @@ source scripts/first_param_check
 dataFiles="$(python scripts/ParseArgs.py --data TRUE $@)"
 description="$(python scripts/ParseArgs.py --description TRUE $@)"
 numIterations="$(python scripts/ParseArgs.py --iterations TRUE $@)"
-verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
 fsAlgos="$(python scripts/ParseArgs.py --fs-algo TRUE "$@")"
 outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
+ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
 checkParamParseOutput "$description"
 checkParamParseOutput "$numIterations"
-checkParamParseOutput "$verbose"
 checkParamParseOutput "$fsAlgos"
 checkParamParseOutput "$outputDir"
+checkParamParseOutput "$verbose"
+checkParamParseOutput "$ohe"
 checkParamParseOutput "$tmpDir"
 
 mkdir -p $outputDir
@@ -38,7 +40,7 @@ tmpDir="$(getTempDir "$tmpDir")"
 
 trap cleanup INT TERM EXIT
 
-scripts/featureselection "$dataFiles" "$description" "$numIterations" "$verbose" "$fsAlgos" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile" montecarlo 0 $tmpDir 2>&1 | tee -a "$outLogFile"
+scripts/featureselection "$dataFiles" "$description" "$numIterations" "$verbose" "$fsAlgos" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile" montecarlo 1 $ohe $tmpDir 2>&1 | tee -a "$outLogFile"
 
 cleanup
 

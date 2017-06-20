@@ -9,18 +9,20 @@ dataFiles="$(python scripts/ParseArgs.py --data TRUE $@)"
 description="$(python scripts/ParseArgs.py --description TRUE $@)"
 outerNumIterations="$(python scripts/ParseArgs.py --outer-iterations TRUE $@)"
 innerNumIterations="$(python scripts/ParseArgs.py --inner-iterations TRUE $@)"
-verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
 classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE "$@")"
 outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
+ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
 checkParamParseOutput "$description"
 checkParamParseOutput "$outerNumIterations"
 checkParamParseOutput "$innerNumIterations"
-checkParamParseOutput "$verbose"
 checkParamParseOutput "$classifAlgos"
 checkParamParseOutput "$outputDir"
+checkParamParseOutput "$verbose"
+checkParamParseOutput "$ohe"
 checkParamParseOutput "$tmpDir"
 
 mkdir -p $outputDir
@@ -42,7 +44,7 @@ tmpDir="$(getTempDir "$tmpDir")"
 
 trap cleanup INT TERM EXIT
 
-scripts/nestedclassification "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" montecarlo 0 "$tmpDir" 2>&1 | tee -a "$outLogFile"
+scripts/nestedclassification "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" montecarlo 1 $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
 
 cleanup
 

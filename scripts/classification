@@ -14,7 +14,8 @@ outMetricsFile="$7"
 outBenchmarkFile="$8"
 validationType="${9}"
 randomSeed="${10}"
-tmpDir="${11}"
+ohe="${11}"
+tmpDir="${12}"
 
 source scripts/setup
 
@@ -39,6 +40,12 @@ else
 fi
 
 python scripts/AddAlgorithmScripts.py $trainTestFile "$classifAlgos" $trainTestFile2
+
+if [[ "$ohe" == "true" ]]
+then
+  echo "One-hot encoding the data..."
+  python scripts/OneHotEncode.py "$analysisDataFile"
+fi
 
 echo "Starting classification..."
 java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_PREDICTIONS_FILE_PATH="$tmpDir/op0" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null

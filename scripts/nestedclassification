@@ -17,7 +17,8 @@ outNestedMetricsFile="${10}"
 outNestedBenchmarkFile="${11}"
 validationType="${12}"
 randomSeed="${13}"
-tmpDir="${14}"
+ohe="${14}"
+tmpDir="${15}"
 
 source scripts/setup
 
@@ -42,6 +43,12 @@ fi
 
 ## Prepare inner experiment files
 python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie2
+
+if [[ "$ohe" == "true" ]]
+then
+  echo "One-hot encoding the data..."
+  python scripts/OneHotEncode.py "$analysisDataFile"
+fi
 
 echo "Classifying for inner iterations..."
 java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE=$analysisDataFile EXPERIMENT_FILE=$tmpDir/ie2 DEBUG=$verbose OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/icb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/ip TEMP_DIR=$tmpDir 2> /dev/null

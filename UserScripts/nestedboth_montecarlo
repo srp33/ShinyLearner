@@ -9,22 +9,24 @@ dataFiles="$(python scripts/ParseArgs.py --data TRUE $@)"
 description="$(python scripts/ParseArgs.py --description TRUE $@)"
 outerNumIterations="$(python scripts/ParseArgs.py --outer-iterations TRUE $@)"
 innerNumIterations="$(python scripts/ParseArgs.py --inner-iterations TRUE $@)"
-verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
 classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE "$@")"
 numFeaturesOptions="$(python scripts/ParseArgs.py --num-features TRUE "$@")"
 fsAlgos="$(python scripts/ParseArgs.py --fs-algo TRUE "$@")"
 outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
+ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
 checkParamParseOutput "$description"
 checkParamParseOutput "$outerNumIterations"
 checkParamParseOutput "$innerNumIterations"
-checkParamParseOutput "$verbose"
 checkParamParseOutput "$classifAlgos"
 checkParamParseOutput "$numFeaturesOptions"
 checkParamParseOutput "$fsAlgos"
 checkParamParseOutput "$outputDir"
+checkParamParseOutput "$verbose"
+checkParamParseOutput "$ohe"
 checkParamParseOutput "$tmpDir"
 
 mkdir -p $outputDir
@@ -50,7 +52,7 @@ tmpDir="$(getTempDir "$tmpDir")"
 
 trap cleanup INT TERM EXIT
 
-scripts/nestedboth "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" montecarlo 0 "$tmpDir" 2>&1 | tee -a "$outLogFile"
+scripts/nestedboth "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" montecarlo 1 $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
 
 cleanup
 

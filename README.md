@@ -44,6 +44,8 @@ ShinyLearner supports commonly used [input-data formats](https://github.com/srp3
 
 Output files are consistently formatted using the "[tidy data](http://vita.had.co.nz/papers/tidy-data.pdf)" approach. Therefore, these files can be imported directly into third-party analytic tools, such as Microsoft Excel or [R](http://www.r-project.org). [Output files](https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md) indicate predictions for each data instance as well an array of evaluation metrics, including accuracy, sensitivity, specificity, positive predictive value, AUROC, etc. [see Metrics.md](https://github.com/srp33/ShinyLearner/blob/master/Metrics.md).
 
+ShinyLearner uses [one-hot encoding](https://www.quora.com/What-is-one-hot-encoding-and-when-is-it-used-in-data-science) to transform categorical variables. (If desired, this can be turned off using the --ohe argument.)
+
 #### Many algorithms
 
 Over 50 classification algorithms and 14 feature selection algorithms from various third-party libraries have been incorporated into ShinyLearner [see Algorithms.md](https://github.com/srp33/ShinyLearner/blob/master/Algorithms.md).

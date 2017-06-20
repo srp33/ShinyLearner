@@ -23,7 +23,8 @@ outNestedFeatureSelectionBenchmarkFile="${16}"
 outNestedClassificationBenchmarkFile="${17}"
 validationType="${18}"
 randomSeed="${19}"
-tmpDir="${20}"
+ohe="${20}"
+tmpDir="${21}"
 
 source scripts/setup
 
@@ -48,6 +49,12 @@ fi
 ## Prepare inner experiment files
 python scripts/AddAlgorithmScripts.py $tmpDir/ie "$fsAlgos" $tmpDir/ie2
 python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie3
+
+if [[ "$ohe" == "true" ]]
+then
+  echo "One-hot encoding the data..."
+  python scripts/OneHotEncode.py "$analysisDataFile"
+fi
 
 echo "Selecting features for inner iterations..."
 java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$tmpDir/ie2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/if" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ifb" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null

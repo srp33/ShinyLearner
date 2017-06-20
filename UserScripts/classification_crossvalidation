@@ -9,18 +9,20 @@ dataFiles="$(python scripts/ParseArgs.py --data TRUE $@)"
 description="$(python scripts/ParseArgs.py --description TRUE $@)"
 numIterations="$(python scripts/ParseArgs.py --iterations TRUE $@)"
 numFolds="$(python scripts/ParseArgs.py --folds TRUE $@)"
-verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
 classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE "$@")"
 outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
+ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
 checkParamParseOutput "$description"
 checkParamParseOutput "$numIterations"
 checkParamParseOutput "$numFolds"
-checkParamParseOutput "$verbose"
 checkParamParseOutput "$classifAlgos"
 checkParamParseOutput "$outputDir"
+checkParamParseOutput "$verbose"
+checkParamParseOutput "$ohe"
 checkParamParseOutput "$tmpDir"
 
 mkdir -p $outputDir
@@ -76,7 +78,7 @@ do
   echo "Beginning analysis for cross-validation fold ${iteration}" | tee -a "$outLogFile"
   echo "**************************************************************" | tee -a "$outLogFile"
 
-  scripts/classification "$analysisDataFile" "$description" "$numFolds" "$verbose" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outBenchmarkFileIteration" crossvalidation $iteration "$outDir" 2>&1 | tee -a "$outLogFile"
+  scripts/classification "$analysisDataFile" "$description" "$numFolds" "$verbose" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outBenchmarkFileIteration" crossvalidation $iteration $ohe "$outDir" 2>&1 | tee -a "$outLogFile"
 done
 
 echo

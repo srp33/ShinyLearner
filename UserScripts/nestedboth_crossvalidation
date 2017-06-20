@@ -10,11 +10,12 @@ description="$(python scripts/ParseArgs.py --description TRUE $@)"
 numIterations="$(python scripts/ParseArgs.py --iterations TRUE $@)"
 outerNumFolds="$(python scripts/ParseArgs.py --outer-folds TRUE $@)"
 innerNumFolds="$(python scripts/ParseArgs.py --inner-folds TRUE $@)"
-verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
 classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE "$@")"
 numFeaturesOptions="$(python scripts/ParseArgs.py --num-features TRUE "$@")"
 fsAlgos="$(python scripts/ParseArgs.py --fs-algo TRUE "$@")"
 outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
+ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
@@ -22,11 +23,12 @@ checkParamParseOutput "$description"
 checkParamParseOutput "$numIterations"
 checkParamParseOutput "$outerNumFolds"
 checkParamParseOutput "$innerNumFolds"
-checkParamParseOutput "$verbose"
 checkParamParseOutput "$classifAlgos"
 checkParamParseOutput "$numFeaturesOptions"
 checkParamParseOutput "$fsAlgos"
 checkParamParseOutput "$outputDir"
+checkParamParseOutput "$verbose"
+checkParamParseOutput "$ohe"
 checkParamParseOutput "$tmpDir"
 
 mkdir -p $outputDir
@@ -117,7 +119,7 @@ do
   echo "**************************************************************" | tee -a "$outLogFile"
   echo "Beginning analysis for cross-validation fold ${iteration}" | tee -a "$outLogFile"
   echo "**************************************************************" | tee -a "$outLogFile"
-  scripts/nestedboth "$analysisDataFile" "$description" "$outerNumFolds" "$innerNumFolds" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFileIteration" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedSelectedFeaturesFileIteration" "" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedFeatureSelectionBenchmarkFileIteration" "$outNestedClassificationBenchmarkFileIteration" crossvalidation $iteration $outDir 2>&1 | tee -a "$outLogFile"
+  scripts/nestedboth "$analysisDataFile" "$description" "$outerNumFolds" "$innerNumFolds" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFileIteration" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedSelectedFeaturesFileIteration" "" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedFeatureSelectionBenchmarkFileIteration" "$outNestedClassificationBenchmarkFileIteration" crossvalidation $iteration $ohe $outDir 2>&1 | tee -a "$outLogFile"
 done
 
 echo

@@ -9,18 +9,20 @@ dataFiles="$(python scripts/ParseArgs.py --data TRUE $@)"
 description="$(python scripts/ParseArgs.py --description TRUE $@)"
 numIterations="$(python scripts/ParseArgs.py --iterations TRUE $@)"
 numFolds="$(python scripts/ParseArgs.py --folds TRUE $@)"
-verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
 fsAlgos="$(python scripts/ParseArgs.py --fs-algo TRUE "$@")"
 outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
+verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
+ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
 checkParamParseOutput "$description"
 checkParamParseOutput "$numIterations"
 checkParamParseOutput "$numFolds"
-checkParamParseOutput "$verbose"
 checkParamParseOutput "$fsAlgos"
 checkParamParseOutput "$outputDir"
+checkParamParseOutput "$verbose"
+checkParamParseOutput "$ohe"
 checkParamParseOutput "$tmpDir"
 
 mkdir -p $outputDir
@@ -28,8 +30,6 @@ outFeaturesFile="$outputDir/SelectedFeatures.tsv"
 outSummarizedFeaturesFile="$outputDir/SelectedFeatures_Summarized.tsv"
 outBenchmarkFile="$outputDir/ElapsedTime.tsv"
 outLogFile="$outputDir/Log.txt"
-
-source scripts/print_args
 
 source scripts/print_args
 
@@ -71,7 +71,7 @@ do
   echo "**************************************************************" | tee -a "$outLogFile"
   echo "Beginning analysis for cross-validation fold ${iteration}" | tee -a "$outLogFile"
   echo "**************************************************************" | tee -a "$outLogFile"
-  scripts/featureselection "$analysisDataFile" "$description" "$numFolds" "$verbose" "$fsAlgos" "$outFeaturesFileIteration" "" "$outBenchmarkFileIteration" crossvalidation $iteration "$outDir" 2>&1 | tee -a "$outLogFile"
+  scripts/featureselection "$analysisDataFile" "$description" "$numFolds" "$verbose" "$fsAlgos" "$outFeaturesFileIteration" "" "$outBenchmarkFileIteration" crossvalidation $iteration $ohe "$outDir" 2>&1 | tee -a "$outLogFile"
 done
 
 echo
