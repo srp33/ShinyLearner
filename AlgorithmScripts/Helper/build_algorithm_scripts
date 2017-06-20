@@ -42,7 +42,7 @@ done
 # Didn't work with default params: cforest nnet gbm mda qda lda
 # Need to troubleshoot:
 #   h2o.deeplearning h2o.gbm h2o.randomForest
-for algorithm in boosting C50 ctree cvglmnet gausspr glmnet kknn ksvm mlp multinom naiveBayes randomForest randomForestSRC ranger rda rpart sda svm xgboost
+for algorithm in boosting C50 ctree cvglmnet gausspr glmnet h2o.gbm h2o.deeplearning h2o.randomForest kknn ksvm mlp multinom naiveBayes randomForest randomForestSRC ranger rda rpart sda svm xgboost
 do
   createScript Classification mlr mlr_c_template $algorithm default
 done

@@ -31,11 +31,15 @@ classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default"
 
-$(dirname $0)/classification StrongSignal_Both montecarlo "--iterations 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/1.log &
-$(dirname $0)/classification NoSignal_Both montecarlo "--iterations 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/2.log &
-$(dirname $0)/classification StrongSignal_Both crossvalidation "--iterations 2 --folds 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/3.log &
-$(dirname $0)/classification NoSignal_Both crossvalidation "--iterations 2 --folds 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/4.log &
-wait
+classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default"
+$(dirname $0)/classification StrongSignal_Both montecarlo "--iterations 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/1.log
+exit
+
+#$(dirname $0)/classification StrongSignal_Both montecarlo "--iterations 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/1.log &
+#$(dirname $0)/classification NoSignal_Both montecarlo "--iterations 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/2.log &
+#$(dirname $0)/classification StrongSignal_Both crossvalidation "--iterations 2 --folds 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/3.log &
+#$(dirname $0)/classification NoSignal_Both crossvalidation "--iterations 2 --folds 2" "$classifAlgo" $inputDir $outputDir "$verbose" $outputDir/4.log &
+#wait
 
 ##$(dirname $0)/save_expected_output
 ##$(dirname $0)/classification NoSignal_Both crossvalidation $inputDir $outputDir $debug $numOuterIterations $numInnerIterations $outputDir/4.log &
