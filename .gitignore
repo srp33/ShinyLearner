@@ -28,3 +28,4 @@ TestFiles
 *.html
 gui/ShinyLearner/AlgorithmScripts
 Output
+*.tar.gz

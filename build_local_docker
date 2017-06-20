@@ -3,3 +3,4 @@
 scripts/build
 tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests BuildTestExpectedOutput LICENSE UserScripts
 sudo docker build -t srp33/shinylearner:test ./
+rm -f ShinyLearner.tar.gz
