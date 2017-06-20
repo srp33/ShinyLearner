@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sudo docker run -t -i --rm srp33/shinylearner:test /bin/bash
+#sudo docker run -t -i --rm srp33/shinylearner:version272 /bin/bash
