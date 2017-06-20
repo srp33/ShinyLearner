@@ -1,6 +1,22 @@
 #!/bin/bash
 
+set -euo pipefail
+
+currentDir=$(pwd)
+
 scripts/build
 tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION BuildTests BuildTestExpectedOutput LICENSE UserScripts
+
+tmpDir=/tmp/build_local_docker
+
+mkdir -p $tmpDir
+rm -rf $tmpDir/*
+
+mv ShinyLearner.tar.gz $tmpDir/
+cp Dockerfile $tmpDir/
+
+cd $tmpDir
 sudo docker build -t srp33/shinylearner:test ./
-rm -f ShinyLearner.tar.gz
+
+cd $currentDir
+rm -rf $tmpDir
