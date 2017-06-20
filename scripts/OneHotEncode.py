@@ -8,6 +8,6 @@ data = pandas.read_table(inFilePath, index_col=0)
 
 colsToEncode = [x for x in data.columns if data[x].dtype != np.float64 and data[x].dtype != np.int64 and x != "Class"]
 
-data = pandas.get_dummies(data, drop_first=True, columns=colsToEncode)
-
-data.to_csv(inFilePath, sep="\t", compression="gzip")
+if len(colsToEncode) > 0:
+    data = pandas.get_dummies(data, drop_first=True, columns=colsToEncode)
+    data.to_csv(inFilePath, sep="\t", compression="gzip")

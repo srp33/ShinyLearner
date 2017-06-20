@@ -33,7 +33,7 @@ cd $testDir
 validation=StrongSignal_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
 #dataFile="$currentDir/debug_data/*.tsv.gz"
-dataFile="/tmp/ml_data/breast.cancer.arff"
+#dataFile="/tmp/ml_data/breast.cancer.arff"
 fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default"
 numFeaturesOptions="5,20"
 classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/l*/default"

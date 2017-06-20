@@ -46,7 +46,7 @@ python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie2
 
 if [[ "$ohe" == "true" ]]
 then
-  echo "One-hot encoding the data..."
+  echo "One-hot encoding categorical data (where applicable)..."
   python scripts/OneHotEncode.py "$analysisDataFile"
 fi
 

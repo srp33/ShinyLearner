@@ -33,6 +33,7 @@ cd $testDir
 validation=StrongSignal_Both
 #validation=StrongSignal_Both_2Class
 #validation=StrongSignalLarge_Both
+#validation=StrongSignal_Continuous
 #validation=NoSignal_Both
 #dataFile="/tmp/ml_data/breast.cancer.arff"
 dataFile="$currentDir/Validation/${validation}.*tsv.gz"
