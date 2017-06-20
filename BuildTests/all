@@ -17,8 +17,8 @@ else
   expectedOutputDir=BuildTestExpectedOutput
 fi
 
-verbose="--verbose true"
-#verbose=""
+#verbose="--verbose true"
+verbose=""
 overallLogFile=$outputDir/log.overall
 
 rm -rf $outputDir/*
