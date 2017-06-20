@@ -63,8 +63,8 @@ fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default"
 
 $(dirname $0)/featureselection StrongSignal_Both montecarlo "--iterations 2" "$fsAlgo" $inputDir $outputDir "$verbose" $outputDir/1.log &
 $(dirname $0)/featureselection NoSignal_Both montecarlo "--iterations 2" "$fsAlgo" $inputDir $outputDir "$verbose" $outputDir/2.log &
-$(dirname $0)/featureselection StrongSignal_Both crossvalidation "--iterations 2 --folds 2" $inputDir $outputDir "$verbose" $outputDir/3.log &
-$(dirname $0)/featureselection NoSignal_Both crossvalidation "--iterations 2 --folds 2" $inputDir $outputDir "$verbose" $outputDir/4.log &
+$(dirname $0)/featureselection StrongSignal_Both crossvalidation "--iterations 2 --folds 2" "$fsAlgo" $inputDir $outputDir "$verbose" $outputDir/3.log &
+$(dirname $0)/featureselection NoSignal_Both crossvalidation "--iterations 2 --folds 2" "$fsAlgo" $inputDir $outputDir "$verbose" $outputDir/4.log &
 wait
 
 cat $outputDir/*.log >> $overallLogFile

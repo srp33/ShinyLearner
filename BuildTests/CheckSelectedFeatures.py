@@ -6,6 +6,7 @@ description = sys.argv[3]
 fsAlgorithmPaths = glob.glob(sys.argv[4])
 selectedFeaturesFilePaths = glob.glob(sys.argv[5])
 algorithmColumnName = sys.argv[6]
+isNestedBoth = sys.argv[7] == "True"
 
 if len(fsAlgorithmPaths) == 0:
     print "[FAILED] No feature-selection algorithm scripts were found!"
@@ -71,12 +72,28 @@ for selectedFeaturesFilePath in selectedFeaturesFilePaths:
         for i in range(1, 6):
             featureNames.add("Feature%s" % i)
         for i in range(51, 56):
-            featureNames.add("Feature%s.Low" % i)
-            featureNames.add("Feature%s.Medium" % i)
+            featureNames.add("Feature%s_Low" % i)
+            featureNames.add("Feature%s_Medium" % i)
 
         meanFeatureRanks = [getMeanFeatureRank(algorithmFeatureData, featureName) for featureName in featureNames]
-        meanFeatureRanks = [x for x in meanFeatureRanks if x != None]
-        success = testMeanFeatureRanks(meanFeatureRanks, featureNames, lowerThreshold, upperThreshold, idText)
+
+        if isNestedBoth:
+            numSelected = [x for x in meanFeatureRanks if x != None]
+            proportionSelected = float(len(numSelected)) / float(len(meanFeatureRanks))
+
+            success = False
+            if description.startswith("StrongSignal") and proportionSelected > 0.7:
+                success = True
+            if description.startswith("NoSignal") and proportionSelected < 0.3:
+                success = True
+
+            if success:
+                print "[PASSED] An acceptable proportion (%.3f) of target features was selected for outer folds for %s. {%s}" % (proportionSelected, description, idText)
+            else:
+                print "[FAILED] An unacceptable proportion (%.3f) of target features was selected for outer folds for %s. {%s}" % (proportionSelected, description, idText)
+        else:
+            meanFeatureRanks = [x for x in meanFeatureRanks if x != None]
+            success = testMeanFeatureRanks(meanFeatureRanks, featureNames, lowerThreshold, upperThreshold, idText)
 
         if not success:
             failedAlgorithms.add(algorithm)

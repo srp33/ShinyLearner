@@ -20,5 +20,7 @@ specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 UserScripts/${analysisType}_${validationType} --data "$dataFile" --description $description $iterationsFolds --fs-algo "$fsAlgo" --num-features "$numFeaturesOptions" --classif-algo "$classifAlgo" --output-dir $specificOutputDir $verbose
 
 python BuildTests/CheckAccuracy.py $analysisType $validationType $description "$classifAlgo" "$specificOutputDir/Metrics.tsv" Algorithm 2>&1 | tee -a $logFile
-python BuildTests/CheckSelectedFeatures.py $analysisType $validationType $description "$fsAlgo" "$specificOutputDir/SelectedFeatures.tsv" Algorithm 2>&1 | tee -a $logFile
+# Testing the nested selected features not necessary, as long as outer folds work fine
+#python BuildTests/CheckSelectedFeatures.py $analysisType $validationType $description "$fsAlgo" "$specificOutputDir/Nested_SelectedFeatures.tsv" Algorithm False 2>&1 | tee -a $logFile
 python BuildTests/CheckSummarizedSelectedFeatures.py "$specificOutputDir/Nested_SelectedFeatures_Summarized.tsv" 2>&1 | tee -a $logFile
+python BuildTests/CheckSelectedFeatures.py $analysisType $validationType $description "$fsAlgo" "$specificOutputDir/SelectedFeatures.tsv" Algorithm True 2>&1 | tee -a $logFile

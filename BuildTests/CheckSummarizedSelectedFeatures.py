@@ -27,8 +27,8 @@ featureNames = set()
 for i in range(1, 6):
     featureNames.add("Feature%s" % i)
 for i in range(51, 56):
-    featureNames.add("Feature%s.Low" % i)
-    featureNames.add("Feature%s.Medium" % i)
+    featureNames.add("Feature%s_Low" % i)
+    featureNames.add("Feature%s_Medium" % i)
 
 meanRanks = [dataDict[featureName] for featureName in featureNames]
 meanMeanRank = sum(meanRanks) / len(meanRanks)

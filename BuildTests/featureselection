@@ -17,5 +17,5 @@ specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
 UserScripts/${analysisType}_${validationType} --data "$dataFile" --description "$description" $iterationsFolds --fs-algo "$fsAlgo" --output-dir $specificOutputDir $verbose
 
-python BuildTests/CheckSelectedFeatures.py $analysisType $validationType $description "$fsAlgo" "$specificOutputDir/SelectedFeatures.tsv" Algorithm 2>&1 | tee -a $logFile
+python BuildTests/CheckSelectedFeatures.py $analysisType $validationType $description "$fsAlgo" "$specificOutputDir/SelectedFeatures.tsv" Algorithm False 2>&1 | tee -a $logFile
 python BuildTests/CheckSummarizedSelectedFeatures.py "$specificOutputDir/SelectedFeatures_Summarized.tsv" 2>&1 | tee -a $logFile
