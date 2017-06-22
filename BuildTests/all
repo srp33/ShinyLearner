@@ -47,6 +47,9 @@ cat output/*.log >> $overallLogFile
 rm -f output/*.log
 python CheckLogFiles.py $overallLogFile 1
 
+cd $currentDir
+sudo rm -rf $tmpDir
+
 #########################################################
 # Test all fs algorithms using monte carlo
 #########################################################
@@ -129,5 +132,5 @@ python CheckLogFiles.py $overallLogFile 1
 #########################################################
 
 cd $currentDir
-rm -rf $tmpDir
+sudo rm -rf $tmpDir
 echo "All tests passed!!!"
