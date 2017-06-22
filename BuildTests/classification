@@ -2,19 +2,23 @@
 
 set -euo pipefail
 
-description="$1"
-validationType="$2"
-iterationsFolds="$3"
-classifAlgo="$4"
-inputDir="$5"
-outputDir="$6"
-verbose="$7"
-logFile="$8"
+version="$1"
+description="$2"
+validationType="$3"
+iterationsFolds="$4"
+classifAlgo="$5"
+verbose="$6"
+logFile="$7"
+
+inputDir=input
+outputDir=output
+logFile=$outputDir/$logFile
 
 analysisType=$(basename $0)
 dataFile="$inputDir/$description.tsv.gz"
 specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
-UserScripts/${analysisType}_${validationType} --data "$dataFile" --description "$description" $iterationsFolds --classif-algo "$classifAlgo" --output-dir $specificOutputDir $verbose
+bash run_docker_command $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description "$description" $iterationsFolds --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose"
 
-python BuildTests/CheckAccuracy.py $analysisType $validationType $description "$classifAlgo" ${specificOutputDir}/Metrics.tsv Algorithm 2>&1 | tee -a $logFile
+expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
+python CheckAccuracy.py $analysisType $validationType $description ${specificOutputDir}/Metrics.tsv Algorithm $expectedNumAlgorithms 1 2>&1 | tee -a $logFile

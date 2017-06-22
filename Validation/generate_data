@@ -11,7 +11,6 @@ do
   gunzip /tmp/1.gz
 
   Rscript --vanilla Impute.R /tmp/1 /tmp/2
-#  Rscript --vanilla OneHotEncode.R /tmp/2 /tmp/3
   Rscript --vanilla Standardize.R /tmp/2 /tmp/4
 
   rm -f /tmp/4.gz

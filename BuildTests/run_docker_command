@@ -1,0 +1,8 @@
+#!/bin/bash
+
+version="$1"
+cmd="$2"
+
+sudo docker run --rm -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version${version} bash -c "$cmd"
+
+#sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/shinylearner:version${version} $cmd

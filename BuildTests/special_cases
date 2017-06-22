@@ -2,10 +2,11 @@
 
 set -euo pipefail
 
-inputDir=$1
-outputDir=$2
-verbose=$3
-logFile=$4
+version=$1
+verbose=$2
+logFile=$3
+
+logFile=output/$logFile
 
 classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default"
 
@@ -13,11 +14,13 @@ function testMultipleInputFiles {
   signal=$1
 
   description=${signal}SignalMultipleDataFiles
-  dataFiles="$inputDir/${signal}Signal_Continuous_NoClass.tsv.gz,$inputDir/${signal}Signal_Discrete.tsv.gz"
-  specificOutputDir=$outputDir/$(basename $0)_${description}_montecarlo
+  dataFiles="input/${signal}Signal_Continuous_NoClass.tsv.gz,input/${signal}Signal_Discrete.tsv.gz"
+  specificOutputDir=output/$(basename $0)_${description}_montecarlo
 
-  UserScripts/classification_montecarlo --data "$dataFiles" --description $description --iterations 1 --classif-algo "$classifAlgo" --output-dir $specificOutputDir "$verbose" 2>&1 | tee -a $logFile
-  python BuildTests/CheckAccuracy.py classification montecarlo $description "$classifAlgo" "$specificOutputDir/Metrics.tsv" Algorithm 2>&1 | tee -a $logFile
+  bash run_docker_command $version "UserScripts/classification_montecarlo --data \"$dataFiles\" --description "$description" --iterations 1 --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose" 2>&1 | tee -a $logFile
+
+  expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
+  python CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
 }
 
 testMultipleInputFiles Strong
@@ -28,43 +31,49 @@ testMultipleInputFiles No
 #####################################
 
 # Make sure we get a warning when instance is missing class value
-python BuildTests/KeepAllButLastLine.py $inputDir/StrongSignal_Class.tsv.gz /tmp/StrongSignal_Class.tsv.gz
+python KeepAllButLastLine.py input/StrongSignal_Class.tsv.gz input/StrongSignal_Class2.tsv.gz
 
 description=StrongSignal_MissingDependentVariable
-dataFiles="$inputDir/StrongSignal_Continuous_NoClass.tsv.gz,/tmp/StrongSignal_Class.tsv.gz"
-specificOutputDir=$outputDir/$(basename $0)_${description}_montecarlo
+dataFiles="input/StrongSignal_Continuous_NoClass.tsv.gz,input/StrongSignal_Class2.tsv.gz"
+specificOutputDir=output/$(basename $0)_${description}_montecarlo
 
-UserScripts/classification_montecarlo --data "$dataFiles" --description $description --iterations 1 --classif-algo "$classifAlgo" --output-dir $specificOutputDir "$verbose" 2>&1 | tee -a $logFile
-python BuildTests/CheckAccuracy.py classification montecarlo $description "$classifAlgo" "$specificOutputDir/Metrics.tsv" Algorithm 2>&1 | tee -a $logFile
-python BuildTests/CheckLogForMessage.py $specificOutputDir/Log.txt "After filtering, data were available for 59 instances and 101 data points" 2>&1 | tee -a $logFile
+bash run_docker_command $version "UserScripts/classification_montecarlo --data \"$dataFiles\" --description "$description" --iterations 1 --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose" 2>&1 | tee -a $logFile
+
+expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
+python CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
+python CheckLogForMessage.py $specificOutputDir/Log.txt "After filtering, data were available for 59 instances and 101 data points" 2>&1 | tee -a $logFile
 
 # Make sure we get a warning when instance has class value but no data
-python BuildTests/KeepAllButLastLine.py $inputDir/StrongSignal_Continuous_NoClass.tsv.gz /tmp/StrongSignal_Continuous_NoClass.tsv.gz
+python KeepAllButLastLine.py input/StrongSignal_Continuous_NoClass.tsv.gz input/StrongSignal_Continuous_NoClass2.tsv.gz
 
 description=StrongSignal_MissingIndependentVariable
-dataFiles="/tmp/StrongSignal_Continuous_NoClass.tsv.gz,$inputDir/StrongSignal_Class.tsv.gz"
-specificOutputDir=$outputDir/$(basename $0)_${description}_montecarlo
+dataFiles="input/StrongSignal_Continuous_NoClass2.tsv.gz,input/StrongSignal_Class.tsv.gz"
+specificOutputDir=output/$(basename $0)_${description}_montecarlo
 
-UserScripts/classification_montecarlo --data "$dataFiles" --description $description --iterations 1 --classif-algo "$classifAlgo" --output-dir $specificOutputDir "$verbose" 2>&1 | tee -a $logFile
-python BuildTests/CheckAccuracy.py classification montecarlo $description "$classifAlgo" "$specificOutputDir/Metrics.tsv" Algorithm 2>&1 | tee -a $logFile
-python BuildTests/CheckLogForMessage.py $specificOutputDir/Log.txt "After filtering, data were available for 59 instances and 101 data points" 2>&1 | tee -a $logFile
+bash run_docker_command $version "UserScripts/classification_montecarlo --data \"$dataFiles\" --description "$description" --iterations 1 --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose" 2>&1 | tee -a $logFile
+
+expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
+python CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
+python CheckLogForMessage.py $specificOutputDir/Log.txt "After filtering, data were available for 59 instances and 101 data points" 2>&1 | tee -a $logFile
 
 #####################################
 # Test different file formats
 #####################################
 
 description=StrongSignal_arff
-dataFiles="$inputDir/StrongSignal_Both.arff.gz"
-specificOutputDir=$outputDir/$(basename $0)_${description}_montecarlo
+dataFiles="input/StrongSignal_Both.arff.gz"
+specificOutputDir=output/$(basename $0)_${description}_montecarlo
 
-UserScripts/classification_montecarlo --data "$dataFiles" --description $description --iterations 1 --classif-algo "$classifAlgo" --output-dir $specificOutputDir "$verbose" 2>&1 | tee -a $logFile
-python BuildTests/CheckAccuracy.py classification montecarlo $description "$classifAlgo" "$specificOutputDir/Metrics.tsv" Algorithm 2>&1 | tee -a $logFile
+bash run_docker_command $version "UserScripts/classification_montecarlo --data \"$dataFiles\" --description "$description" --iterations 1 --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose" 2>&1 | tee -a $logFile
+
+expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
+python CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
 
 description=StrongSignal_ttsv
-dataFiles="$inputDir/StrongSignal_Both.ttsv.gz"
-specificOutputDir=$outputDir/$(basename $0)_${description}_montecarlo
+dataFiles="input/StrongSignal_Both.ttsv.gz"
+specificOutputDir=output/$(basename $0)_${description}_montecarlo
 
-UserScripts/classification_montecarlo --data "$dataFiles" --description $description --iterations 1 --classif-algo "$classifAlgo" --output-dir $specificOutputDir "$verbose" 2>&1 | tee -a $logFile
-python BuildTests/CheckAccuracy.py classification montecarlo $description "$classifAlgo" "$specificOutputDir/Metrics.tsv" Algorithm 2>&1 | tee -a $logFile
+bash run_docker_command $version "UserScripts/classification_montecarlo --data \"$dataFiles\" --description "$description" --iterations 1 --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose" 2>&1 | tee -a $logFile
 
-rm -f /tmp/StrongSignal*
+expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
+python CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile

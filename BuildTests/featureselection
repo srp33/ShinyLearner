@@ -2,20 +2,24 @@
 
 set -euo pipefail
 
-description="$1"
-validationType="$2"
-iterationsFolds="$3"
-fsAlgo="$4"
-inputDir="$5"
-outputDir="$6"
-verbose="$7"
-logFile="$8"
+version="$1"
+description="$2"
+validationType="$3"
+iterationsFolds="$4"
+fsAlgo="$5"
+verbose="$6"
+logFile="$7"
+
+inputDir=input
+outputDir=output
+logFile=$outputDir/$logFile
 
 analysisType=$(basename $0)
 dataFile="$inputDir/$description.tsv.gz"
 specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
-UserScripts/${analysisType}_${validationType} --data "$dataFile" --description "$description" $iterationsFolds --fs-algo "$fsAlgo" --output-dir $specificOutputDir $verbose
+bash run_docker_command $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description \"$description\" $iterationsFolds --fs-algo \"$fsAlgo\" --output-dir $specificOutputDir $verbose"
 
-python BuildTests/CheckSelectedFeatures.py $analysisType $validationType $description "$fsAlgo" "$specificOutputDir/SelectedFeatures.tsv" Algorithm False 2>&1 | tee -a $logFile
-python BuildTests/CheckSummarizedSelectedFeatures.py "$specificOutputDir/SelectedFeatures_Summarized.tsv" 2>&1 | tee -a $logFile
+expectedNumAlgorithms=$(bash run_docker_command $version "ls $fsAlgo | wc -l")
+python CheckSelectedFeatures.py $analysisType $validationType $description "$specificOutputDir/SelectedFeatures.tsv" Algorithm False $expectedNumAlgorithms 2>&1 | tee -a $logFile
+python CheckSummarizedSelectedFeatures.py "$specificOutputDir/SelectedFeatures_Summarized.tsv" 2>&1 | tee -a $logFile

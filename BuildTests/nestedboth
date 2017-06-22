@@ -2,25 +2,32 @@
 
 set -euo pipefail
 
-description="$1"
-validationType="$2"
-iterationsFolds="$3"
-fsAlgo="$4"
-numFeaturesOptions="$5"
-classifAlgo="$6"
-inputDir="$7"
-outputDir="$8"
-verbose="$9"
-logFile="${10}"
+version="$1"
+description="$2"
+validationType="$3"
+iterationsFolds="$4"
+fsAlgo="$5"
+numFeaturesOptions="$6"
+classifAlgo="$7"
+verbose="$8"
+logFile="$9"
+
+inputDir=input
+outputDir=output
+logFile=$outputDir/$logFile
 
 analysisType=$(basename $0)
 dataFile="$inputDir/$description.tsv.gz"
 specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
-UserScripts/${analysisType}_${validationType} --data "$dataFile" --description $description $iterationsFolds --fs-algo "$fsAlgo" --num-features "$numFeaturesOptions" --classif-algo "$classifAlgo" --output-dir $specificOutputDir $verbose
+bash run_docker_command $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description "$description" $iterationsFolds --fs-algo \"$fsAlgo\" --num-features \"$numFeaturesOptions\" --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose"
 
-python BuildTests/CheckAccuracy.py $analysisType $validationType $description "$classifAlgo" "$specificOutputDir/Metrics.tsv" Algorithm 2>&1 | tee -a $logFile
+# Should only be the ensemble algorithm
+python CheckAccuracy.py $analysisType $validationType $description "$specificOutputDir/Metrics.tsv" Algorithm 0 1 2>&1 | tee -a $logFile
+
 # Testing the nested selected features not necessary, as long as outer folds work fine
-#python BuildTests/CheckSelectedFeatures.py $analysisType $validationType $description "$fsAlgo" "$specificOutputDir/Nested_SelectedFeatures.tsv" Algorithm False 2>&1 | tee -a $logFile
-python BuildTests/CheckSummarizedSelectedFeatures.py "$specificOutputDir/Nested_SelectedFeatures_Summarized.tsv" 2>&1 | tee -a $logFile
-python BuildTests/CheckSelectedFeatures.py $analysisType $validationType $description "$fsAlgo" "$specificOutputDir/SelectedFeatures.tsv" Algorithm True 2>&1 | tee -a $logFile
+#python CheckSelectedFeatures.py $analysisType $validationType $description "$fsAlgo" "$specificOutputDir/Nested_SelectedFeatures.tsv" Algorithm False 2>&1 | tee -a $logFile
+python CheckSummarizedSelectedFeatures.py "$specificOutputDir/Nested_SelectedFeatures_Summarized.tsv" 2>&1 | tee -a $logFile
+
+# Should only be the ensemble algorithm
+python CheckSelectedFeatures.py $analysisType $validationType $description "$specificOutputDir/SelectedFeatures.tsv" Algorithm True 1 2>&1 | tee -a $logFile

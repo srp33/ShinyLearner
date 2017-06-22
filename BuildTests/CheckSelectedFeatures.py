@@ -3,14 +3,10 @@ import os, sys, glob
 taskType = sys.argv[1]
 validationType = sys.argv[2]
 description = sys.argv[3]
-fsAlgorithmPaths = glob.glob(sys.argv[4])
-selectedFeaturesFilePaths = glob.glob(sys.argv[5])
-algorithmColumnName = sys.argv[6]
-isNestedBoth = sys.argv[7] == "True"
-
-if len(fsAlgorithmPaths) == 0:
-    print "[FAILED] No feature-selection algorithm scripts were found!"
-    exit(1)
+selectedFeaturesFilePaths = glob.glob(sys.argv[4])
+algorithmColumnName = sys.argv[5]
+isNestedBoth = sys.argv[6] == "True"
+expectedNumAlgorithms = int(sys.argv[7])
 
 if len(selectedFeaturesFilePaths) == 0:
     print "[FAILED] No selected-features files were found!"
@@ -54,6 +50,10 @@ for selectedFeaturesFilePath in selectedFeaturesFilePaths:
 
     if len(uniqueAlgorithms) == 0:
         print "[FAILED] No algorithm scripts could be found."
+        exit(1)
+
+    if len(uniqueAlgorithms) != expectedNumAlgorithms:
+        print "[FAILED] The number of feature-selection algorithms in the %s [%i] does not match the expected number [%i]." % (selectedFeaturesFilePath, len(uniqueAlgorithms), expectedNumAlgorithms)
         exit(1)
 
     for algorithm in uniqueAlgorithms:

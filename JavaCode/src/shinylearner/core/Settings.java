@@ -34,13 +34,15 @@ public class Settings
 			TEMP_DIR = TEMP_DIR.substring(0, TEMP_DIR.lastIndexOf("/"));
 
 		String dataFilesArg = GetArgValue(args, "RAW_DATA_FILES", "");
+
 		if (!dataFilesArg.equals(""))
+		{
 			for (String x : dataFilesArg.split(","))
 			{
 				ArrayList<String> filePaths = FileUtilities.GetFilesMatchingPattern(x);
 
 				if (filePaths.size() == 0)
-					Log.ExceptionFatal("No input data was found that matches this pattern: " + dataFilesArg + ".");
+					Log.ExceptionFatal("No input data was found that matches this pattern: " + x + ".");
 
 				for (String filePath : filePaths)
 				{
@@ -50,6 +52,7 @@ public class Settings
 					RAW_DATA_FILES.add(filePath);
 				}
 			}
+		}
 
 		ANALYSIS_DATA_FILE = GetArgValue(args, "ANALYSIS_DATA_FILE", "");
 		EXPERIMENT_FILE = GetArgValue(args, "EXPERIMENT_FILE", "");
