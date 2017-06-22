@@ -28,12 +28,12 @@ sudo docker build -t srp33/shinylearner:version${version} .
 # Test all classification algorithms using monte carlo
 #########################################################
 
-#classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
+classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/*/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm_rbf/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default"
-classifAlgo="AlgorithmScripts/Classification/tsv/mlr/h2o*/default"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/h2o*/default"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default"
 
