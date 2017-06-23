@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -euo pipefail
+
+verbose="--verbose true"
+#verbose="--verbose false"
+currentDir=$(pwd)
+overallLogFile=log.overall
+tmpDir=/tmp/build_local_docker
+version=$(cat VERSION)
+
+rm -rf $tmpDir
+mkdir -p $tmpDir/input $tmpDir/output
+
+scripts/build
+tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION LICENSE UserScripts
+
+mv ShinyLearner.tar.gz $tmpDir/
+cp Dockerfile $tmpDir/
+cp -r Validation/*.gz $tmpDir/input
+cp -r BuildTests/* $tmpDir/
+
+cd $tmpDir
+
+sudo docker build -t srp33/shinylearner:version${version} .
+
+fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default"
+#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/InfoGain/default"
+#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/OneR/default"
+
+bash featureselection $version StrongSignal_Both montecarlo "--iterations 3" "$fsAlgo" "$verbose" 1.log
+
+cat output/1.log

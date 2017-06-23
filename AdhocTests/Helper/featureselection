@@ -32,9 +32,10 @@ cd $testDir
 
 validation=StrongSignal_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
-fsAlgo=AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default
-#verbose=true
-verbose=false
+#fsAlgo=AlgorithmScripts/FeatureSelection/tsv/sklearn/random_logistic_regression/default
+fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/OneR/default"
+verbose=true
+#verbose=false
 
 if [[ "$validationType" == "montecarlo" ]]
 then
