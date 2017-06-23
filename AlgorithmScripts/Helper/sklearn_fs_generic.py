@@ -20,28 +20,28 @@ def rank_features(algorithm, X, y):
 
     elif algorithm == 'mutual_info':
         from sklearn.feature_selection import mutual_info_classif
-        scorer = mutual_info_classif(random_state=R_SEED)
-        scorer.fit(X, y)
+        pval = 1 - mutual_info_classif(X, y)
+        random_array = random.random(len(pval))
+        order = lexsort((random_array,pval)) # will break ties by random
 
-        return [y[1] for y in sorted(zip(map(lambda x: round(x, 4), scorer.scores_), features))]
+        return [features[i] for i in order]
 
     # The RFE approach can be used with various different classifiers
     elif algorithm == 'random_forest_rfe':
         from sklearn.ensemble import RandomForestClassifier
         from sklearn.feature_selection import RFE
-        ####estimator = RandomForestClassifier(n_estimators=50, random_state=R_SEED, n_jobs=1)
-        estimator = RandomForestClassifier(random_state=R_SEED)
+        estimator = RandomForestClassifier(n_estimators=50, random_state=R_SEED)
         selector = RFE(estimator, n_features_to_select=5, step=0.1)
         selector.fit(X, y)
 
         return [y[1] for y in sorted(zip(map(lambda x: round(x, 4), selector.ranking_), features))]
-    elif algorithm == 'random_lasso':
-        from sklearn.linear_model import RandomizedLasso
-        scorer = RandomizedLasso(random_state=R_SEED)
-        scorer.fit(X, y)
-
-        #return [y[1] for y in sorted(zip(map(lambda x: round(x, 4), scorer.scores_), features), reverse=True)]
-        return [y[1] for y in sorted(zip(map(lambda x: round(x, 4), scorer.scores_), features))]
+#    elif algorithm == 'random_lasso':
+#        from sklearn.linear_model import RandomizedLasso
+#        scorer = RandomizedLasso(random_state=R_SEED)
+#        scorer.fit(X, y)
+#
+#        #return [y[1] for y in sorted(zip(map(lambda x: round(x, 4), scorer.scores_), features), reverse=True)]
+#        return [y[1] for y in sorted(zip(map(lambda x: round(x, 4), scorer.scores_), features))]
 
     elif algorithm == 'random_logistic_regression':
         # See http://blog.datadive.net/selecting-good-features-part-iv-stability-selection-rfe-and-everything-side-by-side/

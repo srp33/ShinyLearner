@@ -28,7 +28,8 @@ do
   createScript Classification sklearn sklearn_c_template $algorithm default
 done
 
-for algorithm in anova mutual_info random_forest_rfe random_lasso random_logistic_regression svm_rfe
+# Doesn't work: random_lasso
+for algorithm in anova mutual_info random_forest_rfe random_logistic_regression svm_rfe
 do
   createScript FeatureSelection sklearn sklearn_fs_template $algorithm default
 done
@@ -56,7 +57,7 @@ done
 #gbm
 
 #for algorithm in cforest.importance kruskal.test rf.importance rf.min.depth
-for algorithm in kruskal.test rf.importance rf.min.depth
+for algorithm in kruskal.test randomForestSRC.rfsrc rf.min.depth
 do
   createScript FeatureSelection mlr mlr_fs_template $algorithm default
 done
