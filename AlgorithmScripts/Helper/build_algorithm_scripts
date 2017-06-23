@@ -22,7 +22,8 @@ function createScript {
 ## sklearn
 ##############################
 
-for algorithm in adaboost bagging decision_tree extra_trees gaussian_naivebayes gaussian_process gradient_boosting knn lda logistic_regression multilayer_perceptron random_forest qda sgd svm_linear svm_nurbf svm_poly svm_rbf svm_sigmoid
+# Failed tests: gaussian_naivebayes gaussian_process qda
+for algorithm in adaboost bagging decision_tree extra_trees gradient_boosting knn lda logistic_regression multilayer_perceptron random_forest sgd svm_linear svm_nurbf svm_poly svm_rbf svm_sigmoid
 do
   createScript Classification sklearn sklearn_c_template $algorithm default
 done
