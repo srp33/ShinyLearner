@@ -34,7 +34,7 @@ rankAggregate <- function(featuresMatrix)
 #Description	Iteration	Fold	Algorithm	Features
 #Description	Iteration	Ensemble_Algorithm	Algorithm	Features
 #Description	Iteration	Fold	Ensemble_Algorithm	Algorithm	Features
-data <- read_tsv(inFilePath)
+data <- suppressMessages(read_tsv(inFilePath))
 
 #groupRankMatrix <- NULL
 #for (algorithm in unique(data$Algorithm))

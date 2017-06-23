@@ -14,9 +14,42 @@ def readData(inFilePath):
     return read_csv(inFilePath, sep='\t', index_col=0)
 
 def predict(algorithm, train_X, train_y, test_X):
-    if algorithm == 'lda':
+    if algorithm == 'adaboost':
+        from sklearn.ensemble import AdaBoostClassifier
+        clf = AdaBoostClassifier(random_state=R_SEED)
+    elif algorithm == 'bagging':
+        from sklearn.ensemble import BaggingClassifier
+        clf = BaggingClassifier(random_state=R_SEED)
+        ####clf = BaggingClassifier(n_estimators=100, random_state=R_SEED)
+    elif algorithm == 'decision_tree':
+        from sklearn.tree import DecisionTreeClassifier
+        clf = DecisionTreeClassifier(random_state=R_SEED)
+    elif algorithm == 'extra_trees':
+        from sklearn.ensemble import ExtraTreesClassifier
+        clf = ExtraTreesClassifier(random_state=R_SEED)
+        ####clf = ExtraTreesClassifier(n_estimators=100, random_state=R_SEED)
+    elif algorithm == 'gaussian_naivebayes':
+        from sklearn.naive_bayes import GaussianNB
+        clf = GaussianNB()
+    elif algorithm == 'gaussian_process':
+        from sklearn.gaussian_process import GaussianProcessClassifier
+        clf = GaussianProcessClassifier(random_state=R_SEED)
+    elif algorithm == 'gradient_boosting':
+        from sklearn.ensemble import GradientBoostingClassifier
+        clf = GradientBoostingClassifier(random_state=R_SEED)
+        ####clf = ExtraTreesClassifier(n_estimators=100, random_state=R_SEED)
+    elif algorithm == 'knn':
+        from sklearn.neighbors import KNeighborsClassifier
+        clf = KNeighborsClassifier()
+    elif algorithm == 'lda':
         from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
         clf = LinearDiscriminantAnalysis()
+    elif algorithm == 'logistic_regression':
+        from sklearn.linear_model import LogisticRegression
+        clf = LogisticRegression(random_state=R_SEED)
+    elif algorithm == 'multilayer_perceptron':
+        from sklearn.neural_network import MLPClassifier
+        clf = MLPClassifier(random_state=R_SEED)
     elif algorithm == 'qda':
         from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
         clf = QuadraticDiscriminantAnalysis()
@@ -24,42 +57,10 @@ def predict(algorithm, train_X, train_y, test_X):
         from sklearn.ensemble import RandomForestClassifier
         clf = RandomForestClassifier(random_state=R_SEED)
         ####clf = RandomForestClassifier(n_estimators=100, random_state=R_SEED)
-    elif algorithm == 'bagging':
-        from sklearn.ensemble import BaggingClassifier
-        clf = BaggingClassifier(random_state=R_SEED)
-        ####clf = BaggingClassifier(n_estimators=100, random_state=R_SEED)
-    elif algorithm == 'extra_trees':
-        from sklearn.ensemble import ExtraTreesClassifier
-        clf = ExtraTreesClassifier(random_state=R_SEED)
-        ####clf = ExtraTreesClassifier(n_estimators=100, random_state=R_SEED)
-    elif algorithm == 'logistic_regression':
-        from sklearn.linear_model import LogisticRegression
-        clf = LogisticRegression(random_state=R_SEED)
-#    elif algorithm == 'passive_aggressive':
-#        from sklearn.linear_model import PassiveAggressiveClassifier
-#        clf = PassiveAggressiveClassifier(random_state=R_SEED)
-#    elif algorithm == 'elastic_net':
-#        from sklearn.linear_model import ElasticNet
-#        clf = ElasticNet(random_state=R_SEED)
-#    elif algorithm == 'ridge':
-#        from sklearn.linear_model import RidgeClassifier
-#        clf = RidgeClassifier(random_state=R_SEED)
     elif algorithm == 'sgd':
         from sklearn.linear_model import SGDClassifier
-        clf = SGDClassifier(random_state=R_SEED)
-        ####clf = SGDClassifier(random_state=R_SEED, loss="modified_huber")
-    elif algorithm == 'knn':
-        from sklearn.neighbors import KNeighborsClassifier
-        clf = KNeighborsClassifier()
-#    elif algorithm == 'radius_neighbors':
-#        from sklearn.neighbors import RadiusNeighborsClassifier
-#        clf = RadiusNeighborsClassifier()
-    #elif algorithm == 'nearest_centroid':
-    #    from sklearn.neighbors.nearest_centroid import NearestCentroid
-    #    clf = NearestCentroid()
-    #elif algorithm == 'bernoulli_rbm':
-    #    from sklearn.neural_network import BernoulliRBM
-    #    clf = BernoulliRBM(random_state=R_SEED)
+        #### It is necessary to use this loss function to produce probabilistic predictions
+        clf = SGDClassifier(random_state=R_SEED, loss="modified_huber")
     elif algorithm == 'svm_linear':
         from sklearn.svm import SVC
         clf = SVC(probability=True, random_state=R_SEED, kernel='linear')
@@ -75,9 +76,6 @@ def predict(algorithm, train_X, train_y, test_X):
     elif algorithm == 'svm_nurbf':
         from sklearn.svm import NuSVC
         clf = NuSVC(probability=True, random_state=R_SEED)
-    elif algorithm == 'decision_tree':
-        from sklearn.tree import DecisionTreeClassifier
-        clf = DecisionTreeClassifier(random_state=R_SEED)
     else:
         print "Invalid algorithm: %s" % algorithm
         exit(1)
