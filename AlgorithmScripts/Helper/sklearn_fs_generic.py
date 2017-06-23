@@ -14,8 +14,9 @@ def rank_features(algorithm, X, y):
     if algorithm == 'random_forest_rfe':
         from sklearn.ensemble import RandomForestClassifier
         from sklearn.feature_selection import RFE
-        estimator = RandomForestClassifier(n_estimators=50, random_state=R_SEED, n_jobs=1)
-        selector = RFE(estimator, 5, step=0.1)
+        ####estimator = RandomForestClassifier(n_estimators=50, random_state=R_SEED, n_jobs=1)
+        estimator = RandomForestClassifier(random_state=R_SEED)
+        selector = RFE(estimator, n_features_to_select=5, step=0.1)
         selector.fit(X, y)
 
         return [y[1] for y in sorted(zip(map(lambda x: round(x, 4), selector.ranking_), features))]
@@ -23,7 +24,7 @@ def rank_features(algorithm, X, y):
         from sklearn.svm import SVC
         from sklearn.feature_selection import RFE
         estimator = SVC(random_state=R_SEED, kernel='linear')
-        selector = RFE(estimator, 5, step=0.1)
+        selector = RFE(estimator, n_features_to_select=5, step=0.1)
         selector.fit(X, y)
 
         return [y[1] for y in sorted(zip(map(lambda x: round(x, 4), selector.ranking_), features))]

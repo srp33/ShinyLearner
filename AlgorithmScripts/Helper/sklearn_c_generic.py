@@ -22,13 +22,16 @@ def predict(algorithm, train_X, train_y, test_X):
         clf = QuadraticDiscriminantAnalysis()
     elif algorithm == 'random_forest':
         from sklearn.ensemble import RandomForestClassifier
-        clf = RandomForestClassifier(n_estimators=100, random_state=R_SEED)
+        clf = RandomForestClassifier(random_state=R_SEED)
+        ####clf = RandomForestClassifier(n_estimators=100, random_state=R_SEED)
     elif algorithm == 'bagging':
         from sklearn.ensemble import BaggingClassifier
-        clf = BaggingClassifier(n_estimators=100, random_state=R_SEED)
+        clf = BaggingClassifier(random_state=R_SEED)
+        ####clf = BaggingClassifier(n_estimators=100, random_state=R_SEED)
     elif algorithm == 'extra_trees':
         from sklearn.ensemble import ExtraTreesClassifier
-        clf = ExtraTreesClassifier(n_estimators=100, random_state=R_SEED)
+        clf = ExtraTreesClassifier(random_state=R_SEED)
+        ####clf = ExtraTreesClassifier(n_estimators=100, random_state=R_SEED)
     elif algorithm == 'logistic_regression':
         from sklearn.linear_model import LogisticRegression
         clf = LogisticRegression(random_state=R_SEED)
@@ -43,7 +46,8 @@ def predict(algorithm, train_X, train_y, test_X):
 #        clf = RidgeClassifier(random_state=R_SEED)
     elif algorithm == 'sgd':
         from sklearn.linear_model import SGDClassifier
-        clf = SGDClassifier(random_state=R_SEED, loss="modified_huber")
+        clf = SGDClassifier(random_state=R_SEED)
+        ####clf = SGDClassifier(random_state=R_SEED, loss="modified_huber")
     elif algorithm == 'knn':
         from sklearn.neighbors import KNeighborsClassifier
         clf = KNeighborsClassifier()
