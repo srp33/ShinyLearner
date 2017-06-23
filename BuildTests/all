@@ -63,8 +63,6 @@ cat output/*.log >> $overallLogFile
 rm -f output/*.log
 python CheckLogFiles.py $overallLogFile 1
 
-exit
-
 #########################################################
 # Test some fs and cl algorithms using k-fold
 #########################################################
