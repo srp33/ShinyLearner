@@ -1,7 +1,11 @@
 #!/bin/bash
 
+set -euo pipefail
+
 #######################################################################################
 # This algorithm is implemented in the mlr software package (http://mlr-org.github.io).
 #######################################################################################
 
-bash "$(dirname $0)"/../../../../Helper/mlr_fs_generic "$1" "$0"
+dataFilePath="$1"
+
+Rscript --vanilla AlgorithmScripts/Helper/mlr_f_generic.R "$dataFilePath" "{algorithm}" 2>&1 | python AlgorithmScripts/Helper/ReformatMlrFeatureSelectionOutput.py

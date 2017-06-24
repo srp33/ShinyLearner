@@ -5,4 +5,4 @@
 # software package (http://www.cs.waikato.ac.nz/ml/weka/).
 ##########################################################
 
-bash "$(dirname $0)"/../../../../Helper/weka_fs_generic "$1" '{params}'
+bash AlgorithmScripts/Helper/weka_f_generic "$1" '{algorithm}'

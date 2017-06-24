@@ -5,9 +5,10 @@ from numpy import array
 from numpy import lexsort
 from numpy import random
 
-trainFilePath = argv[1]
-algorithm = argv[2]
-parameterDescription = argv[3]
+dataFilePath = argv[1]
+algorithmInstantiation = argv[2]
+
+# See http://blog.datadive.net/selecting-good-features-part-iv-stability-selection-rfe-and-everything-side-by-side/
 
 def rank_features(algorithm, X, y):
     if algorithm == 'anova':
@@ -35,16 +36,8 @@ def rank_features(algorithm, X, y):
         selector.fit(X, y)
 
         return [y[1] for y in sorted(zip(map(lambda x: round(x, 4), selector.ranking_), features))]
-#    elif algorithm == 'random_lasso':
-#        from sklearn.linear_model import RandomizedLasso
-#        scorer = RandomizedLasso(random_state=R_SEED)
-#        scorer.fit(X, y)
-#
-#        #return [y[1] for y in sorted(zip(map(lambda x: round(x, 4), scorer.scores_), features), reverse=True)]
-#        return [y[1] for y in sorted(zip(map(lambda x: round(x, 4), scorer.scores_), features))]
 
     elif algorithm == 'random_logistic_regression':
-        # See http://blog.datadive.net/selecting-good-features-part-iv-stability-selection-rfe-and-everything-side-by-side/
         from sklearn.linear_model import RandomizedLogisticRegression
         scorer = RandomizedLogisticRegression(random_state=R_SEED)
         scorer.fit(X, y)
@@ -67,7 +60,7 @@ def rank_features(algorithm, X, y):
 R_SEED = 0
 random.seed(R_SEED)
 
-train_df = read_csv(trainFilePath, sep='\t', index_col=0)
+train_df = read_csv(dataFilePath, sep='\t', index_col=0)
 train_X = train_df.ix[:,:-1].values
 
 train_y = [y[0] for y in train_df.loc[:,["Class"]].values.tolist()]
@@ -76,4 +69,8 @@ train_y = array([classOptions.index(y) for y in train_y])
 
 features = list(train_df.columns.values)[:-1]
 
-print ",".join(rank_features(algorithm, train_X, train_y))
+# Dynamically perform feature selection
+code = compile(algorithmInstantiation, "<string>", 'exec')
+exec code
+
+print ",".join(rankedFeatures)

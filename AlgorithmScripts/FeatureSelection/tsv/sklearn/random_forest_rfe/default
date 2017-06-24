@@ -1,8 +1,12 @@
 #!/bin/bash
 
+set -euo pipefail
+
 #####################################################
 # This algorithm is implemented in the scikit-learn
 # software package (http://scikit-learn.org/stable/).
 #####################################################
 
-bash "$(dirname $0)"/../../../../Helper/sklearn_fs_generic "$1" "$0"
+dataFilePath="$1"
+
+python AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "from sklearn.ensemble import RandomForestClassifier; from sklearn.feature_selection import RFE; estimator = RandomForestClassifier(n_estimators=50, random_state=R_SEED); selector = RFE(estimator, n_features_to_select=5, step=0.1); selector.fit(train_X, train_y); rankedFeatures = [y[1] for y in sorted(zip(map(lambda x: round(x, 4), selector.ranking_), features))]" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py

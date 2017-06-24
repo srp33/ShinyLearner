@@ -1,8 +1,12 @@
 #!/bin/bash
 
+set -euo pipefail
+
 #####################################################
 # This algorithm is implemented in the scikit-learn
 # software package (http://scikit-learn.org/stable/).
 #####################################################
 
-bash "$(dirname $0)"/../../../../Helper/sklearn_fs_generic "$1" "$0"
+dataFilePath="$1"
+
+python AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "from sklearn.feature_selection import mutual_info_classif; pval = 1 - mutual_info_classif(train_X, train_y); random_array = random.random(len(pval)); order = lexsort((random_array,pval)); rankedFeatures = [features[i] for i in order]" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py

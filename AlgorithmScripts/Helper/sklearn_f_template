@@ -1,8 +1,12 @@
 #!/bin/bash
 
+set -euo pipefail
+
 #####################################################
 # This algorithm is implemented in the scikit-learn
 # software package (http://scikit-learn.org/stable/).
 #####################################################
 
-bash $(dirname $0)/../../../../Helper/sklearn_c_generic "$1" "$2" "$3" $0
+dataFilePath="$1"
+
+python AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "{algorithmInstantiation}" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py

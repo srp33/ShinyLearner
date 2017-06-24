@@ -2,7 +2,6 @@ trainingFilePath <- commandArgs()[7]
 testFilePath <- commandArgs()[8]
 classOptions <- strsplit(commandArgs()[9], ",")[[1]]
 algorithm <- commandArgs()[10]
-parameterDescription <- commandArgs()[11]
 
 suppressPackageStartupMessages(library(mlr))
 suppressPackageStartupMessages(library(methods))
@@ -32,10 +31,7 @@ learn <- function(learner)
   set.seed(123, "L'Ecuyer")
   mod <- train(learner, task)
 
-#print(head(trainingData))
-#print(head(testData))
   task.pred <- predict(mod, newdata = testData)
-#stop("got here")
   #classtypes <- as.vector(task.pred$task.desc$class.levels)
 
   p1 <- getPredictionProbabilities(task.pred, classOptions)
@@ -46,8 +42,13 @@ learn <- function(learner)
   write.table(output, "", sep="\t", row.names = FALSE, col.names=FALSE, quote = FALSE)
 }
 
+# Dynamically invoke the algorithm
+##learner <- eval(parse(text = algorithmInstantiation))
+learner <- makeLearner(paste("classif.", algorithm, sep=""), predict.type = "prob")
+
+learn(learner)
+
 #if (parameterDescription == "default") {
-  learn(makeLearner(algorithm, predict.type = "prob"))
 #} else {
 #  parameterData <- read.table(parametersFilePath, sep="\t", header=TRUE, stringsAsFactor=F, row.names=NULL, check.names=FALSE, quote="")
 #  parameterNames <- colnames(parameterData)

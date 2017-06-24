@@ -1,6 +1,6 @@
 dataFilePath <- commandArgs()[7]
 algorithm <- commandArgs()[8]
-parameterDescription <- commandArgs()[9]
+#parameterDescription <- commandArgs()[9]
 
 suppressPackageStartupMessages(library(mlr))
 suppressPackageStartupMessages(library(methods))

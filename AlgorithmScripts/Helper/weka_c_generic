@@ -5,7 +5,7 @@ set -euo pipefail
 trainingFilePath="$1"
 testFilePath="$2"
 classOptions="$3"
-parameters="$4"
+algorithm="$4"
 
 command_exists () {
     type "$1" &> /dev/null ;
@@ -28,4 +28,4 @@ mem=$(getMemAvailable)
 wekaLibPath=$(dirname $0)/lib
 classPath="$wekaLibPath/*:$wekaLibPath/wekalib/*"
 
-echo java -Xmx${mem} -classpath "$classPath" $parameters -t "$trainingFilePath" -T "$testFilePath" -p 0 -distribution | python $(dirname $0)/ReformatWekaClassificationParams.py | bash | python $(dirname $0)/ParseWekaPredictions.py "$classOptions"
+echo java -Xmx${mem} -classpath "$classPath" $algorithm -t "$trainingFilePath" -T "$testFilePath" -p 0 -distribution | python $(dirname $0)/ReformatWekaClassificationParams.py | bash | python $(dirname $0)/ParseWekaPredictions.py "$classOptions"

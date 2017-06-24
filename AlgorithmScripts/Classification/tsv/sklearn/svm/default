@@ -11,4 +11,4 @@ trainingFilePath="$1"
 testFilePath="$2"
 classOptions="$3"
 
-python AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "from sklearn.linear_model import LogisticRegression; clf = LogisticRegression(random_state=R_SEED)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions
+python AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "from sklearn.svm import SVC; clf = SVC(probability=True, random_state=R_SEED)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions

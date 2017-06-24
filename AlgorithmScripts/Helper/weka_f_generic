@@ -3,7 +3,7 @@
 set -euo pipefail
 
 dataFilePath="$1"
-parameters="$2"
+algorithm="$2"
 
 command_exists () {
     type "$1" &> /dev/null ;
@@ -27,4 +27,4 @@ wekaLibPath=$(dirname $0)/lib
 #wekaLibPath=AlgorithmScripts/Helper/lib
 classPath="$wekaLibPath/*:$wekaLibPath/wekalib/*"
 
-echo java -Xmx${mem} -classpath $classPath $parameters -i $dataFilePath | python $(dirname $0)/ReformatWekaFSParams.py | bash | python $(dirname $0)/ParseWekaFSResults.py
+echo java -Xmx${mem} -classpath $classPath $algorithm -i $dataFilePath | python $(dirname $0)/ReformatWekaFSParams.py | bash | python $(dirname $0)/ParseWekaFSResults.py
