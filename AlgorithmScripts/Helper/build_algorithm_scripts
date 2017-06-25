@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 rm -rf ../Classification/tsv/sklearn/* ../FeatureSelection/tsv/sklearn/*
 python3 build_sklearn_scripts.py
 

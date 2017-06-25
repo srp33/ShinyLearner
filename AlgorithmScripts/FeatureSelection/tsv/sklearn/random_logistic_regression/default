@@ -9,4 +9,4 @@ set -euo pipefail
 
 dataFilePath="$1"
 
-python AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "from sklearn.linear_model import RandomizedLogisticRegression; scorer = RandomizedLogisticRegression(random_state=R_SEED); scorer.fit(train_X, train_y); rankedFeatures = [y[1] for y in sorted(zip(map(lambda x: round(x, 4), scorer.scores_), features), reverse=True)]" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py
+python AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "coef" "from sklearn.linear_model import RandomizedLogisticRegression; scorer = RandomizedLogisticRegression(random_state=R_SEED)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py
