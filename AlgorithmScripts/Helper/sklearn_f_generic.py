@@ -37,7 +37,7 @@ if algorithmClass == 'score':
 
 # The RFE approach can be used with various different classifiers
 elif algorithmClass == 'rfe':
-    selector = RFE(estimator, n_features_to_select=5, step=0.1)
+    selector = RFE(estimator, n_features_to_select=1, step=0.1)
     selector.fit(train_X, train_y)
 
     rankedFeatures = [y[1] for y in sorted(zip(map(lambda x: round(x, 4), selector.ranking_), features))]
