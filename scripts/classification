@@ -50,8 +50,14 @@ fi
 echo "Starting classification..."
 java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_PREDICTIONS_FILE_PATH="$tmpDir/op0" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null
 
-echo "Making aggregate predictions..."
-Rscript --vanilla scripts/MajorityVote.R "$tmpDir/op0" "$tmpDir/op"
+numClassifAlgos=$(python scripts/CountUniqueValues.py $trainTestFile2 -1 False)
+if (( numClassifAlgos > 1 ))
+then
+  echo "Making aggregate predictions..."
+  Rscript --vanilla scripts/MajorityVote.R "$tmpDir/op0" "$tmpDir/op"
+else
+  cp "$tmpDir/op0" "$tmpDir/op"
+fi
 
 echo "Calculating classification metrics..."
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"

@@ -7,6 +7,13 @@ from numpy import array
 from numpy import lexsort
 from numpy import random
 
+from sklearn.feature_selection import f_classif
+from sklearn.feature_selection import mutual_info_classif
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import RandomizedLogisticRegression
+from sklearn.svm import SVC
+from sklearn.feature_selection import RFE
+
 dataFilePath = argv[1]
 algorithmClass = argv[2]
 algorithmInstantiation = argv[3]
@@ -37,7 +44,6 @@ if algorithmClass == 'score':
 
 # The RFE approach can be used with various different classifiers
 elif algorithmClass == 'rfe':
-    selector = RFE(estimator, n_features_to_select=1, step=0.1)
     selector.fit(train_X, train_y)
 
     rankedFeatures = [y[1] for y in sorted(zip(map(lambda x: round(x, 4), selector.ranking_), features))]

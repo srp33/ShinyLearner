@@ -38,6 +38,13 @@ def testMeanFeatureRanks(meanFeatureRanks, featureNames, lowerThreshold, upperTh
         print "[FAILED] The mean feature index for %s and %s was %.1f. Expected was between %.1f and %.1f. {%s}" % (",".join(featureNames), description, grandMean, lowerThreshold, upperThreshold, idText)
         return False
 
+def getProportionSelected(algorithmFeatureData, featureNames):
+    proportionSelected = []
+    for x in algorithmFeatureData:
+        proportionSelected.append(float(len(set(featureNames) & set(x))) / len(x))
+
+    return sum(proportionSelected) / len(proportionSelected)
+
 failedAlgorithms = set()
 
 for selectedFeaturesFilePath in selectedFeaturesFilePaths:
@@ -78,8 +85,7 @@ for selectedFeaturesFilePath in selectedFeaturesFilePaths:
         meanFeatureRanks = [getMeanFeatureRank(algorithmFeatureData, featureName) for featureName in featureNames]
 
         if isNestedBoth:
-            numSelected = [x for x in meanFeatureRanks if x != None]
-            proportionSelected = float(len(numSelected)) / float(len(meanFeatureRanks))
+            proportionSelected = getProportionSelected(algorithmFeatureData, featureNames)
 
             success = False
             if description.startswith("StrongSignal") and proportionSelected > 0.7:

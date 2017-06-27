@@ -11,4 +11,4 @@ trainingFilePath="$1"
 testFilePath="$2"
 classOptions="$3"
 
-python AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "from sklearn.ensemble import AdaBoostClassifier; clf = AdaBoostClassifier(n_estimators=50, random_state=R_SEED)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions
+python AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "clf = AdaBoostClassifier(base_estimator=None, n_estimators=50, learning_rate=1.0, algorithm='SAMME.R', random_state=R_SEED)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions

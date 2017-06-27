@@ -84,7 +84,7 @@ public class ExperimentItems implements Comparable<ExperimentItems>
 //        if (overlappingTestIDs.size() != testIDs.size())
 //        	Log.ExceptionFatal("At least one of the test IDs was not present in the input data set(s).");
 
-        Log.Debug("Do a sanity check to make sure that no instances overlap between the training and test sets");
+        //Log.Debug("Do a sanity check to make sure that no instances overlap between the training and test sets");
         if (ListUtilities.Intersect(TrainingIDs, TestIDs).size() > 0)
         {
             String errorMessage = "The training and test sets overlap. ";

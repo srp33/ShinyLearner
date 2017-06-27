@@ -11,4 +11,4 @@ trainingFilePath="$1"
 testFilePath="$2"
 classOptions="$3"
 
-python AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "from sklearn.discriminant_analysis import LinearDiscriminantAnalysis; clf = LinearDiscriminantAnalysis()" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions
+python AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "clf = LinearDiscriminantAnalysis(solver='svd', shrinkage=None, priors=None, n_components=None, store_covariance=False, tol=0.0001)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions

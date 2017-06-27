@@ -9,4 +9,4 @@ set -euo pipefail
 
 dataFilePath="$1"
 
-python AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "coef" "from sklearn.linear_model import RandomizedLogisticRegression; scorer = RandomizedLogisticRegression(random_state=R_SEED)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py
+python AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "coef" "scorer = RandomizedLogisticRegression(C=1, scaling=0.5, sample_fraction=0.75, n_resampling=200, selection_threshold=0.25, tol=0.001, fit_intercept=True, verbose=False, normalize=True, random_state=R_SEED)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py

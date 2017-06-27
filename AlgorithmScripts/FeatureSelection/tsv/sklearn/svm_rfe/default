@@ -9,4 +9,4 @@ set -euo pipefail
 
 dataFilePath="$1"
 
-python AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "rfe" "from sklearn.svm import SVC; from sklearn.feature_selection import RFE; estimator = SVC(random_state=R_SEED, kernel='linear')" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py
+python AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "rfe" "selector = RFE(SVC(random_state=R_SEED, kernel='linear'), n_features_to_select=1, step=0.1)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py

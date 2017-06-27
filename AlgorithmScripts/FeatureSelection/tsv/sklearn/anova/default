@@ -9,4 +9,4 @@ set -euo pipefail
 
 dataFilePath="$1"
 
-python AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "score" "from sklearn.feature_selection import f_classif; F, score = f_classif(train_X, train_y)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py
+python AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "score" "F, score = f_classif(train_X, train_y)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py
