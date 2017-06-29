@@ -5,7 +5,7 @@ set -euo pipefail
 source scripts/shared_functions
 source scripts/first_param_check
 
-dataFiles="$(python scripts/ParseArgs.py --data TRUE $@)"
+dataFiles="$(python scripts/ParseArgs.py --data TRUE "$@")"
 description="$(python scripts/ParseArgs.py --description TRUE $@)"
 numIterations="$(python scripts/ParseArgs.py --iterations TRUE $@)"
 numFolds="$(python scripts/ParseArgs.py --folds TRUE $@)"

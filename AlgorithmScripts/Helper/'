@@ -7,14 +7,28 @@ suppressPackageStartupMessages(library(mlr))
 suppressPackageStartupMessages(library(methods))
 suppressPackageStartupMessages(library(data.table))
 
-trainingData <- fread(trainingFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, data.table=FALSE)
-testData <- fread(testFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, data.table=FALSE)
+print("got here2")
+#trainingData <- read.table(trainingFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, row.names = 1, check.names=FALSE, quote=NULL)
+trainingData <- read.table(trainingFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, row.names = 1, check.names=FALSE, quote="\"")
+#trainingData <- fread(trainingFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, row.names = 1, check.names=FALSE, quote=NULL)
+print("got here3")
+#testData <- read.table(testFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, row.names = 1, check.names=FALSE, quote=NULL)
+testData <- read.table(testFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, row.names = 1, check.names=FALSE, quote=NULL)
+print("got here4")
 
-#rownames(trainingData) <- trainingData[,1]
-#rownames(testData) <- testData[,1]
+# Make sure factor levels overlap between the training and test data
+##combinedData <- rbind(trainingData, testData)
 
-trainingData <- trainingData[,-1]
-testData <- testData[,-1]
+#for (i in 1:(ncol(trainingData)-1))
+#{
+#  if (class(trainingData[,i]) == "factor")
+#  {
+#    overlappingLevels <- unique(c(levels(trainingData[,i]), levels(testData[,i])))
+#
+#    trainingData[,i] <- factor(trainingData[,i], levels=overlappingLevels)
+#    testData[,i] <- factor(testData[,i], levels=overlappingLevels)
+#  }
+#}
 
 task <- makeClassifTask(data = trainingData, target = "Class")
 

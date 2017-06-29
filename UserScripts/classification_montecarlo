@@ -5,7 +5,7 @@ set -euo pipefail
 source scripts/shared_functions
 source scripts/first_param_check
 
-dataFiles="$(python scripts/ParseArgs.py --data TRUE $@)"
+dataFiles="$(python scripts/ParseArgs.py --data TRUE "$@")"
 description="$(python scripts/ParseArgs.py --description TRUE $@)"
 numIterations="$(python scripts/ParseArgs.py --iterations TRUE $@)"
 classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE "$@")"
@@ -38,10 +38,10 @@ function cleanup {
 cleanup
 tmpDir="$(getTempDir "$tmpDir")"
 
-trap cleanup INT TERM EXIT
+#trap cleanup INT TERM EXIT
 
 scripts/classification "$dataFiles" "$description" "$numIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo 1 $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
 
-cleanup
+#cleanup
 
 source scripts/success_message
