@@ -46,7 +46,6 @@ wait
 cat output/*.log >> $overallLogFile
 rm -f output/*.log
 python CheckLogFiles.py $overallLogFile 1
-exit
 
 #########################################################
 # Test all fs algorithms using monte carlo
