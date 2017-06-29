@@ -38,10 +38,10 @@ function cleanup {
 cleanup
 tmpDir="$(getTempDir "$tmpDir")"
 
-#trap cleanup INT TERM EXIT
+trap cleanup INT TERM EXIT
 
 scripts/classification "$dataFiles" "$description" "$numIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo 1 $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
 
-#cleanup
+cleanup
 
 source scripts/success_message
