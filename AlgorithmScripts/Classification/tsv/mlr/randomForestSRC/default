@@ -10,4 +10,4 @@ trainingFilePath="$1"
 testFilePath="$2"
 classOptions="$3"
 
-Rscript --vanilla AlgorithmScripts/Helper/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "randomForestSRC" --max-ppsize=500000 2>&1 | python AlgorithmScripts/Helper/ReformatMlrClassificationOutput.py "$classOptions"
+Rscript --no-save --no-restore --no-site-file --no-init-file --no-environ --max-ppsize=500000 AlgorithmScripts/Helper/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "randomForestSRC" 2>&1 | python AlgorithmScripts/Helper/ReformatMlrClassificationOutput.py "$classOptions"

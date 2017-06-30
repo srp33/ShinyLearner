@@ -1,5 +1,7 @@
-dataFilePath <- commandArgs()[7]
-algorithm <- commandArgs()[8]
+numArgs <- length(commandArgs())
+
+dataFilePath <- commandArgs()[numArgs - 1]
+algorithm <- commandArgs()[numArgs]
 #parameterDescription <- commandArgs()[9]
 
 suppressPackageStartupMessages(library(mlr))

@@ -1,7 +1,9 @@
-trainingFilePath <- commandArgs()[7]
-testFilePath <- commandArgs()[8]
-classOptions <- strsplit(commandArgs()[9], ",")[[1]]
-algorithm <- commandArgs()[10]
+numArgs <- length(commandArgs())
+
+trainingFilePath <- commandArgs()[numArgs-3]
+testFilePath <- commandArgs()[numArgs-2]
+classOptions <- strsplit(commandArgs()[numArgs-1], ",")[[1]]
+algorithm <- commandArgs()[numArgs]
 
 suppressPackageStartupMessages(library(mlr))
 suppressPackageStartupMessages(library(methods))
