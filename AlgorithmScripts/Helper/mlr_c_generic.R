@@ -10,9 +10,6 @@ suppressPackageStartupMessages(library(data.table))
 trainingData <- fread(trainingFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, data.table=FALSE)
 testData <- fread(testFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, data.table=FALSE)
 
-#rownames(trainingData) <- trainingData[,1]
-#rownames(testData) <- testData[,1]
-
 trainingData <- trainingData[,-1]
 testData <- testData[,-1]
 

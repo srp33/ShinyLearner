@@ -8,4 +8,4 @@ set -euo pipefail
 
 dataFilePath="$1"
 
-Rscript --vanilla AlgorithmScripts/Helper/mlr_f_generic.R "$dataFilePath" "cforest.importance" 2>&1 | python AlgorithmScripts/Helper/ReformatMlrFeatureSelectionOutput.py
+Rscript --max-ppsize=500000 --vanilla AlgorithmScripts/Helper/mlr_f_generic.R "$dataFilePath" "cforest.importance" 2>&1 | python AlgorithmScripts/Helper/ReformatMlrFeatureSelectionOutput.py

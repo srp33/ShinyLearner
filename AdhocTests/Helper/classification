@@ -37,7 +37,6 @@ validation=StrongSignal_Both
 #validation=NoSignal_Both
 #dataFile="/tmp/ml_data/breast.cancer.arff"
 dataFile="$currentDir/Data/GSE10320*"
-#dataFile="$currentDir/Validation/${validation}.*tsv.gz"
 #dataFile=$currentDir/Validation/${validation}.tsv.gz
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default"
 #classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default
@@ -45,11 +44,12 @@ dataFile="$currentDir/Data/GSE10320*"
 #classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/*/default
 #classifAlgo=$currentDir/AlgorithmScripts/Classification/arff/weka/*/default
 classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default
+#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default,$currentDir/AlgorithmScripts/Classification/arff/weka/LibSVM/default,$currentDir/AlgorithmScripts/Classification/tsv/sklearn/svm/default
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/*/default"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/bagging/default"
-verbose=true
-#verbose=false
+#verbose=true
+verbose=false
 tmpDir=/Users/srp33/Downloads/Temp
 
 if [[ "$validationType" == "montecarlo" ]]

@@ -1,3 +1,4 @@
+suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(readr))
 suppressPackageStartupMessages(library(dplyr))
 
@@ -39,16 +40,13 @@ calculateMajority <- function(data, classOptions)
 }
 
 #Description	Algorithm	InstanceID	ActualClass	PredictedClass	1	2	3
-data <- read.table(inFilePath, stringsAsFactors=TRUE, sep="\t", header=TRUE, row.names=NULL, check.names=FALSE)
+data <- fread(inFilePath, stringsAsFactors=TRUE, sep="\t", header=TRUE, data.table=FALSE)
 
-if (length(unique(data$Algorithm)) > 1)
-{
-  classOptions <- colnames(data)[(which(colnames(data)=="PredictedClass") + 1):ncol(data)]
+classOptions <- colnames(data)[(which(colnames(data)=="PredictedClass") + 1):ncol(data)]
 
-  majorityVoteData <- suppressWarnings(do(group_by(data, Description, InstanceID), calculateMajority(., classOptions)))
-  majorityVoteData <- as.data.frame(majorityVoteData)
+majorityVoteData <- suppressWarnings(do(group_by(data, Description, InstanceID), calculateMajority(., classOptions)))
+majorityVoteData <- as.data.frame(majorityVoteData)
 
-  data <- rbind(data, majorityVoteData)
-}
+data <- rbind(data, majorityVoteData)
 
 write_tsv(data, outFilePath)
