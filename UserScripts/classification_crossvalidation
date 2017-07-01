@@ -49,6 +49,12 @@ echo "Parsing data..."
 analysisDataFile=$tmpDir/data.gz
 java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null
 
+if [[ "$ohe" == "true" ]]
+then
+  echo "One-hot encoding categorical data (where applicable)..."
+  python scripts/OneHotEncode.py "$analysisDataFile"
+fi
+
 for iteration in $(seq 1 $numIterations)
 do
   outDir=$tmpDir/$iteration
