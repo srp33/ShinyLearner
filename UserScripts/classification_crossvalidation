@@ -55,6 +55,10 @@ then
   python scripts/OneHotEncode.py "$analysisDataFile"
 fi
 
+## Move some more stuff from scripts/classification into here?
+##   Find stuff that is common between montecarlo and crossvalidation?
+## And abstract this into a script that is shared between montecarlo and crossvalidation?
+
 for iteration in $(seq 1 $numIterations)
 do
   iterationOutDir=$tmpDir/$iteration

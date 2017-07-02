@@ -12,6 +12,7 @@ classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE "$@")"
 outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
 verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
 ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
+randomSeed="$(python scripts/ParseArgs.py --seed FALSE 1 $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
@@ -53,7 +54,7 @@ then
   python scripts/OneHotEncode.py "$analysisDataFile"
 fi
 
-scripts/classification "$analysisDataFile" "$description" "$numIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo 1 $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
+scripts/classification "$analysisDataFile" "$description" "$numIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo "$randomSeed" $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
 
 cleanup
 
