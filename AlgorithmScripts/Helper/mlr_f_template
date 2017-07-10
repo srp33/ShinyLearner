@@ -8,4 +8,4 @@ set -euo pipefail
 
 dataFilePath="$1"
 
-Rscript --no-save --no-restore --no-site-file --no-init-file --no-environ --max-ppsize=500000 AlgorithmScripts/Helper/mlr_f_generic.R "$dataFilePath" "{algorithm}" 2>&1 | python AlgorithmScripts/Helper/ReformatMlrFeatureSelectionOutput.py
+Rscript --no-save --no-restore --no-site-file --no-init-file --no-environ --max-ppsize=500000 AlgorithmScripts/Helper/mlr_f_generic.R "$dataFilePath" "{algorithmInstantiation}" 2>&1 | python AlgorithmScripts/Helper/ReformatMlrFeatureSelectionOutput.py

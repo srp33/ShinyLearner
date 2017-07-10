@@ -35,6 +35,8 @@ public class ExperimentItems implements Comparable<ExperimentItems>
 		CheckTrainTestAssignments();
 
 		AlgorithmScriptFilePath = ParseItem(lineNumber, lineItems, 3);
+
+		//Log.Debug("Will use algorithm script file: " + AlgorithmScriptFilePath);
 		
 		if (!FileUtilities.FileExists(AlgorithmScriptFilePath))
 			Log.ExceptionFatal("No algorithm script file exists at " + AlgorithmScriptFilePath + ".");

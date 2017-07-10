@@ -31,7 +31,7 @@ public class FeatureSelection
         String parameters = "\"" + dataFilePath + "\"";
         Log.Debug(Singletons.ExperimentItems.AlgorithmScriptFilePath + " " + parameters);
         //Log.Exit(1);
-        return MiscUtilities.ExecuteShellCommand(Singletons.ExperimentItems.AlgorithmScriptFilePath + " " + parameters);
+        return MiscUtilities.ExecuteShellCommand("\"" + Singletons.ExperimentItems.AlgorithmScriptFilePath + "\" " + parameters);
     }
     
     private static String GetOutput(String algorithmOutput) throws Exception

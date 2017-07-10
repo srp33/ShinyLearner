@@ -38,23 +38,26 @@ validation=StrongSignal_Both
 #dataFile="/tmp/ml_data/breast.cancer.arff"
 #dataFile="$currentDir/Data/GSE10320*"
 dataFile=$currentDir/Validation/${validation}.tsv.gz
-#classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default"
-#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default
-#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/adaboost/default
-#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/*/default
-#classifAlgo=$currentDir/AlgorithmScripts/Classification/arff/weka/*/default
-#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default
-#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default,$currentDir/AlgorithmScripts/Classification/arff/weka/LibSVM/default,$currentDir/AlgorithmScripts/Classification/tsv/sklearn/svm/default
-#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/*/default"
-classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
-#classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/bagging/default"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/adaboost/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/*/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/*/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default*,$currentDir/AlgorithmScripts/Classification/arff/weka/LibSVM/default*,$currentDir/AlgorithmScripts/Classification/tsv/sklearn/svm/default*"
+classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/*/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/bagging/default*"
 verbose=true
 #verbose=false
+iterations=1
+#iterations=2
+folds=2
 tmpDir=/Users/srp33/Downloads/Temp
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir" --temp-dir $tmpDir
+  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations $iterations --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir" --temp-dir $tmpDir
 else
-  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --folds 2 --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir"
+  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations $iterations --folds $folds --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir"
 fi

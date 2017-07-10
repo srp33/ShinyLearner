@@ -8,7 +8,7 @@ logFile=$3
 
 logFile=output/$logFile
 
-classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default"
+classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default*"
 
 function testMultipleInputFiles {
   signal=$1

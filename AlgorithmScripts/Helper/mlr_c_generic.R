@@ -35,8 +35,10 @@ learn <- function(learner)
 }
 
 # Dynamically invoke the algorithm
-##learner <- eval(parse(text = algorithmInstantiation))
-learner <- makeLearner(paste("classif.", algorithm, sep=""), predict.type = "prob")
+instantiation <- paste("learner <- makeLearner(", algorithm ,", predict.type = 'prob')", sep="")
+print(instantiation)
+learner <- eval(parse(text = instantiation))
+#learner <- makeLearner(paste("classif.", algorithm, sep=""), predict.type = "prob")
 
 learn(learner)
 

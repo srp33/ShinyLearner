@@ -28,14 +28,14 @@ sudo docker build -t srp33/shinylearner:version${version} .
 # Test all classification algorithms using monte carlo
 #########################################################
 
-classifAlgo="AlgorithmScripts/Classification/*/*/*/default"
-#classifAlgo="AlgorithmScripts/Classification/tsv/*/*/default"
-#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default"
-#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm/default"
-#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default"
-#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/h2o*/default"
-#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default"
-#classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default"
+classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/*/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/h2o*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default*"
 
 bash classification $version StrongSignal_Both montecarlo "--iterations 3" "$classifAlgo" "$verbose" 1.log &
 bash classification $version NoSignal_Both montecarlo "--iterations 3" "$classifAlgo" "$verbose" 2.log &
@@ -51,7 +51,8 @@ python CheckLogFiles.py $overallLogFile 1
 # Test all fs algorithms using monte carlo
 #########################################################
 
-fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default"
+fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/*/weka/*/default*"
 
 bash featureselection $version StrongSignal_Both montecarlo "--iterations 3" "$fsAlgo" "$verbose" 1.log &
 bash featureselection $version NoSignal_Both montecarlo "--iterations 3" "$fsAlgo" "$verbose" 2.log &
@@ -67,8 +68,8 @@ python CheckLogFiles.py $overallLogFile 1
 # Test some fs and cl algorithms using k-fold
 #########################################################
 
-fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default"
-classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/s*/default"
+fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default*"
+classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/s*/default*"
 
 bash classification $version StrongSignal_Both crossvalidation "--iterations 1 --folds 3" "$classifAlgo" "$verbose" 1.log &
 bash classification $version NoSignal_Both crossvalidation "--iterations 1 --folds 3" "$classifAlgo" "$verbose" 2.log &
@@ -84,7 +85,7 @@ python CheckLogFiles.py $overallLogFile 1
 # Test nestedclassification
 #########################################################
 
-classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/s*/default"
+classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/s*/default*"
 
 bash nestedclassification $version StrongSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$classifAlgo" "$verbose" 1.log &
 bash nestedclassification $version NoSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$classifAlgo" "$verbose" 2.log &
@@ -100,9 +101,9 @@ python CheckLogFiles.py $overallLogFile 1
 # Test nestedboth
 #########################################################
 
-fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default"
+fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default*"
 numFeaturesOptions="5,20"
-classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/s*/default"
+classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/s*/default*"
 
 bash nestedboth $version StrongSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" "$verbose" 1.log &
 bash nestedboth $version NoSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" "$verbose" 2.log &

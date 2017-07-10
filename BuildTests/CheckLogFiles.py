@@ -11,7 +11,7 @@ successLineCount = 0
 failureOutput = ""
 for logFilePath in logFilePaths:
     for line in file(logFilePath):
-        if "Exception" in line or "Error" in line or "[FAILED]" in line:
+        if "Exception" in line or "[FAILED]" in line or ("Error" in line and "ErrorRate" not in line):
             failureOutput += "\n" + line
         elif "[PASSED]" in line:
             successLineCount += 1

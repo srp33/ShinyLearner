@@ -35,9 +35,9 @@ dataFile=$currentDir/Validation/${validation}.tsv.gz
 #dataFile="$currentDir/debug_data/*.tsv.gz"
 #dataFile="$currentDir/TestFiles/*.tsv.gz"
 #dataFile="$currentDir/debug_data/Archive/mrna-sc_stad.tsv.gz,$currentDir/debug_data/stad_cv_surv1_stad.tsv.gz"
-#classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default"
-#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default"
-classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/knn/default"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default*"
+classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/knn/default*"
 #verbose=true
 verbose=false
 

@@ -24,9 +24,9 @@ cd $tmpDir
 
 sudo docker build -t srp33/shinylearner:version${version} .
 
-fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default"
-#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/InfoGain/default"
-#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/OneR/default"
+fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/InfoGain/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/OneR/default*"
 
 bash featureselection $version StrongSignal_Both montecarlo "--iterations 3" "$fsAlgo" "$verbose" 1.log
 

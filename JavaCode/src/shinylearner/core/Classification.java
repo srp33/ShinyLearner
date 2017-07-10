@@ -32,7 +32,7 @@ public class Classification
 		Log.Debug(Singletons.ExperimentItems.AlgorithmScriptFilePath + " " + parameters);
 		//Log.Exit(1);
 
-		return MiscUtilities.ExecuteShellCommand(Singletons.ExperimentItems.AlgorithmScriptFilePath + " " + parameters);
+		return MiscUtilities.ExecuteShellCommand("\"" + Singletons.ExperimentItems.AlgorithmScriptFilePath + "\" " + parameters);
 	}
 
 	private static ArrayList<Prediction> ParsePredictions(String predictionOutput, ArrayList<String> testIDs) throws Exception
@@ -67,7 +67,10 @@ public class Classification
 		}
 		
 		if (tempTestIDs.size() > 0)
-			Log.ExceptionFatal("The number of predictions [" + predictionLines.length + "] was not divisible by the number of test samples [" + testIDs.size() + "].\n\nAlgorithm output:\n" + predictionOutput);
+		{
+			Log.Debug("The number of predictions [" + predictionLines.length + "] was not divisible by the number of test samples [" + testIDs.size() + "].\n\nAlgorithm output:\n" + predictionOutput);
+//			Log.Info()
+		}
 
 		return predictions;
 	}
