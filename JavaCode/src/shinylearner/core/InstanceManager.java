@@ -1,16 +1,16 @@
 package shinylearner.core;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.zip.GZIPOutputStream;
-
 import shinylearner.dataprocessors.AbstractDataProcessor;
 import shinylearner.dataprocessors.ArffDataProcessor;
 import shinylearner.dataprocessors.DelimitedDataProcessor;
 import shinylearner.dataprocessors.TransposedDelimitedDataProcessor;
 import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.zip.GZIPOutputStream;
 
 /** This class provides convenience methods for accessing information about data instances that are used for machine-learning analyses.
  * @author Stephen Piccolo

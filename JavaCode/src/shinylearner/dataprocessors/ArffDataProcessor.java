@@ -1,13 +1,12 @@
 package shinylearner.dataprocessors;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import shinylearner.core.DataInstanceCollection;
-import shinylearner.core.Singletons;
 import shinylearner.helper.BigFileReader;
 import shinylearner.helper.ListUtilities;
 import shinylearner.helper.MiscUtilities;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /** This data processor class is designed to parse text files in the ARFF format.
  * @author Stephen Piccolo

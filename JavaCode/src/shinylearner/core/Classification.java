@@ -1,9 +1,9 @@
 package shinylearner.core;
 
-import java.util.ArrayList;
-
 import shinylearner.helper.ListUtilities;
 import shinylearner.helper.MiscUtilities;
+
+import java.util.ArrayList;
 
 /** This class acts as a wrapper for performing classification tasks. It interprets parameters for executing these tasks, based on what has been configured.
  * @author Stephen Piccolo
@@ -35,41 +35,42 @@ public class Classification
 		return MiscUtilities.ExecuteShellCommand("\"" + Singletons.ExperimentItems.AlgorithmScriptFilePath + "\" " + parameters);
 	}
 
-	private static ArrayList<Prediction> ParsePredictions(String predictionOutput, ArrayList<String> testIDs) throws Exception
+	private static ArrayList<AbstractPrediction> ParsePredictions(String predictionOutput, ArrayList<String> testIDs) throws Exception
 	{
 		Log.Debug(predictionOutput);
 
-		ArrayList<Prediction> predictions = new ArrayList<Prediction>();
+		ArrayList<AbstractPrediction> predictions = new ArrayList<AbstractPrediction>();
 		String[] predictionLines = predictionOutput.split("\n");
 
 		Log.Debug(predictionLines.length);
 		Log.Debug(testIDs.size());
 		//System.exit(1);
 
-		ArrayList<String> tempTestIDs = new ArrayList<String>();
+		ArrayList<String> tempTestIDs = ListUtilities.CreateStringList(testIDs);
 
 		for (int i=0; i<predictionLines.length; i++)
 		{
-			if (tempTestIDs.size() == 0)
-				tempTestIDs = ListUtilities.CreateStringList(testIDs);
-
 			String[] lineItems = predictionLines[i].split("\t");
 
 			String instanceID = tempTestIDs.remove(0);
 			String actualClass = Singletons.Data.GetClassValue(instanceID);
 			String prediction = lineItems[0];
 
-			ArrayList<Double> probabilities = new ArrayList<Double>();
+			ArrayList<String> probabilities = new ArrayList<String>();
 			for (int j=1; j<lineItems.length; j++)
-				probabilities.add(Double.parseDouble(lineItems[j].trim()));
+				probabilities.add(lineItems[j].trim());
 
 			predictions.add(new Prediction(instanceID, actualClass, prediction, probabilities));
 		}
 		
 		if (tempTestIDs.size() > 0)
 		{
-			Log.Debug("The number of predictions [" + predictionLines.length + "] was not divisible by the number of test samples [" + testIDs.size() + "].\n\nAlgorithm output:\n" + predictionOutput);
-//			Log.Info()
+			Log.Debug("For " + Singletons.ExperimentItems.AlgorithmScriptFilePath + " and " + Singletons.ExperimentItems.Description + ", the number of predictions [" + predictionLines.length + "] was not divisible by the number of test samples [" + testIDs.size() + "].\n\nAlgorithm output:\n" + predictionOutput);
+
+			predictions = new ArrayList<AbstractPrediction>();
+
+			for (String testID : testIDs)
+				predictions.add(new NullPrediction(testID, Singletons.Data.GetClassValue(testID)));
 		}
 
 		return predictions;
@@ -85,12 +86,12 @@ public class Classification
 		return header;
 	}
 
-	private static String GetPredictionOutput(ArrayList<Prediction> predictions) throws Exception
+	private static String GetPredictionOutput(ArrayList<AbstractPrediction> predictions) throws Exception
 	{
 		ArrayList<String> outLines = new ArrayList<String>();
 
 		// Loop through the predictions and construct the output
-		for (Prediction prediction : predictions)
+		for (AbstractPrediction prediction : predictions)
 		{
 			ArrayList<String> outputVals = new ArrayList<String>();
 
@@ -100,8 +101,8 @@ public class Classification
 			outputVals.add(AnalysisFileCreator.UnformatClassValue(prediction.DependentVariableValue));
 			outputVals.add(AnalysisFileCreator.UnformatClassValue(prediction.Prediction));
 
-			for (double classProbability : prediction.ClassProbabilities)
-				outputVals.add(String.valueOf(classProbability));
+			for (String classProbability : prediction.ClassProbabilities)
+				outputVals.add(classProbability);
 
 			outLines.add(ListUtilities.Join(outputVals, "\t"));
 		}

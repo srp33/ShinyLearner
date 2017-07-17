@@ -1,11 +1,6 @@
 package shinylearner.helper;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 /** This class contains helper methods for dealing with Java collections and lists. Many of these implement functionality that circumvents some of the awkwardness and verbostity of dealing with lists in Java.
  * @author Stephen Piccolo

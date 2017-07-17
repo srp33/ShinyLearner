@@ -1,13 +1,11 @@
 package shinylearner.dataprocessors;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import shinylearner.core.DataInstanceCollection;
-import shinylearner.core.Log;
-import shinylearner.core.Singletons;
 import shinylearner.helper.BigFileReader;
 import shinylearner.helper.ListUtilities;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /** This class enables the user to import data directly from delimited (for example, by tabs or commas) text files. This class ignores the final column in the file (which it assumes contains the dependent variable values). The default delimiter is a tab.
  * @author Stephen Piccolo

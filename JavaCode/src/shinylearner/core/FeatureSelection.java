@@ -1,9 +1,9 @@
 package shinylearner.core;
 
-import java.util.ArrayList;
-
 import shinylearner.helper.ListUtilities;
 import shinylearner.helper.MiscUtilities;
+
+import java.util.ArrayList;
 
 public class FeatureSelection
 {

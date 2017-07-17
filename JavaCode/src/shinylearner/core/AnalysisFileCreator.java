@@ -1,12 +1,12 @@
 package shinylearner.core;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
 import shinylearner.helper.DataTypeUtilities;
 import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
 import shinylearner.helper.MiscUtilities;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /** This class is used to transform data from the data format to the format that is required for external software components.
  * @author Stephen Piccolo

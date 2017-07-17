@@ -1,16 +1,10 @@
 package shinylearner.helper;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import shinylearner.core.Log;
+
+import java.io.*;
 import java.util.Iterator;
 import java.util.zip.GZIPInputStream;
-
-import shinylearner.core.Log;
 
 /** This helper class is designed to aid in the process of parsing (potentially large) text files. It stores little data in memory, thus making it possible to parse very large files.
  * @author Stephen Piccolo

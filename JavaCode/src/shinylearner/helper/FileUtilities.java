@@ -1,15 +1,10 @@
 package shinylearner.helper;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import shinylearner.core.Log;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.zip.GZIPOutputStream;
-
-import shinylearner.core.Log;
 
 /** This class provides helper methods for reading, writing, updating, and deleting files.
  * @author Stephen Piccolo

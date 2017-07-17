@@ -1,12 +1,11 @@
 package shinylearner.helper;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.util.UUID;
-
 import shinylearner.core.Log;
 import shinylearner.core.Settings;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.UUID;
 
 /** This class contains general-purpose helper methods that are used in various places throughout the code. It also contains Singleton objects (those that are instantiated only once and stored as static variables).
  * @author Stephen

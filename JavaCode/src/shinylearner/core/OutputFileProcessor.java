@@ -1,8 +1,8 @@
 package shinylearner.core;
 
-import java.util.ArrayList;
-
 import shinylearner.helper.FileUtilities;
+
+import java.util.ArrayList;
 
 public class OutputFileProcessor
 {

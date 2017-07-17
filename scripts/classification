@@ -45,7 +45,7 @@ echo "Calculating classification metrics..."
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
 
 function parseOutputFile {
-  if [[ "$2" != "" ]]
+  if [ -f "$1" ]
   then
     python scripts/ParseNonNestedResults.py $1 "$iterationOutputHeader" $1.sorttemp
     sortFile $1.sorttemp "-k1,1 -k2,2n -k3" "$2"

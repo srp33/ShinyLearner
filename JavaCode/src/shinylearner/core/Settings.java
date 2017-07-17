@@ -1,9 +1,9 @@
 package shinylearner.core;
 
+import shinylearner.helper.FileUtilities;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import shinylearner.helper.FileUtilities;
 
 /** This class stores application wide values. These values are typically machine-specific and are set via command-line parameters.
  * @author Stephen Piccolo

@@ -1,9 +1,9 @@
 package shinylearner.core;
 
-import java.util.ArrayList;
-
 import shinylearner.helper.FileUtilities;
 import shinylearner.helper.ListUtilities;
+
+import java.util.ArrayList;
 
 public class ExperimentItems implements Comparable<ExperimentItems>
 {
