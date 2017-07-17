@@ -7,7 +7,11 @@ outFilePath = sys.argv[3]
 classifAlgos = set()
 for x in classifAlgosRaw.split(","):
     for y in glob.glob(x):
-        classifAlgos.add(y)
+        if y.endswith(".list"):
+            for line in file(y):
+                classifAlgos.add(line.rstrip())
+        else:
+            classifAlgos.add(y)
 
 classifAlgos = sorted(list(classifAlgos))
 
