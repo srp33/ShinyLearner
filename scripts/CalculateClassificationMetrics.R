@@ -45,8 +45,9 @@ predictionsData <- read.table(inPredictionsFilePath, sep="\t", header=TRUE, row.
 
 if ("ERROR" %in% predictionsData$PredictedClass) {
   cat("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
-  cat("Error: Algorithm performance could not be calculated because at least one of the individual algorithms experienced an error. To troubleshoot the error, reexecute ShinyLearner in verbose mode.\n")
+  cat("Error: Algorithm performance could not be calculated because at least one algorithm experienced an error. To troubleshoot the error, reexecute ShinyLearner in verbose mode.\n")
   cat("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
+  stop()
 } else {
   predictionStartIndex <- which(colnames(predictionsData) == "PredictedClass") + 1
   classOptions <- colnames(predictionsData)[predictionStartIndex:ncol(predictionsData)]

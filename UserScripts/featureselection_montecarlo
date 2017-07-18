@@ -12,6 +12,7 @@ fsAlgos="$(python scripts/ParseArgs.py --fs-algo TRUE "$@")"
 outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
 verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
 ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
+randomSeed="$(python scripts/ParseArgs.py --seed FALSE 1 $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
@@ -40,7 +41,7 @@ tmpDir="$(getTempDir "$tmpDir")"
 
 trap cleanup INT TERM EXIT
 
-scripts/featureselection "$dataFiles" "$description" "$numIterations" "$verbose" "$fsAlgos" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile" montecarlo 1 $ohe $tmpDir 2>&1 | tee -a "$outLogFile"
+scripts/featureselection "$dataFiles" "$description" "$numIterations" "$verbose" "$fsAlgos" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile" montecarlo $randomSeed $ohe $tmpDir 2>&1 | tee -a "$outLogFile"
 
 cleanup
 

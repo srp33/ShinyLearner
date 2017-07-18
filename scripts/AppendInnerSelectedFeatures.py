@@ -10,9 +10,19 @@ outFilePath = sys.argv[4]
 featuresDict = defaultdict(lambda: {})
 selectedFeaturesFile = open(selectedFeaturesFilePath)
 selectedFeaturesFile.readline()
+
 for line in selectedFeaturesFile:
     lineItems = line.rstrip().split("\t")
-    featuresDict[lineItems[0]][lineItems[1]] = lineItems[2].split(",")
+    features = lineItems[2].split(",")
+
+    if features == ["ERROR"]:
+        print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("Error: At least one individual algorithm experienced an error when attempting to select features. To troubleshoot the error, reexecute ShinyLearner in verbose mode.")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        sys.exit(1)
+
+    featuresDict[lineItems[0]][lineItems[1]] = features
+
 selectedFeaturesFile.close()
 
 outLines = []

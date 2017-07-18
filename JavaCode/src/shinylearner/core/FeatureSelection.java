@@ -22,8 +22,13 @@ public class FeatureSelection
 		Log.Debug(algorithmOutput);
 		//Log.Exit(1);
 
+		if (algorithmOutput.equals(""))
+			algorithmOutput = GetOutput("ERROR");
+		else
+			algorithmOutput = GetOutput(algorithmOutput);
+
 		OutputFileProcessor.AddBenchmarkOutputLine(Benchmark.GetBenchmarkValues(startTime), false);
-		OutputFileProcessor.AddFeatureSelectionOutputLine(GetOutput(algorithmOutput), false);
+		OutputFileProcessor.AddFeatureSelectionOutputLine(algorithmOutput, false);
 	}
 	
     private static String SelectFeaturesCommand(String dataFilePath) throws Exception

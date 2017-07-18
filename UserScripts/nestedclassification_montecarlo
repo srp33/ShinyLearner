@@ -12,6 +12,7 @@ innerNumIterations="$(python scripts/ParseArgs.py --inner-iterations TRUE $@)"
 classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE "$@")"
 outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
 verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
+randomSeed="$(python scripts/ParseArgs.py --seed FALSE 1 $@)"
 ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
@@ -44,7 +45,7 @@ tmpDir="$(getTempDir "$tmpDir")"
 
 trap cleanup INT TERM EXIT
 
-scripts/nestedclassification "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" montecarlo 1 $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
+scripts/nestedclassification "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" montecarlo $randomSeed $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
 
 cleanup
 

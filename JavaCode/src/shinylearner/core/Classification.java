@@ -65,7 +65,7 @@ public class Classification
 		
 		if (tempTestIDs.size() > 0)
 		{
-			Log.Debug("For " + Singletons.ExperimentItems.AlgorithmScriptFilePath + " and " + Singletons.ExperimentItems.Description + ", the number of predictions [" + predictionLines.length + "] was not divisible by the number of test samples [" + testIDs.size() + "].\n\nAlgorithm output:\n" + predictionOutput);
+			Log.Debug("An error occurred for " + Singletons.ExperimentItems.AlgorithmScriptFilePath + " and " + Singletons.ExperimentItems.Description + ".\n\nAlgorithm output:\n" + predictionOutput);
 
 			predictions = new ArrayList<AbstractPrediction>();
 

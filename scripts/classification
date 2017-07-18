@@ -42,7 +42,8 @@ else
 fi
 
 echo "Calculating classification metrics..."
-Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
+Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om" #2> $errFile
+#printError $verbose $errFile
 
 function parseOutputFile {
   if [ -f "$1" ]

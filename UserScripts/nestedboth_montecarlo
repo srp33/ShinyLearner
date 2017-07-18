@@ -14,6 +14,7 @@ numFeaturesOptions="$(python scripts/ParseArgs.py --num-features TRUE "$@")"
 fsAlgos="$(python scripts/ParseArgs.py --fs-algo TRUE "$@")"
 outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
 verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
+randomSeed="$(python scripts/ParseArgs.py --seed FALSE 1 $@)"
 ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
@@ -52,7 +53,7 @@ tmpDir="$(getTempDir "$tmpDir")"
 
 trap cleanup INT TERM EXIT
 
-scripts/nestedboth "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" montecarlo 1 $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
+scripts/nestedboth "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" montecarlo $randomSeed $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
 
 cleanup
 

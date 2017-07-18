@@ -6,13 +6,14 @@ REQUIRED ARGUMENTS
 
     --data [file_path]
     --description [description]
-    --iterations [number]
+    --iterations [integer]
     --fs-algo [file_path]
     --output-dir [dir_path]
 
 OPTIONAL ARGUMENTS
 
     --verbose [false|true]
+    --seed [integer]
     --ohe [false|true]
     --temp-dir [dir_path]
 
@@ -23,7 +24,8 @@ EXAMPLE
       --description "My_Interesting_Analysis" \
       --iterations 1 \
       --fs-algo "AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default" \
-      --output-dir Output/
+      --output-dir Output/ \
+      --seed 33
 
 NOTES
 
@@ -40,6 +42,8 @@ NOTES
     The --output-dir argument allows you to indicate where output files will be stored. If this directory does not already exist, ShinyLearner will create it. For information about the output files that will be created, see https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md.
 
     The --verbose argument is set to false by default. If set to true, detailed information about the processing steps will be printed to standard out. This flag is typically used for debugging purposes.
+
+    The --seed argument allows the user to specify a random seed for assigning samples to training and test set(s). This value is 1 by default.
 
     The --ohe argument is set to true by default. This means that any categorical variables will be [one-hot encoded](https://www.quora.com/What-is-one-hot-encoding-and-when-is-it-used-in-data-science).
     

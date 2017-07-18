@@ -36,6 +36,14 @@ rankAggregate <- function(featuresMatrix)
 #Description	Iteration	Fold	Ensemble_Algorithm	Algorithm	Features
 data <- suppressMessages(read_tsv(inFilePath))
 
+if ("ERROR" %in% data$Features)
+{
+  cat("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
+  cat("Error: Feature ranks could not be summarized because at least one individual algorithm experienced an error. To troubleshoot the error, reexecute ShinyLearner in verbose mode.\n")
+  cat("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
+  stop()
+}
+
 #groupRankMatrix <- NULL
 #for (algorithm in unique(data$Algorithm))
 #{
