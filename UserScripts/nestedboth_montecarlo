@@ -53,7 +53,20 @@ tmpDir="$(getTempDir "$tmpDir")"
 
 trap cleanup INT TERM EXIT
 
-scripts/nestedboth "$dataFiles" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" montecarlo $randomSeed $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
+validationType=montecarlo
+source scripts/setup
+
+echo "Parsing data..."
+analysisDataFile=$tmpDir/data.gz
+java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose TEMP_DIR=$tmpDir 2>&1 | tee -a "$outLogFile"
+
+if [[ "$ohe" == "true" ]]
+then
+  echo "One-hot encoding categorical data (where applicable)..."
+  python scripts/OneHotEncode.py "$analysisDataFile"
+fi
+
+scripts/nestedboth "$analysisDataFile" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" montecarlo $randomSeed $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
 
 cleanup
 

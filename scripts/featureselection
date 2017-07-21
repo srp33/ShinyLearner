@@ -4,7 +4,7 @@ set -euo pipefail
 
 source scripts/shared_functions
 
-dataFiles="$1"
+analysisDataFile="$1"
 description="$2"
 numIterations="$3"
 verbose="$4"
@@ -24,28 +24,10 @@ classFile=$tmpDir/cl
 trainTestFile=$tmpDir/tt
 trainTestFile2=$tmpDir/tt2
 
-if [[ "$validationType" == "montecarlo" ]]
-then
-  analysisDataFile=$tmpDir/data.gz
-
-  echo "Preparing for analysis..."
-  java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null
-
-  python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $idFile $classFile
-  python scripts/AssignTrainingTesting.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
-else
-  analysisDataFile="$dataFiles"
-  python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $idFile $classFile
-  python scripts/AssignCrossValidation.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
-fi
+python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $idFile $classFile
+python scripts/AssignTrainingTesting.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
 
 python scripts/AddAlgorithmScripts.py $trainTestFile "$fsAlgos" $trainTestFile2
-
-if [[ "$ohe" == "true" ]]
-then
-  echo "One-hot encoding categorical data (where applicable)..."
-  python scripts/OneHotEncode.py "$analysisDataFile"
-fi
 
 echo "Starting feature selection..."
 java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/of" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null

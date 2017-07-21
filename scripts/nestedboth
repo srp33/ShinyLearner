@@ -4,7 +4,7 @@ set -euo pipefail
 
 source scripts/shared_functions
 
-dataFiles="$1"
+analysisDataFile="$1"
 description="$2"
 outerNumIterations="$3"
 innerNumIterations="$4"
@@ -28,33 +28,13 @@ tmpDir="${21}"
 
 source scripts/setup
 
-if [[ "$validationType" == "montecarlo" ]]
-then
-  analysisDataFile=$tmpDir/data.gz
-
-  echo "Preparing for analysis..."
-  java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null
-
-  python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $tmpDir/allid $tmpDir/classes
-  python scripts/AssignTrainingTesting.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
-  python scripts/AssignTrainingTesting.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
-else
-  analysisDataFile="$dataFiles"
-
-  python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $tmpDir/allid $tmpDir/classes
-  python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
-  python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
-fi
+python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $tmpDir/allid $tmpDir/classes
+python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
+python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
 
 ## Prepare inner experiment files
 python scripts/AddAlgorithmScripts.py $tmpDir/ie "$fsAlgos" $tmpDir/ie2
 python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie3
-
-if [[ "$ohe" == "true" ]]
-then
-  echo "One-hot encoding categorical data (where applicable)..."
-  python scripts/OneHotEncode.py "$analysisDataFile"
-fi
 
 echo "Selecting features for inner iterations..."
 java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$tmpDir/ie2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/if" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ifb" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null

@@ -7,7 +7,10 @@ outFilePath = sys.argv[3]
 classifAlgos = set()
 for x in classifAlgosRaw.split(","):
     for y in glob.glob(x):
-        if y.endswith(".list"):
+        if os.path.isdir(y):
+            for z in glob.glob(y.rstrip("/") + "/*"):
+                classifAlgos.add(z)
+        elif y.endswith(".list"):
             for line in file(y):
                 classifAlgos.add(line.rstrip())
         else:

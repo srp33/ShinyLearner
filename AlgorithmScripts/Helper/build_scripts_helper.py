@@ -91,7 +91,7 @@ def parseNonDefaultParamCombos(paramDict):
     return [dict(zip(parameterNames, prod)) for prod in it.product(*(paramDict[varName] for varName in parameterNames))]
 
 def buildParamName(prefix, paramDict, paramComboDict):
-    paramName = prefix
+    paramName = prefix + "_"
 
     for key in sorted(paramComboDict.keys()):
         if len(paramDict[key]) > 1:
@@ -101,7 +101,9 @@ def buildParamName(prefix, paramDict, paramComboDict):
             if value.startswith("weka."):
                 value = value.split(" ")[0]
 
-            paramName += ";" + key + "=" + replaceSpecialChars(value)
+            paramName += "_" + key + "=" + replaceSpecialChars(value)
+
+    paramName = paramName.strip("_")
 
     if len(paramName) > 255:
         print("The name of the parameter file is too long: %s." % paramName)
@@ -110,4 +112,4 @@ def buildParamName(prefix, paramDict, paramComboDict):
     return paramName
 
 def replaceSpecialChars(value):
-    return value.replace(";", "_").replace(" ", "_").replace("()", "").replace("(", "").replace(")", "").replace(",", "").replace("/", "")
+    return value.replace(";", "_").replace(" ", "_").replace("()", "").replace("(", "").replace(")", "").replace(",", "").replace("/", "").replace("'", "").replace("\"", "")

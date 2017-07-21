@@ -37,7 +37,7 @@ calculateMetrics <- function(predictionData)
   recall <- tp / (tp + fn)
   f1 <- (2 * precision * recall) / sum(precision, recall)
 
-  list(Accuracy=accuracy, AUROC=auc, BalancedAccuracy=balancedAccuracy, Brier=brier, FDR=fdr, FNR=fnr, FPR=fpr, MCC=mcc, MMCE=mmce, PPV=ppv, NPV=npv, TNR=tnr, TPR=tpr, Precision=precision, Recall=recall, F1=f1)
+  list(Accuracy=accuracy, AUROC=auc, BalancedAccuracy=balancedAccuracy, Brier=brier, FDR=fdr, FNR=fnr, FPR=fpr, MCC=mcc, MMCE=mmce, PPV=ppv, NPV=npv, TNR=tnr, TPR=tpr, Recall=recall, F1=f1)
 }
 
 #Description	Algorithm	InstanceID	ActualClass	PredictedClass	0	1

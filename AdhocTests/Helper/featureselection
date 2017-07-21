@@ -33,10 +33,10 @@ cd $testDir
 validation=StrongSignal_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
 #fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/svm_rfe/default*"
-#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default*"
+fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default*"
 #fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/cforest.importance/default*"
 #fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/*/default*"
-fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/random*/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/random*/default*"
 #fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/randomForestSRC.rfsrc/default*"
 #fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default*"
 #fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/*/default*"

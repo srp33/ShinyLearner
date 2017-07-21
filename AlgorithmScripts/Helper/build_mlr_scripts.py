@@ -40,7 +40,7 @@ h2o_deeplearning = "'classif.h2o.deeplearning', activation = '{activation}', hid
 createScripts("Classification", packagePath, "mlr_c_template", "h2o.deeplearning", None, h2o_deeplearning, {"activation": ['Rectifier', 'RectifierWithDropout', 'Maxout', 'MaxoutWithDropout'], "hidden": ["c(200, 200)", "c(500, 500)"], "epochs": [10, 50], "balance_classes": ["FALSE", "TRUE"]}, summaryDict)
 
 h2o_gbm = "'classif.h2o.gbm', ntrees = {ntrees}, nbins = {nbins}, learn_rate = {learn_rate}, balance_classes = {balance_classes}"
-createScripts("Classification", packagePath, "mlr_c_template", "h2o.gbm", None, h2o_gbm, {"ntrees": [50, 500], "nbins": [20, 10, 5], "learn_rate": [0.1, 0.05, 0.2], "balance_classes": ["FALSE", "TRUE"]}, summaryDict)
+createScripts("Classification", packagePath, "mlr_c_template", "h2o.gbm", None, h2o_gbm, {"ntrees": [50, 500], "nbins": [20, 10], "learn_rate": [0.1, 0.05], "balance_classes": ["FALSE", "TRUE"]}, summaryDict)
 
 h2o_randomForest = "'classif.h2o.randomForest', ntrees = {ntrees}, nbins = {nbins}, balance_classes = {balance_classes}"
 createScripts("Classification", packagePath, "mlr_c_template", "h2o.randomForest", None, h2o_randomForest, {"ntrees": [50, 1000], "nbins": [20, 10, 5], "balance_classes": ["FALSE", "TRUE"]}, summaryDict)
