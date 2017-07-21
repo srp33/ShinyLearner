@@ -7,7 +7,10 @@ def createScript(algorithmType, packagePath, templateFilePath, shortAlgName, alg
         os.makedirs(scriptDir, exist_ok=True)
 
     destFilePath = "{}/{}".format(scriptDir, algFileName)
-    print("Saving to {}".format(destFilePath))
+
+    if os.path.exists(destFilePath):
+        print("File already exists at {}".format(destFilePath))
+        sys.exit(1)
 
     # Copy the file first to preserve permissions
     shutil.copy(templateFilePath, destFilePath)
@@ -24,6 +27,13 @@ def createScript(algorithmType, packagePath, templateFilePath, shortAlgName, alg
     with open(destFilePath, 'w') as destFile:
         destFile.write(template)
 
+    if os.path.exists(destFilePath):
+        #print("Saved to {}".format(destFilePath))
+        print("{}".format(destFilePath))
+    else:
+        print("Error occurred when saving to {}.".format(destFilePath))
+        sys.exit(1)
+
 def replaceTokens(instantiation, paramDict, shortAlgName):
     for key, value in paramDict.items():
         if "{" + key + "}" not in instantiation:
@@ -33,21 +43,41 @@ def replaceTokens(instantiation, paramDict, shortAlgName):
 
     return instantiation
 
-def createScripts(algorithmType, packagePath, templateFilePath, shortAlgName, algClass, instantiation, paramDict):
+def createScripts(algorithmType, packagePath, templateFilePath, shortAlgName, algClass, instantiation, paramDict, summaryDict, *ignoreDicts):
     defaultParamComboDict = parseDefaultParams(paramDict)
 
     for paramComboDict in parseNonDefaultParamCombos(paramDict):
+        if ignore(paramComboDict, ignoreDicts):
+            #print("Ignoring:")
+            #print(paramComboDict)
+            continue
+
         if paramComboDict == defaultParamComboDict:
             prefix = "default"
         else:
             prefix = "alt"
-##############################################
-## Temporary change so only defaults are used
-##############################################
-            continue
 
         paramName = buildParamName(prefix, paramDict, paramComboDict)
         createScript(algorithmType, packagePath, templateFilePath, shortAlgName, paramName, algClass, instantiation, paramComboDict)
+
+        summaryDict[shortAlgName] = summaryDict.setdefault(shortAlgName, 0) + 1
+
+def ignore(comboDict, ignoreDicts):
+    if len(ignoreDicts) == 0:
+        return False
+
+    for ignoreDict in ignoreDicts:
+        for ignoreKey, ignoreValue in ignoreDict.items():
+            if ignoreKey not in comboDict:
+                print("Ignore key [{}] does not align with param dict.".format(ignoreKey))
+                sys.exit(1)
+
+        comboIntersectDict = {x:comboDict[x] for x in comboDict if x in ignoreDict}
+
+        if comboIntersectDict == ignoreDict:
+            return True
+
+    return False
 
 def parseDefaultParams(paramDict):
     defaultParamDict = {}
@@ -69,7 +99,8 @@ def buildParamName(prefix, paramDict, paramComboDict):
             value = str(paramComboDict[key])
 
             # Some parameters are complex, just get the first part, splitting by spaces
-            value = value.split(" ")[0]
+            if value.startswith("weka."):
+                value = value.split(" ")[0]
 
             paramName += ";" + key + "=" + replaceSpecialChars(value)
 

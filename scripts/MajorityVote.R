@@ -40,7 +40,7 @@ calculateMajority <- function(data, classOptions)
 }
 
 #Description	Algorithm	InstanceID	ActualClass	PredictedClass	1	2	3
-data <- fread(inFilePath, stringsAsFactors=TRUE, sep="\t", header=TRUE, data.table=FALSE)
+suppressWarnings(data <- fread(inFilePath, stringsAsFactors=TRUE, sep="\t", header=TRUE, data.table=FALSE, check.names=FALSE, showProgress=FALSE))
 
 if (!("ERROR" %in% data$PredictedClass)) {
   classOptions <- colnames(data)[(which(colnames(data)=="PredictedClass") + 1):ncol(data)]

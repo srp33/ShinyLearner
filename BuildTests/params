@@ -1,0 +1,110 @@
+#!/bin/bash
+
+set -euo pipefail
+
+verbose="--verbose true"
+#verbose="--verbose false"
+currentDir=$(pwd)
+overallLogFile=log.overall
+tmpDir=/tmp/build_local_docker_params
+version=$(cat VERSION)
+
+rm -rf $tmpDir
+mkdir -p $tmpDir/input $tmpDir/output
+
+scripts/build
+tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION LICENSE UserScripts
+
+mv ShinyLearner.tar.gz $tmpDir/
+cp Dockerfile $tmpDir/
+cp -r Validation/*.gz $tmpDir/input
+cp -r BuildTests/* $tmpDir/
+
+cd $tmpDir
+
+docker build -t srp33/shinylearner:version${version} .
+
+#########################################################
+# Test all classification algorithms using monte carlo
+#########################################################
+
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/adaboost/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/bagging/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/decision_tree/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/extra_trees/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/gradient_boosting/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/knn/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/lda/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/multilayer_perceptron/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/random_forest/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/sgd/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm/*"
+
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/C50/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/RRF/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/boosting/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/ctree/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/gausspr/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/glmnet/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/h2o.deeplearning/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/h2o.gbm/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/h2o.randomForest/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/kknn/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/ksvm/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/mlp/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/naiveBayes/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/randomForest/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/randomForestSRC/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/ranger/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/rda/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/sda/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/xgboost/*"
+
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/*/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/Bagging/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/BayesNet/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/DecisionTable/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/HoeffdingTree/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/J48/*"
+classifAlgo="AlgorithmScripts/Classification/arff/weka/JRip/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/LibLINEAR/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/LibSVM/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/MultilayerPerceptron/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/NaiveBayes/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/OneR/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/RBFNetwork/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/REPTree/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/RandomForest/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/SMO/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/SimpleLogistic/*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/VFI/*"
+
+bash run_docker_command $version "UserScripts/classification_montecarlo --data \"input/StrongSignal_Both.tsv.gz\" --description "StrongSignal_Both" --iterations 1 --classif-algo \"$classifAlgo\" --output-dir output/classification_montecarlo $verbose"
+
+expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
+echo "Checking $(pwd)/output/classification_montecarlo/Log.txt"
+python CheckAccuracy.py classification montecarlo StrongSignal_Both output/classification_montecarlo/Metrics.tsv Algorithm $expectedNumAlgorithms 1 2>&1 | tee -a output/classification_montecarlo/Log.txt
+
+cat output/classification_montecarlo/Log.txt
+
+#########################################################
+# Test all fs algorithms using monte carlo
+#########################################################
+
+#fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/*/weka/*/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/OneR/default*"
+
+#bash run_docker_command $version "UserScripts/featureselection_montecarlo --data \"input/StrongSignal_Both.tsv.gz\" --description "StrongSignal_Both" --iterations 1 --fs-algo \"$fsAlgo\" --output-dir output/featureselection_montecarlo $verbose"
+
+#########################################################
+# Cleanup
+#########################################################
+
+cd $currentDir
+rm -rf $tmpDir
+echo "All tests passed!!!"

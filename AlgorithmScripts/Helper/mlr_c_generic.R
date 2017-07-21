@@ -40,6 +40,8 @@ print(instantiation)
 learner <- eval(parse(text = instantiation))
 #learner <- makeLearner(paste("classif.", algorithm, sep=""), predict.type = "prob")
 
+#configureMlr(show.info=FALSE, on.learner.error="quiet", on.learner.warning="quiet", show.learner.output=FALSE)
+configureMlr(show.learner.output=FALSE)
 learn(learner)
 
 #if (parameterDescription == "default") {
