@@ -12,6 +12,8 @@ def createScript(algorithmType, packagePath, templateFilePath, shortAlgName, alg
         print("File already exists at {}".format(destFilePath))
         sys.exit(1)
 
+    print("Saving to {}".format(destFilePath))
+
     # Copy the file first to preserve permissions
     shutil.copy(templateFilePath, destFilePath)
 
@@ -27,10 +29,7 @@ def createScript(algorithmType, packagePath, templateFilePath, shortAlgName, alg
     with open(destFilePath, 'w') as destFile:
         destFile.write(template)
 
-    if os.path.exists(destFilePath):
-        #print("Saved to {}".format(destFilePath))
-        print("{}".format(destFilePath))
-    else:
+    if not os.path.exists(destFilePath):
         print("Error occurred when saving to {}.".format(destFilePath))
         sys.exit(1)
 

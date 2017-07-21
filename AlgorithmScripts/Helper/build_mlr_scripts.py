@@ -11,7 +11,7 @@ summaryDict = {}
 
 packagePath = "tsv/mlr"
 
-cOptions = [1.0, 0.01, 0.1, 10.0]
+cOptions = [1.0, 0.1, 10.0, 100.0]
 nodeSizeOptions = [1, 3, 5]
 
 #################################################################
@@ -78,7 +78,7 @@ createScripts("Classification", packagePath, "mlr_c_template", "rpart", None, rp
 
 # I didn't specify proximity because I was unsure of the default value
 RRF = "'classif.RRF', ntree={ntree}, replace={replace}, coefReg={coefReg}, flagReg={flagReg}"
-createScripts("Classification", packagePath, "mlr_c_template", "RRF", None, RRF, {"ntree": [500, 50], "replace": ["TRUE", "FALSE"], "coefReg": [0.8, 0.9], "flagReg": [1, 0]}, summaryDict)
+createScripts("Classification", packagePath, "mlr_c_template", "RRF", None, RRF, {"ntree": [500, 50], "replace": ["TRUE", "FALSE"], "coefReg": [0.8, 0.9, 0.7], "flagReg": [1, 0]}, summaryDict)
 
 # I didn't specify lambda values because I was not sure what default should be
 sda = "'classif.sda', diagonal={diagonal}"
@@ -88,7 +88,7 @@ svm = "'classif.svm', scale = {scale}, type = '{type}', kernel = '{kernel}', cos
 createScripts("Classification", packagePath, "mlr_c_template", "svm", None, svm, {"scale": ["TRUE", "FALSE"], "type": ["C-classification"], "kernel": ["radial", "linear", "polynomial", "sigmoid"], "cost": cOptions, "shrinking": ["TRUE"]}, summaryDict, {"kernel": "polynomial", "scale": "TRUE"})
 
 xgboost = "'classif.xgboost', booster='{booster}', nrounds={nrounds}, early_stopping_rounds={early_stopping_rounds}"
-createScripts("Classification", packagePath, "mlr_c_template", "xgboost", None, xgboost, {"booster": ["gbtree", "gblinear"], "nrounds": [2, 10, 50], "early_stopping_rounds": ["NULL"]}, summaryDict)
+createScripts("Classification", packagePath, "mlr_c_template", "xgboost", None, xgboost, {"booster": ["gbtree", "gblinear"], "nrounds": [2, 10, 50], "early_stopping_rounds": ["NULL"]}, summaryDict, {"booster": "gblinear", "nrounds": 2})
 
 ## Didn't work with default params: cforest nnet gbm mda qda lda
 ### Also didn't work: lda, saeDNN, nnTrain, dbnDNN, mda, xyf, extraTrees, sparseLDA, gbm

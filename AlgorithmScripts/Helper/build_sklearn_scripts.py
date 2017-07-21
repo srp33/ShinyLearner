@@ -14,9 +14,7 @@ packagePath = "tsv/sklearn"
 baseEstimatorOptions = ["DecisionTreeClassifier()", "LogisticRegression()", "SVC(probability=True)"]
 numEstimatorOptions = [50, 1000]
 boostAlgorithmOptions = ["SAMME.R", "SAMME"]
-#bootstrapOptions = [True]
 bootstrapOptions = [True, False]
-#oobScoreOptions = [False]
 oobScoreOptions = [False, True]
 treeCriterionOptions = ["gini", "entropy"]
 splitterOptions = ["best", "random"]
@@ -24,7 +22,7 @@ classWeightOptions = [None, "'balanced'"]
 neighborOptions = [1, 5, 10, 20]
 weightOptions = ["uniform", "distance"]
 pOptions = [1, 2]
-cOptions = [1.0, 0.01, 0.1, 10.0]
+cOptions = [1.0, 0.1, 10.0, 100.0]
 
 #############################################################
 # Classifiers
@@ -37,7 +35,7 @@ bagging = "clf = BaggingClassifier(base_estimator={base_estimator}, n_estimators
 createScripts("Classification", packagePath, "sklearn_c_template", "bagging", None, bagging, {"base_estimator": baseEstimatorOptions, "n_estimators": numEstimatorOptions, "bootstrap": bootstrapOptions, "oob_score": oobScoreOptions}, summaryDict, {"bootstrap": False, "oob_score": True})
 
 decision_tree = "clf = DecisionTreeClassifier(criterion='{criterion}', splitter='{splitter}', max_depth={max_depth}, min_samples_split={min_samples_split}, min_samples_leaf={min_samples_leaf}, min_weight_fraction_leaf={min_weight_fraction_leaf}, max_features={max_features}, max_leaf_nodes={max_leaf_nodes}, min_impurity_split={min_impurity_split}, class_weight={class_weight}, presort=False, random_state=R_SEED)"
-createScripts("Classification", packagePath, "sklearn_c_template", "decision_tree", None, decision_tree, {"criterion": treeCriterionOptions, "splitter": splitterOptions, "max_depth": [None], "min_samples_split": [2], "min_samples_leaf": [1], "min_weight_fraction_leaf": [0.0], "max_features": [None], "max_leaf_nodes": [None], "min_impurity_split": [1e-07], "class_weight": classWeightOptions}, summaryDict)
+createScripts("Classification", packagePath, "sklearn_c_template", "decision_tree", None, decision_tree, {"criterion": treeCriterionOptions, "splitter": splitterOptions, "max_depth": [None], "min_samples_split": [2, 4], "min_samples_leaf": [1, 3, 5], "min_weight_fraction_leaf": [0.0], "max_features": [None], "max_leaf_nodes": [None], "min_impurity_split": [1e-07, 1e-05], "class_weight": classWeightOptions}, summaryDict)
 
 extra_trees = "clf = ExtraTreesClassifier(n_estimators={n_estimators}, criterion='{criterion}', max_depth={max_depth}, min_samples_split={min_samples_split}, min_samples_leaf={min_samples_leaf}, min_weight_fraction_leaf={min_weight_fraction_leaf}, max_features={max_features}, max_leaf_nodes={max_leaf_nodes}, min_impurity_split={min_impurity_split}, bootstrap={bootstrap}, oob_score={oob_score}, class_weight={class_weight}, n_jobs=1, random_state=R_SEED, verbose=0, warm_start=False)"
 createScripts("Classification", packagePath, "sklearn_c_template", "extra_trees", None, extra_trees, {"n_estimators": numEstimatorOptions, "criterion": treeCriterionOptions, "max_depth": [None], "min_samples_split": [2], "min_samples_leaf": [1], "min_weight_fraction_leaf": [0.0], "max_features": [None], "max_leaf_nodes": [None], "min_impurity_split": [1e-07], "bootstrap": bootstrapOptions, "oob_score": oobScoreOptions, "class_weight": classWeightOptions}, summaryDict, {"bootstrap": False, "oob_score": True})

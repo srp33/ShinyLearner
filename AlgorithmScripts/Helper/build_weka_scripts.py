@@ -12,7 +12,7 @@ summaryDict = {}
 packagePath = "arff/weka"
 
 metaClassifiers = ["weka.classifiers.trees.REPTree -- -M 2 -V 0.001 -N 3 -S 1 -L -1 -I 0.0", "weka.classifiers.trees.J48 -- -C 0.25 -M 2", 'weka.classifiers.lazy.IBk -- -K 1 -W 0 -A "weka.core.neighboursearch.LinearNNSearch -- -A \"weka.core.EuclideanDistance -R first-last\""', 'weka.classifiers.functions.SimpleLogistic -- -I 0 -M 500 -H 50 -W 0.0']
-cOptions = [1.0, 0.1, 10.0]
+cOptions = [1.0, 0.1, 10.0, 100.0]
 
 #################################################################
 # Classifiers
@@ -36,7 +36,7 @@ createScripts("Classification", packagePath, "weka_c_template", "HyperPipes", No
 
 # Other option for pruning is -U
 J48 = "weka.classifiers.trees.J48 {pruning} {subtreeRaising} {binarySplits} -M {minNumObj} {useMDLcorrection} {collapseTree} {useLaplace}"
-createScripts("Classification", packagePath, "weka_c_template", "J48", None, J48, {"pruning": ["-C 0.25", "-U"], "useLaplace": ["", "-A"], "subtreeRaising": ["", "-S"], "binarySplits": ["", "-B"], "minNumObj": ["2"], "useMDLcorrection": ["", "-J"], "collapseTree": ["", "-O"]}, summaryDict, {"pruning": "-U", "subtreeRaising": "-S"})
+createScripts("Classification", packagePath, "weka_c_template", "J48", None, J48, {"pruning": ["-C 0.25", "-U"], "useLaplace": ["", "-A"], "subtreeRaising": ["", "-S"], "binarySplits": ["", "-B"], "minNumObj": ["2", "5"], "useMDLcorrection": ["", "-J"], "collapseTree": ["", "-O"]}, summaryDict, {"pruning": "-U", "subtreeRaising": "-S"})
 
 JRip = "weka.classifiers.rules.JRip -F 3 -N {minNo} -O {optimizations} -S 1 -num-decimal-places 7 {checkErrorRate} {usePruning}"
 createScripts("Classification", packagePath, "weka_c_template", "JRip", None, JRip, {"minNo": ["2.0", "4.0", "6.0"], "optimizations": ["2", "5"], "checkErrorRate": ["", "-E"], "usePruning": ["", "-P"]}, summaryDict)
@@ -60,7 +60,7 @@ RandomForest = "weka.classifiers.trees.RandomForest -P {bagSizePercent} -I {numI
 createScripts("Classification", packagePath, "weka_c_template", "RandomForest", None, RandomForest, {"bagSizePercent": ["100"], "numIterations": ["100", "50", "1000"], "breakTiesRandomly": ["", "-B"], "maxDepth": [""], "calcOutOfBag": [""], "numFeatures": ["0", "5", "10"]}, summaryDict)
 
 RandomTree = "weka.classifiers.trees.RandomTree -K {KValue} -M {minNum} -V {minVarianceProp} -S 1 {numFolds} {breakTiesRandomly} {maxDepth}"
-createScripts("Classification", packagePath, "weka_c_template", "RandomTree", None, RandomTree, {"minNum": ["1.0"], "numFolds": [""], "breakTiesRandomly": ["", "-B"], "maxDepth": [""], "minVarianceProp": ["0.001", "0.01"], "KValue": ["0", "5", "10"]}, summaryDict)
+createScripts("Classification", packagePath, "weka_c_template", "RandomTree", None, RandomTree, {"minNum": ["1.0"], "numFolds": [""], "breakTiesRandomly": ["", "-B"], "maxDepth": [""], "minVarianceProp": ["0.001"], "KValue": ["0"]}, summaryDict)
 
 RBFNetwork = "weka.classifiers.functions.RBFNetwork -B {numClusters} -S 1 -R {ridge} -M {maxIts} -W {minStdDev}"
 createScripts("Classification", packagePath, "weka_c_template", "RBFNetwork", None, RBFNetwork, {"ridge": ["1.0E-8", "1.0E-6"], "maxIts": ["-1"], "numClusters": ["2", "4", "6"], "minStdDev": ["0.1", "0.05", "0.2"]}, summaryDict)

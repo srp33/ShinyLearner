@@ -37,8 +37,6 @@ public class Classification
 
 	private static ArrayList<AbstractPrediction> ParsePredictions(String predictionOutput, ArrayList<String> testIDs) throws Exception
 	{
-		Log.Debug(predictionOutput);
-
 		ArrayList<AbstractPrediction> predictions = new ArrayList<AbstractPrediction>();
 		String[] predictionLines = predictionOutput.split("\n");
 
