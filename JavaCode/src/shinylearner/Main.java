@@ -52,7 +52,6 @@ public class Main
 
 				InstanceManager.LoadAnalysisData();
 
-				Log.Info("Starting analysis...");
 				PerformAnalysis();
 			}
 			System.exit(0); // Not sure if this is necessary, but keeping it just in case

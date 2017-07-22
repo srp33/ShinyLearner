@@ -87,8 +87,10 @@ createScripts("Classification", packagePath, "mlr_c_template", "sda", None, sda,
 svm = "'classif.svm', scale = {scale}, type = '{type}', kernel = '{kernel}', cost = {cost}, shrinking = {shrinking}"
 createScripts("Classification", packagePath, "mlr_c_template", "svm", None, svm, {"scale": ["TRUE", "FALSE"], "type": ["C-classification"], "kernel": ["radial", "linear", "polynomial", "sigmoid"], "cost": cOptions, "shrinking": ["TRUE"]}, summaryDict, {"kernel": "polynomial", "scale": "TRUE"})
 
+# gblinear didn't work too well and sometimes produced NA prediction values
 xgboost = "'classif.xgboost', booster='{booster}', nrounds={nrounds}, early_stopping_rounds={early_stopping_rounds}"
-createScripts("Classification", packagePath, "mlr_c_template", "xgboost", None, xgboost, {"booster": ["gbtree", "gblinear"], "nrounds": [2, 10, 50], "early_stopping_rounds": ["NULL"]}, summaryDict, {"booster": "gblinear", "nrounds": 2})
+createScripts("Classification", packagePath, "mlr_c_template", "xgboost", None, xgboost, {"booster": ["gbtree"], "nrounds": [2, 10, 50], "early_stopping_rounds": ["NULL"]}, summaryDict)
+#createScripts("Classification", packagePath, "mlr_c_template", "xgboost", None, xgboost, {"booster": ["gbtree", "gblinear"], "nrounds": [2, 10, 50], "early_stopping_rounds": ["NULL"]}, summaryDict, {"booster": "gblinear", "nrounds": 2})
 
 ## Didn't work with default params: cforest nnet gbm mda qda lda
 ### Also didn't work: lda, saeDNN, nnTrain, dbnDNN, mda, xyf, extraTrees, sparseLDA, gbm

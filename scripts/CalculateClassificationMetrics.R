@@ -1,5 +1,6 @@
 suppressPackageStartupMessages(library(mlr))
 suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(AUC))
 
 inPredictionsFilePath <- commandArgs()[7]
@@ -41,7 +42,8 @@ calculateMetrics <- function(predictionData)
 }
 
 #Description	Algorithm	InstanceID	ActualClass	PredictedClass	0	1
-predictionsData <- read.table(inPredictionsFilePath, sep="\t", header=TRUE, row.names=NULL, quote="\"", check.names=FALSE)
+#predictionsData <- read.table(inPredictionsFilePath, sep="\t", header=TRUE, row.names=NULL, quote="\"", check.names=FALSE)
+suppressWarnings(predictionsData <- fread(inPredictionsFilePath, stringsAsFactors=TRUE, sep="\t", header=TRUE, data.table=FALSE, check.names=FALSE, showProgress=FALSE))
 
 if ("ERROR" %in% predictionsData$PredictedClass) {
   cat("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")

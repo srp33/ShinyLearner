@@ -5,6 +5,7 @@ Data
 .DS_Store
 Icon?
 Archive
+Analysis
 TestFiles
 release
 ./*.txt

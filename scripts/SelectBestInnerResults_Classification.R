@@ -3,8 +3,10 @@ trainTestFilePath = commandArgs()[8]
 outCLFilePath = commandArgs()[9]
 
 suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(data.table))
 
-data <- read.table(inFilePath, sep="\t", header=TRUE, row.names=NULL, quote="\"", check.names=F)
+#data <- read.table(inFilePath, sep="\t", header=TRUE, row.names=NULL, quote="\"", check.names=F)
+suppressWarnings(data <- fread(inFilePath, stringsAsFactors=TRUE, sep="\t", header=TRUE, data.table=FALSE, check.names=FALSE, showProgress=FALSE))
 
 data <- filter(data, Metric=="AUROC")
 data <- select(data, -Metric)
@@ -26,7 +28,9 @@ groupedData <- filter(groupedData, rank(-Value, ties.method="random")==1) %>% un
 
 ### write.table(arrange(groupedData, CL), "/Users/srp33/Downloads/cc.txt", sep="\t", quote=F, col.names=T, row.names=F)
 
-trainTestData <- read.table(trainTestFilePath, sep="\t", header=FALSE, row.names=NULL, quote="\"", check.names=F)
+#trainTestData <- read.table(trainTestFilePath, sep="\t", header=FALSE, row.names=NULL, quote="\"", check.names=F)
+suppressWarnings(trainTestData <- fread(trainTestFilePath, stringsAsFactors=TRUE, sep="\t", header=TRUE, data.table=FALSE, check.names=FALSE, showProgress=FALSE))
+
 colnames(trainTestData) <- c("Description", "TrainIDs", "TestIDs")
 
 mergedData <- inner_join(groupedData, trainTestData, by="Description")
