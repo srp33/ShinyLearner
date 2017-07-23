@@ -27,7 +27,7 @@ trainTestFile2=$tmpDir/tt2
 python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $idFile $classFile
 python scripts/AssignTrainingTesting.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
 
-python scripts/AddAlgorithmScripts.py $trainTestFile "$fsAlgos" $trainTestFile2
+python scripts/AddAlgorithmScripts.py $trainTestFile "$fsAlgos" $trainTestFile2 $verbose
 
 echo "Starting feature selection..."
 java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/of" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null

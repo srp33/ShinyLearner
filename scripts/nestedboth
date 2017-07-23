@@ -33,8 +33,8 @@ python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "$iteratio
 python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
 
 ## Prepare inner experiment files
-python scripts/AddAlgorithmScripts.py $tmpDir/ie "$fsAlgos" $tmpDir/ie2
-python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie3
+python scripts/AddAlgorithmScripts.py $tmpDir/ie "$fsAlgos" $tmpDir/ie2 $verbose
+python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie3 $verbose
 
 echo "Selecting features for inner iterations..."
 java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$tmpDir/ie2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/if" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ifb" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null
