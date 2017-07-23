@@ -26,6 +26,21 @@ python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $tmpDir/a
 python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
 python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
 
+if [[ "$debug" == "true" ]]
+then
+  echo "allid:"
+  cat $tmpDir/allid
+
+  echo "classes:"
+  cat $tmpDir/classes
+
+  echo "ott:"
+  cat $tmpDir/ott
+
+  echo "ie:"
+  cat $tmpDir/ie
+fi
+
 ## Prepare inner experiment files
 python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie2 $verbose
 
