@@ -9,19 +9,17 @@ def smartPrint(output):
     if verbose:
         print(output)
 
-smartPrint("pwd:")
-smartPrint(os.path.dirname(os.path.realpath(__file__)))
+smartPrint("pwd: " + os.getcwd())
 
 classifAlgos = set()
 for x in classifAlgosRaw.split(","):
-
-    smartPrint("x:" + x)
+    smartPrint("x: " + x)
     for y in glob.glob(x):
-        smartPrint("y:" + y)
+        smartPrint("y: " + y)
         if os.path.isdir(y):
             smartPrint("isdir")
             for z in glob.glob(y.rstrip("/") + "/*"):
-                smartPrint("zz:" + z)
+                smartPrint("zz: " + z)
                 classifAlgos.add(z)
         elif y.endswith(".list"):
             smartPrint("islist")
@@ -33,9 +31,15 @@ for x in classifAlgosRaw.split(","):
 
 classifAlgos = sorted(list(classifAlgos))
 
+for classifAlgo in classifAlgos:
+    smartPrint("classifAlgo: " + classifAlgo)
+
 outLines = []
+smartPrint("trainTestFile:")
 for line in file(trainTestFilePath):
+    smartPrint("ttf: " + line)
     for classifAlgo in classifAlgos:
+        smartPrint("ttfca: " + classifAlgo)
         outLines.append(line.rstrip() + "\t" + classifAlgo + "\n")
 
 if len(outLines) == 0:
