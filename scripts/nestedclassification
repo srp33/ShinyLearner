@@ -26,7 +26,7 @@ python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $tmpDir/a
 python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
 python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
 
-if [[ "$debug" == "true" ]]
+if [[ "$verbose" == "true" ]]
 then
   echo "allid:"
   cat $tmpDir/allid
