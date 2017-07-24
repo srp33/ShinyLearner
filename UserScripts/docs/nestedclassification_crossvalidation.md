@@ -41,7 +41,7 @@ NOTES
 
     The --iterations value must be a positive integer. It indicates the number of times that a full round of cross-validation should be performed.
 
-    The --outer-folds and --inner-folds arguments must be integers. If a value is 0 or is identical to the number of samples in the data set, leave-one-out cross validation will be used. If the value is larger than the number of samples in the data set, an error will occur. If neither of these situations occurs, k-fold cross validation will be used, and this integer will be the value of k.
+    The --outer-folds and --inner-folds arguments must be integers. If a value is 0 or is greater than or equal to the number of samples in the data set, leave-one-out cross validation will be used. If neither of these situations occurs, k-fold cross validation will be used, and the specified values will be used as k (a value of 1 is not allowed).
 
     The --output-dir argument allows you to indicate where output files will be stored. If this directory does not already exist, ShinyLearner will create it. For information about the output files that will be created, see https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md.
 

@@ -16,18 +16,22 @@ data <- select(data, -Metric)
 # Average across the inner iterations
 data <- ungroup(summarise(group_by(data, Description, FS, NumFeatures, CL), Value=mean(Value)))
 
+# Truncate parameter combos to directory names
+data$CL_Dir <- factor(dirname(as.character(data$CL)))
+
 # Pick best result for each description
-groupedData <- group_by(data, Description)
+groupedData <- group_by(data, Description, CL_Dir)
 set.seed(0)
-groupedData <- filter(groupedData, rank(-Value, ties.method="random")==1)
+groupedData <- filter(groupedData, rank(-Value, ties.method="random")==1) %>% ungroup() %>% select(-Value)
 
 #trainTestData <- read.table(trainTestFilePath, sep="\t", header=FALSE, row.names=NULL, quote="\"", check.names=F)
 suppressWarnings(trainTestData <- fread(trainTestFilePath, stringsAsFactors=TRUE, sep="\t", header=FALSE, data.table=FALSE, check.names=FALSE, showProgress=FALSE))
 colnames(trainTestData) <- c("Description", "TrainIDs", "TestIDs")
 
-mergedData <- inner_join(groupedData, trainTestData)
+mergedData <- inner_join(groupedData, trainTestData, by="Description")
 
-mergedData$Description <- paste(mergedData$Description, "____Ensemble_Select_Best", sep="")
+#mergedData$Description <- paste(mergedData$Description, "____Ensemble_Select_Best", sep="")
+mergedData$Description <- paste(mergedData$Description, "____", mergedData$CL_Dir, sep="")
 
 outFSData <- select(mergedData, Description, TrainIDs, TestIDs, FS)
 outNumFeaturesData <- select(mergedData, Description, NumFeatures)

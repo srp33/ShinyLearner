@@ -11,22 +11,16 @@ suppressWarnings(data <- fread(inFilePath, stringsAsFactors=TRUE, sep="\t", head
 data <- filter(data, Metric=="AUROC")
 data <- select(data, -Metric)
 
-### write.table(arrange(data, CL), "/Users/srp33/Downloads/aa.txt", sep="\t", quote=F, col.names=T, row.names=F)
-
 # Average across the inner iterations
 data <- ungroup(summarise(group_by(data, Description, CL), Value=mean(Value)))
 
 # Truncate parameter combos to directory names
 data$CL_Dir <- factor(dirname(as.character(data$CL)))
 
-### write.table(arrange(data, CL), "/Users/srp33/Downloads/bb.txt", sep="\t", quote=F, col.names=T, row.names=F)
-
 # Pick best result for each description
 groupedData <- group_by(data, Description, CL_Dir)
 set.seed(0)
 groupedData <- filter(groupedData, rank(-Value, ties.method="random")==1) %>% ungroup() %>% select(-Value)
-
-### write.table(arrange(groupedData, CL), "/Users/srp33/Downloads/cc.txt", sep="\t", quote=F, col.names=T, row.names=F)
 
 #trainTestData <- read.table(trainTestFilePath, sep="\t", header=FALSE, row.names=NULL, quote="\"", check.names=F)
 suppressWarnings(trainTestData <- fread(trainTestFilePath, stringsAsFactors=TRUE, sep="\t", header=FALSE, data.table=FALSE, check.names=FALSE, showProgress=FALSE))
@@ -34,8 +28,6 @@ suppressWarnings(trainTestData <- fread(trainTestFilePath, stringsAsFactors=TRUE
 colnames(trainTestData) <- c("Description", "TrainIDs", "TestIDs")
 
 mergedData <- inner_join(groupedData, trainTestData, by="Description")
-
-### write.table(arrange(mergedData, CL), "/Users/srp33/Downloads/dd.txt", sep="\t", quote=F, col.names=T, row.names=F)
 
 mergedData$Description <- paste(mergedData$Description, "____", mergedData$CL_Dir, sep="")
 #mergedData$Description <- paste(mergedData$Description, "____Ensemble_Select_Best", sep="")
