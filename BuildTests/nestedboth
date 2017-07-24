@@ -30,5 +30,4 @@ python CheckAccuracy.py $analysisType $validationType $description "$specificOut
 #python CheckSelectedFeatures.py $analysisType $validationType $description "$fsAlgo" "$specificOutputDir/Nested_SelectedFeatures.tsv" Algorithm False 2>&1 | tee -a $logFile
 python CheckSummarizedSelectedFeatures.py "$specificOutputDir/Nested_SelectedFeatures_Summarized.tsv" 2>&1 | tee -a $logFile
 
-# Should only be the ensemble algorithm
-python CheckSelectedFeatures.py $analysisType $validationType $description "$specificOutputDir/SelectedFeatures.tsv" Algorithm True 1 2>&1 | tee -a $logFile
+python CheckSelectedFeatures.py $analysisType $validationType $description "$specificOutputDir/SelectedFeatures.tsv" Algorithm True $expectedNumAlgorithms 2>&1 | tee -a $logFile

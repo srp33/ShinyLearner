@@ -102,7 +102,7 @@ python CheckLogFiles.py $overallLogFile 1
 #########################################################
 
 fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default*"
-numFeaturesOptions="5,20"
+numFeaturesOptions="10,20"
 classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/s*/default*"
 
 bash nestedboth $version StrongSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" "$verbose" 1.log &
