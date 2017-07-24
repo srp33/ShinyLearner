@@ -39,7 +39,7 @@ except  ValueError:
 
 NumFolds = int(NumFolds)
 
-if NumFolds < 0:
+if NumFolds < 0 or NumFolds == 1:
     print "Invalid number of folds: %s" % NumFolds
     sys.exit(1)
 

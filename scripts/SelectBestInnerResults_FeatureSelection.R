@@ -22,7 +22,7 @@ set.seed(0)
 groupedData <- filter(groupedData, rank(-Value, ties.method="random")==1)
 
 #trainTestData <- read.table(trainTestFilePath, sep="\t", header=FALSE, row.names=NULL, quote="\"", check.names=F)
-suppressWarnings(trainTestData <- fread(trainTestFilePath, stringsAsFactors=TRUE, sep="\t", header=TRUE, data.table=FALSE, check.names=FALSE, showProgress=FALSE))
+suppressWarnings(trainTestData <- fread(trainTestFilePath, stringsAsFactors=TRUE, sep="\t", header=FALSE, data.table=FALSE, check.names=FALSE, showProgress=FALSE))
 colnames(trainTestData) <- c("Description", "TrainIDs", "TestIDs")
 
 mergedData <- inner_join(groupedData, trainTestData)

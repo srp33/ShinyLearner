@@ -40,8 +40,8 @@ fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default*"
 #fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/randomForestSRC.rfsrc/default*"
 #fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default*"
 #fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/*/default*"
-#verbose=true
-verbose=false
+verbose=true
+#verbose=false
 
 if [[ "$validationType" == "montecarlo" ]]
 then

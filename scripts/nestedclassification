@@ -23,8 +23,15 @@ tmpDir="${15}"
 source scripts/setup
 
 python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $tmpDir/allid $tmpDir/classes
-python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
-python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
+
+if [[ "$validationType" == "montecarlo" ]]
+then
+  python scripts/AssignTrainingTesting.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
+  python scripts/AssignTrainingTesting.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
+else
+  python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
+  python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
+fi
 
 if [[ "$verbose" == "true" ]]
 then
@@ -52,6 +59,12 @@ Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/ip" "$tmpDir
 
 echo "Parsing inner classification results..."
 python scripts/ReformatInnerResults_Classification.py $tmpDir/im $tmpDir/ibrf
+
+if [[ "$verbose" == "true" ]]
+then
+  echo "ibrf:"
+  cat $tmpDir/ibrf
+fi
 
 echo "Identifying best combination of algorithms..."
 Rscript --vanilla scripts/SelectBestInnerResults_Classification.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ocle 2> $errFile

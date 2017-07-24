@@ -25,7 +25,13 @@ trainTestFile=$tmpDir/tt
 trainTestFile2=$tmpDir/tt2
 
 python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $idFile $classFile
-python scripts/AssignTrainingTesting.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
+
+if [[ "$validationType" == "montecarlo" ]]
+then
+  python scripts/AssignTrainingTesting.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
+else
+  python scripts/AssignCrossValidation.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
+fi
 
 python scripts/AddAlgorithmScripts.py $trainTestFile "$classifAlgos" $trainTestFile2 $verbose
 

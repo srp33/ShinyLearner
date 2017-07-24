@@ -29,8 +29,15 @@ tmpDir="${21}"
 source scripts/setup
 
 python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $tmpDir/allid $tmpDir/classes
-python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
-python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
+
+if [[ "$validationType" == "montecarlo" ]]
+then
+  python scripts/AssignTrainingTesting.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
+  python scripts/AssignTrainingTesting.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
+else
+  python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
+  python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
+fi
 
 ## Prepare inner experiment files
 python scripts/AddAlgorithmScripts.py $tmpDir/ie "$fsAlgos" $tmpDir/ie2 $verbose

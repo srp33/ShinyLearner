@@ -38,17 +38,19 @@ dataFile=$currentDir/Validation/${validation}.tsv.gz
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda"
-#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default*"
-classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*"
+classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/decision_tree/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*,$currentDir/AlgorithmScripts/Classification/tsv/sklearn/svm"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/svm"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/knn/default*"
-#verbose=true
-verbose=false
+verbose=true
+#verbose=false
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --outer-iterations 2 --inner-iterations 2 --verbose $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir"
+  UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --outer-iterations 1 --inner-iterations 2 --verbose $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir"
+  #UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --outer-iterations 2 --inner-iterations 2 --verbose $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir"
 else
   UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --iterations 2 --inner-folds 2 --outer-folds 2 --verbose $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir"
 fi

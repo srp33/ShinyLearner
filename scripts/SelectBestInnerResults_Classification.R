@@ -29,7 +29,7 @@ groupedData <- filter(groupedData, rank(-Value, ties.method="random")==1) %>% un
 ### write.table(arrange(groupedData, CL), "/Users/srp33/Downloads/cc.txt", sep="\t", quote=F, col.names=T, row.names=F)
 
 #trainTestData <- read.table(trainTestFilePath, sep="\t", header=FALSE, row.names=NULL, quote="\"", check.names=F)
-suppressWarnings(trainTestData <- fread(trainTestFilePath, stringsAsFactors=TRUE, sep="\t", header=TRUE, data.table=FALSE, check.names=FALSE, showProgress=FALSE))
+suppressWarnings(trainTestData <- fread(trainTestFilePath, stringsAsFactors=TRUE, sep="\t", header=FALSE, data.table=FALSE, check.names=FALSE, showProgress=FALSE))
 
 colnames(trainTestData) <- c("Description", "TrainIDs", "TestIDs")
 
