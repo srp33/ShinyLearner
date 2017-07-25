@@ -1,9 +1,11 @@
 inFilePath = commandArgs()[7]
 trainTestFilePath = commandArgs()[8]
 outCLFilePath = commandArgs()[9]
+outBestFilePath = commandArgs()[10]
 
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(readr))
 
 #data <- read.table(inFilePath, sep="\t", header=TRUE, row.names=NULL, quote="\"", check.names=F)
 suppressWarnings(data <- fread(inFilePath, stringsAsFactors=TRUE, sep="\t", header=TRUE, data.table=FALSE, check.names=FALSE, showProgress=FALSE))
@@ -35,3 +37,6 @@ mergedData$Description <- paste(mergedData$Description, "____", mergedData$CL_Di
 mergedData <- select(mergedData, Description, TrainIDs, TestIDs, CL)
 
 write.table(mergedData, outCLFilePath, sep="\t", col.names=F, row.names=F, quote=F)
+
+colnames(groupedData) <- c("Description", "Algorithm", "Algorithm_Group")
+write_tsv(select(groupedData, Description, Algorithm_Group, Algorithm), outBestFilePath)

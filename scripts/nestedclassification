@@ -15,10 +15,11 @@ outMetricsFile="$8"
 outNestedPredictionsFile="${9}"
 outNestedMetricsFile="${10}"
 outNestedBenchmarkFile="${11}"
-validationType="${12}"
-randomSeed="${13}"
-ohe="${14}"
-tmpDir="${15}"
+outNestedBestFile="${12}"
+validationType="${13}"
+randomSeed="${14}"
+ohe="${15}"
+tmpDir="${16}"
 
 source scripts/setup
 
@@ -33,20 +34,20 @@ else
   python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
 fi
 
-if [[ "$verbose" == "true" ]]
-then
-  echo "allid:"
-  cat $tmpDir/allid
-
-  echo "classes:"
-  cat $tmpDir/classes
-
-  echo "ott:"
-  cat $tmpDir/ott
-
-  echo "ie:"
-  cat $tmpDir/ie
-fi
+#if [[ "$verbose" == "true" ]]
+#then
+#  echo "allid:"
+#  cat $tmpDir/allid
+#
+#  echo "classes:"
+#  cat $tmpDir/classes
+#
+#  echo "ott:"
+#  cat $tmpDir/ott
+#
+#  echo "ie:"
+#  cat $tmpDir/ie
+#fi
 
 ## Prepare inner experiment files
 python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie2 $verbose
@@ -60,14 +61,14 @@ Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/ip" "$tmpDir
 echo "Parsing inner classification results..."
 python scripts/ReformatInnerResults_Classification.py $tmpDir/im $tmpDir/ibrf
 
-if [[ "$verbose" == "true" ]]
-then
-  echo "ibrf:"
-  cat $tmpDir/ibrf
-fi
+#if [[ "$verbose" == "true" ]]
+#then
+#  echo "ibrf:"
+#  cat $tmpDir/ibrf
+#fi
 
 echo "Identifying best combination of algorithms..."
-Rscript --vanilla scripts/SelectBestInnerResults_Classification.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ocle 2> $errFile
+Rscript --vanilla scripts/SelectBestInnerResults_Classification.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ocle $tmpDir/ibest 2> $errFile
 printError $verbose $errFile
 
 echo "Classifying for outer iterations..."
@@ -104,3 +105,6 @@ then
   python scripts/ParseNestedResults2.py $tmpDir/icb $iterationOutputHeader $tmpDir/icb.sorttemp
   sortFile $tmpDir/icb.sorttemp "-k1,1 -k2,2n -k3,3n -k4" "$outNestedBenchmarkFile"
 fi
+
+python scripts/SplitDescriptionColumn.py $tmpDir/ibest $tmpDir/ibest.sorttemp
+sortFile $tmpDir/ibest.sorttemp "-k1,1 -k2,2n -k3,3 -k4" "$outNestedBestFile"

@@ -32,6 +32,7 @@ outMetricsFile="$outputDir/Metrics.tsv"
 outNestedPredictionsFile="$outputDir/Nested_Predictions.tsv"
 outNestedMetricsFile="$outputDir/Nested_Metrics.tsv"
 outNestedBenchmarkFile="$outputDir/Nested_ElapsedTime.tsv"
+outNestedBestFile="$outputDir/Nested_Best.tsv"
 outLogFile="$outputDir/Log.txt"
 
 source scripts/print_args
@@ -58,7 +59,7 @@ then
   python scripts/OneHotEncode.py "$analysisDataFile"
 fi
 
-scripts/nestedclassification "$analysisDataFile" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" montecarlo $randomSeed $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
+scripts/nestedclassification "$analysisDataFile" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" "$outNestedBestFile" montecarlo $randomSeed $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
 
 cleanup
 

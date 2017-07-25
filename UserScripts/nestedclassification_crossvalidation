@@ -33,6 +33,7 @@ outMetricsFile="$outputDir/Metrics.tsv"
 outNestedPredictionsFile="$outputDir/Nested_Predictions.tsv"
 outNestedMetricsFile="$outputDir/Nested_Metrics.tsv"
 outNestedBenchmarkFile="$outputDir/Nested_ElapsedTime.tsv"
+outNestedBestFile="$outputDir/Nested_Best.tsv"
 outLogFile="$outputDir/Log.txt"
 
 source scripts/print_args
@@ -95,11 +96,13 @@ do
     outNestedBenchmarkFileIteration=$outDir/outbenchnested
   fi
 
+  outNestedBestFileIteration=$outDir/outnestedbest
+
   echo
   echo "**************************************************************" | tee -a "$outLogFile"
   echo "Beginning analysis for cross-validation fold ${iteration}" | tee -a "$outLogFile"
   echo "**************************************************************" | tee -a "$outLogFile"
-  scripts/nestedclassification "$analysisDataFile" "$description" "$outerNumFolds" "$innerNumFolds" "$verbose" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedBenchmarkFileIteration" crossvalidation $iteration $ohe $outDir 2>&1 | tee -a "$outLogFile"
+  scripts/nestedclassification "$analysisDataFile" "$description" "$outerNumFolds" "$innerNumFolds" "$verbose" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedBenchmarkFileIteration" "$outNestedBestFileIteration" crossvalidation $iteration $ohe $outDir 2>&1 | tee -a "$outLogFile"
 done
 
 echo
@@ -109,13 +112,14 @@ echo "**************************************************************" | tee -a "
 echo
 
 echo "Combining results across cross-validation iterations..." | tee -a "$outLogFile"
-python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchnested" "$tmpDir/outpreds,$tmpDir/outmetrics,$tmpDir/outnestedpreds,$tmpDir/outnestedmetrics,$tmpDir/outnestedbenchmark" 2>&1 | tee -a "$outLogFile"
+python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchnested,$tmpDir/*/outnestedbest" "$tmpDir/outpreds,$tmpDir/outmetrics,$tmpDir/outnestedpreds,$tmpDir/outnestedmetrics,$tmpDir/outnestedbenchmark,$tmpDir/outnestedbest" 2>&1 | tee -a "$outLogFile"
 
 sortFile $tmpDir/outpreds "-k1,1 -k2,2n -k3,3n -k4" "$outPredictionsFile"
 sortFile $tmpDir/outmetrics "-k1,1 -k2,2n -k3,3n -k4" "$outMetricsFile"
 sortFile $tmpDir/outnestedpreds "-k1,1 -k2,2n -k3,3n -k4,4n -k5" "$outNestedPredictionsFile"
 sortFile $tmpDir/outnestedmetrics "-k1,1 -k2,2n -k3,3n -k4,4n -k5" "$outNestedMetricsFile"
 sortFile $tmpDir/outnestedbenchmark "-k1,1 -k2,2n -k3,3n -k4,4n -k5" "$outNestedBenchmarkFile"
+sortFile $tmpDir/outnestedbest "-k1,1 -k2,2n -k3,3n -k4" "$outNestedBestFile"
 
 cleanup
 
