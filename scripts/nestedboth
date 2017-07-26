@@ -21,10 +21,11 @@ outNestedPredictionsFile="${14}"
 outNestedMetricsFile="${15}"
 outNestedFeatureSelectionBenchmarkFile="${16}"
 outNestedClassificationBenchmarkFile="${17}"
-validationType="${18}"
-randomSeed="${19}"
-ohe="${20}"
-tmpDir="${21}"
+outNestedBestFile="${18}"
+validationType="${19}"
+randomSeed="${20}"
+ohe="${21}"
+tmpDir="${22}"
 
 source scripts/setup
 
@@ -59,7 +60,7 @@ echo "Parsing inner classification results..."
 python scripts/ReformatInnerResults_FeatureSelection.py $tmpDir/im $tmpDir/ibrf
 
 echo "Identifying best combination of algorithms and number of features for inner iterations..."
-Rscript --vanilla scripts/SelectBestInnerResults_FeatureSelection.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ofse $tmpDir/onfe $tmpDir/ocle 2> $errFile
+Rscript --vanilla scripts/SelectBestInnerResults_FeatureSelection.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ofse $tmpDir/onfe $tmpDir/ocle $tmpDir/ibest 2> $errFile
 printError $verbose $errFile
 
 echo "Selecting features on outer iterations"
@@ -130,3 +131,6 @@ then
   Rscript --vanilla scripts/BordaCountFeatures.R "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile
   printError $verbose $errFile
 fi
+
+python scripts/SplitDescriptionColumn.py $tmpDir/ibest $iterationOutputHeader $tmpDir/ibest.sorttemp
+sortFile $tmpDir/ibest.sorttemp "-k1,1 -k2,2 -k3,3n -k4,4 -k5" "$outNestedBestFile"

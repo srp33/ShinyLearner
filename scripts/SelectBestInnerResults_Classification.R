@@ -19,12 +19,11 @@ data <- ungroup(summarise(group_by(data, Description, CL), Value=mean(Value)))
 # Truncate parameter combos to directory names
 data$CL_Dir <- factor(dirname(as.character(data$CL)))
 
-# Pick best result for each description
+# Pick best result for each algorithm group
 groupedData <- group_by(data, Description, CL_Dir)
 set.seed(0)
 groupedData <- filter(groupedData, rank(-Value, ties.method="random")==1) %>% ungroup() %>% select(-Value)
 
-#trainTestData <- read.table(trainTestFilePath, sep="\t", header=FALSE, row.names=NULL, quote="\"", check.names=F)
 suppressWarnings(trainTestData <- fread(trainTestFilePath, stringsAsFactors=TRUE, sep="\t", header=FALSE, data.table=FALSE, check.names=FALSE, showProgress=FALSE))
 
 colnames(trainTestData) <- c("Description", "TrainIDs", "TestIDs")

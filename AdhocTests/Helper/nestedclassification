@@ -31,6 +31,7 @@ mkdir -p $outputDir
 cd $testDir
 
 validation=StrongSignal_Both
+#validation=NoSignal_Both
 dataFile=$currentDir/Validation/${validation}.tsv.gz
 #dataFile="$currentDir/debug_data/*.tsv.gz"
 #dataFile="$currentDir/TestFiles/*.tsv.gz"
@@ -39,14 +40,15 @@ dataFile=$currentDir/Validation/${validation}.tsv.gz
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default*"
-classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/decision_tree/default*"
+classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/decision_tree/*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*,$currentDir/AlgorithmScripts/Classification/tsv/sklearn/svm"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/svm"
-#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/knn/default*"
-verbose=true
-#verbose=false
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/knn/*"
+#verbose=true
+verbose=false
 
 if [[ "$validationType" == "montecarlo" ]]
 then

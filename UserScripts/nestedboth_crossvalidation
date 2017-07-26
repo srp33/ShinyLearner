@@ -41,6 +41,7 @@ outNestedPredictionsFile="$outputDir/Nested_Predictions.tsv"
 outNestedMetricsFile="$outputDir/Nested_Metrics.tsv"
 outNestedFeatureSelectionBenchmarkFile="$outputDir/Nested_FeatureSelection_ElapsedTime.tsv"
 outNestedClassificationBenchmarkFile="$outputDir/Nested_Classification_ElapsedTime.tsv"
+outNestedBestFile="$outputDir/Nested_Best.tsv"
 outLogFile="$outputDir/Log.txt"
 
 source scripts/print_args
@@ -121,11 +122,13 @@ do
     outNestedClassificationBenchmarkFileIteration=$outDir/outbenchclnested
   fi
 
+  outNestedBestFileIteration=$outDir/outnestedbest
+
   echo
   echo "**************************************************************" | tee -a "$outLogFile"
   echo "Beginning analysis for cross-validation fold ${iteration}" | tee -a "$outLogFile"
   echo "**************************************************************" | tee -a "$outLogFile"
-  scripts/nestedboth "$analysisDataFile" "$description" "$outerNumFolds" "$innerNumFolds" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFileIteration" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedSelectedFeaturesFileIteration" "" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedFeatureSelectionBenchmarkFileIteration" "$outNestedClassificationBenchmarkFileIteration" crossvalidation $iteration $ohe $outDir 2>&1 | tee -a "$outLogFile"
+  scripts/nestedboth "$analysisDataFile" "$description" "$outerNumFolds" "$innerNumFolds" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFileIteration" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedSelectedFeaturesFileIteration" "" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedFeatureSelectionBenchmarkFileIteration" "$outNestedClassificationBenchmarkFileIteration" "$outNestedBestFileIteration" crossvalidation $iteration $ohe $outDir 2>&1 | tee -a "$outLogFile"
 done
 
 echo
@@ -135,7 +138,7 @@ echo "**************************************************************" | tee -a "
 echo
 
 echo "Combining results across cross-validation iterations..." | tee -a "$outLogFile"
-python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfs,$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outfsnested,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchfsnested,$tmpDir/*/outbenchclnested" "$tmpDir/outfs,$tmpDir/outpreds,$tmpDir/outmetrics,$tmpDir/outfsnested,$tmpDir/outpredsnested,$tmpDir/outmetricsnested,$tmpDir/outbenchfsnested,$tmpDir/outbenchclnested" 2>&1 | tee -a "$outLogFile"
+python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfs,$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outfsnested,$tmpDir/*/outpredsnested,$tmpDir/*/outmetricsnested,$tmpDir/*/outbenchfsnested,$tmpDir/*/outbenchclnested,$tmpDir/*/outnestedbest" "$tmpDir/outfs,$tmpDir/outpreds,$tmpDir/outmetrics,$tmpDir/outfsnested,$tmpDir/outpredsnested,$tmpDir/outmetricsnested,$tmpDir/outbenchfsnested,$tmpDir/outbenchclnested,$tmpDir/outnestedbest" 2>&1 | tee -a "$outLogFile"
 
 sortFile $tmpDir/outfs "-k1,1 -k2,2n -k3,3n -k4" "$outSelectedFeaturesFile"
 sortFile $tmpDir/outpreds "-k1,1 -k2,2n -k3,3n -k4" "$outPredictionsFile"
@@ -145,6 +148,7 @@ sortFile $tmpDir/outpredsnested "-k1,1 -k2,2n -k3,3n -k4,4n -k5" "$outNestedPred
 sortFile $tmpDir/outmetricsnested "-k1,1 -k2,2n -k3,3n -k4,4n -k5 -k6,6n -k7" "$outNestedMetricsFile"
 sortFile $tmpDir/outbenchfsnested "-k1,1 -k2,2n -k3,3n -k4,4n -k5" "$outNestedFeatureSelectionBenchmarkFile"
 sortFile $tmpDir/outbenchclnested "-k1,1 -k2,2n -k3,3n -k4,4n -k5,4n -k5 -k6,6n -k7" "$outNestedClassificationBenchmarkFile"
+sortFile $tmpDir/outnestedbest "-k1,1 -k2,2n -k3,3n -k4,4n -k5,4n -k5 -k6,6n -k7" "$outNestedBestFile"
 
 echo "Summarizing feature ranks..."
 errFile=/dev/null

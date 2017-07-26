@@ -1,62 +1,0 @@
-***********************************************************************
-Command that was executed for analysis on Wed Feb  8 00:31:59 UTC 2017:
-
-/UserScripts/nestedclassification_montecarlo InputData/StrongSignal_Both.tsv.gz My_Interesting_Analysis 10 5 false AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default OutputData/Predictions.tsv OutputData/Metrics.tsv OutputData/NestedPredictionsFile.tsv OutputData/NestedMetricsFile.tsv OutputData/NestedBenchmarkFile.tsv OutputData/LogFile.txt
-ShinyLearner version: 248
-***********************************************************************
-Preparing for analysis...
-After filtering, data were available for 60 instances and 151 data points.
-Classifying for inner iterations...
-Starting analysis...
-Progress: 0% #Progress: 2% ##Progress: 4% ###Progress: 6% ####Progress: 8% #####Progress: 10% ######Progress: 12% #######Progress: 14% ########Progress: 16% #########Progress: 18% ##########Progress: 20% ###########Progress: 22% ############Progress: 24% #############Progress: 26% ##############Progress: 28% ###############Progress: 30% ################Progress: 32% #################Progress: 34% ##################Progress: 36% ###################Progress: 38% ####################Progress: 40% #####################Progress: 42% ######################Progress: 44% #######################Progress: 46% ########################Progress: 48% #########################Progress: 50% ##########################Progress: 52% ###########################Progress: 54% ############################Progress: 56% #############################Progress: 58% ##############################Progress: 60% ###############################Progress: 62% ################################Progress: 64% #################################Progress: 66% ##################################Progress: 68% ###################################Progress: 70% ####################################Progress: 72% #####################################Progress: 74% ######################################Progress: 76% #######################################Progress: 78% ########################################Progress: 80% #########################################Progress: 82% ##########################################Progress: 84% ###########################################Progress: 86% ############################################Progress: 88% #############################################Progress: 90% ##############################################Progress: 92% ###############################################Progress: 94% ################################################Progress: 96% #################################################Progress: 98% ##################################################Calculating classification metrics for inner iterations...
-Parsing inner classification results...
-Identifying best combination of algorithms...
-Classifying for outer iterations...
-Starting analysis...
-Progress: 0% #Progress: 11% ######Progress: 22% ############Progress: 33% #################Progress: 44% #######################Progress: 55% ############################Progress: 66% ##################################Progress: 77% #######################################Progress: 88% #############################################Progress: 100% ###################################################                                                          
-Calculating classification metrics for outer iterations...
-Preparing output files...
-Analysis successfully completed!
-***********************************************************************
-Command that was executed for analysis on Wed Feb  8 00:55:38 UTC 2017:
-
-/UserScripts/nestedclassification_montecarlo InputData/Data.tsv.gz My_Interesting_Analysis 1 5 false AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default OutputData/Predictions.tsv OutputData/Metrics.tsv OutputData/NestedPredictionsFile.tsv OutputData/NestedMetricsFile.tsv OutputData/NestedBenchmarkFile.tsv OutputData/LogFile.txt
-ShinyLearner version: 248
-***********************************************************************
-Preparing for analysis...
-After filtering, data were available for 60 instances and 151 data points.
-Classifying for inner iterations...
-Starting analysis...
-Progress: 0% #Progress: 25% #############Progress: 50% ##########################Progress: 75% ######################################Progress: 100% ###################################################                                                          
-Calculating classification metrics for inner iterations...
-Parsing inner classification results...
-Identifying best combination of algorithms...
-Classifying for outer iterations...
-Starting analysis...
-Progress: 0% #Calculating classification metrics for outer iterations...
-Preparing output files...
-Analysis successfully completed!
-***********************************************************************
-Command that was executed for analysis on Wed Feb  8 01:02:56 UTC 2017:
-
-/UserScripts/nestedclassification_montecarlo InputData/Data.tsv.gz My_Interesting_Analysis 1 5 false AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default OutputData/Predictions.tsv OutputData/Metrics.tsv OutputData/NestedPredictionsFile.tsv OutputData/NestedMetricsFile.tsv OutputData/NestedBenchmarkFile.tsv OutputData/LogFile.txt
-ShinyLearner version: 248
-***********************************************************************
-Preparing for analysis...
-java.lang.Exception: No file exists at 
-	at shinylearner.core.Log.ExceptionFatal(Log.java:66)
-	at shinylearner.core.Settings.ParseCommandLineSettings(Settings.java:42)
-	at shinylearner.Main.main(Main.java:23)
-
-***********************************************************************
-Command that was executed for analysis on Wed Feb  8 01:04:00 UTC 2017:
-
-/UserScripts/nestedclassification_montecarlo InputData/Data.tsv.gz My_Interesting_Analysis 1 5 false AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default OutputData/Predictions.tsv OutputData/Metrics.tsv OutputData/NestedPredictionsFile.tsv OutputData/NestedMetricsFile.tsv OutputData/NestedBenchmarkFile.tsv OutputData/LogFile.txt
-ShinyLearner version: 248
-***********************************************************************
-Preparing for analysis...
-java.lang.Exception: No file exists at 
-	at shinylearner.core.Log.ExceptionFatal(Log.java:66)
-	at shinylearner.core.Settings.ParseCommandLineSettings(Settings.java:42)
-	at shinylearner.Main.main(Main.java:23)
-

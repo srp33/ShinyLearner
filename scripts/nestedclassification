@@ -106,5 +106,5 @@ then
   sortFile $tmpDir/icb.sorttemp "-k1,1 -k2,2n -k3,3n -k4" "$outNestedBenchmarkFile"
 fi
 
-python scripts/SplitDescriptionColumn.py $tmpDir/ibest $tmpDir/ibest.sorttemp
+python scripts/SplitDescriptionColumn.py $tmpDir/ibest $iterationOutputHeader $tmpDir/ibest.sorttemp
 sortFile $tmpDir/ibest.sorttemp "-k1,1 -k2,2n -k3,3 -k4" "$outNestedBestFile"
