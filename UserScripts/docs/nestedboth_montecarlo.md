@@ -17,6 +17,7 @@ OPTIONAL ARGUMENTS
 
     --verbose [false|true]
     --seed [integer]
+    --train-proportion [float]
     --ohe [false|true]
     --temp-dir [dir_path]
 
@@ -54,6 +55,8 @@ NOTES
     The --verbose argument is set to false by default. If set to true, detailed information about the processing steps will be printed to standard out. This flag is typically used for debugging purposes.
 
     The --seed argument allows the user to specify a random seed for assigning samples to training and test set(s). This value is 1 by default.
+
+    The --train-proportion argument allows the user to control the proportion of samples that are assigned (randomly) to each training set. The remaining samples are assigned to the corresponding test sets. By default, this value is 0.67. Valid values range between 0.25 and 0.90.
 
     The --ohe argument is set to true by default. This means that any categorical variables will be [one-hot encoded](https://www.quora.com/What-is-one-hot-encoding-and-when-is-it-used-in-data-science).
     

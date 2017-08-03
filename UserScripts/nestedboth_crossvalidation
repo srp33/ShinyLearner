@@ -128,7 +128,7 @@ do
   echo "**************************************************************" | tee -a "$outLogFile"
   echo "Beginning analysis for cross-validation fold ${iteration}" | tee -a "$outLogFile"
   echo "**************************************************************" | tee -a "$outLogFile"
-  scripts/nestedboth "$analysisDataFile" "$description" "$outerNumFolds" "$innerNumFolds" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFileIteration" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedSelectedFeaturesFileIteration" "" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedFeatureSelectionBenchmarkFileIteration" "$outNestedClassificationBenchmarkFileIteration" "$outNestedBestFileIteration" crossvalidation $iteration $ohe $outDir 2>&1 | tee -a "$outLogFile"
+  scripts/nestedboth "$analysisDataFile" "$description" "$outerNumFolds" "$innerNumFolds" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFileIteration" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedSelectedFeaturesFileIteration" "" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedFeatureSelectionBenchmarkFileIteration" "$outNestedClassificationBenchmarkFileIteration" "$outNestedBestFileIteration" crossvalidation $iteration NA $ohe $outDir 2>&1 | tee -a "$outLogFile"
 done
 
 echo

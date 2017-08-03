@@ -12,7 +12,10 @@ classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE "$@")"
 outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
 verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
 ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
+#standardize="$(python scripts/ParseArgs.py --standardize FALSE false $@)"
+#impute="$(python scripts/ParseArgs.py --impute FALSE false $@)"
 randomSeed="$(python scripts/ParseArgs.py --seed FALSE 1 $@)"
+proportionTrain="$(python scripts/ParseArgs.py --train-proportion FALSE 0.67 $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
@@ -54,7 +57,7 @@ then
   python scripts/OneHotEncode.py "$analysisDataFile"
 fi
 
-scripts/classification "$analysisDataFile" "$description" "$numIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo "$randomSeed" $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
+scripts/classification "$analysisDataFile" "$description" "$numIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo "$randomSeed" "$proportionTrain" $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
 
 cleanup
 

@@ -67,17 +67,33 @@ shinyUI(
 			  column(8, uiOutput('sel_fsAlgos_help_button_ui'))
 			),
 			uiOutput('sel_fsAlgos_ui'),
+			uiOutput('sel_FSOpt_ui'),
 			uiOutput('sel_fsAlgos_help_message_ui'),
 			fluidRow(
 			  column(4, uiOutput('sel_classifAlgos_header_ui')),
 			  column(8, uiOutput('sel_classifAlgos_help_button_ui'))
 			),
 			uiOutput('sel_classifAlgos_ui'),
+			uiOutput('sel_classifOpt_ui'),
 			uiOutput('sel_classifAlgos_help_message_ui'),br(),br(),
 			uiOutput('nav_4_ui')
 		  )
 		),
 		tabPanel("5",br(),
+          h4('Additional Options'),
+          br(),
+		  uiOutput('seed_textbox_ui'),
+		  uiOutput('seed_help_message_ui'), br(),
+		  uiOutput('ohe_checkbox_ui'),
+		  uiOutput('ohe_help_message_ui'),
+		  uiOutput('stan_checkbox_ui'),
+		  uiOutput('stan_help_message_ui'),
+		  uiOutput('impute_checkbox_ui'),
+		  uiOutput('impute_help_message_ui'),
+          br(),
+		  uiOutput('nav_5_ui')
+		),
+		tabPanel("6",br(),
 		  fluidRow(
 			column(3, h4('Operating System')),
 			column(9, uiOutput('os_help_button_ui'))
@@ -93,7 +109,7 @@ shinyUI(
 		  ),br(),
           h4('Command'),
 		  uiOutput('display_script_ui'),br(),br(),
-		  uiOutput('nav_5_ui'),br()
+		  uiOutput('nav_6_ui'),br()
 		)
 	  )),
 	  column(1)

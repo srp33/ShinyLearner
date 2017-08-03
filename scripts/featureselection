@@ -14,8 +14,9 @@ outSummarizedFeaturesFile="$7"
 outBenchmarkFile="$8"
 validationType="$9"
 randomSeed="${10}"
-ohe="${11}"
-tmpDir="${12}"
+proportionTrain="${11}"
+ohe="${12}"
+tmpDir="${13}"
 
 source scripts/setup
 
@@ -28,7 +29,7 @@ python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $idFile $
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  python scripts/AssignTrainingTesting.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
+  python scripts/AssignTrainingTesting.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed $proportionTrain
 else
   python scripts/AssignCrossValidation.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
 fi

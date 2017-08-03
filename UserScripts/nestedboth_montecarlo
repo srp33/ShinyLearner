@@ -15,6 +15,7 @@ fsAlgos="$(python scripts/ParseArgs.py --fs-algo TRUE "$@")"
 outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
 verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
 randomSeed="$(python scripts/ParseArgs.py --seed FALSE 1 $@)"
+proportionTrain="$(python scripts/ParseArgs.py --train-proportion FALSE 0.67 $@)"
 ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
@@ -67,7 +68,7 @@ then
   python scripts/OneHotEncode.py "$analysisDataFile"
 fi
 
-scripts/nestedboth "$analysisDataFile" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" "$outNestedBestFile" montecarlo $randomSeed $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
+scripts/nestedboth "$analysisDataFile" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" "$outNestedBestFile" montecarlo $randomSeed $proportionTrain $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
 
 cleanup
 

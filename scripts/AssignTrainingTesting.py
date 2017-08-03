@@ -1,6 +1,6 @@
-import random, sys, os, re
+import random, sys, os, re, math
 
-if len(sys.argv) != 7:
+if len(sys.argv) != 8:
     print "Invalid number or arguments for %s." % sys.argv[0]
     sys.exit(1)
 
@@ -10,6 +10,7 @@ Prefix = sys.argv[3]
 OutFilePath = sys.argv[4]
 NumIterations = sys.argv[5]
 RandomSeed = sys.argv[6]
+ProportionTrain = sys.argv[7]
 
 if Prefix == "":
     print "No prefix was specified."
@@ -50,6 +51,18 @@ except  ValueError:
 
 RandomSeed = int(RandomSeed)
 
+try:
+    float(ProportionTrain)
+except  ValueError:
+    print "%s is not a valid value for the proportion of training samples." % ProportionTrain
+    sys.exit(1)
+
+ProportionTrain = float(ProportionTrain)
+
+if ProportionTrain < 0.25 or ProportionTrain > 0.9:
+    print "Invalid value specified for --train-proportion: %s." % ProportionTrain
+    sys.exit(1)
+
 IDFile = open(IDFilePath)
 ClassFile = open(ClassFilePath)
 OutputFile = open(OutFilePath, 'w')
@@ -84,20 +97,12 @@ for line in IDFile:
         for className in classes:
             classSamples = [sampleID for sampleID in sampleIDs if sampleClassDict[sampleID] == className]
             random.shuffle(classSamples)
-            classTrain = []
-            classTest = []
-            while len(classSamples) > 0:
-                classTest.append(classSamples.pop(0))
-                if len(classSamples) == 0:
-                    break
-                classTrain.append(classSamples.pop(0))
-                if len(classSamples) == 0:
-                    break
-                classTrain.append(classSamples.pop(0))
-                if len(classSamples) == 0:
-                    break
-            training.extend(classTrain)
-            test.extend(classTest)
+
+            numTrain = int(math.floor(float(len(classSamples)) * ProportionTrain))
+
+            training.extend(classSamples[:numTrain])
+            test.extend(classSamples[numTrain:])
+
 #        print "The number of samples in the class file was %i." % len(SAMPLE_IDS)
 #        print "The number of samples in the gene-expression file was %i." % len(EXPRESSION_IDS)
 #        print "The number of samples in training set is %i." % len(training)

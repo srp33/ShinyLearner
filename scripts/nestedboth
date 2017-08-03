@@ -24,8 +24,9 @@ outNestedClassificationBenchmarkFile="${17}"
 outNestedBestFile="${18}"
 validationType="${19}"
 randomSeed="${20}"
-ohe="${21}"
-tmpDir="${22}"
+proportionTrain="${21}"
+ohe="${22}"
+tmpDir="${23}"
 
 source scripts/setup
 
@@ -33,8 +34,8 @@ python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $tmpDir/a
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  python scripts/AssignTrainingTesting.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
-  python scripts/AssignTrainingTesting.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
+  python scripts/AssignTrainingTesting.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed $proportionTrain
+  python scripts/AssignTrainingTesting.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed $proportionTrain
 else
   python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
   python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
@@ -63,7 +64,7 @@ echo "Identifying best combination of algorithms and number of features for inne
 Rscript --vanilla scripts/SelectBestInnerResults_FeatureSelection.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ofse $tmpDir/onfe $tmpDir/ocle $tmpDir/ibest 2> $errFile
 printError $verbose $errFile
 
-echo "Selecting features on outer iterations"
+echo "Selecting features on outer iterations..."
 java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE=$analysisDataFile EXPERIMENT_FILE=$tmpDir/ofse DEBUG=$verbose OUTPUT_FEATURES_FILE_PATH=$tmpDir/of TEMP_DIR=$tmpDir 2> /dev/null
 
 ## Add selected features to outer classification files

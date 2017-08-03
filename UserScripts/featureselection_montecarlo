@@ -13,6 +13,7 @@ outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
 verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
 ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
 randomSeed="$(python scripts/ParseArgs.py --seed FALSE 1 $@)"
+proportionTrain="$(python scripts/ParseArgs.py --train-proportion FALSE 0.67 $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
@@ -54,7 +55,7 @@ then
   python scripts/OneHotEncode.py "$analysisDataFile"
 fi
 
-scripts/featureselection "$analysisDataFile" "$description" "$numIterations" "$verbose" "$fsAlgos" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile" montecarlo $randomSeed $ohe $tmpDir 2>&1 | tee -a "$outLogFile"
+scripts/featureselection "$analysisDataFile" "$description" "$numIterations" "$verbose" "$fsAlgos" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile" montecarlo $randomSeed $proportionTrain $ohe $tmpDir 2>&1 | tee -a "$outLogFile"
 
 cleanup
 

@@ -18,8 +18,9 @@ outNestedBenchmarkFile="${11}"
 outNestedBestFile="${12}"
 validationType="${13}"
 randomSeed="${14}"
-ohe="${15}"
-tmpDir="${16}"
+proportionTrain="${15}"
+ohe="${16}"
+tmpDir="${17}"
 
 source scripts/setup
 
@@ -27,8 +28,8 @@ python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $tmpDir/a
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  python scripts/AssignTrainingTesting.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
-  python scripts/AssignTrainingTesting.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
+  python scripts/AssignTrainingTesting.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed $proportionTrain
+  python scripts/AssignTrainingTesting.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed $proportionTrain
 else
   python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
   python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
