@@ -1,6 +1,6 @@
 import random, sys, os, re
 
-if len(sys.argv) != 8:
+if len(sys.argv) != 7:
     print "Invalid number or arguments for %s." % sys.argv[0]
     sys.exit(1)
 
