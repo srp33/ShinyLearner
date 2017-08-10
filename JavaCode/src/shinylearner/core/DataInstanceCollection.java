@@ -19,6 +19,8 @@ public class DataInstanceCollection
 	private HashMap<String, Integer> _instanceIndexMap = new HashMap<String, Integer>();
 	private HashMap<String, Integer> _dataPointNameIndexMap = new HashMap<String, Integer>();
 
+	private HashSet<String> _missingOptions = new HashSet<String>();
+
 	public DataInstanceCollection(ArrayList<String> instanceIDs, ArrayList<String> dataPointNames)
 	{
 		DataPointNames = dataPointNames;
@@ -31,12 +33,23 @@ public class DataInstanceCollection
 			_instanceIndexMap.put(InstanceIDs.get(i), i);
 		for (int i = 0; i< DataPointNames.size(); i++)
 			_dataPointNameIndexMap.put(DataPointNames.get(i), i);
+
+		_missingOptions.add("?");
+		_missingOptions.add("na");
+		_missingOptions.add("null");
 	}
 
 	public void SetValues(int instanceIndex, HashMap<String, String> nameValueMap)
 	{
 		for (String dataPointName : nameValueMap.keySet())
-			_data[instanceIndex][_dataPointNameIndexMap.get(dataPointName)] = nameValueMap.get(dataPointName);
+		{
+			String value = nameValueMap.get(dataPointName);
+
+			if (_missingOptions.contains(value.toLowerCase()))
+				value = "NA";
+
+			_data[instanceIndex][_dataPointNameIndexMap.get(dataPointName)] = value;
+		}
 	}
 
 	public Integer GetIndexOfInstance(String instanceID)
@@ -72,11 +85,21 @@ public class DataInstanceCollection
 	{
 		String value = _data[instanceIndex][dataPointIndex];
 
-		if (value == null)
+		if (value == null || value.equals("NA"))
 		{
-			Log.Debug(InstanceIDs);
-			Log.Debug(DataPointNames);
-			Log.ExceptionFatal("No data value has been stored in internal data structure for instance [" + instanceID + "] and data point [" + dataPointName + "] at indices [" + instanceIndex + ", " + dataPointIndex + "].");
+			if (Settings.IMPUTE)
+			{
+				value = "NA";
+			}
+			else
+			{
+				Log.Debug(value);
+				Log.Debug(InstanceIDs);
+				Log.Debug(DataPointNames);
+				Log.Debug("No data value has been stored in internal data structure for instance [" + instanceID + "] and data point [" + dataPointName + "] at indices [" + instanceIndex + ", " + dataPointIndex + "].");
+				Log.Info("A missing value was found, but imputation is not enabled. Please check the documentation for information on how to enable imputation.");
+				Log.Exit(1);
+			}
 		}
 
 		return value;

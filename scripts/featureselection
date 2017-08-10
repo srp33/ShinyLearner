@@ -15,7 +15,7 @@ outBenchmarkFile="$8"
 validationType="$9"
 randomSeed="${10}"
 proportionTrain="${11}"
-ohe="${12}"
+impute="${12}"
 tmpDir="${13}"
 
 source scripts/setup

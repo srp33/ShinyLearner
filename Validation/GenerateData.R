@@ -40,6 +40,10 @@ generate = function(numContinuousRandom, numContinuousSignal, numDiscreteRandom,
   colnames(data) = paste("Feature", 1:ncol(data), sep="")
   rownames(data) = paste("Instance", 1:nrow(data), sep="")
 
+  # Add a few missing values
+  for (i in 1:10)
+    data[sample(1:nrow(data))[1], sample(1:ncol(data))[1]] <- NA
+
   classValues = c(rep(1, numInstances / 2), rep(2, numInstances / 4), rep(3, numInstances / 4))
 
   classData = as.data.frame(matrix(classValues, ncol=1))

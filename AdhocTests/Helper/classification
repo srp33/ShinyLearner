@@ -52,16 +52,19 @@ classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/DecisionTable/*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/decision_tree/*"
 #classifAlgo="/tmp/algs.list"
-#verbose=true
-verbose=false
+verbose=true
+#verbose=false
 #iterations=1
 iterations=2
 folds=2
+#scale=false
+scale=true
+impute=true
 tmpDir=/Users/srp33/Downloads/Temp
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations $iterations --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir" --temp-dir $tmpDir
+  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations $iterations --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir" --temp-dir $tmpDir --scale $scale --impute $impute
 else
-  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations $iterations --folds $folds --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir"
+  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations $iterations --folds $folds --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir" --scale $scale --impute $impute
 fi

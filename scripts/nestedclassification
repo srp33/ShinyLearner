@@ -19,7 +19,7 @@ outNestedBestFile="${12}"
 validationType="${13}"
 randomSeed="${14}"
 proportionTrain="${15}"
-ohe="${16}"
+impute="${16}"
 tmpDir="${17}"
 
 source scripts/setup

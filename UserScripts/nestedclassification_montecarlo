@@ -15,6 +15,8 @@ verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
 randomSeed="$(python scripts/ParseArgs.py --seed FALSE 1 $@)"
 proportionTrain="$(python scripts/ParseArgs.py --train-proportion FALSE 0.67 $@)"
 ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
+scale="$(python scripts/ParseArgs.py --scale FALSE false $@)"
+impute="$(python scripts/ParseArgs.py --impute FALSE false $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
@@ -25,6 +27,8 @@ checkParamParseOutput "$classifAlgos"
 checkParamParseOutput "$outputDir"
 checkParamParseOutput "$verbose"
 checkParamParseOutput "$ohe"
+checkParamParseOutput "$scale"
+checkParamParseOutput "$impute"
 checkParamParseOutput "$tmpDir"
 
 mkdir -p $outputDir
@@ -50,17 +54,29 @@ trap cleanup INT TERM EXIT
 validationType=montecarlo
 source scripts/setup
 
-echo "Parsing data..."
+echo "Parsing data..." 2>&1 | tee -a "$outLogFile"
 analysisDataFile=$tmpDir/data.gz
-java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose TEMP_DIR=$tmpDir 2>&1 | tee -a "$outLogFile"
+java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose IMPUTE=$impute TEMP_DIR=$tmpDir 2>&1 | tee -a "$outLogFile"
+
+if [[ "$impute" == "true" ]]
+then
+  echo "Imputing missing data (where applicable)..." 2>&1 | tee -a "$outLogFile"
+  Rscript --vanilla scripts/Impute.R "$analysisDataFile" $verbose 2>&1 | tee -a "$outLogFile"
+fi
 
 if [[ "$ohe" == "true" ]]
 then
-  echo "One-hot encoding categorical data (where applicable)..."
-  python scripts/OneHotEncode.py "$analysisDataFile"
+  echo "One-hot encoding categorical data (where applicable)..." 2>&1 | tee -a "$outLogFile"
+  python scripts/OneHotEncode.py "$analysisDataFile" 2>&1 | tee -a "$outLogFile"
 fi
 
-scripts/nestedclassification "$analysisDataFile" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" "$outNestedBestFile" montecarlo $randomSeed $proportionTrain $ohe "$tmpDir" 2>&1 | tee -a "$outLogFile"
+if [[ "$scale" == "true" ]]
+then
+  echo "Scaling numerical data (where applicable)..." 2>&1 | tee -a "$outLogFile"
+  Rscript --vanilla scripts/Scale.R "$analysisDataFile" $verbose 2>&1 | tee -a "$outLogFile"
+fi
+
+scripts/nestedclassification "$analysisDataFile" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" "$outNestedBestFile" montecarlo $randomSeed $proportionTrain $impute "$tmpDir" 2>&1 | tee -a "$outLogFile"
 
 cleanup
 

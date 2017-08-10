@@ -25,7 +25,7 @@ outNestedBestFile="${18}"
 validationType="${19}"
 randomSeed="${20}"
 proportionTrain="${21}"
-ohe="${22}"
+impute="${22}"
 tmpDir="${23}"
 
 source scripts/setup

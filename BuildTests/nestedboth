@@ -20,7 +20,7 @@ analysisType=$(basename $0)
 dataFile="$inputDir/$description.tsv.gz"
 specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
-bash run_docker_command $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description "$description" $iterationsFolds --fs-algo \"$fsAlgo\" --num-features \"$numFeaturesOptions\" --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose"
+bash run_docker_command $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description "$description" $iterationsFolds --fs-algo \"$fsAlgo\" --num-features \"$numFeaturesOptions\" --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose --impute true --ohe true"
 
 # Should only be the ensemble algorithm
 expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")

@@ -13,6 +13,8 @@ fsAlgos="$(python scripts/ParseArgs.py --fs-algo TRUE "$@")"
 outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
 verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
 ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
+scale="$(python scripts/ParseArgs.py --scale FALSE false $@)"
+impute="$(python scripts/ParseArgs.py --impute FALSE false $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
@@ -23,6 +25,8 @@ checkParamParseOutput "$fsAlgos"
 checkParamParseOutput "$outputDir"
 checkParamParseOutput "$verbose"
 checkParamParseOutput "$ohe"
+checkParamParseOutput "$scale"
+checkParamParseOutput "$impute"
 checkParamParseOutput "$tmpDir"
 
 mkdir -p $outputDir
@@ -45,14 +49,26 @@ trap cleanup INT TERM EXIT
 validationType=crossvalidation
 source scripts/setup
 
-echo "Parsing data..."
+echo "Parsing data..." 2>&1 | tee -a "$outLogFile"
 analysisDataFile=$tmpDir/data.gz
-java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose TEMP_DIR=$tmpDir 2>&1 | tee -a "$outLogFile"
+java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose IMPUTE=$impute TEMP_DIR=$tmpDir 2>&1 | tee -a "$outLogFile"
+
+if [[ "$impute" == "true" ]]
+then
+  echo "Imputing missing data (where applicable)..." 2>&1 | tee -a "$outLogFile"
+  Rscript --vanilla scripts/Impute.R "$analysisDataFile" $verbose 2>&1 | tee -a "$outLogFile"
+fi
 
 if [[ "$ohe" == "true" ]]
 then
-  echo "One-hot encoding categorical data (where applicable)..."
-  python scripts/OneHotEncode.py "$analysisDataFile"
+  echo "One-hot encoding categorical data (where applicable)..." 2>&1 | tee -a "$outLogFile"
+  python scripts/OneHotEncode.py "$analysisDataFile" 2>&1 | tee -a "$outLogFile"
+fi
+
+if [[ "$scale" == "true" ]]
+then
+  echo "Scaling numerical data (where applicable)..." 2>&1 | tee -a "$outLogFile"
+  Rscript --vanilla scripts/Scale.R "$analysisDataFile" $verbose 2>&1 | tee -a "$outLogFile"
 fi
 
 for iteration in $(seq 1 $numIterations)
@@ -73,27 +89,27 @@ do
     outBenchmarkFileIteration=$outDir/outbench
   fi
 
-  echo
+  echo 2>&1 | tee -a "$outLogFile"
   echo "**************************************************************" | tee -a "$outLogFile"
   echo "Beginning analysis for cross-validation fold ${iteration}" | tee -a "$outLogFile"
   echo "**************************************************************" | tee -a "$outLogFile"
-  scripts/featureselection "$analysisDataFile" "$description" "$numFolds" "$verbose" "$fsAlgos" "$outFeaturesFileIteration" "" "$outBenchmarkFileIteration" crossvalidation $iteration NA $ohe "$outDir" 2>&1 | tee -a "$outLogFile"
+  scripts/featureselection "$analysisDataFile" "$description" "$numFolds" "$verbose" "$fsAlgos" "$outFeaturesFileIteration" "" "$outBenchmarkFileIteration" crossvalidation $iteration NA $impute "$outDir" 2>&1 | tee -a "$outLogFile"
 done
 
-echo
+echo 2>&1 | tee -a "$outLogFile"
 echo "**************************************************************" | tee -a "$outLogFile"
 echo "Finalizing analysis" | tee -a "$outLogFile"
 echo "**************************************************************" | tee -a "$outLogFile"
-echo
+echo 2>&1 | tee -a "$outLogFile"
 
 echo "Combining results across cross-validation iterations..." | tee -a "$outLogFile"
 python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outfeatures,$tmpDir/*/outbench" "$tmpDir/outfeatures,$tmpDir/outbenchmark" 2>&1 | tee -a "$outLogFile"
 
 sortCriteria="-k1,1 -k2,2n -k3,3n -k4"
-sortFile $tmpDir/outfeatures "$sortCriteria" "$outFeaturesFile"
-sortFile $tmpDir/outbenchmark "$sortCriteria" "$outBenchmarkFile"
+sortFile $tmpDir/outfeatures "$sortCriteria" "$outFeaturesFile" 2>&1 | tee -a "$outLogFile"
+sortFile $tmpDir/outbenchmark "$sortCriteria" "$outBenchmarkFile" 2>&1 | tee -a "$outLogFile"
 
-echo "Summarizing feature ranks..."
+echo "Summarizing feature ranks..." 2>&1 | tee -a "$outLogFile"
 errFile=/dev/null
 if [[ "$verbose" == "true" ]]
 then

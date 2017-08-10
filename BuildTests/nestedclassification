@@ -18,7 +18,7 @@ analysisType=$(basename $0)
 dataFile="$inputDir/$description.tsv.gz"
 specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
-bash run_docker_command $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description "$description" $iterationsFolds --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose"
+bash run_docker_command $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description "$description" $iterationsFolds --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose --impute true --ohe true"
 
 expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
 python CheckAccuracy.py $analysisType $validationType $description ${specificOutputDir}/Metrics.tsv Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile

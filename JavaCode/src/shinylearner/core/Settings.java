@@ -11,6 +11,7 @@ import java.util.HashMap;
 public class Settings
 {
 	public static boolean DEBUG;
+	public static boolean IMPUTE;
     public static String TEMP_DIR;
     public static ArrayList<String> RAW_DATA_FILES = new ArrayList<String>();
 	public static String ANALYSIS_DATA_FILE;
@@ -28,6 +29,7 @@ public class Settings
 	public static void ParseCommandLineSettings(String[] args) throws Exception
 	{
 		DEBUG = Boolean.parseBoolean(GetArgValue(args, "DEBUG", "false"));
+		IMPUTE = Boolean.parseBoolean(GetArgValue(args, "IMPUTE", "false"));
 
 		TEMP_DIR = FileUtilities.CreateDirectoryIfNotExists(GetArgValue(args, "TEMP_DIR", null));
 		if (TEMP_DIR.endsWith("/"))

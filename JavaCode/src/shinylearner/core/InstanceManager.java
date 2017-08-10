@@ -49,7 +49,16 @@ public class InstanceManager
 				if (i == 0)
 					commonInstanceIDs = new HashSet<String>(dataProcessor.ParseInstanceIDs());
 				else
-					commonInstanceIDs.retainAll(dataProcessor.ParseInstanceIDs());
+				{
+					if (Settings.IMPUTE)
+					{
+						commonInstanceIDs.addAll(dataProcessor.ParseInstanceIDs());
+					}
+					else
+					{
+						commonInstanceIDs.retainAll(dataProcessor.ParseInstanceIDs());
+					}
+				}
 
 				for (String dataPointName : dataProcessor.ParseDataPointNames(dataFilePath + "__"))
 				{
@@ -77,13 +86,8 @@ public class InstanceManager
 				ParseDataProcessor(Settings.RAW_DATA_FILES.get(i)).SaveData(Singletons.Data, Settings.RAW_DATA_FILES.get(i) + "__");
 		}
 
-		if (Singletons.Data.GetNumInstances() < 10)
-			Log.ExceptionFatal("The input data contains too few instances [" + Singletons.Data.GetNumInstances() + "].");
-
 		if (Singletons.Data.GetNumDataPoints() <= 1)
 			Log.ExceptionFatal("The input data contains no data points.");
-
-		Log.Info("After filtering, data were available for " + Singletons.Data.GetNumInstances() + " instances and " + Singletons.Data.GetNumDataPoints() + " data points.");
     }
 
     private static AbstractDataProcessor ParseDataProcessor(String dataFilePath) throws Exception
@@ -112,10 +116,26 @@ public class InstanceManager
 
 		printWriter.write("\t" + ListUtilities.Join(Singletons.Data.DataPointNames, "\t") + "\n");
 
+		int numInstances = 0;
+
 		for (String instanceID : ListUtilities.SortStringList(Singletons.Data.InstanceIDs))
+		{
+			if (Singletons.Data.GetClassValue(instanceID).equals("NA"))
+			{
+				Log.Debug("No class value was specified for instance " + instanceID + ", so it has been excluded from the analysis.");
+				continue;
+			}
+
 			printWriter.write((instanceID + "\t" + ListUtilities.Join(Singletons.Data.GetValuesForInstance(instanceID, Singletons.Data.DataPointNames), "\t") + "\n"));
+			numInstances++;
+		}
 
 		printWriter.close();
+
+		Log.Info("After filtering, data were available for " + numInstances + " instances and " + Singletons.Data.GetNumDataPoints() + " data points.");
+
+		if (numInstances < 10)
+			Log.ExceptionFatal("The input data contains too few instances [" + numInstances + "].");
     }
 
     public static void LoadAnalysisData() throws Exception

@@ -59,7 +59,7 @@ except  ValueError:
 
 ProportionTrain = float(ProportionTrain)
 
-if ProportionTrain < 0.25 or ProportionTrain > 0.9:
+if ProportionTrain < 0.1 or ProportionTrain > 0.9:
     print "Invalid value specified for --train-proportion: %s." % ProportionTrain
     sys.exit(1)
 

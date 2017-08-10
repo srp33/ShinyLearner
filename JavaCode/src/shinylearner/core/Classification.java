@@ -17,7 +17,7 @@ public class Classification
 		long startTime = System.nanoTime();
 
 		String predictionOutput = TrainTest(trainingFilePath, testFilePath);
-		Log.Debug(predictionOutput);
+		//Log.Debug(predictionOutput);
 		//Log.Exit(1);
 
 		OutputFileProcessor.AddBenchmarkOutputLine(Benchmark.GetBenchmarkValues(startTime), false);
