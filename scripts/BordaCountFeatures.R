@@ -17,6 +17,7 @@ rankAggregate <- function(featuresMatrix)
 {
   uniqueFeatures <- unique(as.vector(featuresMatrix))
   rankMatrix <- NULL
+
   for (i in 1:nrow(featuresMatrix))
   {
     rowFeatures <- featuresMatrix[i,]

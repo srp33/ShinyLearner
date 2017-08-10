@@ -18,6 +18,8 @@ OPTIONAL ARGUMENTS
 
     --verbose [false|true]
     --ohe [false|true]
+    --scale [false|true]
+    --impute [false|true]
     --temp-dir [dir_path]
 
 EXAMPLE
@@ -31,6 +33,7 @@ EXAMPLE
       --classif-algo "AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default" \
       --fs-algo "AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default" \
       --num-features 5,10,50,100 \
+      --scale true \
       --output-dir Output/
 
 NOTES
@@ -56,6 +59,10 @@ NOTES
     The --verbose argument is set to false by default. If set to true, detailed information about the processing steps will be printed to standard out. This flag is typically used for debugging purposes.
 
     The --ohe argument is set to true by default. This means that any categorical variables will be [one-hot encoded](https://www.quora.com/What-is-one-hot-encoding-and-when-is-it-used-in-data-science).
+    
+    The --scale argument is set to false by default. When set to true, any continuous variable(s) will be scaled to zero mean and unit variance. Integers will be scaled only if more than 50% of values are unique.
+
+    The --impute argument is set to false by default. When set to true, missing values will be imputed. Median-based imputation will be used for continuous and integer variables. Mode-based imputation will be used for discrete variables. Any variable missing more than 50% of values across all samples will be removed. Subsequently, any sample missing more than 50% of values across all features will be removed. In input data files, missing values should be specified as ?, NA, or null.
     
     When a value is specified for --temp-dir, temporary files will be stored in the specified location; otherwise, temporary files will be stored in the operating system's default location for temporary files.
 
