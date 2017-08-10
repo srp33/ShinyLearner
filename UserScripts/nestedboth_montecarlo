@@ -62,29 +62,29 @@ trap cleanup INT TERM EXIT
 validationType=montecarlo
 source scripts/setup
 
-echo "Parsing data..." 2>&1 | tee -a "$outLogFile"
+echo "Parsing data..." 2>&1 | timestamp | tee -a "$outLogFile"
 analysisDataFile=$tmpDir/data.gz
-java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose IMPUTE=$impute TEMP_DIR=$tmpDir 2>&1 | tee -a "$outLogFile"
+java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose IMPUTE=$impute TEMP_DIR=$tmpDir 2>&1 | timestamp | tee -a "$outLogFile"
 
 if [[ "$impute" == "true" ]]
 then
-  echo "Imputing missing data (where applicable)..." 2>&1 | tee -a "$outLogFile"
-  Rscript --vanilla scripts/Impute.R "$analysisDataFile" $verbose 2>&1 | tee -a "$outLogFile"
+  echo "Imputing missing data (where applicable)..." 2>&1 | timestamp | tee -a "$outLogFile"
+  Rscript --vanilla scripts/Impute.R "$analysisDataFile" $verbose 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
 if [[ "$ohe" == "true" ]]
 then
-  echo "One-hot encoding categorical data (where applicable)..." 2>&1 | tee -a "$outLogFile"
-  python scripts/OneHotEncode.py "$analysisDataFile" 2>&1 | tee -a "$outLogFile"
+  echo "One-hot encoding categorical data (where applicable)..." 2>&1 | timestamp | tee -a "$outLogFile"
+  python scripts/OneHotEncode.py "$analysisDataFile" 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
 if [[ "$scale" == "true" ]]
 then
-  echo "Scaling numerical data (where applicable)..." 2>&1 | tee -a "$outLogFile"
-  Rscript --vanilla scripts/Scale.R "$analysisDataFile" $verbose 2>&1 | tee -a "$outLogFile"
+  echo "Scaling numerical data (where applicable)..." 2>&1 | timestamp | tee -a "$outLogFile"
+  Rscript --vanilla scripts/Scale.R "$analysisDataFile" $verbose 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
-scripts/nestedboth "$analysisDataFile" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" "$outNestedBestFile" montecarlo $randomSeed $proportionTrain $impute "$tmpDir" 2>&1 | tee -a "$outLogFile"
+scripts/nestedboth "$analysisDataFile" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" "$outNestedBestFile" montecarlo $randomSeed $proportionTrain $impute "$tmpDir" 2>&1 | timestamp | tee -a "$outLogFile"
 
 cleanup
 

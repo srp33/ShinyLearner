@@ -49,26 +49,26 @@ trap cleanup INT TERM EXIT
 validationType=crossvalidation
 source scripts/setup
 
-echo "Parsing data..." 2>&1 | tee -a "$outLogFile"
+echo "Parsing data..." 2>&1 | timestamp | tee -a "$outLogFile"
 analysisDataFile=$tmpDir/data.gz
-java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose IMPUTE=$impute TEMP_DIR=$tmpDir 2>&1 | tee -a "$outLogFile"
+java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose IMPUTE=$impute TEMP_DIR=$tmpDir 2>&1 | timestamp | tee -a "$outLogFile"
 
 if [[ "$impute" == "true" ]]
 then
-  echo "Imputing missing data (where applicable)..." 2>&1 | tee -a "$outLogFile"
-  Rscript --vanilla scripts/Impute.R "$analysisDataFile" $verbose 2>&1 | tee -a "$outLogFile"
+  echo "Imputing missing data (where applicable)..." 2>&1 | timestamp | tee -a "$outLogFile"
+  Rscript --vanilla scripts/Impute.R "$analysisDataFile" $verbose 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
 if [[ "$ohe" == "true" ]]
 then
-  echo "One-hot encoding categorical data (where applicable)..." 2>&1 | tee -a "$outLogFile"
-  python scripts/OneHotEncode.py "$analysisDataFile" 2>&1 | tee -a "$outLogFile"
+  echo "One-hot encoding categorical data (where applicable)..." 2>&1 | timestamp | tee -a "$outLogFile"
+  python scripts/OneHotEncode.py "$analysisDataFile" 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
 if [[ "$scale" == "true" ]]
 then
-  echo "Scaling numerical data (where applicable)..." 2>&1 | tee -a "$outLogFile"
-  Rscript --vanilla scripts/Scale.R "$analysisDataFile" $verbose 2>&1 | tee -a "$outLogFile"
+  echo "Scaling numerical data (where applicable)..." 2>&1 | timestamp | tee -a "$outLogFile"
+  Rscript --vanilla scripts/Scale.R "$analysisDataFile" $verbose 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
 for iteration in $(seq 1 $numIterations)
@@ -76,27 +76,27 @@ do
   iterationOutDir=$tmpDir/$iteration
   mkdir -p $iterationOutDir
 
-  echo 2>&1 | tee -a "$outLogFile"
-  echo "**************************************************************" | tee -a "$outLogFile"
-  echo "Beginning analysis for cross-validation fold ${iteration}" | tee -a "$outLogFile"
-  echo "**************************************************************" | tee -a "$outLogFile"
+  echo 2>&1 | timestamp | tee -a "$outLogFile"
+  echo "**************************************************************" | timestamp | tee -a "$outLogFile"
+  echo "Beginning analysis for cross-validation fold ${iteration}" | timestamp | tee -a "$outLogFile"
+  echo "**************************************************************" | timestamp | tee -a "$outLogFile"
 
-  scripts/classification "$analysisDataFile" "$description" "$numFolds" "$verbose" "$classifAlgos" "$iterationOutDir/outpreds" "$iterationOutDir/outmetrics" "$iterationOutDir/outbench" crossvalidation $iteration NA $impute "$iterationOutDir" 2>&1 | tee -a "$outLogFile"
+  scripts/classification "$analysisDataFile" "$description" "$numFolds" "$verbose" "$classifAlgos" "$iterationOutDir/outpreds" "$iterationOutDir/outmetrics" "$iterationOutDir/outbench" crossvalidation $iteration NA $impute "$iterationOutDir" 2>&1 | timestamp | tee -a "$outLogFile"
 done
 
-echo 2>&1 | tee -a "$outLogFile"
-echo "**************************************************************" | tee -a "$outLogFile"
-echo "Finalizing analysis" 2>&1 | tee -a "$outLogFile"
-echo "**************************************************************" | tee -a "$outLogFile"
-echo 2>&1 | tee -a "$outLogFile"
+echo 2>&1 | timestamp | tee -a "$outLogFile"
+echo "**************************************************************" | timestamp | tee -a "$outLogFile"
+echo "Finalizing analysis" 2>&1 | timestamp | tee -a "$outLogFile"
+echo "**************************************************************" | timestamp | tee -a "$outLogFile"
+echo 2>&1 | timestamp | tee -a "$outLogFile"
 
-echo "Combining results across cross-validation iterations..." | tee -a "$outLogFile"
-python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outbench" "$tmpDir/outpreds,$tmpDir/outmetrics,$tmpDir/outbenchmark" 2>&1 | tee -a "$outLogFile"
+echo "Combining results across cross-validation iterations..." | timestamp | tee -a "$outLogFile"
+python scripts/CombineCrossValidationIterations.py "$tmpDir/*/outpreds,$tmpDir/*/outmetrics,$tmpDir/*/outbench" "$tmpDir/outpreds,$tmpDir/outmetrics,$tmpDir/outbenchmark" 2>&1 | timestamp | tee -a "$outLogFile"
 
 sortCriteria="-k1,1 -k2,2n -k3,3n -k4"
-sortFile $tmpDir/outpreds "$sortCriteria" "$outPredictionsFile" 2>&1 | tee -a "$outLogFile"
-sortFile $tmpDir/outmetrics "$sortCriteria" "$outMetricsFile" 2>&1 | tee -a "$outLogFile"
-sortFile $tmpDir/outbenchmark "$sortCriteria" "$outBenchmarkFile" 2>&1 | tee -a "$outLogFile"
+sortFile $tmpDir/outpreds "$sortCriteria" "$outPredictionsFile" 2>&1 | timestamp | tee -a "$outLogFile"
+sortFile $tmpDir/outmetrics "$sortCriteria" "$outMetricsFile" 2>&1 | timestamp | tee -a "$outLogFile"
+sortFile $tmpDir/outbenchmark "$sortCriteria" "$outBenchmarkFile" 2>&1 | timestamp | tee -a "$outLogFile"
 
 cleanup
 
