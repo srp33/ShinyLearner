@@ -71,7 +71,7 @@ then
   Rscript --vanilla scripts/Scale.R "$analysisDataFile" $verbose 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
-scripts/featureselection "$analysisDataFile" "$description" "$numIterations" "$verbose" "$fsAlgos" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile" montecarlo $randomSeed $proportionTrain $impute $tmpDir 2>&1 | timestamp | tee -a "$outLogFile"
+scripts/featureselection "$analysisDataFile" "$description" "$numIterations" "$verbose" "$fsAlgos" "$outFeaturesFile" "$outSummarizedFeaturesFile" "$outBenchmarkFile" montecarlo $randomSeed $proportionTrain $impute $tmpDir "$outLogFile"
 
 cleanup
 

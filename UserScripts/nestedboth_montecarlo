@@ -84,7 +84,7 @@ then
   Rscript --vanilla scripts/Scale.R "$analysisDataFile" $verbose 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
-scripts/nestedboth "$analysisDataFile" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" "$outNestedBestFile" montecarlo $randomSeed $proportionTrain $impute "$tmpDir" 2>&1 | timestamp | tee -a "$outLogFile"
+scripts/nestedboth "$analysisDataFile" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" "$outNestedBestFile" montecarlo $randomSeed $proportionTrain $impute "$tmpDir" "$outLogFile"
 
 cleanup
 

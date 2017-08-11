@@ -144,7 +144,7 @@ do
   echo "**************************************************************" | timestamp | tee -a "$outLogFile"
   echo "Beginning analysis for cross-validation fold ${iteration}" | timestamp | tee -a "$outLogFile"
   echo "**************************************************************" | timestamp | tee -a "$outLogFile"
-  scripts/nestedboth "$analysisDataFile" "$description" "$outerNumFolds" "$innerNumFolds" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFileIteration" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedSelectedFeaturesFileIteration" "" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedFeatureSelectionBenchmarkFileIteration" "$outNestedClassificationBenchmarkFileIteration" "$outNestedBestFileIteration" crossvalidation $iteration NA $impute $outDir 2>&1 | timestamp | tee -a "$outLogFile"
+  scripts/nestedboth "$analysisDataFile" "$description" "$outerNumFolds" "$innerNumFolds" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFileIteration" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedSelectedFeaturesFileIteration" "" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedFeatureSelectionBenchmarkFileIteration" "$outNestedClassificationBenchmarkFileIteration" "$outNestedBestFileIteration" crossvalidation $iteration NA $impute $outDir "$outLogFile"
 done
 
 echo 2>&1 | timestamp | tee -a "$outLogFile"

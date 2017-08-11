@@ -81,7 +81,7 @@ do
   echo "Beginning analysis for cross-validation fold ${iteration}" | timestamp | tee -a "$outLogFile"
   echo "**************************************************************" | timestamp | tee -a "$outLogFile"
 
-  scripts/classification "$analysisDataFile" "$description" "$numFolds" "$verbose" "$classifAlgos" "$iterationOutDir/outpreds" "$iterationOutDir/outmetrics" "$iterationOutDir/outbench" crossvalidation $iteration NA $impute "$iterationOutDir" 2>&1 | timestamp | tee -a "$outLogFile"
+  scripts/classification "$analysisDataFile" "$description" "$numFolds" "$verbose" "$classifAlgos" "$iterationOutDir/outpreds" "$iterationOutDir/outmetrics" "$iterationOutDir/outbench" crossvalidation $iteration NA $impute "$iterationOutDir" "$outLogFile"
 done
 
 echo 2>&1 | timestamp | tee -a "$outLogFile"

@@ -55,23 +55,23 @@ java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_
 
 if [[ "$impute" == "true" ]]
 then
-  echo "Imputing missing data (where applicable)..." 2>&1 | timestamp | tee -a "$outLogFile"
+  echo "Imputing missing data (where applicable)..." | timestamp | tee -a "$outLogFile"
   Rscript --vanilla scripts/Impute.R "$analysisDataFile" $verbose 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
 if [[ "$ohe" == "true" ]]
 then
-  echo "One-hot encoding categorical data (where applicable)..." 2>&1 | timestamp | tee -a "$outLogFile"
+  echo "One-hot encoding categorical data (where applicable)..." | timestamp | tee -a "$outLogFile"
   python scripts/OneHotEncode.py "$analysisDataFile" 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
 if [[ "$scale" == "true" ]]
 then
-  echo "Scaling numerical data (where applicable)..." 2>&1 | timestamp | tee -a "$outLogFile"
+  echo "Scaling numerical data (where applicable)..." | timestamp | tee -a "$outLogFile"
   Rscript --vanilla scripts/Scale.R "$analysisDataFile" $verbose 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
-scripts/classification "$analysisDataFile" "$description" "$numIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo "$randomSeed" "$proportionTrain" $impute "$tmpDir" 2>&1 | timestamp | tee -a "$outLogFile"
+scripts/classification "$analysisDataFile" "$description" "$numIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo "$randomSeed" "$proportionTrain" $impute "$tmpDir" "$outLogFile"
 
 cleanup
 

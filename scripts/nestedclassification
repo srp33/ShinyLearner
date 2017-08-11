@@ -21,6 +21,7 @@ randomSeed="${14}"
 proportionTrain="${15}"
 impute="${16}"
 tmpDir="${17}"
+outLogFile="${18}"
 
 source scripts/setup
 
@@ -53,13 +54,13 @@ fi
 ## Prepare inner experiment files
 python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie2 $verbose
 
-echo "Classifying for inner iterations..."
+echo "Classifying for inner iterations..." | timestamp | tee -a "$outLogFile"
 java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE=$analysisDataFile EXPERIMENT_FILE=$tmpDir/ie2 DEBUG=$verbose OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/icb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/ip TEMP_DIR=$tmpDir 2> /dev/null
 
-echo "Calculating classification metrics for inner iterations..."
+echo "Calculating classification metrics for inner iterations..." | timestamp | tee -a "$outLogFile"
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/ip" "$tmpDir/im"
 
-echo "Parsing inner classification results..."
+echo "Parsing inner classification results..." | timestamp | tee -a "$outLogFile"
 python scripts/ReformatInnerResults_Classification.py $tmpDir/im $tmpDir/ibrf
 
 #if [[ "$verbose" == "true" ]]
@@ -68,17 +69,17 @@ python scripts/ReformatInnerResults_Classification.py $tmpDir/im $tmpDir/ibrf
 #  cat $tmpDir/ibrf
 #fi
 
-echo "Identifying best combination of algorithms..."
+echo "Identifying best combination of algorithms..." | timestamp | tee -a "$outLogFile"
 Rscript --vanilla scripts/SelectBestInnerResults_Classification.R $tmpDir/ibrf $tmpDir/ott $tmpDir/ocle $tmpDir/ibest 2> $errFile
 printError $verbose $errFile
 
-echo "Classifying for outer iterations..."
+echo "Classifying for outer iterations..." | timestamp | tee -a "$outLogFile"
 java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE=$analysisDataFile EXPERIMENT_FILE=$tmpDir/ocle DEBUG=$verbose OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/op TEMP_DIR=$tmpDir 2> /dev/null
 
-echo "Calculating classification metrics for outer iterations..."
+echo "Calculating classification metrics for outer iterations..." | timestamp | tee -a "$outLogFile"
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"
 
-echo "Preparing output files..."
+echo "Preparing output files..." | timestamp | tee -a "$outLogFile"
 
 if [[ "$outPredictionsFile" != "" ]]
 then

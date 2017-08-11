@@ -76,7 +76,7 @@ then
   Rscript --vanilla scripts/Scale.R "$analysisDataFile" $verbose 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
-scripts/nestedclassification "$analysisDataFile" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" "$outNestedBestFile" montecarlo $randomSeed $proportionTrain $impute "$tmpDir" 2>&1 | timestamp | tee -a "$outLogFile"
+scripts/nestedclassification "$analysisDataFile" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedBenchmarkFile" "$outNestedBestFile" montecarlo $randomSeed $proportionTrain $impute "$tmpDir" "$outLogFile"
 
 cleanup
 
