@@ -31,3 +31,4 @@ TestFiles
 gui/ShinyLearner/AlgorithmScripts
 Output
 *.tar.gz
+xgboost.model
