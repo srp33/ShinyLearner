@@ -12,8 +12,23 @@ suppressPackageStartupMessages(library(data.table))
 trainingData <- fread(trainingFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, data.table=FALSE)
 testData <- fread(testFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, data.table=FALSE)
 
-trainingData <- trainingData[,-1]
-testData <- testData[,-1]
+trainingData <- trainingData[,-1,drop=FALSE]
+testData <- testData[,-1,drop=FALSE]
+
+# At leat the xgboost algorithm cannot deal with integer columns, so we convert these to numerics
+trainingData <- as.data.frame(lapply(trainingData, function(x) {
+                                                   if (is.integer(x))
+                                                     return (as.numeric(x))
+                                                   return (x)
+                                                 }
+))
+
+testData <- as.data.frame(lapply(testData, function(x) {
+                                                   if (is.integer(x))
+                                                     return (as.numeric(x))
+                                                   return (x)
+                                                 }
+))
 
 task <- makeClassifTask(data = trainingData, target = "Class")
 
@@ -36,7 +51,7 @@ learn <- function(learner)
 
 # Dynamically invoke the algorithm
 instantiation <- paste("learner <- makeLearner(", algorithm ,", predict.type = 'prob')", sep="")
-print(instantiation)
+#print(instantiation)
 learner <- eval(parse(text = instantiation))
 #learner <- makeLearner(paste("classif.", algorithm, sep=""), predict.type = "prob")
 

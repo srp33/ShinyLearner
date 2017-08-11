@@ -35,6 +35,7 @@ classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/h2o*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/xgboost/default*"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default*"
 
 bash classification $version StrongSignal_Both montecarlo "--iterations 3" "$classifAlgo" "$verbose" 1.log &
