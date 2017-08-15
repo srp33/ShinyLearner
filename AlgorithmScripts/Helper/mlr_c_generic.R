@@ -15,7 +15,7 @@ testData <- fread(testFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, 
 trainingData <- trainingData[,-1,drop=FALSE]
 testData <- testData[,-1,drop=FALSE]
 
-# At leat the xgboost algorithm cannot deal with integer columns, so we convert these to numerics
+# At least the xgboost algorithm cannot deal with integer columns, so we convert these to numerics
 trainingData <- as.data.frame(lapply(trainingData, function(x) {
                                                    if (is.integer(x))
                                                      return (as.numeric(x))
@@ -29,6 +29,20 @@ testData <- as.data.frame(lapply(testData, function(x) {
                                                    return (x)
                                                  }
 ))
+
+isGlmNet <- grepl("classif\\.glmnet", algorithm)
+
+if (isGlmNet & ncol(testData) == 1)
+{
+  # The glmnet algorithm has a bug where it fails if there is only one column of data.
+  # So this is a workaround for that bug...
+
+  trainingData <- cbind(rep(0, nrow(trainingData)), trainingData)
+  colnames(trainingData)[1:2] <- paste("Col", 1:2, sep="")
+
+  testData <- cbind(rep(0, nrow(testData)), testData)
+  colnames(testData)[1:2] <- paste("Col", 1:2, sep="")
+}
 
 task <- makeClassifTask(data = trainingData, target = "Class")
 
