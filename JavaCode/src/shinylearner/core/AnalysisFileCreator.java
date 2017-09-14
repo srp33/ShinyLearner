@@ -218,7 +218,7 @@ public class AnalysisFileCreator
 
 	public static String FormatClassValue(String value)
 	{
-		if (DataTypeUtilities.IsInteger(value) || DataTypeUtilities.IsNumeric(value))
+		//if (DataTypeUtilities.IsInteger(value) || DataTypeUtilities.IsNumeric(value))
 			value = CLASS_TEMP_PREFIX + value;
 
 		return value;

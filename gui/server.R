@@ -2,57 +2,57 @@ library(shiny)
 
 shinyServer(function(input, output, session) {
   
-  dockerhub_address <- 'srp33/shinylearner:version331'
-  numFeaturesOptions <- '5,10,50,100,500,1000'
-  defaultInputFiles <- 'Data.tsv.gz'
-  defaultInputFiles <- 'StrongSignal_Both.tsv.gz'
-  defaultOutputDir <- 'Output'
-  defaultExpDesc <- 'My_Interesting_Analysis'
+  dockerhub_address <- 'srp33/shinylearner:version344'
+  numFeaturesOptions <- '1,10,100,1000'
+  defaultInputFiles <- ''
+#  defaultInputFiles <- 'StrongSignal_Both.tsv.gz'
+  defaultOutputDir <- ''
+  defaultExpDesc <- ''
   defaultValidation <- 'mc'
-  validationChoices <- list('Monte-Carlo Cross Validation' = 'mc', 'k-Fold Cross Validation' = 'kf')
+  validationChoices <- list('Monte Carlo cross validation' = 'mc', 'k-fold cross validation' = 'kf')
   defaultFS <- 'no_fs'
   defaultInnerIterations <- 5
-  mc_inner_options <- list(5,10)
+  mc_inner_options <- list(1,5,10,50,100)
   defaultOuterIterations <- 10
-  mc_outer_options <- list(1,5,10,100)
+  mc_outer_options <- list(1,5,10,50,100)
   defaultInnerFolds <- 5
   kf_inner_options <- list(5,10)
   defaultOuterFolds <- 10
   kf_outer_options <- list(5,10)
   defaultIterations <- 1
-  kf_iterations_options <- list(1,5,10,100)
+  kf_iterations_options <- list(1,5,10,50,100)
   defaultOS <- 'linux/mac'
   osOptions <- list('Linux or Mac' = 'linux/mac', 'Windows' = 'windows')
   defaultFSAlgos <- 'AlgorithmScripts/FeatureSelection/tsv/sklearn/anova'
   defaultFSOpt <- FALSE
   defaultClassifAlgos <- 'AlgorithmScripts/Classification/tsv/sklearn/svm'
   defaultClassifOpt <- FALSE
-  defaultOHE <- FALSE
-  defaultStan <- FALSE
+  defaultOHE <- TRUE
+  defaultScale <- TRUE
   defaultSeed <- ''
-  defaultImpute <- FALSE
+  defaultImpute <- TRUE
   defaultContainerInputDir <- 'InputData'
   defaultContainerOutputDir <- 'OutputData'
-
   
-  exp_desc_help_text <- 'Please enter a short, unique description of the analysis.'
-  input_files_help_text <- 'Please indicate the location on your computer of the input data files that will be used in the analysis. If the file(s) are located in a subdirectory, please also specify the name of that subdirectory in the file path(s). Wildcards are allowed, and the files may be gzipped. Input files can be in comma-separated (.csv), tab-separated (.tsv) or Attribute-Relation File Format (.arff). If you use .csv or .tsv files, rows should be samples, and columns should be features (independent variables). If you specify multiple paths, separate them by commas. [If you wish to use an input file format that is not supported, please contact us.]'
-  output_dir_help_text <- 'Please specify a directory where the output files will be stored after ShinyLearner executes. Multiple output files will be created that contain the results of the analysis.'
+  helpTextStylingOpen <- '<p style="color:rgb(200, 200, 200)">'
+  helpTextStylingClose <- '</p>'
+  exp_desc_help_text <- 'Please enter a short, unique description of the analysis'
+  input_files_help_text <- 'Please indicate the location(s) on your computer of the input data files that will be used in the analysis. Please use <a target="_blank" href="https://en.wikipedia.org/wiki/Path_(computing)">absolute file path(s)</a>. Wildcards are allowed, and the files may be gzipped (but not <a target="_blank" href="https://www.lifewire.com/tar-file-2622386">tarred</a>)). Input file formats can be comma-separated (.csv), tab-separated (.tsv) or Attribute-Relation File Format (.arff). If you use .csv or .tsv files, rows should be samples, and columns should be features (independent variables). Alternatively, you can do the opposite (rows as features and columns as samples); in this case, the file extension(s) must be .ttsv or .tcsv. If you specify multiple paths, separate them by commas. [If you wish to use an input file format that is not supported, please contact us.]'
+  output_dir_help_text <- 'Please specify a local directory where the output files will be stored after ShinyLearner executes. Please use an <a target="_blank" href="https://en.wikipedia.org/wiki/Path_(computing)">absolute file path</a>. Multiple output files that contain the results of the analysis will be created.'
   validation_help_text <- 'An important aspect of supervised machine learning is to assess how well the algorithmic predictions will generalize (make successful predictions on new data). ShinyLearner supports two ways of assessing generalizability: Monte Carlo cross validation and k-fold cross validation. You can read more about these methods <a target="_blank" href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)"><b>here</b></a>. The Monte Carlo method randomly assigns samples to training and testing sets and repeats this process for many iterations. The k-fold method assigns samples to training and testing sets such that each sample is tested exactly once per iteration.'
-  feat_sel_help_text <- 'Feature selection seeks to identify features (independent variables) that are most important. Oftentimes, reducing the size of the data via feature selection leads to higher accuracy. Feature selection may also make it easier for a human to understand more about which parts of the data are most important. However, feature selection does increase the computer-execution time.'
-  sel_classifAlgos_help_text <- '(Optimization will increase runtime but will likely be more accurate). Choose one or more classification algorithms. ShinyLearner has integrated a wide variety of algorithms from other software packages. You can learn more about these algorithms <a target="_blank" href="https://github.com/srp33/ShinyLearner/blob/master/Algorithms.md"><b>here</b></a>. Please let us know if you would like us to support additional algorithms (or hyperparameters).'
-  sel_fsAlgos_help_text <- '(Optimization will increase runtime but will likely be more accurate). Choose one or more feature-selection algorithms. ShinyLearner has integrated a wide variety of algorithms from other software packages. You can learn more about these algorithms <a target="_blank" href="https://github.com/srp33/ShinyLearner/blob/master/Algorithms.md"><b>here</b></a>. Please let us know if you would like us to support additional algorithms (or hyperparameters).'
-  os_help_text <- 'ShinyLearner will be executed within a "software container" (explanation <a target="_blank" href="https://gigascience.biomedcentral.com/articles/10.1186/s13742-016-0135-4"><b>here</b></a> using the <a target="_blank" href="https://www.docker.com">Docker</a> technology. Docker can be executed on many operating systems, including Mac OS, Windows, and Linux. But the command that you use to execute Docker may be different, depending on the operating system.'
+  feat_sel_help_text <- 'Feature selection algorithms seek to identify features (independent variables) that are most informative. Oftentimes, reducing the size of the data via feature selection leads to higher accuracy. Feature selection may also make it easier for a human to understand which parts of the data are most important. However, feature selection does increase the computer-execution time.'
+  sel_classifAlgos_help_text <- 'Choose one or more classification algorithms. ShinyLearner supports a wide variety of algorithms from popular machine-learning libraries. You can learn more about these algorithms <a target="_blank" href="https://github.com/srp33/ShinyLearner/blob/master/Algorithms.md"><b>here</b></a>. (Please let us know if you would like us to support additional algorithms or hyperparameters). When "Optimize hyperparameters" is selected, all hyperparameter combinations currently supported in ShinyLearner will be used for optimization; this will increase runtime considerably, but it will likely increase accuracy, too.'
+  sel_fsAlgos_help_text <- 'Choose one or more feature-selection algorithms. ShinyLearner has integrated a wide variety of algorithms from popular machine-learning libraries. You can learn more about these algorithms <a target="_blank" href="https://github.com/srp33/ShinyLearner/blob/master/Algorithms.md"><b>here</b></a>.'
+  os_help_text <- 'ShinyLearner will be executed within a "software container" (explanation <a target="_blank" href="https://gigascience.biomedcentral.com/articles/10.1186/s13742-016-0135-4"><b>here</b></a>) using the <a target="_blank" href="https://www.docker.com">Docker</a> technology. Docker can be executed on many operating systems, including Mac OS, Windows, and Linux. But the command that you use to execute Docker may be different, depending on the operating system.'
   script_help_text <- 'Copy this script into a terminal / command prompt after turning on Docker.'
-  mc_help_text <- 'Machine-learning analyses can be executed in multiple iterations. When multiple iterations are used, it helps with estimating the consistency of the results across multiple partitions of the data. "Inner" iterations are used to optimize algorithm choice on the training data. Using multiple iterations can help ensure that algorithm choice is robust. "Outer" iterations indicate the number of times that the overall process (training and testing) are performed. A larger number of iterations should lead to more robust results but will also increase computational time.'
-  kf_help_text <- 'Machine-learning analyses can be executed in multiple iterations. When multiple iterations are used, it helps with estimating the consistency of the results across multiple partitions of the data. "Inner" iterations are used to optimize algorithm choice on the training data. Using multiple iterations can help ensure that algorithm choice is robust. "Outer" iterations indicate the number of times that the overall process (training and testing) are performed. A larger number of iterations should lead to more robust results but will also increase computational time.'
-  ohe_help_text <- 'One-Hot-Encoding does the following...'
-  stan_help_text <- 'Standardization modifies the data to facilitate better machine-learning results...'
-  seed_help_text <- 'Manually set the NUMERICAL random seed...'
-  impute_help_text <- 'Impute missing values...'
+  mc_help_text <- 'Machine-learning analyses can be executed in multiple iterations. When multiple iterations are used, it helps with estimating the consistency of the results. "Outer" iterations indicate the number of times that the overall process (training and testing) are performed. "Inner" iterations are used to optimize algorithm choice for each testing set, based solely on the training data. A larger number of iterations should lead to more robust results but will also increase computational time.'
+  kf_help_text <- 'Machine-learning analyses can be executed in multiple iterations. When multiple iterations are used, it helps with estimating the consistency of the results. "Outer" iterations indicate the number of times that the overall process (training and testing) are performed. "Inner" iterations are used to optimize algorithm choice for each testing set, based solely on the training data. A larger number of iterations should lead to more robust results but will also increase computational time.'
+  ohe_help_text <- 'Many machine-learning algorithms are unable to process discrete variables, so one-hot encoding can be used to expand discrete variables into multiple binary variables. You can learn more about this option <a target="_blank" href="https://www.quora.com/What-is-one-hot-encoding-and-when-is-it-used-in-data-science">here</a>.'
+  scale_help_text <- 'Many machine-learning algorithms require that continuous variables be scaled in a consistent way. This option makes it possible to scale continuous variables to have a zero mean and unit variance (more <a target="_blank" href="https://en.wikipedia.org/wiki/Feature_scaling">here</a>). Integers will be scaled only if more than 50% of values are unique.'
+  impute_help_text <- 'Many machine-learning algorithms are unable to process missing data values. This option makes it possible to <a target="_blank" href="https://en.wikipedia.org/wiki/Imputation_(statistics)">impute</a> missing values. Median-based imputation is used for continuous and integer variables. Mode-based imputation is used for discrete variables. Any variable missing more than 50% of values across all samples will be removed. Subsequently, any sample missing more than 50% of values across all features will be removed. In input data files, missing values should be specified as ?, NA, or null.'
+  seed_help_text <- 'When samples are assigned to training and testing sets, they are randomly assigned. To ensure that samples are assigned in a consistent manner when the same analysis is repeated, we use a random seed. ShinyLearner sets the seed by default, but you can change the seed using this option. Please specify an integer. Note: some machine-learning algorithms non-deterministic, so they may produce different results each time they are run, even when a seed is specified.'
   
   help_icon <- icon('lightbulb-o', 'fa-1x')
-  
   
   ## Get Algorithms from File System
   prefix <- function(x) {
@@ -87,7 +87,7 @@ shinyServer(function(input, output, session) {
   })
   output$exp_desc_help_message_ui <- renderUI({
 	#if (length(input$exp_desc_help_button) != 0 && (input$exp_desc_help_button) %% 2 == 1){
-	  helpText(HTML(exp_desc_help_text))
+	  HTML(paste(helpTextStylingOpen, exp_desc_help_text, helpTextStylingClose, sep=''))
 	#} else return()
   })
   ## Input Files
@@ -100,7 +100,7 @@ shinyServer(function(input, output, session) {
   })
   output$input_files_help_message_ui <- renderUI({
 	#if (length(input$input_files_help_button) != 0 && (input$input_files_help_button) %% 2 == 1){
-	  helpText(HTML(input_files_help_text))
+	  HTML(paste(helpTextStylingOpen, input_files_help_text, helpTextStylingClose, sep=''))
 	#} else return()
   })
   ## Output Directory
@@ -113,7 +113,7 @@ shinyServer(function(input, output, session) {
   })
   output$output_dir_help_message_ui <- renderUI({
 	#if (length(input$output_dir_help_button) != 0 && (input$output_dir_help_button) %% 2 == 1){
-	  helpText(HTML(output_dir_help_text))
+	  HTML(paste(helpTextStylingOpen, output_dir_help_text, helpTextStylingClose, sep=''))
 	#}else return()
   })
   
@@ -128,7 +128,7 @@ shinyServer(function(input, output, session) {
   })
   output$validation_help_message_ui <- renderUI({
 	#if (length(input$validation_help_button) != 0 && (input$validation_help_button) %% 2 == 1){
-	  helpText(HTML(validation_help_text))
+	  HTML(paste(helpTextStylingOpen, validation_help_text, helpTextStylingClose, sep=''))
 	#} else return()
   })
   ## Choose Feature Selection UI
@@ -140,7 +140,7 @@ shinyServer(function(input, output, session) {
   })
   output$feat_sel_help_message_ui <- renderUI({
 	#if (length(input$feat_sel_help_button) != 0 && (input$feat_sel_help_button) %% 2 == 1){
-	  helpText(HTML(feat_sel_help_text))
+	  HTML(paste(helpTextStylingOpen, feat_sel_help_text, helpTextStylingClose, sep=''))
 	#} else return()
   })
 
@@ -148,29 +148,29 @@ shinyServer(function(input, output, session) {
   ## MC Inner Iterations
   output$mc_inner_iterations_radio_ui <- renderUI({ 
 	if (length(input$validation_radio) != 0 && input$validation_radio == 'mc') {
-	  radioButtons('mc_inner_iterations_radio', 'Choose Number of Inner Iterations:', mc_inner_options, selected = defaultInnerIterations)
+	  radioButtons('mc_inner_iterations_radio', 'Choose number of inner iterations:', mc_inner_options, selected = defaultInnerIterations)
 	}
   })
   ## MC Outer Iterations
   output$mc_outer_iterations_radio_ui <- renderUI({
 	if (length(input$validation_radio) != 0 && input$validation_radio == 'mc') {
-	  radioButtons('mc_outer_iterations_radio', 'Choose Number of Outer Iterations:', mc_outer_options, selected=defaultOuterIterations)
+	  radioButtons('mc_outer_iterations_radio', 'Choose number of outer iterations:', mc_outer_options, selected=defaultOuterIterations)
 	}
   })
   ## KF Inner Folds
   output$kf_inner_folds_radio_ui <- renderUI({
 	if (length(input$validation_radio) != 0 && input$validation_radio == 'kf')
-	  radioButtons('kf_inner_folds_radio', 'Choose Number of Inner Folds:', kf_inner_options, selected=defaultInnerFolds)
+	  radioButtons('kf_inner_folds_radio', 'Choose number of inner folds:', kf_inner_options, selected=defaultInnerFolds)
   })
   ## KF Outer Folds
   output$kf_outer_folds_radio_ui <- renderUI({
 	if (length(input$validation_radio) != 0 && input$validation_radio == 'kf')
-	  radioButtons('kf_outer_folds_radio', 'Choose Number of Outer Folds:', kf_outer_options, selected=defaultOuterFolds)
+	  radioButtons('kf_outer_folds_radio', 'Choose number of outer folds:', kf_outer_options, selected=defaultOuterFolds)
   })
   ## KF Iterations
   output$kf_iterations_radio_ui <- renderUI({
 	if (length(input$validation_radio) != 0 && input$validation_radio == 'kf')
-	  radioButtons('kf_iterations_radio', 'Choose Number of Iterations:', kf_iterations_options, selected=defaultIterations)
+	  radioButtons('kf_iterations_radio', 'Choose number of iterations:', kf_iterations_options, selected=defaultIterations)
   })
   ## Validation Settings Help
   output$val_settings_help_button_ui <- renderUI({
@@ -179,11 +179,11 @@ shinyServer(function(input, output, session) {
   output$val_settings_help_message_ui <- renderUI({
 	if (length(input$validation_radio) != 0 && input$validation_radio == 'mc') {
 	  #if (length(input$val_settings_help_button) != 0 && (input$val_settings_help_button) %% 2 == 1) {
-	    helpText(HTML(mc_help_text))
+	    HTML(paste(helpTextStylingOpen, mc_help_text, helpTextStylingClose, sep=''))
 	  #}
 	} else if (length(input$validation_radio) != 0 && input$validation_radio == 'kf') {
 	  #if (length(input$val_settings_help_button) != 0 && (input$val_settings_help_button) %% 2 == 1) {
-	    helpText(HTML(kf_help_text))
+	    HTML(paste(helpTextStylingOpen, kf_help_text, helpTextStylingClose, sep=''))
 	  #}
 	}
   })
@@ -194,17 +194,17 @@ shinyServer(function(input, output, session) {
     selectizeInput('sel_classifAlgos', NULL, choices = classifAlgosOptions, multiple = TRUE, selected=defaultClassifAlgos)
   })
   output$sel_classifOpt_ui <- renderUI({
-    checkboxInput('sel_classifOpt', 'Optimize Parameters?', value = defaultClassifOpt)
+    checkboxInput('sel_classifOpt', 'Optimize hyperparameters?', value = defaultClassifOpt)
   })
   output$sel_classifAlgos_header_ui <- renderUI({
-    h4('Classification Algorithms')
+    h4('Classification algorithms (required)')
   })
   output$sel_classifAlgos_help_button_ui <- renderUI({
     #actionButton('sel_classifAlgos_help_button','',icon=help_icon)
   })
   output$sel_classifAlgos_help_message_ui <- renderUI({
 	#if (length(input$sel_classifAlgos_help_button) != 0 && (input$sel_classifAlgos_help_button) %% 2 == 1) {
-	  helpText(HTML(sel_classifAlgos_help_text))
+	  HTML(paste(helpTextStylingOpen, sel_classifAlgos_help_text, helpTextStylingClose, sep=''))
 	#} else {return()}
   })
   output$sel_fsAlgos_ui <- renderUI({
@@ -212,14 +212,14 @@ shinyServer(function(input, output, session) {
       selectizeInput('sel_fsAlgos', NULL, choices = fsAlgosOptions, multiple = TRUE, selected=defaultFSAlgos)
     } else {return()}
   })
-  output$sel_FSOpt_ui <- renderUI({
-    if (length(input$feat_sel_radio) != 0 && input$feat_sel_radio == 'fs') {
-      checkboxInput('sel_FSOpt', 'Optimize Parameters?', value = defaultFSOpt)
-    } else {return()}
-  })
+#  output$sel_FSOpt_ui <- renderUI({
+#    if (length(input$feat_sel_radio) != 0 && input$feat_sel_radio == 'fs') {
+#      checkboxInput('sel_FSOpt', 'Optimize hyperparameters?', value = defaultFSOpt)
+#    } else {return()}
+#  })
   output$sel_fsAlgos_header_ui <- renderUI({
     if (length(input$feat_sel_radio) != 0 && input$feat_sel_radio == 'fs') {
-      h4('Feature Selection Algorithms')
+      h4('Feature-selection algorithms (required)')
     } else {return()}
   })
   output$sel_fsAlgos_help_button_ui <- renderUI({
@@ -230,7 +230,7 @@ shinyServer(function(input, output, session) {
   output$sel_fsAlgos_help_message_ui <- renderUI({
     if (length(input$feat_sel_radio) != 0 && input$feat_sel_radio == 'fs') {
 	  #if (length(input$sel_fsAlgos_help_button) != 0 && (input$sel_fsAlgos_help_button) %% 2 == 1) {
-	    helpText(HTML(sel_fsAlgos_help_text))
+	    HTML(paste(helpTextStylingOpen, sel_fsAlgos_help_text, helpTextStylingClose, sep=''))
 	  #} else {return()}
 	} else {return()}
   })
@@ -238,31 +238,31 @@ shinyServer(function(input, output, session) {
   # (5) Subpage
   ## One-Hot-Encoding
   output$ohe_checkbox_ui <- renderUI({
-    checkboxInput('ohe_checkbox', 'One-Hot-Encoding', value = defaultOHE)
+    checkboxInput('ohe_checkbox', HTML('<b>One-hot encoding</b>'), value = defaultOHE)
   })
   output$ohe_help_message_ui <- renderUI({
-    helpText(HTML(ohe_help_text))
+    HTML(paste(helpTextStylingOpen, ohe_help_text, helpTextStylingClose, sep=''))
   })
-  ## Standardize Data
-  output$stan_checkbox_ui <- renderUI({
-    checkboxInput('stan_checkbox', 'Standardize Data', value = defaultStan)
+  ## Scale Data
+  output$scale_checkbox_ui <- renderUI({
+    checkboxInput('scale_checkbox', HTML('<b>Scale data</b>'), value = defaultScale)
   })
-  output$stan_help_message_ui <- renderUI({
-    helpText(HTML(stan_help_text))
+  output$scale_help_message_ui <- renderUI({
+    HTML(paste(helpTextStylingOpen, scale_help_text, helpTextStylingClose, sep=''))
   })
-  ## Standardize Data
+  ## Impute Data
   output$impute_checkbox_ui <- renderUI({
-    checkboxInput('impute_checkbox', 'Impute Missing Data', value = defaultImpute)
+    checkboxInput('impute_checkbox', HTML('<b>Impute missing data</b>'), value = defaultImpute)
   })
   output$impute_help_message_ui <- renderUI({
-    helpText(HTML(impute_help_text))
+    HTML(paste(helpTextStylingOpen, impute_help_text, helpTextStylingClose, sep=''))
   })
   ## Set Random Seed
   output$seed_textbox_ui <- renderUI({
-    textInput('seed_textbox', 'Random Seed', value = defaultSeed, placeholder='[Leave blank to use default seed]')
+    textInput('seed_textbox', 'Random seed (integers only)', value = defaultSeed, placeholder='[Leave blank for default seed]')
   })
   output$seed_help_message_ui <- renderUI({
-    helpText(HTML(seed_help_text))
+    HTML(paste(helpTextStylingOpen, seed_help_text, helpTextStylingClose, sep=''))
   })
 
 
@@ -277,7 +277,7 @@ shinyServer(function(input, output, session) {
   })
   output$os_help_message_ui <- renderUI({
 	#if (length(input$os_help_button) != 0 && (input$os_help_button) %% 2 == 1){
-	  helpText(HTML(os_help_text))
+	  HTML(paste(helpTextStylingOpen, os_help_text, helpTextStylingClose, sep=''))
 	#} else return()
   })
   ## Display Command
@@ -287,6 +287,13 @@ shinyServer(function(input, output, session) {
   ## Most parameters are available at the top of the page instead.
   output$shiny_script <- renderText({
   
+    # Validate required fields
+    validate(need(input$exp_desc_textbox != "", "Please complete page 1."))
+    validate(need(input$input_files_textbox != "", "Please complete page 1."))
+    validate(need(input$output_dir_textbox != "", "Please complete page 1."))
+    validate(need(input$seed_textbox == "" || !is.na(as.integer(input$seed_textbox)), "Random Seed (page 5): Please choose an integer or leave blank to use default seed."))
+    
+
     ## Get Values from UIs 
     validation <- ''
     if (length(input$validation_radio) != 0 && input$validation_radio == 'mc')
@@ -347,9 +354,9 @@ shinyServer(function(input, output, session) {
       ohe <- 'true'
     }
     
-    stan <- 'false'
-    if (!is.null(input$stan_checkbox) && input$stan_checkbox == TRUE) {
-      stan <- 'true'
+    scale <- 'false'
+    if (!is.null(input$scale_checkbox) && input$scale_checkbox == TRUE) {
+      scale <- 'true'
     }
     
     impute <- 'false'
@@ -568,8 +575,8 @@ shinyServer(function(input, output, session) {
 	  lines <- c(lines, paste('--seed', seed))
 	if (ohe == 'true')
 	  lines <- c(lines, paste('--ohe', ohe))
-	if (stan == 'true')
-	  lines <- c(lines, paste('--standardize', stan))
+	if (scale == 'true')
+	  lines <- c(lines, paste('--scale', scale))
 	if (impute == 'true')
 	  lines <- c(lines, paste('--impute', impute))
 	
