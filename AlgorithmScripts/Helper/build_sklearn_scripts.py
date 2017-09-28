@@ -11,7 +11,7 @@ summaryDict = {}
 
 packagePath = "tsv/sklearn"
 
-baseEstimatorOptions = ["DecisionTreeClassifier()", "LogisticRegression()", "SVC(probability=True)"]
+baseEstimatorOptions = ["DecisionTreeClassifier()", "LogisticRegression()", "SVC()"]
 numEstimatorOptions = [50, 1000]
 boostAlgorithmOptions = ["SAMME.R", "SAMME"]
 bootstrapOptions = [True, False]
