@@ -32,3 +32,4 @@ gui/ShinyLearner/AlgorithmScripts
 Output
 *.tar.gz
 xgboost.model
+__pycache__
