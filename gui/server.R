@@ -2,7 +2,7 @@ library(shiny)
 
 shinyServer(function(input, output, session) {
   
-  dockerhub_address <- 'srp33/shinylearner:version344'
+  dockerhub_address <- 'srp33/shinylearner:version348'
   numFeaturesOptions <- '1,10,100,1000'
   defaultInputFiles <- ''
 #  defaultInputFiles <- 'StrongSignal_Both.tsv.gz'
