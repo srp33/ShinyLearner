@@ -55,7 +55,7 @@ fi
 python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie2 $verbose
 
 echo "Classifying for inner iterations..." | timestamp | tee -a "$outLogFile"
-java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE=$analysisDataFile EXPERIMENT_FILE=$tmpDir/ie2 DEBUG=$verbose OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/icb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/ip TEMP_DIR=$tmpDir 2> /dev/null
+java $(getJavaArgs) -jar shinylearner.jar ANALYSIS_DATA_FILE=$analysisDataFile EXPERIMENT_FILE=$tmpDir/ie2 DEBUG=$verbose OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/icb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/ip TEMP_DIR=$tmpDir 2> /dev/null
 
 echo "Calculating classification metrics for inner iterations..." | timestamp | tee -a "$outLogFile"
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/ip" "$tmpDir/im"
@@ -74,7 +74,7 @@ Rscript --vanilla scripts/SelectBestInnerResults_Classification.R $tmpDir/ibrf $
 printError $verbose $errFile
 
 echo "Classifying for outer iterations..." | timestamp | tee -a "$outLogFile"
-java -Xmx${mem} -jar shinylearner.jar ANALYSIS_DATA_FILE=$analysisDataFile EXPERIMENT_FILE=$tmpDir/ocle DEBUG=$verbose OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/op TEMP_DIR=$tmpDir 2> /dev/null
+java $(getJavaArgs) -jar shinylearner.jar ANALYSIS_DATA_FILE=$analysisDataFile EXPERIMENT_FILE=$tmpDir/ocle DEBUG=$verbose OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/op TEMP_DIR=$tmpDir 2> /dev/null
 
 echo "Calculating classification metrics for outer iterations..." | timestamp | tee -a "$outLogFile"
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om"

@@ -7,10 +7,8 @@ algorithm="$2"
 
 source $(dirname $0)/../../scripts/shared_functions
 
-mem=$(getMemAvailable)
-
 wekaLibPath=$(dirname $0)/lib
 #wekaLibPath=AlgorithmScripts/Helper/lib
 classPath="$wekaLibPath/*:$wekaLibPath/wekalib/*"
 
-echo java -Xmx${mem} -classpath $classPath $algorithm -i $dataFilePath | python $(dirname $0)/ReformatWekaFSParams.py | bash | python $(dirname $0)/ParseWekaFSResults.py
+echo java $(getJavaArgs) -classpath $classPath $algorithm -i $dataFilePath | python $(dirname $0)/ReformatWekaFSParams.py | bash | python $(dirname $0)/ParseWekaFSResults.py

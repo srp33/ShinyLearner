@@ -9,9 +9,7 @@ algorithm="$4"
 
 source $(dirname $0)/../../scripts/shared_functions
 
-mem=$(getMemAvailable)
-
 wekaLibPath=$(dirname $0)/lib
 classPath="$wekaLibPath/*:$wekaLibPath/wekalib/*"
 
-echo java -Xmx${mem} -classpath "$classPath" $algorithm -t "$trainingFilePath" -T "$testFilePath" -p 0 -distribution | python $(dirname $0)/ReformatWekaClassificationParams.py | bash | python $(dirname $0)/ParseWekaPredictions.py "$classOptions"
+echo java $(getJavaArgs) -classpath "$classPath" $algorithm -t "$trainingFilePath" -T "$testFilePath" -p 0 -distribution | python $(dirname $0)/ReformatWekaClassificationParams.py | bash | python $(dirname $0)/ParseWekaPredictions.py "$classOptions"

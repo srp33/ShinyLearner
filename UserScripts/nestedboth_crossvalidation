@@ -64,7 +64,7 @@ source scripts/setup
 
 echo "Parsing data..." 2>&1 | timestamp | tee -a "$outLogFile"
 analysisDataFile=$tmpDir/data.gz
-java -Xmx${mem} -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose IMPUTE=$impute TEMP_DIR=$tmpDir 2> /dev/null
+java $(getJavaArgs) -jar shinylearner.jar RAW_DATA_FILES="$dataFiles" ANALYSIS_DATA_FILE="$analysisDataFile" DEBUG=$verbose IMPUTE=$impute TEMP_DIR=$tmpDir 2> /dev/null
 
 if [[ "$impute" == "true" ]]
 then

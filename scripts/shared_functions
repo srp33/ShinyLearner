@@ -22,6 +22,10 @@ function getMemAvailable {
   echo "$mem"
 }
 
+function getJavaArgs {
+  echo "-Xmx$(getMemAvailable)"
+}
+
 function getTempDir {
   previousValue="$1"
 

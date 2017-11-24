@@ -14,5 +14,3 @@ then
 else
   iterationOutputHeader=Fold
 fi
-
-mem=$(getMemAvailable)
