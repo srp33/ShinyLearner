@@ -37,7 +37,7 @@ proportionMissingPerSample <- apply(data, 1, function(x) {sum(sapply(x, is.na)) 
 
 if (any(proportionMissingPerSample > 0))
 {
-  suppressPackageStartupMessages(library(mlr))
+  suppressPackageStartupMessages(suppressWarnings(library(mlr)))
 
   if (verbose)
     print("Performing imputation")

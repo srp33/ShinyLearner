@@ -4,7 +4,7 @@ dataFilePath <- commandArgs()[numArgs - 1]
 algorithm <- commandArgs()[numArgs]
 #parameterDescription <- commandArgs()[9]
 
-suppressPackageStartupMessages(library(mlr))
+suppressPackageStartupMessages(suppressWarnings(library(mlr)))
 suppressPackageStartupMessages(library(methods))
 
 data <- read.table(dataFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, row.names = 1, check.names=FALSE)

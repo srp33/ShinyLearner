@@ -14,7 +14,7 @@ command_exists () {
 function getMemAvailable {
   if command_exists free
   then
-    mem=$(free -m | tail -n3 | awk '{print $2}' | head -n1)M # Gives total memory in MB (preferred over GB because it always rounds down)
+    mem=$(free -m | tail -n3 | awk '{print $2}' | head -n 2 | tail -n 1)M # Gives total memory in MB (preferred over GB because it always rounds down)
   else
     mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
   fi

@@ -44,7 +44,7 @@ function cleanup {
 cleanup
 tmpDir="$(getTempDir "$tmpDir")"
 
-#trap cleanup INT TERM EXIT
+trap cleanup INT TERM EXIT
 
 validationType=montecarlo
 source scripts/setup

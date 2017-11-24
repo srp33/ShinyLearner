@@ -20,8 +20,8 @@ nodeSizeOptions = [1, 3, 5]
 
 ## Focused on algorithms that support probabilistic predictions, multiclass and numerical + factor values. Some have been excluded because they don't work.
 
-boosting = "'classif.boosting', boos={boos}, mfinal={mfinal}, coeflearn='{coeflearn}'"
-createScripts("Classification", packagePath, "mlr_c_template", "boosting", None, boosting, {"boos": ["TRUE", "FALSE"], "mfinal": [100, 500], "coeflearn": ["Breiman", "Freund"]}, summaryDict)
+#boosting = "'classif.boosting', boos={boos}, mfinal={mfinal}, coeflearn='{coeflearn}'"
+#createScripts("Classification", packagePath, "mlr_c_template", "boosting", None, boosting, {"boos": ["TRUE", "FALSE"], "mfinal": [100, 500], "coeflearn": ["Breiman", "Freund"]}, summaryDict)
 
 C50 = "'classif.C50', subset = {subset}, winnow = {winnow}, noGlobalPruning = {noGlobalPruning}, CF = {CF}, minCases = {minCases}, fuzzyThreshold = {fuzzyThreshold}, sample = {sample}, earlyStopping = {earlyStopping}"
 createScripts("Classification", packagePath, "mlr_c_template", "C50", None, C50, {"subset": ["FALSE", "TRUE"], "winnow": ["FALSE", "TRUE"], "noGlobalPruning": ["FALSE", "TRUE"], "CF": [0.25], "minCases": [2], "fuzzyThreshold": ["FALSE", "TRUE"], "sample": [0], "earlyStopping": ["TRUE", "FALSE"]}, summaryDict)

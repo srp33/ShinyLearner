@@ -37,6 +37,12 @@ classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/xgboost/default*"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/ZeroR/default*"
+
+##bash classification $version StrongSignal_Both montecarlo "--iterations 1" "$classifAlgo" "--verbose false" 1.log
+##bash classification $version NoSignal_Both montecarlo "--iterations 1" "$classifAlgo" "--verbose false" 2.log
+##bash classification $version StrongSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgo" "--verbose false" 3.log
+##bash classification $version NoSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgo" "--verbose false" 4.log
 
 bash classification $version StrongSignal_Both montecarlo "--iterations 3" "$classifAlgo" "$verbose" 1.log &
 bash classification $version NoSignal_Both montecarlo "--iterations 3" "$classifAlgo" "$verbose" 2.log &

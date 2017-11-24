@@ -1,4 +1,4 @@
-suppressPackageStartupMessages(library(mlr))
+suppressPackageStartupMessages(suppressWarnings(library(mlr)))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(AUC))
