@@ -14,6 +14,7 @@ command_exists () {
 function getMemAvailable {
   if command_exists free
   then
+    # It's executing within the container
     mem=$(free -m | tail -n3 | awk '{print $2}' | head -n 2 | tail -n 1)M # Gives total memory in MB (preferred over GB because it always rounds down)
   else
     mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
@@ -23,7 +24,13 @@ function getMemAvailable {
 }
 
 function getJavaArgs {
-  echo "-Xmx$(getMemAvailable)"
+  if command_exists free
+  then
+    # It's executing within the container
+    echo "-Xmx$(getMemAvailable) -server -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1 -XX:+UseG1GC -XX:+UseNUMA -XX:+UseStringDeduplication"
+  else
+    echo "-Xmx$(getMemAvailable) -server"
+  fi
 }
 
 function getTempDir {
