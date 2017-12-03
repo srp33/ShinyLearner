@@ -29,7 +29,7 @@ cOptions = [1.0, 0.1, 10.0, 100.0]
 #############################################################
 
 adaboost = "clf = AdaBoostClassifier(base_estimator={base_estimator}, n_estimators={n_estimators}, learning_rate=1.0, algorithm='{algorithm}', random_state=R_SEED)"
-createScripts("Classification", packagePath, "sklearn_c_template", "adaboost", None, adaboost, {"base_estimator": baseEstimatorOptions, "n_estimators": numEstimatorOptions, "algorithm": boostAlgorithmOptions}, summaryDict)
+createScripts("Classification", packagePath, "sklearn_c_template", "adaboost", None, adaboost, {"base_estimator": ["DecisionTreeClassifier()", "LogisticRegression()"], "n_estimators": numEstimatorOptions, "algorithm": boostAlgorithmOptions}, summaryDict)
 
 bagging = "clf = BaggingClassifier(base_estimator={base_estimator}, n_estimators={n_estimators}, max_samples=1.0, max_features=1.0, bootstrap={bootstrap}, bootstrap_features=False, oob_score={oob_score}, warm_start=False, n_jobs=1, random_state=R_SEED, verbose=0)"
 createScripts("Classification", packagePath, "sklearn_c_template", "bagging", None, bagging, {"base_estimator": baseEstimatorOptions, "n_estimators": numEstimatorOptions, "bootstrap": bootstrapOptions, "oob_score": oobScoreOptions}, summaryDict, {"bootstrap": False, "oob_score": True})
