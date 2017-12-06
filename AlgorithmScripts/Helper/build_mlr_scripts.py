@@ -49,7 +49,7 @@ ksvm = "'classif.ksvm', scaled = {scaled}, type = '{type}', kernel ='{kernel}', 
 createScripts("Classification", packagePath, "mlr_c_template", "ksvm", None, ksvm, {"scaled": ["TRUE", "FALSE"], "type": ["C-svc"], "kernel": ['rbfdot', 'polydot', 'vanilladot', 'laplacedot', 'anovadot'], "C": cOptions, "shrinking": ["TRUE"]}, summaryDict)
 
 kknn = "'classif.kknn', k = {k}, distance = {distance}, kernel = '{kernel}', scale={scale}"
-createScripts("Classification", packagePath, "mlr_c_template", "kknn", None, kknn, {"k": [7, 1, 10, 20], "distance": [2], "kernel": ["optimal"], "scale": ["TRUE", "FALSE"]}, summaryDict)
+createScripts("Classification", packagePath, "mlr_c_template", "kknn", None, kknn, {"k": [7, 1, 10], "distance": [2], "kernel": ["optimal"], "scale": ["TRUE", "FALSE"]}, summaryDict)
 
 mlp = "'classif.mlp', size = c({size}), maxit = {maxit}, initFunc = 'Randomize_Weights', initFuncParams = c(-0.3, 0.3), learnFunc = '{learnFunc}'"
 createScripts("Classification", packagePath, "mlr_c_template", "mlp", None, mlp, {"size": [5, 50], "maxit": [100], "learnFunc": ["Std_Backpropagation", "BackpropChunk", "BackpropMomentum", "BackpropWeightDecay", "Rprop", "Quickprop", "SCG"]}, summaryDict)
