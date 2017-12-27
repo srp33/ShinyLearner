@@ -10,5 +10,6 @@ set -euo pipefail
 trainingFilePath="$1"
 testFilePath="$2"
 classOptions="$3"
+numCores="$4"
 
-python AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "clf = BaggingClassifier(base_estimator=SVC(), n_estimators=1000, max_samples=1.0, max_features=1.0, bootstrap=True, bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=1, random_state=R_SEED, verbose=0)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions
+python AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = BaggingClassifier(base_estimator=SVC(), n_estimators=1000, max_samples=1.0, max_features=1.0, bootstrap=True, bootstrap_features=False, oob_score=False, warm_start=False, n_jobs={n_jobs}, random_state=R_SEED, verbose=0)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions

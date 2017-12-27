@@ -20,6 +20,7 @@ public class Settings
     public static String OUTPUT_PREDICTIONS_FILE_PATH;
     public static String OUTPUT_FEATURES_FILE_PATH;
     public static String OUTPUT_BENCHMARK_FILE_PATH;
+    public static String NUM_CORES;
 
 	/** Parses configuration settings that have been specified at the command line and saves these settings so they can be used throughout the application.
 	 *
@@ -61,6 +62,7 @@ public class Settings
 		OUTPUT_PREDICTIONS_FILE_PATH = GetArgValue(args, "OUTPUT_PREDICTIONS_FILE_PATH", "");
 		OUTPUT_FEATURES_FILE_PATH = GetArgValue(args, "OUTPUT_FEATURES_FILE_PATH", "");
 		OUTPUT_BENCHMARK_FILE_PATH = GetArgValue(args, "OUTPUT_BENCHMARK_FILE_PATH", "");
+		NUM_CORES = GetArgValue(args, "NUM_CORES", "1");
 	}
 	
 	/** Parses a value with a specified key from the command-line arguments.

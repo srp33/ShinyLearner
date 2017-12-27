@@ -9,5 +9,6 @@ set -euo pipefail
 trainingFilePath="$1"
 testFilePath="$2"
 classOptions="$3"
+numCores="$4"
 
-Rscript --no-save --no-restore --no-site-file --no-init-file --no-environ --max-ppsize=500000 AlgorithmScripts/Helper/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "'classif.h2o.deeplearning', activation = 'Rectifier', hidden = c(500, 500), epochs = 50, balance_classes = TRUE" 2>&1 | python AlgorithmScripts/Helper/ReformatMlrClassificationOutput.py "$classOptions"
+Rscript --no-save --no-restore --no-site-file --no-init-file --no-environ --max-ppsize=500000 AlgorithmScripts/Helper/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "'classif.h2o.deeplearning', activation = 'Rectifier', hidden = c(500, 500), epochs = 50, balance_classes = TRUE" 2>&1 | python AlgorithmScripts/Helper/ReformatMlrClassificationOutput.py "$classOptions"

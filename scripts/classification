@@ -18,6 +18,7 @@ proportionTrain="${11}"
 impute="${12}"
 tmpDir="${13}"
 outLogFile="${14}"
+numCores="${15}"
 
 source scripts/setup
 
@@ -38,7 +39,7 @@ fi
 python scripts/AddAlgorithmScripts.py $trainTestFile "$classifAlgos" $trainTestFile2 $verbose
 
 echo "Starting classification..." | timestamp | tee -a "$outLogFile"
-java $(getJavaArgs) -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_PREDICTIONS_FILE_PATH="$tmpDir/op0" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$verbose TEMP_DIR=$tmpDir 2> /dev/null
+java $(getJavaArgs) -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_PREDICTIONS_FILE_PATH="$tmpDir/op0" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$verbose NUM_CORES=$numCores TEMP_DIR=$tmpDir 2> /dev/null
 
 #numClassifAlgos=$(python scripts/CountUniqueValues.py $trainTestFile2 -1 False)
 #if (( numClassifAlgos > 1 ))

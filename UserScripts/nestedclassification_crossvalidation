@@ -16,6 +16,7 @@ verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
 ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
 scale="$(python scripts/ParseArgs.py --scale FALSE false $@)"
 impute="$(python scripts/ParseArgs.py --impute FALSE false $@)"
+numCores="$(python scripts/ParseArgs.py --num-cores FALSE 1 $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
@@ -29,6 +30,7 @@ checkParamParseOutput "$verbose"
 checkParamParseOutput "$ohe"
 checkParamParseOutput "$scale"
 checkParamParseOutput "$impute"
+checkParamParseOutput "$numCores"
 checkParamParseOutput "$tmpDir"
 
 mkdir -p $outputDir
@@ -118,7 +120,7 @@ do
   echo "**************************************************************" | timestamp | tee -a "$outLogFile"
   echo "Beginning analysis for cross-validation fold ${iteration}" | timestamp | tee -a "$outLogFile"
   echo "**************************************************************" | timestamp | tee -a "$outLogFile"
-  scripts/nestedclassification "$analysisDataFile" "$description" "$outerNumFolds" "$innerNumFolds" "$verbose" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedBenchmarkFileIteration" "$outNestedBestFileIteration" crossvalidation $iteration NA $impute $outDir "$outLogFile"
+  scripts/nestedclassification "$analysisDataFile" "$description" "$outerNumFolds" "$innerNumFolds" "$verbose" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedBenchmarkFileIteration" "$outNestedBestFileIteration" crossvalidation $iteration NA $impute $outDir "$outLogFile" "$numCores"
 done
 
 echo 2>&1 | timestamp | tee -a "$outLogFile"

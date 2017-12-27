@@ -32,11 +32,11 @@ cd $testDir
 
 validation=StrongSignal_Both
 #validation=NoSignal_Both
-#dataFile=$currentDir/Validation/${validation}.tsv.gz
+dataFile=$currentDir/Validation/${validation}.tsv.gz
 #dataFile="$currentDir/debug_data/*.tsv.gz"
 #dataFile="$currentDir/TestFiles/*.tsv.gz"
 #dataFile="$currentDir/debug_data/Archive/mrna-sc_stad.tsv.gz,$currentDir/debug_data/stad_cv_surv1_stad.tsv.gz"
-dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/Class/MolecularMarker__somatic_tp53_mutation.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/GSE63885.txt.gz"
+#dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/Class/MolecularMarker__somatic_tp53_mutation.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/GSE63885.txt.gz"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda"
@@ -48,18 +48,20 @@ dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*,$currentDir/AlgorithmScripts/Classification/tsv/sklearn/svm"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/svm"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/knn/*"
-classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/alt__base_estimator=SVCprobability=True_bootstrap=True_n_estimators=1000_oob_score=True"
+classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/alt__base_estimator=SVCprobability=True_bootstrap=True_n_estimators=1000_oob_score=True"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/alt__base_estimator=DecisionTreeClassifier_bootstrap=True_n_estimators=1000_oob_score=True"
 verbose=true
 #verbose=false
-impute=false
-#impute=true
+#impute=false
+impute=true
+numCores=2
 
 if [[ "$validationType" == "montecarlo" ]]
 then
   #UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --outer-iterations 1 --inner-iterations 1 --verbose $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir"
-  UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --outer-iterations 2 --inner-iterations 2 --verbose $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir" --impute $impute
+  UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --outer-iterations 2 --inner-iterations 2 --verbose $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir" --impute $impute --num-cores $numCores
 else
   #UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --iterations 1 --inner-folds 2 --outer-folds 2 --verbose $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir"
-  UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --iterations 2 --inner-folds 2 --outer-folds 2 --verbose $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir" --impute $impute
+  UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --iterations 2 --inner-folds 2 --outer-folds 2 --verbose $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir" --impute $impute --num-cores $numCores
 fi

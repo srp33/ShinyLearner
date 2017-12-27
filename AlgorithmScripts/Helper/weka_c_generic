@@ -5,7 +5,8 @@ set -euo pipefail
 trainingFilePath="$1"
 testFilePath="$2"
 classOptions="$3"
-algorithm="$4"
+numCores="$4"
+algorithm="$5"
 
 source $(dirname $0)/../../scripts/shared_functions
 

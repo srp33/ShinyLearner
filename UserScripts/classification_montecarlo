@@ -16,6 +16,7 @@ scale="$(python scripts/ParseArgs.py --scale FALSE false $@)"
 impute="$(python scripts/ParseArgs.py --impute FALSE false $@)"
 randomSeed="$(python scripts/ParseArgs.py --seed FALSE 1 $@)"
 proportionTrain="$(python scripts/ParseArgs.py --train-proportion FALSE 0.67 $@)"
+numCores="$(python scripts/ParseArgs.py --num-cores FALSE 1 $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
@@ -27,7 +28,9 @@ checkParamParseOutput "$verbose"
 checkParamParseOutput "$ohe"
 checkParamParseOutput "$scale"
 checkParamParseOutput "$impute"
-checkParamParseOutput "$tmpDir"
+checkParamParseOutput "$randomSeed"
+checkParamParseOutput "$proportionTrain"
+checkParamParseOutput "$numCores"
 
 mkdir -p $outputDir
 outPredictionsFile="$outputDir/Predictions.tsv"
@@ -71,7 +74,7 @@ then
   Rscript --vanilla scripts/Scale.R "$analysisDataFile" $verbose 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
-scripts/classification "$analysisDataFile" "$description" "$numIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo "$randomSeed" "$proportionTrain" $impute "$tmpDir" "$outLogFile"
+scripts/classification "$analysisDataFile" "$description" "$numIterations" "$verbose" "$classifAlgos" "$outPredictionsFile" "$outMetricsFile" "$outBenchmarkFile" montecarlo "$randomSeed" "$proportionTrain" $impute "$tmpDir" "$outLogFile" "$numCores"
 
 cleanup
 

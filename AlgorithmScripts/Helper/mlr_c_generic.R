@@ -1,13 +1,20 @@
 numArgs <- length(commandArgs())
 
-trainingFilePath <- commandArgs()[numArgs-3]
-testFilePath <- commandArgs()[numArgs-2]
-classOptions <- strsplit(commandArgs()[numArgs-1], ",")[[1]]
+trainingFilePath <- commandArgs()[numArgs-4]
+testFilePath <- commandArgs()[numArgs-3]
+classOptions <- strsplit(commandArgs()[numArgs-2], ",")[[1]]
+numCores <- as.integer(commandArgs()[numArgs-1])
 algorithm <- commandArgs()[numArgs]
 
 suppressPackageStartupMessages(suppressWarnings(library(mlr)))
 suppressPackageStartupMessages(library(methods))
 suppressPackageStartupMessages(library(data.table))
+
+if (numCores > 1)
+{
+  suppressPackageStartupMessages(suppressWarnings(library(parallelMap)))
+  parallelStartSocket(2)
+}
 
 trainingData <- fread(trainingFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, data.table=FALSE)
 testData <- fread(testFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, data.table=FALSE)
@@ -94,3 +101,6 @@ learn(learner)
 #    learn(learner, parameterDescription)
 #  }
 #}
+
+if (numCores > 1)
+  parallelStop()

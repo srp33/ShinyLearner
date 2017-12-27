@@ -20,7 +20,8 @@ from sklearn.svm import SVC
 trainFile = argv[1]
 testFile = argv[2]
 classOptions = argv[3].split(",")
-algorithmInstantiation = argv[4]
+numCores = argv[4]
+algorithmInstantiation = argv[5]
 
 def readData(inFilePath):
     return read_csv(inFilePath, sep='\t', index_col=0)
@@ -33,6 +34,8 @@ train_X = train_df.ix[:,:-1].values
 train_y = array([classOptions.index(str(y[0])) for y in train_df.loc[:,["Class"]].values.tolist()])
 
 test_X = readData(testFile).values
+
+algorithmInstantiation = algorithmInstantiation.replace("{n_jobs}", numCores)
 
 # Dynamically create the algorithm object
 code = compile(algorithmInstantiation, "<string>", 'exec')
