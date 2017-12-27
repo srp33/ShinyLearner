@@ -33,7 +33,7 @@ public class FeatureSelection
 	
     private static String SelectFeaturesCommand(String dataFilePath) throws Exception
     {
-        String parameters = "\"" + dataFilePath + "\"";
+        String parameters = "\"" + dataFilePath + "\" " + Settings.NUM_CORES;
         Log.Debug(Singletons.ExperimentItems.AlgorithmScriptFilePath + " " + parameters);
         //Log.Exit(1);
         return MiscUtilities.ExecuteShellCommand("\"" + Singletons.ExperimentItems.AlgorithmScriptFilePath + "\" " + parameters);

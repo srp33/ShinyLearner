@@ -15,8 +15,11 @@ from sklearn.svm import SVC
 from sklearn.feature_selection import RFE
 
 dataFilePath = argv[1]
-algorithmClass = argv[2]
-algorithmInstantiation = argv[3]
+numCores = argv[2]
+algorithmClass = argv[3]
+algorithmInstantiation = argv[4]
+
+algorithmInstantiation = algorithmInstantiation.replace("{n_jobs}", numCores)
 
 R_SEED = 0
 random.seed(R_SEED)

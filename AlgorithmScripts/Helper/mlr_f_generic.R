@@ -1,11 +1,18 @@
 numArgs <- length(commandArgs())
 
-dataFilePath <- commandArgs()[numArgs - 1]
+dataFilePath <- commandArgs()[numArgs - 2]
+numCores <- as.integer(commandArgs()[numArgs - 1])
 algorithm <- commandArgs()[numArgs]
 #parameterDescription <- commandArgs()[9]
 
 suppressPackageStartupMessages(suppressWarnings(library(mlr)))
 suppressPackageStartupMessages(library(methods))
+
+if (numCores > 1)
+{
+  suppressPackageStartupMessages(suppressWarnings(library(parallelMap)))
+  parallelStartSocket(2)
+}
 
 data <- read.table(dataFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, row.names = 1, check.names=FALSE)
 
@@ -51,3 +58,6 @@ learn <- function(parameterList)
 #    learn(parameterList, parameterDescription)
 #  }
 #}
+
+if (numCores > 1)
+  parallelStop()

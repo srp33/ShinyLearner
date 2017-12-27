@@ -8,5 +8,6 @@ set -euo pipefail
 #####################################################
 
 dataFilePath="$1"
+numCores="$2"
 
-python AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "score" "F, score = f_classif(train_X, train_y)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py
+python AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "$numCores" "score" "F, score = f_classif(train_X, train_y)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py
