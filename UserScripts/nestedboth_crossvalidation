@@ -18,7 +18,7 @@ verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
 ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
 scale="$(python scripts/ParseArgs.py --scale FALSE false $@)"
 impute="$(python scripts/ParseArgs.py --impute FALSE false $@)"
-numCores="$(python scripts/ParseArgs.py --num-cores FALSE false $@)"
+numCores="$(python scripts/ParseArgs.py --num-cores FALSE 1 $@)"
 tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
