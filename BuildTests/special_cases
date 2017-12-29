@@ -20,7 +20,7 @@ function testMultipleInputFiles {
   bash run_docker_command $version "UserScripts/classification_montecarlo --data \"$dataFiles\" --description "$description" --iterations 1 --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose --impute true" 2>&1 | tee -a $logFile
 
   expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
-  python CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
+  python3 CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
 }
 
 testMultipleInputFiles Strong
@@ -31,7 +31,7 @@ testMultipleInputFiles No
 #####################################
 
 # Make sure we get a warning when instance is missing class value
-python KeepAllButLastLine.py input/StrongSignal_Class.tsv.gz input/StrongSignal_Class2.tsv.gz
+python3 KeepAllButLastLine.py input/StrongSignal_Class.tsv.gz input/StrongSignal_Class2.tsv.gz
 
 description=StrongSignal_MissingDependentVariable
 dataFiles="input/StrongSignal_Continuous_NoClass.tsv.gz,input/StrongSignal_Class2.tsv.gz"
@@ -40,11 +40,11 @@ specificOutputDir=output/$(basename $0)_${description}_montecarlo
 bash run_docker_command $version "UserScripts/classification_montecarlo --data \"$dataFiles\" --description "$description" --iterations 1 --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose --impute true" 2>&1 | tee -a $logFile
 
 expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
-python CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
-python CheckLogForMessage.py $specificOutputDir/Log.txt "After filtering, data were available for 59 instances and 101 data points" 2>&1 | tee -a $logFile
+python3 CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
+python3 CheckLogForMessage.py $specificOutputDir/Log.txt "After filtering, data were available for 59 instances and 101 data points" 2>&1 | tee -a $logFile
 
 # Make sure imputation occurs when instance has class value but no data
-python KeepAllButLastLine.py input/StrongSignal_Continuous_NoClass.tsv.gz input/StrongSignal_Continuous_NoClass2.tsv.gz
+python3 KeepAllButLastLine.py input/StrongSignal_Continuous_NoClass.tsv.gz input/StrongSignal_Continuous_NoClass2.tsv.gz
 
 description=StrongSignal_MissingIndependentVariable
 dataFiles="input/StrongSignal_Continuous_NoClass2.tsv.gz,input/StrongSignal_Class.tsv.gz"
@@ -53,9 +53,9 @@ specificOutputDir=output/$(basename $0)_${description}_montecarlo
 bash run_docker_command $version "UserScripts/classification_montecarlo --data \"$dataFiles\" --description "$description" --iterations 1 --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose --impute true" 2>&1 | tee -a $logFile
 
 expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
-python CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
-python CheckLogForMessage.py $specificOutputDir/Log.txt "After filtering, data were available for 60 instances and 101 data points" 2>&1 | tee -a $logFile
-python CheckLogForMessage.py $specificOutputDir/Log.txt "More than 50% of data values were missing for 1 instance(s), which exceeds the threshold for imputation. These data were removed." 2>&1 | tee -a $logFile
+python3 CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
+python3 CheckLogForMessage.py $specificOutputDir/Log.txt "After filtering, data were available for 60 instances and 101 data points" 2>&1 | tee -a $logFile
+python3 CheckLogForMessage.py $specificOutputDir/Log.txt "More than 50% of data values were missing for 1 instance(s), which exceeds the threshold for imputation. These data were removed." 2>&1 | tee -a $logFile
 
 #####################################
 # Test different file formats
@@ -68,7 +68,7 @@ specificOutputDir=output/$(basename $0)_${description}_montecarlo
 bash run_docker_command $version "UserScripts/classification_montecarlo --data \"$dataFiles\" --description "$description" --iterations 1 --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose --impute true" 2>&1 | tee -a $logFile
 
 expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
-python CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
+python3 CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
 
 description=StrongSignal_ttsv
 dataFiles="input/StrongSignal_Both.ttsv.gz"
@@ -77,4 +77,4 @@ specificOutputDir=output/$(basename $0)_${description}_montecarlo
 bash run_docker_command $version "UserScripts/classification_montecarlo --data \"$dataFiles\" --description "$description" --iterations 1 --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose --impute true" 2>&1 | tee -a $logFile
 
 expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
-python CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
+python3 CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile

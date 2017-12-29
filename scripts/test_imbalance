@@ -9,5 +9,5 @@ outDataFile=/tmp/test_imbalance_outData
 numIterations=2
 randomSeed=0
 
-#python scripts/IdentifySamples.py "$dataFile" "$description" $idFile $classFile
-python scripts/TestImbalance.py $dataFile Iteration $numIterations $randomSeed $trainTestFile $outDataFile
+#python3 scripts/IdentifySamples.py "$dataFile" "$description" $idFile $classFile
+python3 scripts/TestImbalance.py $dataFile Iteration $numIterations $randomSeed $trainTestFile $outDataFile

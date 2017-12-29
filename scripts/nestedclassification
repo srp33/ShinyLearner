@@ -26,15 +26,15 @@ numCores="${19}"
 
 source scripts/setup
 
-python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $tmpDir/allid $tmpDir/classes
+python3 scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $tmpDir/allid $tmpDir/classes
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  python scripts/AssignTrainingTesting.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed $proportionTrain
-  python scripts/AssignTrainingTesting.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed $proportionTrain
+  python3 scripts/AssignTrainingTesting.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed $proportionTrain
+  python3 scripts/AssignTrainingTesting.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed $proportionTrain
 else
-  python scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
-  python scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
+  python3 scripts/AssignCrossValidation.py $tmpDir/allid $tmpDir/classes "$iterationOutputHeader" $tmpDir/ott $outerNumIterations $randomSeed
+  python3 scripts/AssignCrossValidation.py $tmpDir/ott $tmpDir/classes "Inner" $tmpDir/ie $innerNumIterations $randomSeed
 fi
 
 #if [[ "$verbose" == "true" ]]
@@ -53,7 +53,7 @@ fi
 #fi
 
 ## Prepare inner experiment files
-python scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie2 $verbose
+python3 scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie2 $verbose
 
 echo "Classifying for inner iterations..." | timestamp | tee -a "$outLogFile"
 java $(getJavaArgs) -jar shinylearner.jar ANALYSIS_DATA_FILE=$analysisDataFile EXPERIMENT_FILE=$tmpDir/ie2 DEBUG=$verbose OUTPUT_BENCHMARK_FILE_PATH=$tmpDir/icb OUTPUT_PREDICTIONS_FILE_PATH=$tmpDir/ip NUM_CORES=$numCores TEMP_DIR=$tmpDir 2> /dev/null
@@ -62,7 +62,7 @@ echo "Calculating classification metrics for inner iterations..." | timestamp | 
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/ip" "$tmpDir/im"
 
 echo "Parsing inner classification results..." | timestamp | tee -a "$outLogFile"
-python scripts/ReformatInnerResults_Classification.py $tmpDir/im $tmpDir/ibrf
+python3 scripts/ReformatInnerResults_Classification.py $tmpDir/im $tmpDir/ibrf
 
 #if [[ "$verbose" == "true" ]]
 #then
@@ -84,30 +84,30 @@ echo "Preparing output files..." | timestamp | tee -a "$outLogFile"
 
 if [[ "$outPredictionsFile" != "" ]]
 then
-  python scripts/ParseNestedResults.py $tmpDir/op $iterationOutputHeader $tmpDir/op.sorttemp
+  python3 scripts/ParseNestedResults.py $tmpDir/op $iterationOutputHeader $tmpDir/op.sorttemp
   sortFile $tmpDir/op.sorttemp "-k1,1 -k2,2n -k3" "$outPredictionsFile"
 fi
 if [[ "$outMetricsFile" != "" ]]
 then
-  python scripts/ParseNestedResults.py $tmpDir/om $iterationOutputHeader $tmpDir/om.sorttemp
+  python3 scripts/ParseNestedResults.py $tmpDir/om $iterationOutputHeader $tmpDir/om.sorttemp
   sortFile $tmpDir/om.sorttemp "-k1,1 -k2,2n -k3" "$outMetricsFile"
 fi
 
 if [[ "$outNestedPredictionsFile" != "" ]]
 then
-  python scripts/ParseNestedResults2.py $tmpDir/ip $iterationOutputHeader $tmpDir/ip.sorttemp
+  python3 scripts/ParseNestedResults2.py $tmpDir/ip $iterationOutputHeader $tmpDir/ip.sorttemp
   sortFile $tmpDir/ip.sorttemp "-k1,1 -k2,2n -k3,3n -k4" "$outNestedPredictionsFile"
 fi
 if [[ "$outNestedMetricsFile" != "" ]]
 then
-  python scripts/ParseNestedResults2.py $tmpDir/im $iterationOutputHeader $tmpDir/im.sorttemp
+  python3 scripts/ParseNestedResults2.py $tmpDir/im $iterationOutputHeader $tmpDir/im.sorttemp
   sortFile $tmpDir/im.sorttemp "-k1,1 -k2,2n -k3,3n -k4" "$outNestedMetricsFile"
 fi
 if [[ "$outNestedBenchmarkFile" != "" ]]
 then
-  python scripts/ParseNestedResults2.py $tmpDir/icb $iterationOutputHeader $tmpDir/icb.sorttemp
+  python3 scripts/ParseNestedResults2.py $tmpDir/icb $iterationOutputHeader $tmpDir/icb.sorttemp
   sortFile $tmpDir/icb.sorttemp "-k1,1 -k2,2n -k3,3n -k4" "$outNestedBenchmarkFile"
 fi
 
-python scripts/SplitDescriptionColumn.py $tmpDir/ibest $iterationOutputHeader $tmpDir/ibest.sorttemp
+python3 scripts/SplitDescriptionColumn.py $tmpDir/ibest $iterationOutputHeader $tmpDir/ibest.sorttemp
 sortFile $tmpDir/ibest.sorttemp "-k1,1 -k2,2n -k3,3 -k4" "$outNestedBestFile"

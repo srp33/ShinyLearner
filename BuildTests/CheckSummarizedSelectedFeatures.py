@@ -13,7 +13,7 @@ for line in inFile:
 inFile.close()
 
 if not os.path.exists(inFilePath):
-    print "[FAILED] No file exists at %s" % inFilePath
+    print("[FAILED] No file exists at {}".format(inFilePath))
     exit(1)
 
 if "StrongSignal" in inFilePath:
@@ -25,17 +25,17 @@ elif "NoSignal" in inFilePath:
 
 featureNames = set()
 for i in range(1, 6):
-    featureNames.add("Feature%s" % i)
+    featureNames.add("Feature{}".format(i))
 for i in range(51, 56):
-    featureNames.add("Feature%s_Low" % i)
-    featureNames.add("Feature%s_Medium" % i)
+    featureNames.add("Feature{}_Low".format(i))
+    featureNames.add("Feature{}_Medium".format(i))
 
 meanRanks = [dataDict[featureName] for featureName in featureNames]
 meanMeanRank = sum(meanRanks) / len(meanRanks)
 success = meanMeanRank > lowerThreshold and meanMeanRank <= upperThreshold
 
 if success:
-    print "[PASSED] The mean summarized rank for %s was %.2f." % (inFilePath, meanMeanRank)
+    print("[PASSED] The mean summarized rank for {} was {:.2f}.".format(inFilePath, meanMeanRank))
 else:
-    print "[FAILED] The mean summarized rank for %s was %.2f but should have been between %.2f and %.2f." % (inFilePath, meanMeanRank, lowerThreshold, upperThreshold)
+    print("[FAILED] The mean summarized rank for {} was {:.2f} but should have been between {:.2f} and {:.2f}.".format(inFilePath, meanMeanRank, lowerThreshold, upperThreshold))
     exit(1)

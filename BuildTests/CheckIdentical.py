@@ -13,9 +13,9 @@ misMatchCount = 0
 for line1 in inFile1:
     line2 = inFile2.readline()
     if line1 != line2:
-        print "[FAILED] Mismatch between %s and %s:" % (inFilePath1, inFilePath2)
-        print "  %s" % line1.rstrip()
-        print "  %s" % line2.rstrip()
+        print("[FAILED] Mismatch between {} and {}:".format(inFilePath1, inFilePath2))
+        print("  {}".format(line1.rstrip()))
+        print("  {}".format(line2.rstrip()))
 
         misMatchCount += 1
         if misMatchCount == 10:
@@ -27,4 +27,4 @@ inFile1.close()
 if misMatchCount > 0:
     sys.exit(1)
 else:
-    print "[SUCCESS] Current results match previous results"
+    print("[SUCCESS] Current results match previous results")

@@ -9,13 +9,15 @@ expectedNumAlgorithms = int(sys.argv[6])
 expectedNumEnsemble = int(sys.argv[7])
 
 if not os.path.exists(metricFilePath):
-    print "[FAILED] No metric file found!"
+    print("[FAILED] No metric file found!")
     exit(1)
 
 successfulAlgorithms = set()
 failedAlgorithms = set()
 
-metricData = [line.rstrip().split("\t") for line in file(metricFilePath)]
+metricFile = open(metricFilePath)
+metricData = [line.rstrip().split("\t") for line in metricFile]
+metricFile.close()
 headerItems = metricData.pop(0)
 metricNameIndex = headerItems.index("Metric")
 valueIndex = headerItems.index("Value")
@@ -24,25 +26,25 @@ algorithmIndex = headerItems.index(algorithmColumnName)
 uniqueAlgorithms = list(set([row[algorithmIndex] for row in metricData]))
 
 if len(uniqueAlgorithms) == 0:
-    print "[FAILED] No algorithm scripts could be found."
+    print("[FAILED] No algorithm scripts could be found.")
     exit(1)
 
 actualNumAlgorithms = len([x for x in uniqueAlgorithms if not x.startswith("Ensemble")])
 actualNumEnsemble = len([x for x in uniqueAlgorithms if x.startswith("Ensemble")])
 
 if actualNumAlgorithms != expectedNumAlgorithms:
-    print "[FAILED] The number of classification algorithms in %s [%i] does not match the expected number [%i]." % (metricFilePath, actualNumAlgorithms, expectedNumAlgorithms)
+    print("[FAILED] The number of classification algorithms in {} [{}] does not match the expected number [{}].".format(metricFilePath, actualNumAlgorithms, expectedNumAlgorithms))
     exit(1)
 
 if actualNumEnsemble != expectedNumEnsemble:
-    print "[FAILED] The number of ensemble algorithms in %s [%i] does not match the expected number [%i]." % (metricFilePath, actualNumEnsemble, expectedNumEnsemble)
+    print("[FAILED] The number of ensemble algorithms in {} [{}] does not match the expected number [{}].".format(metricFilePath, actualNumEnsemble, expectedNumEnsemble))
     exit(1)
 
 for algorithm in uniqueAlgorithms:
     if "ZeroR" in algorithm:
         continue
 
-    idText = "%s - %s - %s - %s" % (taskType, validationType, metricFilePath, algorithm)
+    idText = "{} - {} - {} - {}".format(taskType, validationType, metricFilePath, algorithm)
 
     aucValues = [float(row[valueIndex]) for row in metricData if row[algorithmIndex] == algorithm and row[metricNameIndex] == "AUROC"]
     meanAUC = sum(aucValues) / float(len(aucValues))
@@ -50,30 +52,30 @@ for algorithm in uniqueAlgorithms:
     if description.startswith("StrongSignal"):
         lowerThreshold = 0.75
         if meanAUC >= lowerThreshold:
-            print "[PASSED] The mean AUROC was %.3f for %s and %s. {%s}" % (meanAUC, description, algorithm, idText)
+            print("[PASSED] The mean AUROC was {:.3f} for {} and {}. ({})".format(meanAUC, description, algorithm, idText))
             successfulAlgorithms.add(algorithm)
         else:
-            print "[FAILED] The mean AUROC was %.3f for %s and %s. The expected lower threshold is %.3f. {%s}" % (meanAUC, description, algorithm, lowerThreshold, idText)
+            print("[FAILED] The mean AUROC was {:.3f} for {} and {}. The expected lower threshold is {:.3f}. ({})".format(meanAUC, description, algorithm, lowerThreshold, idText))
             failedAlgorithms.add(algorithm)
     elif description.startswith("NoSignal"):
-        upperThreshold = 0.7
+        upperThreshold = 0.75
         if meanAUC <= upperThreshold:
-            print "[PASSED] The mean AUROC was %.3f for %s and %s. {%s}" % (meanAUC, description, algorithm, idText)
+            print("[PASSED] The mean AUROC was {:.3f} for {} and {}. ({})".format(meanAUC, description, algorithm, idText))
             successfulAlgorithms.add(algorithm)
         else:
-            print "[FAILED] The mean AUROC was %.3f for %s and %s. The expected upper threshold is %.3f. {%s}" % (meanAUC, description, algorithm, upperThreshold, idText)
+            print("[FAILED] The mean AUROC was {:.3f} for {} and {}. The expected upper threshold is {:.3f}. ({})".format(meanAUC, description, algorithm, upperThreshold, idText))
             failedAlgorithms.add(algorithm)
 
-print "\n[TEST SUMMARY]\n"
+print("\n[TEST SUMMARY]\n")
 
 if len(successfulAlgorithms) == 0:
-    print "[FAILED] No algorithms successfully passed any of the tests."
+    print("[FAILED] No algorithms successfully passed any of the tests.")
     exit(1)
 
 if len(failedAlgorithms) > 0:
-    print "The following algorithm(s) failed at least once:"
+    print("The following algorithm(s) failed at least once:")
     for algorithm in failedAlgorithms:
-        print "  %s" % algorithm
+        print("  {}".format(algorithm))
     exit(1)
 else:
-    print "Tests passed!\n"
+    print("Tests passed!\n")

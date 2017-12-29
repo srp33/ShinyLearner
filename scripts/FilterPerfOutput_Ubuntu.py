@@ -9,7 +9,8 @@ outFile = open(outFilePath, 'w')
 # r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
 # 1  0  91148 127044320 1002212 255306560    0    0    17    26    0    0  1  0 99  0  0
 
-for line in file(inFilePath):
+inFile = open(inFilePath)
+for line in inFile:
     if line.startswith("procs"):
         continue
 
@@ -22,6 +23,7 @@ for line in file(inFilePath):
     mem = float(lineItems[3])
     mem = mem / (1024.0 * 1024.0)
 
-    outFile.write("%.3f\n" % mem)
+    outFile.write("{:.3f}\n".format(mem))
 
+inFile.close()
 outFile.close()

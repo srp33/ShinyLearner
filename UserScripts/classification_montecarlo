@@ -5,19 +5,19 @@ set -euo pipefail
 source scripts/shared_functions
 source scripts/first_param_check
 
-dataFiles="$(python scripts/ParseArgs.py --data TRUE "$@")"
-description="$(python scripts/ParseArgs.py --description TRUE $@)"
-numIterations="$(python scripts/ParseArgs.py --iterations TRUE $@)"
-classifAlgos="$(python scripts/ParseArgs.py --classif-algo TRUE "$@")"
-outputDir="$(python scripts/ParseArgs.py --output-dir TRUE $@)"
-verbose="$(python scripts/ParseArgs.py --verbose FALSE false $@)"
-ohe="$(python scripts/ParseArgs.py --ohe FALSE true $@)"
-scale="$(python scripts/ParseArgs.py --scale FALSE false $@)"
-impute="$(python scripts/ParseArgs.py --impute FALSE false $@)"
-randomSeed="$(python scripts/ParseArgs.py --seed FALSE 1 $@)"
-proportionTrain="$(python scripts/ParseArgs.py --train-proportion FALSE 0.67 $@)"
-numCores="$(python scripts/ParseArgs.py --num-cores FALSE 1 $@)"
-tmpDir="$(python scripts/ParseArgs.py --temp-dir FALSE '' $@)"
+dataFiles="$(python3 scripts/ParseArgs.py --data TRUE "$@")"
+description="$(python3 scripts/ParseArgs.py --description TRUE $@)"
+numIterations="$(python3 scripts/ParseArgs.py --iterations TRUE $@)"
+classifAlgos="$(python3 scripts/ParseArgs.py --classif-algo TRUE "$@")"
+outputDir="$(python3 scripts/ParseArgs.py --output-dir TRUE $@)"
+verbose="$(python3 scripts/ParseArgs.py --verbose FALSE false $@)"
+ohe="$(python3 scripts/ParseArgs.py --ohe FALSE true $@)"
+scale="$(python3 scripts/ParseArgs.py --scale FALSE false $@)"
+impute="$(python3 scripts/ParseArgs.py --impute FALSE false $@)"
+randomSeed="$(python3 scripts/ParseArgs.py --seed FALSE 1 $@)"
+proportionTrain="$(python3 scripts/ParseArgs.py --train-proportion FALSE 0.67 $@)"
+numCores="$(python3 scripts/ParseArgs.py --num-cores FALSE 1 $@)"
+tmpDir="$(python3 scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
 checkParamParseOutput "$dataFiles"
 checkParamParseOutput "$description"
@@ -65,7 +65,7 @@ fi
 if [[ "$ohe" == "true" ]]
 then
   echo "One-hot encoding categorical data (where applicable)..." | timestamp | tee -a "$outLogFile"
-  python scripts/OneHotEncode.py "$analysisDataFile" 2>&1 | timestamp | tee -a "$outLogFile"
+  python3 scripts/OneHotEncode.py "$analysisDataFile" 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
 if [[ "$scale" == "true" ]]

@@ -4,5 +4,5 @@ for f in $outputDir/*Metrics.tsv $outputDir/*Predictions.tsv
 do
   compareF=$expectedOutputDir/$(basename $f)
 
-  python $(dirname $0)/CheckIdentical.py $f $compareF
+  python3 $(dirname $0)/CheckIdentical.py $f $compareF
 done

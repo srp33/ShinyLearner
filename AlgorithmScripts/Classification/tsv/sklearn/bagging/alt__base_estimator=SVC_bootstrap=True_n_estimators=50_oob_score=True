@@ -12,4 +12,4 @@ testFilePath="$2"
 classOptions="$3"
 numCores="$4"
 
-python AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = BaggingClassifier(base_estimator=SVC(), n_estimators=50, max_samples=1.0, max_features=1.0, bootstrap=True, bootstrap_features=False, oob_score=True, warm_start=False, n_jobs={n_jobs}, random_state=R_SEED, verbose=0)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions
+python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = BaggingClassifier(base_estimator=SVC(), n_estimators=50, max_samples=1.0, max_features=1.0, bootstrap=True, bootstrap_features=False, oob_score=True, warm_start=False, n_jobs={n_jobs}, random_state=R_SEED, verbose=0)" 2>&1 | python3 AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions

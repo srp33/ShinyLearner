@@ -9,10 +9,10 @@ Rscript --vanilla CreateTwoClassFile.R StrongSignal_Both.tsv.gz StrongSignal_Bot
 gzip *.tsv
 
 python Transpose.py StrongSignal_Both.tsv.gz StrongSignal_Both.ttsv.gz
-python CreateArff.py StrongSignal_Both.tsv.gz StrongSignal_Both.arff.gz
+python3 CreateArff.py StrongSignal_Both.tsv.gz StrongSignal_Both.arff.gz
 
-python SelectColumns.py StrongSignal_Continuous.tsv.gz 0to-2 StrongSignal_Continuous_NoClass.tsv.gz
-python SelectColumns.py StrongSignal_Continuous.tsv.gz 0,-1 StrongSignal_Class.tsv.gz
+python3 SelectColumns.py StrongSignal_Continuous.tsv.gz 0to-2 StrongSignal_Continuous_NoClass.tsv.gz
+python3 SelectColumns.py StrongSignal_Continuous.tsv.gz 0,-1 StrongSignal_Class.tsv.gz
 
-python SelectColumns.py NoSignal_Continuous.tsv.gz 0to-2 NoSignal_Continuous_NoClass.tsv.gz
-python SelectColumns.py NoSignal_Continuous.tsv.gz 0,-1 NoSignal_Class.tsv.gz
+python3 SelectColumns.py NoSignal_Continuous.tsv.gz 0to-2 NoSignal_Continuous_NoClass.tsv.gz
+python3 SelectColumns.py NoSignal_Continuous.tsv.gz 0,-1 NoSignal_Class.tsv.gz

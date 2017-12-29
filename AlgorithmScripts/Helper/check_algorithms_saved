@@ -2,7 +2,7 @@
 
 ./build_algorithm_scripts > /tmp/77
 
-python ~/Pipeline/code/Uniquify.py /tmp/77
+python3 ~/Pipeline/code/Uniquify.py /tmp/77
 
 sort /tmp/77 > /tmp/66
 wc -l /tmp/66

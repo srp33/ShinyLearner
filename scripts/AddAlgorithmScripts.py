@@ -23,8 +23,10 @@ for x in classifAlgosRaw.split(","):
                 classifAlgos.add(z)
         elif y.endswith(".list"):
 #            smartPrint("islist")
-            for line in file(y):
+            yFile = open(y)
+            for line in yFile:
                 classifAlgos.add(line.rstrip())
+            yFile.close()
         else:
 #            smartPrint("other")
             classifAlgos.add(y)
@@ -36,14 +38,16 @@ classifAlgos = sorted(list(classifAlgos))
 
 outLines = []
 #smartPrint("trainTestFile:")
-for line in file(trainTestFilePath):
+trainTestFile = open(trainTestFilePath)
+for line in trainTestFile:
 #    smartPrint("ttf: " + line)
     for classifAlgo in classifAlgos:
 #        smartPrint("ttfca: " + classifAlgo)
         outLines.append(line.rstrip() + "\t" + classifAlgo + "\n")
+trainTestFile.close()
 
 if len(outLines) == 0:
-    print "No algorithm scripts matched the input path(s) specified: %s" % classifAlgosRaw
+    print("No algorithm scripts matched the input path(s) specified: {}".format(classifAlgosRaw))
     exit(1)
 
 outFile = open(outFilePath, 'w')

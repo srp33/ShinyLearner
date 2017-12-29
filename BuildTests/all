@@ -52,7 +52,7 @@ wait
 
 cat output/*.log >> $overallLogFile
 rm -f output/*.log
-python CheckLogFiles.py $overallLogFile 1
+python3 CheckLogFiles.py $overallLogFile 1
 
 #########################################################
 # Test all fs algorithms using monte carlo
@@ -69,7 +69,7 @@ wait
 
 cat output/*.log >> $overallLogFile
 rm -f output/*.log
-python CheckLogFiles.py $overallLogFile 1
+python3 CheckLogFiles.py $overallLogFile 1
 
 #########################################################
 # Test some fs and cl algorithms using k-fold
@@ -86,7 +86,7 @@ wait
 
 cat output/*.log >> $overallLogFile
 rm -f output/*.log
-python CheckLogFiles.py $overallLogFile 1
+python3 CheckLogFiles.py $overallLogFile 1
 
 #########################################################
 # Test nestedclassification
@@ -102,7 +102,7 @@ wait
 
 cat output/*.log >> $overallLogFile
 rm -f output/*.log
-python CheckLogFiles.py $overallLogFile 1
+python3 CheckLogFiles.py $overallLogFile 1
 
 #########################################################
 # Test nestedboth
@@ -120,7 +120,7 @@ wait
 
 cat output/*.log >> $overallLogFile
 rm -f output/*.log
-python CheckLogFiles.py $overallLogFile 1
+python3 CheckLogFiles.py $overallLogFile 1
 
 #########################################################
 # Test special cases
@@ -130,7 +130,7 @@ bash special_cases $version "$verbose" 1.log
 
 cat output/*.log >> $overallLogFile
 rm -f output/*.log
-python CheckLogFiles.py $overallLogFile 1
+python3 CheckLogFiles.py $overallLogFile 1
 
 #########################################################
 # Cleanup

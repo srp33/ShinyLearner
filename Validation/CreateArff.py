@@ -7,25 +7,25 @@ classValues = []
 inFile = gzip.open(inFilePath)
 inFile.readline()
 for line in inFile:
-    classValues.append(line.rstrip().split("\t")[-1])
+    classValues.append(line.decode().rstrip().split("\t")[-1])
 inFile.close()
 
 inFile = gzip.open(inFilePath)
-features = inFile.readline().strip().split("\t")
+features = inFile.readline().decode().strip().split("\t")
 
 outFile = gzip.open(outFilePath, 'w')
-outFile.write("@relation data\n\n")
+outFile.write("@relation data\n\n".encode())
 
-outFile.write("@attribute ID string\n")
+outFile.write("@attribute ID string\n".encode())
 for feature in features[:-1]:
-    outFile.write("@attribute %s numeric\n" % feature)
-outFile.write("@attribute Class {%s}\n\n" % ",".join(sorted(list(set(classValues)))))
+    outFile.write("@attribute {} numeric\n".format(feature).encode())
+outFile.write("@attribute Class {{{}}}\n\n".format(",".join(sorted(list(set(classValues))))).encode())
 
-outFile.write("@data\n")
+outFile.write("@data\n".encode())
 
 for line in inFile:
-    lineItems = line.rstrip().split("\t")
-    outFile.write(",".join(lineItems) + "\n")
+    lineItems = line.decode().rstrip().split("\t")
+    outFile.write((",".join(lineItems) + "\n").encode())
 
 outFile.close()
 inFile.close()

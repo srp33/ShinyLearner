@@ -36,7 +36,7 @@ columnIndices = None
 inFile = gzip.open(inFilePath)
 for line in inFile:
     lineCount += 1
-    lineItems = line.rstrip().split("\t")
+    lineItems = line.decode().rstrip().split("\t")
 
     if columnIndices is None:
         columnIndices = parseColumnIndices(columnIndexInput.split(","), len(lineItems))
@@ -44,17 +44,17 @@ for line in inFile:
     try:
         outItems = [lineItems[i] for i in columnIndices if len(lineItems) > i]
     except:
-        print sys.exc_info()
-        print lineItems
+        print(sys.exc_info())
+        print(lineItems)
         exit()
 
     out += "\t".join(outItems) + "\n"
 
     if lineCount % 100000 == 0:
-        print lineCount
-        outFile.write(out)
+        print(lineCount)
+        outFile.write(out.encode())
         out = ""
 
-outFile.write(out)
+outFile.write(out.encode())
 outFile.close()
 inFile.close()

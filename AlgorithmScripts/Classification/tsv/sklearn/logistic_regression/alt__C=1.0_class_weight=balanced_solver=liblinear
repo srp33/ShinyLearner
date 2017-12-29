@@ -12,4 +12,4 @@ testFilePath="$2"
 classOptions="$3"
 numCores="$4"
 
-python AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = LogisticRegression(penalty='l2', dual=False, tol=0.0001, C=1.0, fit_intercept=True, intercept_scaling=1, class_weight='balanced', solver='liblinear', max_iter=100, multi_class='ovr', verbose=0, warm_start=False, n_jobs={n_jobs}, random_state=R_SEED)" 2>&1 | python AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions
+python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = LogisticRegression(penalty='l2', dual=False, tol=0.0001, C=1.0, fit_intercept=True, intercept_scaling=1, class_weight='balanced', solver='liblinear', max_iter=100, multi_class='ovr', verbose=0, warm_start=False, n_jobs={n_jobs}, random_state=R_SEED)" 2>&1 | python3 AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions

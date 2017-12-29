@@ -119,5 +119,5 @@ if showStats:
     for key, value in sorted(summaryDict.items()):
         print(key, value)
     print("#######################################")
-    print("Total: %i" % sum(summaryDict.values()))
+    print("Total: {}".format(sum(summaryDict.values())))
     print("#######################################")

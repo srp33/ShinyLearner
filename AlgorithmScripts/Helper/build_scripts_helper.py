@@ -106,7 +106,7 @@ def buildParamName(prefix, paramDict, paramComboDict):
     paramName = paramName.strip("_")
 
     if len(paramName) > 255:
-        print("The name of the parameter file is too long: %s." % paramName)
+        print("The name of the parameter file is too long: {}.".format(paramName))
         sys.exit(1)
 
     return paramName

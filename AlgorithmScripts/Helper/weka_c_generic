@@ -13,4 +13,4 @@ source $(dirname $0)/../../scripts/shared_functions
 wekaLibPath=$(dirname $0)/lib
 classPath="$wekaLibPath/*:$wekaLibPath/wekalib/*"
 
-echo java $(getJavaArgs) -classpath "$classPath" $algorithm -t "$trainingFilePath" -T "$testFilePath" -p 0 -distribution | python $(dirname $0)/ReformatWekaClassificationParams.py | bash | python $(dirname $0)/ParseWekaPredictions.py "$classOptions"
+echo java $(getJavaArgs) -classpath "$classPath" $algorithm -t "$trainingFilePath" -T "$testFilePath" -p 0 -distribution | python3 $(dirname $0)/ReformatWekaClassificationParams.py | bash | python3 $(dirname $0)/ParseWekaPredictions.py "$classOptions"

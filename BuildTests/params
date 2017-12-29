@@ -89,7 +89,7 @@ bash run_docker_command $version "UserScripts/classification_montecarlo --data \
 
 expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
 echo "Checking $(pwd)/output/classification_montecarlo/Log.txt"
-python CheckAccuracy.py classification montecarlo StrongSignal_Both output/classification_montecarlo/Metrics.tsv Algorithm $expectedNumAlgorithms 1 2>&1 | tee -a output/classification_montecarlo/Log.txt
+python3 CheckAccuracy.py classification montecarlo StrongSignal_Both output/classification_montecarlo/Metrics.tsv Algorithm $expectedNumAlgorithms 1 2>&1 | tee -a output/classification_montecarlo/Log.txt
 
 cat output/classification_montecarlo/Log.txt
 

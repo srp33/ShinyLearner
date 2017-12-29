@@ -28,7 +28,8 @@ selectedFeaturesFile.close()
 outFile = open(outFilePath, 'w')
 
 # This file has Train/Test key, Training instances, Test instances, algorithm
-for line in file(trainTestFilePath):
+trainTestFile = open(trainTestFilePath)
+for line in trainTestFile:
     lineItems = line.rstrip().split("\t")
 
     algorithm = algorithmDict[lineItems[0]]
@@ -37,8 +38,10 @@ for line in file(trainTestFilePath):
     features = ",".join(featuresDict[lineItems[0]][:numFeatures])
 
     outItems = list(lineItems[:4])
-    outItems[0] = "%s____%s____%i" % (outItems[0], algorithm, numFeatures)
+    outItems[0] = "{}____{}____{}".format(outItems[0], algorithm, numFeatures)
     outItems.append(features)
     outFile.write("\t".join(outItems) + "\n")
+
+trainTestFile.close()
 
 outFile.close()

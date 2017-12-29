@@ -9,7 +9,7 @@ isNestedBoth = sys.argv[6] == "True"
 expectedNumAlgorithms = int(sys.argv[7])
 
 if len(selectedFeaturesFilePaths) == 0:
-    print "[FAILED] No selected-features files were found!"
+    print("[FAILED] No selected-features files were found!")
     exit(1)
 
 def getMeanFeatureRank(algorithmFeatureData, featureName):
@@ -22,20 +22,20 @@ def getMeanFeatureRank(algorithmFeatureData, featureName):
 
 def testMeanFeatureRanks(meanFeatureRanks, featureNames, lowerThreshold, upperThreshold, idText):
     if description.startswith("StrongSignal") and len(meanFeatureRanks) < 5:
-        print "[FAILED] Not enough features [%i] were in the feature list for %s. {%s}" % (len(featureNames), description, idText)
+        print("[FAILED] Not enough features [{}] were in the feature list for {}. [{}]".format(len(featureNames), description, idText))
         return False
 
     if description.startswith("NoSignal") and len(meanFeatureRanks) <= 2:
-        print "[PASSED] None of the signal features were selected for %s. {%s}" % (description, idText)
+        print("[PASSED] None of the signal features were selected for {}. [{}]".format(description, idText))
         return True
 
     grandMean = sum(meanFeatureRanks) / len(meanFeatureRanks)
 
     if grandMean > lowerThreshold and grandMean <= upperThreshold:
-        print "[PASSED] The mean feature index for %s and %s was %.1f. {%s}" % (",".join(featureNames), description, grandMean, idText)
+        print("[PASSED] The mean feature index for {} and {} was {:.1f}. [{}]".format(",".join(featureNames), description, grandMean, idText))
         return True
     else:
-        print "[FAILED] The mean feature index for %s and %s was %.1f. Expected was between %.1f and %.1f. {%s}" % (",".join(featureNames), description, grandMean, lowerThreshold, upperThreshold, idText)
+        print("[FAILED] The mean feature index for {} and {} was {:.1f}. Expected was between {:.1f} and {:.1f}. [{}]".format(",".join(featureNames), description, grandMean, lowerThreshold, upperThreshold, idText))
         return False
 
 def getProportionSelected(algorithmFeatureData, featureNames):
@@ -48,7 +48,10 @@ def getProportionSelected(algorithmFeatureData, featureNames):
 failedAlgorithms = set()
 
 for selectedFeaturesFilePath in selectedFeaturesFilePaths:
-    data = [line.rstrip().split("\t") for line in file(selectedFeaturesFilePath)]
+    selectedFeaturesFile = open(selectedFeaturesFilePath)
+    data = [line.rstrip().split("\t") for line in selectedFeaturesFile]
+    selectedFeaturesFile.close()
+
     headerItems = data.pop(0)
     featuresIndex = headerItems.index("Features")
     algorithmIndex = headerItems.index(algorithmColumnName)
@@ -56,15 +59,15 @@ for selectedFeaturesFilePath in selectedFeaturesFilePaths:
     uniqueAlgorithms = list(set([row[algorithmIndex] for row in data]))
 
     if len(uniqueAlgorithms) == 0:
-        print "[FAILED] No algorithm scripts could be found."
+        print("[FAILED] No algorithm scripts could be found.")
         exit(1)
 
     if len(uniqueAlgorithms) != expectedNumAlgorithms:
-        print "[FAILED] The number of feature-selection algorithms in the %s [%i] does not match the expected number [%i]." % (selectedFeaturesFilePath, len(uniqueAlgorithms), expectedNumAlgorithms)
+        print("[FAILED] The number of feature-selection algorithms in the {} [{}] does not match the expected number [{}].".format(selectedFeaturesFilePath, len(uniqueAlgorithms), expectedNumAlgorithms))
         exit(1)
 
     for algorithm in uniqueAlgorithms:
-        idText = "%s - %s - %s - %s" % (taskType, validationType, selectedFeaturesFilePath, algorithm)
+        idText = "{} - {} - {} - {}".format(taskType, validationType, selectedFeaturesFilePath, algorithm)
         algorithmFeatureData = [row[featuresIndex].split(",") for row in data if row[algorithmIndex] == algorithm]
 
         if description.startswith("StrongSignal"):
@@ -78,10 +81,10 @@ for selectedFeaturesFilePath in selectedFeaturesFilePaths:
 
         featureNames = set()
         for i in range(1, 6):
-            featureNames.add("Feature%s" % i)
+            featureNames.add("Feature{}".format(i))
         for i in range(51, 56):
-            featureNames.add("Feature%s_Low" % i)
-            featureNames.add("Feature%s_Medium" % i)
+            featureNames.add("Feature{}_Low".format(i))
+            featureNames.add("Feature{}_Medium".format(i))
 
         meanFeatureRanks = [getMeanFeatureRank(algorithmFeatureData, featureName) for featureName in featureNames]
 
@@ -95,9 +98,9 @@ for selectedFeaturesFilePath in selectedFeaturesFilePaths:
                 success = True
 
             if success:
-                print "[PASSED] An acceptable proportion (%.3f) of target features was selected for outer folds for %s. {%s}" % (proportionSelected, description, idText)
+                print("[PASSED] An acceptable proportion ({:.3f}) of target features was selected for outer folds for {}. [{}]".format(proportionSelected, description, idText))
             else:
-                print "[FAILED] An unacceptable proportion (%.3f) of target features was selected for outer folds for %s. {%s}" % (proportionSelected, description, idText)
+                print("[FAILED] An unacceptable proportion ({:.3f}) of target features was selected for outer folds for {}. [{}]".format(proportionSelected, description, idText))
         else:
             meanFeatureRanks = [x for x in meanFeatureRanks if x != None]
             success = testMeanFeatureRanks(meanFeatureRanks, featureNames, lowerThreshold, upperThreshold, idText)
@@ -105,11 +108,11 @@ for selectedFeaturesFilePath in selectedFeaturesFilePaths:
         if not success:
             failedAlgorithms.add(algorithm)
 
-print "\n[TEST SUMMARY]\n"
+print("\n[TEST SUMMARY]\n")
 if len(failedAlgorithms) > 0:
-    print "The following algorithm(s) failed at least once:"
+    print("The following algorithm(s) failed at least once:")
     for algorithm in failedAlgorithms:
-        print "  %s" % algorithm
+        print("  {}".format(algorithm))
     exit(1)
 else:
-    print "Tests passed!\n"
+    print("Tests passed!\n")

@@ -13,16 +13,16 @@ for line in sys.stdin:
 if "Ranked attributes:" in lines:
     lines = lines[(lines.index("Ranked attributes:") + 1):-1]
 
-    print ",".join([line.split(" ")[-1] for line in lines])
+    print(",".join([line.split(" ")[-1] for line in lines]))
 else:
     #### We can support this pretty easily. Just need to make sure output is comma delimited.
-    print "Selected attributes not currently supported for Weka"
+    print("Selected attributes not currently supported for Weka")
     sys.exit(1)
 #    selectedAttributesStarted = False
 #    for line in lines:
 #        if selectedAttributesStarted:
 #            if line.strip() != "":
-#                print line.strip()
+#                print(line.strip())
 #
 #        if line.startswith("Selected attributes:"):
 #            selectedAttributesStarted = True

@@ -1,7 +1,7 @@
 import random, sys, os, re
 
 if len(sys.argv) != 7:
-    print "Invalid number or arguments for %s." % sys.argv[0]
+    print("Invalid number or arguments for {}.".format(sys.argv[0]))
     sys.exit(1)
 
 IDFilePath = sys.argv[1]
@@ -12,22 +12,22 @@ NumPermutations = sys.argv[5]
 Method = sys.argv[6]
 
 if Prefix == "":
-    print "No prefix was specified."
+    print("No prefix was specified.")
     sys.exit(1)
 
 if not os.path.exists(IDFilePath):
-    print "File " + IDFilePath + " does not exist."
+    print("File " + IDFilePath + " does not exist.")
     sys.exit(1)
 
 if not os.path.exists(ClassFilePath):
-    print "File " + ClassFilePath + " does not exist."
+    print("File " + ClassFilePath + " does not exist.")
     sys.exit(1)
 
 if IDFilePath == ClassFilePath or IDFilePath == OutFilePath or ClassFilePath == OutFilePath:
-    print "Repeated file names"
+    print("Repeated file names")
     sys.exit(1)
 if not os.path.exists(os.path.dirname(OutFilePath)):
-    print "Creating directory at %s." % os.path.dirname(OutFilePath)
+    print("Creating directory at {}.".format(os.path.dirname(OutFilePath)))
     os.makedirs(os.path.dirname(OutFilePath))
 
 NumPermutations = int(NumPermutations)
@@ -35,15 +35,15 @@ NumPermutations = int(NumPermutations)
 try:
     int(NumPermutations)
 except  ValueError:
-    print "%s is not a valid value for the number of permutations." % NumPermutations
+    print("{} is not a valid value for the number of permutations.".format(NumPermutations))
     sys.exit(1)
 
 if NumPermutations < 1:
-    print "Invalid number of permutations: %s" % NumPermutations
+    print("Invalid number of permutations: {}".format(NumPermutations))
     sys.exit(1)
 
 if Method != "Normal" and Method != "UnderSampling" and Method != "OverSampling" and Method != "SMOTE":
-    print "That is not a valid method."
+    print("That is not a valid method.")
     sys.exit(1)
 
 
@@ -94,34 +94,30 @@ for line in IDFile:
                     break
             training.extend(classTrain)
             test.extend(classTest)
-#        print "The number of samples in the class file was %i." % len(SAMPLE_IDS)
-#        print "The number of samples in the gene-expression file was %i." % len(EXPRESSION_IDS)
-#        print "The number of samples in training set is %i." % len(training)
-#        print "The number of samples in test set is %i." % len(test)
 
         intersectSamples = set(training).intersection(test)
         if len(intersectSamples) > 0:
-            print "The following samples overlapped between the training and test set, which is invalid."
+            print("The following samples overlapped between the training and test set, which is invalid.")
             for s in intersectSamples:
-                print s
+                print(s)
             sys.exit(1)
 
         total_assigned = len(training) + len(test)
         if total != total_assigned:
-            print "The number of samples assigned to training and test [%i] is not equal to the number of input samples [%i]." % (total_assigned, total)
+            print("The number of samples assigned to training and test [{}] is not equal to the number of input samples [{}].".format(total_assigned, total))
             sys.exit(1)
         iteration += 1
 
-        test_and_training += description + "____%s%i" % (Prefix, iteration)
+        test_and_training += description + "____{}{}".format(Prefix, iteration)
 
-        test_and_training +=  "\t%s\t%s\n" % (",".join(training), ",".join(test))
+        test_and_training +=  "\t{}\t{}\n".format(",".join(training), ",".join(test))
         for val in training:
             if val not in sampleIDs:
-                print "The IDs in the nested validation are not the same as the previous iteration."
+                print("The IDs in the nested validation are not the same as the previous iteration.")
                 sys.exit(1)
         for val in test:
             if val not in sampleIDs:
-                print "The IDs in the nested validation are not the same as the previous iteration."
+                print("The IDs in the nested validation are not the same as the previous iteration.")
                 sys.exit(1)
 if Method == "Normal":
     OutputFile.write(test_and_training)
@@ -137,7 +133,7 @@ def UnderSampling():
     minorityClassList = []
 
     if len(classes) != 2:
-        print "invalid number of classes in data set."
+        print("invalid number of classes in data set.")
         sys.exit(1)
     for key in sampleClassDict.keys():
         if key in training:
@@ -175,9 +171,9 @@ def UnderSampling():
             majComparisonList.append(majorityClassList[val])
 
 
-        MajorityAndMinority += description + "____%s%i" % (Prefix, iteration)
+        MajorityAndMinority += description + "____{}{}".format(Prefix, iteration)
 
-        MajorityAndMinority += "\t%s\t%s\n" % (",".join(majComparisonList), ",".join(minorityClassList))
+        MajorityAndMinority += "\t{}\t{}\n".format(",".join(majComparisonList), ",".join(minorityClassList))
     OutputFile.write(MajorityAndMinority)
 
     return

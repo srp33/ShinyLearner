@@ -42,10 +42,11 @@ fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default*"
 #fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/*/default*"
 verbose=true
 #verbose=false
+impute=true
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/featureselection_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --verbose $verbose --fs-algo "$fsAlgo" --output-dir "$outputDir"
+  UserScripts/featureselection_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --verbose $verbose --fs-algo "$fsAlgo" --output-dir "$outputDir" --impute $impute
 else
-  UserScripts/featureselection_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --folds 2 --verbose $verbose --fs-algo "$fsAlgo" --output-dir "$outputDir"
+  UserScripts/featureselection_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --folds 2 --verbose $verbose --fs-algo "$fsAlgo" --output-dir "$outputDir" --impute $impute
 fi

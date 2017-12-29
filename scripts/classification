@@ -27,21 +27,21 @@ classFile=$tmpDir/cl
 trainTestFile=$tmpDir/tt
 trainTestFile2=$tmpDir/tt2
 
-python scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $idFile $classFile
+python3 scripts/ExtractSampleInfo.py "$analysisDataFile" "$description" $idFile $classFile
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  python scripts/AssignTrainingTesting.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed $proportionTrain
+  python3 scripts/AssignTrainingTesting.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed $proportionTrain
 else
-  python scripts/AssignCrossValidation.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
+  python3 scripts/AssignCrossValidation.py $idFile $classFile $iterationOutputHeader $trainTestFile $numIterations $randomSeed
 fi
 
-python scripts/AddAlgorithmScripts.py $trainTestFile "$classifAlgos" $trainTestFile2 $verbose
+python3 scripts/AddAlgorithmScripts.py $trainTestFile "$classifAlgos" $trainTestFile2 $verbose
 
 echo "Starting classification..." | timestamp | tee -a "$outLogFile"
 java $(getJavaArgs) -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$trainTestFile2 OUTPUT_PREDICTIONS_FILE_PATH="$tmpDir/op0" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ob" DEBUG=$verbose NUM_CORES=$numCores TEMP_DIR=$tmpDir 2> /dev/null
 
-#numClassifAlgos=$(python scripts/CountUniqueValues.py $trainTestFile2 -1 False)
+#numClassifAlgos=$(python3 scripts/CountUniqueValues.py $trainTestFile2 -1 False)
 #if (( numClassifAlgos > 1 ))
 #then
 #  echo "Making aggregate predictions..."
@@ -57,7 +57,7 @@ Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir
 function parseOutputFile {
   if [ -f "$1" ]
   then
-    python scripts/ParseNonNestedResults.py $1 "$iterationOutputHeader" $1.sorttemp
+    python3 scripts/ParseNonNestedResults.py $1 "$iterationOutputHeader" $1.sorttemp
     sortFile $1.sorttemp "-k1,1 -k2,2n -k3" "$2"
   fi
 }

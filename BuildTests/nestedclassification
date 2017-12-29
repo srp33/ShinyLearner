@@ -21,4 +21,4 @@ specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 bash run_docker_command $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description "$description" $iterationsFolds --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose --impute true --ohe true" | tee -a $logFile
 
 expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
-python CheckAccuracy.py $analysisType $validationType $description ${specificOutputDir}/Metrics.tsv Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
+python3 CheckAccuracy.py $analysisType $validationType $description ${specificOutputDir}/Metrics.tsv Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile

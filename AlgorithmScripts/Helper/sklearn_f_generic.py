@@ -35,7 +35,7 @@ features = list(train_df.columns.values)[:-1]
 
 # Dynamically execute code
 code = compile(algorithmInstantiation, "<string>", 'exec')
-exec code
+exec(code)
 
 rankedFeatures = None
 
@@ -58,4 +58,4 @@ elif algorithmClass == 'coef':
 else:
     print("Invalid algorithm type.")
 
-print ",".join(rankedFeatures)
+print(",".join(rankedFeatures))

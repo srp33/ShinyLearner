@@ -28,7 +28,8 @@ selectedFeaturesFile.close()
 outLines = []
 
 # This file has Train/Test key, Training instances, Test instances, algorithm
-for line in file(trainTestFilePath):
+trainTestFile = open(trainTestFilePath)
+for line in trainTestFile:
     lineItems = line.rstrip().split("\t")
 
     for fsAlgorithm in featuresDict[lineItems[0]]:
@@ -40,12 +41,14 @@ for line in file(trainTestFilePath):
                 continue
 
             outItems = list(lineItems[:4])
-            outItems[0] = "%s____%s____%i" % (outItems[0], fsAlgorithm, numFeatures)
+            outItems[0] = "{}____{}____{}".format(outItems[0], fsAlgorithm, numFeatures)
             outItems.append(features)
             outLines.append("\t".join(outItems) + "\n")
 
+trainTestFile.close()
+
 if len(outLines) == 0:
-    print "No inner selected features were available."
+    print("No inner selected features were available.")
     sys.exit(1)
 
 outFile = open(outFilePath, 'w')

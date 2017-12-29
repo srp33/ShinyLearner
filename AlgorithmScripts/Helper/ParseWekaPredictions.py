@@ -19,4 +19,4 @@ for line in predictionLines:
     prediction = classOptions[predictionIndex]
     probabilities = [x.replace("*", "") for x in lineItems[3].split(",")]
 
-    print "%s\t%s" % (prediction, "\t".join(probabilities))
+    print("{}\t{}".format(prediction, "\t".join(probabilities)))

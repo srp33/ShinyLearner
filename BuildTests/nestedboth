@@ -24,10 +24,10 @@ bash run_docker_command $version "UserScripts/${analysisType}_${validationType} 
 
 # Should only be the ensemble algorithm
 expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
-python CheckAccuracy.py $analysisType $validationType $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
+python3 CheckAccuracy.py $analysisType $validationType $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
 
 # Testing the nested selected features not necessary, as long as outer folds work fine
-#python CheckSelectedFeatures.py $analysisType $validationType $description "$fsAlgo" "$specificOutputDir/Nested_SelectedFeatures.tsv" Algorithm False 2>&1 | tee -a $logFile
-python CheckSummarizedSelectedFeatures.py "$specificOutputDir/Nested_SelectedFeatures_Summarized.tsv" 2>&1 | tee -a $logFile
+#python3 CheckSelectedFeatures.py $analysisType $validationType $description "$fsAlgo" "$specificOutputDir/Nested_SelectedFeatures.tsv" Algorithm False 2>&1 | tee -a $logFile
+python3 CheckSummarizedSelectedFeatures.py "$specificOutputDir/Nested_SelectedFeatures_Summarized.tsv" 2>&1 | tee -a $logFile
 
-python CheckSelectedFeatures.py $analysisType $validationType $description "$specificOutputDir/SelectedFeatures.tsv" Algorithm True $expectedNumAlgorithms 2>&1 | tee -a $logFile
+python3 CheckSelectedFeatures.py $analysisType $validationType $description "$specificOutputDir/SelectedFeatures.tsv" Algorithm True $expectedNumAlgorithms 2>&1 | tee -a $logFile
