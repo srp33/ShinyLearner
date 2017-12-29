@@ -41,10 +41,9 @@ algorithmInstantiation = algorithmInstantiation.replace("{n_jobs}", numCores)
 code = compile(algorithmInstantiation, "<string>", 'exec')
 exec(code)
 
-print("Testing...2")
-exit(1)
 clf.fit(train_X, train_y)
-#print("Testing...3")
+print("Testing...3")
+exit(1)
 probs = clf.predict_proba(test_X)
 #print("Testing...4")
 
