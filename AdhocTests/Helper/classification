@@ -30,11 +30,11 @@ mkdir -p $outputDir
 
 cd $testDir
 
-validation=StrongSignal_Both
+#validation=StrongSignal_Both
 #validation=StrongSignal_Both_2Class
 #validation=StrongSignalLarge_Both
 #validation=StrongSignal_Continuous
-#validation=NoSignal_Both
+validation=NoSignal_Both
 #dataFile="/tmp/ml_data/breast.cancer.arff"
 dataFile=$currentDir/Validation/${validation}.tsv.gz
 #dataFile="/Users/srp33/Downloads/GSE6532_U133A/*.txt.gz,/Users/srp33/Downloads/GSE6532_U133A/Class/Histological__grade.txt"
@@ -45,11 +45,11 @@ dataFile=$currentDir/Validation/${validation}.tsv.gz
 #dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE37745/Class/PatientCharacteristic__performance_status_corresponding_to_who_criteria.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE37745/Covariate/PatientCharacteristic__age.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE37745/Covariate/PatientCharacteristic__gender.txt"
 #dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/Class/Prognostic__os_group.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/Covariate/*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default*"
-#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default*"
+classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/adaboost/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/extra_trees/default*"
-classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/extra_trees/alt__bootstrap=True_class_weight=None_criterion=gini_n_estimators=1000_oob_score=False"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/extra_trees/alt__bootstrap=True_class_weight=None_criterion=gini_n_estimators=1000_oob_score=False"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/*/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/*/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default*"
@@ -68,8 +68,8 @@ classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/extra_trees
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/decision_tree/*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/alt__base_estimator=SVCprobability=True_bootstrap=True_n_estimators=1000_oob_score=True"
 #classifAlgo="/tmp/algs.list"
-verbose=true
-#verbose=false
+#verbose=true
+verbose=false
 iterations=1
 #iterations=2
 folds=2
@@ -83,6 +83,8 @@ tmpDir=/Users/srp33/Downloads/Temp
 if [[ "$validationType" == "montecarlo" ]]
 then
   UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations $iterations --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir" --temp-dir $tmpDir --scale $scale --impute $impute --num-cores $numCores
+  cat $outputDir/Metrics.tsv | grep AUROC
 else
   UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations $iterations --folds $folds --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir" --scale $scale --impute $impute --num-cores $numCores
+  cat $outputDir/Metrics.tsv | grep AUROC
 fi

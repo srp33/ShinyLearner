@@ -86,7 +86,7 @@ for line in IDFile:
     lineItems = line.rstrip().split("\t")
     description = lineItems[0]
     sampleIDs = lineItems[1].split(',')
-    sampleIDs = list(set(sampleIDs) & set(sampleClassDict.keys()))
+    sampleIDs = sorted(list(set(sampleIDs) & set(sampleClassDict.keys())))
 
     total = len(sampleIDs)
     iteration = 0
@@ -118,7 +118,7 @@ for line in IDFile:
 
         test_and_training += description + "____{}{}".format(Prefix, iteration)
 
-        test_and_training +=  "\t{}\t{}\n".format(",".join(training), ",".join(test))
+        test_and_training +=  "\t{}\t{}\n".format(",".join(sorted(training)), ",".join(sorted(test)))
         for val in training:
             if val not in sampleIDs:
                 print("The IDs in the nested validation are not the same as the previous iteration.")

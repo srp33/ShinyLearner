@@ -89,7 +89,7 @@ for line in IDFile:
     lineItems = line.rstrip().split("\t")
     description = lineItems[0]
     sampleIDs = lineItems[1].split(',')
-    sampleIDs = list(set(sampleIDs) & set(sampleClassDict.keys()))
+    sampleIDs = sorted(list(set(sampleIDs) & set(sampleClassDict.keys())))
 
     total = len(sampleIDs)
 
@@ -100,7 +100,7 @@ for line in IDFile:
             trainIDs = [sampleIDs[j] for j in range(total) if j != i]
 
             checkSamples(testIDs, trainIDs, total)
-            writeOutputFile(description, i+1, trainIDs, testIDs)
+            writeOutputFile(description, i+1, sorted(trainIDs), sorted(testIDs))
     else: # Regular cross validation
         foldDict = {}
 
@@ -121,7 +121,7 @@ for line in IDFile:
             trainIDs = list(set(sampleIDs) - set(testIDs))
 
             checkSamples(testIDs, trainIDs, total)
-            writeOutputFile(description, fold, trainIDs, testIDs)
+            writeOutputFile(description, fold, sorted(trainIDs), sorted(testIDs))
 
 ClassFile.close()
 IDFile.close()
