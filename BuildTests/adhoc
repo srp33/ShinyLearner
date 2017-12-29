@@ -18,6 +18,10 @@ tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md
 mv ShinyLearner.tar.gz $tmpDir/
 cp Dockerfile $tmpDir/
 cp -r Validation/*.gz $tmpDir/input
+###################################################
+cp -r /Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE1456/* $tmpDir/input
+cp -r /Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE1456/*/* $tmpDir/input
+###################################################
 cp -r BuildTests/* $tmpDir/
 
 cd $tmpDir
@@ -28,6 +32,10 @@ fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default*"
 #fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/InfoGain/default*"
 #fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/OneR/default*"
 
-bash featureselection $version StrongSignal_Both montecarlo "--iterations 3" "$fsAlgo" "$verbose" 1.log
+#bash featureselection $version StrongSignal_Both montecarlo "--iterations 3" "$fsAlgo" "$verbose" 1.log
+
+classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/extra_trees/alt__bootstrap=True_class_weight=None_criterion=gini_n_estimators=1000_oob_score=False"
+
+bash classification $version StrongSignal_Both montecarlo "--iterations 3" "$classifAlgo" "$verbose" 1.log
 
 cat output/1.log

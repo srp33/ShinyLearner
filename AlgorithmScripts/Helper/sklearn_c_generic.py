@@ -41,8 +41,12 @@ algorithmInstantiation = algorithmInstantiation.replace("{n_jobs}", numCores)
 code = compile(algorithmInstantiation, "<string>", 'exec')
 exec(code)
 
+print("Testing...2")
+exit(1)
 clf.fit(train_X, train_y)
+#print("Testing...3")
 probs = clf.predict_proba(test_X)
+#print("Testing...4")
 
 for i in range(len(probs)):
     iProbs = list(probs[i])
@@ -55,4 +59,5 @@ for i in range(len(probs)):
 
     print("{}\t{}".format(prediction, "\t".join(["{:.9f}".format(iProb) for iProb in iProbs])))
 
-exit(0)
+#print("Testing...5")
+#exit(0)

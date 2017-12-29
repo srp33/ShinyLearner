@@ -15,7 +15,8 @@ outputDir=output
 logFile=$outputDir/$logFile
 
 analysisType=$(basename $0)
-dataFile="$inputDir/$description.tsv.gz"
+#dataFile="$inputDir/$description.tsv.gz"
+dataFile="$inputDir/Histological__ELSTON.txt,$inputDir/GSE1456.txt.gz,$inputDir/Prognostic__Death_BC_Group.txt"
 specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
 bash run_docker_command $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description "$description" $iterationsFolds --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose --impute true --ohe true" | tee -a $logFile
