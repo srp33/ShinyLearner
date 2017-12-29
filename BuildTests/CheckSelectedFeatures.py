@@ -72,9 +72,9 @@ for selectedFeaturesFilePath in selectedFeaturesFilePaths:
 
         if description.startswith("StrongSignal"):
             lowerThreshold = 0
-            upperThreshold = 21
+            upperThreshold = 25
         elif description.startswith("NoSignal"):
-            lowerThreshold = 22
+            lowerThreshold = 25
             #lowerThreshold = 15
             #upperThreshold = len(algorithmFeatureData[0])
             upperThreshold = 100000000
