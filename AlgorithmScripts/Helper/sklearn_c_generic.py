@@ -42,10 +42,7 @@ code = compile(algorithmInstantiation, "<string>", 'exec')
 exec(code)
 
 clf.fit(train_X, train_y)
-print("Testing...3")
-exit(1)
 probs = clf.predict_proba(test_X)
-#print("Testing...4")
 
 for i in range(len(probs)):
     iProbs = list(probs[i])
@@ -58,5 +55,4 @@ for i in range(len(probs)):
 
     print("{}\t{}".format(prediction, "\t".join(["{:.9f}".format(iProb) for iProb in iProbs])))
 
-#print("Testing...5")
-#exit(0)
+exit(0)

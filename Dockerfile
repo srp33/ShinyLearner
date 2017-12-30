@@ -1,4 +1,4 @@
-FROM srp33/shinylearner_environment:version24
+FROM srp33/shinylearner_environment:version28
 
 COPY ShinyLearner.tar.gz /
 RUN tar -zxf ShinyLearner.tar.gz; rm ShinyLearner.tar.gz
