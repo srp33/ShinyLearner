@@ -29,6 +29,9 @@ createScripts("Classification", packagePath, "mlr_c_template", "C50", None, C50,
 ctree = "'classif.ctree', teststat = '{teststat}', testtype = '{testtype}', mincriterion = {mincriterion}, minsplit = {minsplit}, minbucket = {minbucket}, stump = {stump}, nresample = {nresample}"
 createScripts("Classification", packagePath, "mlr_c_template", "ctree", None, ctree, {"teststat": ['quad', 'max'], "testtype": ['Teststatistic'], "mincriterion": [0.95], "minsplit": [20], "minbucket": [7], "stump": ["FALSE", "TRUE"], "nresample": [9999]}, summaryDict)
 
+earth = "'classif.earth', degree={degree}, newvar.penalty={newvar.penalty}, fast.beta={fast.beta}, pmethod={pmethod}"
+createScripts("Classification", packagePath, "mlr_c_template", "earth", None, earth, {"degree": [1, 2, 3], "newvar.penalty": [0, 0.01, 0.2], "fast.beta": [1, 0], "pmethod": ["'backward'", "'none'"]}, summaryDict)
+
 # polydot was super slow, so removed it
 gausspr = "'classif.gausspr', kernel='{kernel}', tol={tol}"
 createScripts("Classification", packagePath, "mlr_c_template", "gausspr", None, gausspr, {"kernel": ['rbfdot', 'anovadot', 'laplacedot'], "tol": ["0.0005"]}, summaryDict)
@@ -59,6 +62,9 @@ createScripts("Classification", packagePath, "mlr_c_template", "multinom", None,
 
 naiveBayes = "'classif.naiveBayes', laplace = {laplace}"
 createScripts("Classification", packagePath, "mlr_c_template", "naiveBayes", None, naiveBayes, {"laplace": [0, 1]}, summaryDict)
+
+#nnet = "'classif.nnet'"
+#createScripts("Classification", packagePath, "mlr_c_template", "nnet", None, nnet, {}, summaryDict)
 
 randomForest = "'classif.randomForest', ntree={ntree}, importance={importance}, nodesize={nodesize}"
 createScripts("Classification", packagePath, "mlr_c_template", "randomForest", None, randomForest, {"ntree": [500, 1000], "importance": ["FALSE", "TRUE"], "nodesize": nodeSizeOptions}, summaryDict)

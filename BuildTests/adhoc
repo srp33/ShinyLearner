@@ -35,7 +35,6 @@ fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default*"
 #bash featureselection $version StrongSignal_Both montecarlo "--iterations 3" "$fsAlgo" "$verbose" 1.log
 
 classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/extra_trees/alt__bootstrap=True_class_weight=None_criterion=gini_n_estimators=1000_oob_score=False"
-#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/bagging/alt__base_estimator=SVC_bootstrap=True_n_estimators=1000_oob_score=False"
 
 bash classification $version StrongSignal_Both montecarlo "--iterations 3 --num-cores 3" "$classifAlgo" "$verbose" 1.log
 
