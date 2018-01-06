@@ -66,7 +66,7 @@ sgd = "clf = SGDClassifier(loss='modified_huber', penalty='{penalty}', alpha={al
 createScripts("Classification", packagePath, "sklearn_c_template", "sgd", None, sgd, {"penalty": ['l2', 'l1', 'elasticnet'], "alpha": [0.0001, 0.00001, 0.001], "n_iter": [5, 50], "epsilon": [0.1], "learning_rate": ['optimal'], "class_weight": classWeightOptions}, summaryDict)
 
 svm = "clf = SVC(C={C}, kernel='{kernel}', degree=3, gamma='auto', coef0=0.0, shrinking={shrinking}, tol={tol}, cache_size=200, class_weight={class_weight}, verbose=False, max_iter=-1, decision_function_shape='ovr', probability=True, random_state=R_SEED)"
-createScripts("Classification", packagePath, "sklearn_c_template", "svm", None, svm, {"C": cOptions, "kernel": ['rbf', 'linear', 'poly', 'sigmoid'], "shrinking": [True, False], "tol": [0.001], "class_weight": classWeightOptions}, summaryDict)
+createScripts("Classification", packagePath, "sklearn_c_template", "svm", None, svm, {"C": cOptions, "kernel": ['rbf', 'linear', 'poly', 'sigmoid'], "shrinking": [True], "tol": [0.001], "class_weight": classWeightOptions}, summaryDict)
 
 #nu_svc = "clf = NuSVC(nu={nu}, kernel='{kernel}', degree=3, gamma='auto', coef0=0.0, shrinking={shrinking}, probability=True, tol={tol}, cache_size=200, class_weight={class_weight}, verbose=False, max_iter=-1, decision_function_shape='ovr', random_state=R_SEED)"
 #createScripts("Classification", packagePath, "sklearn_c_template", "nu_svc", None, nu_svc, {"nu": [0.5, 0.1, 0.25, 0.75, 0.9], "kernel": ['rbf', 'linear', 'poly', 'sigmoid'], "shrinking": [True, False], "tol": [0.001], "class_weight": classWeightOptions}, summaryDict)
