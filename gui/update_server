@@ -2,7 +2,6 @@
 
 set -o errexit
 
-
 server=lspiccolo.byu.edu
 serverTempDir=/tmp/shinylearner_srv
 serverShinyDir=/srv/shiny-server/shinylearner

@@ -30,11 +30,11 @@ mkdir -p $outputDir
 
 cd $testDir
 
-#validation=StrongSignal_Both
+validation=StrongSignal_Both
 #validation=StrongSignal_Both_2Class
 #validation=StrongSignalLarge_Both
 #validation=StrongSignal_Continuous
-validation=NoSignal_Both
+#validation=NoSignal_Both
 #dataFile="/tmp/ml_data/breast.cancer.arff"
 dataFile=$currentDir/Validation/${validation}.tsv.gz
 #dataFile="/Users/srp33/Downloads/GSE6532_U133A/*.txt.gz,/Users/srp33/Downloads/GSE6532_U133A/Class/Histological__grade.txt"
@@ -44,13 +44,13 @@ dataFile=$currentDir/Validation/${validation}.tsv.gz
 #dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/Class/MolecularMarker__somatic_tp53_mutation.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/GSE63885.txt.gz"
 #dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE37745/Class/PatientCharacteristic__performance_status_corresponding_to_who_criteria.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE37745/Covariate/PatientCharacteristic__age.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE37745/Covariate/PatientCharacteristic__gender.txt"
 #dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/Class/Prognostic__os_group.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/Covariate/*"
-dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE1456/Covariate/Histological__ELSTON.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE1456/GSE1456.txt.gz,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE1456/Class/Prognostic__Death_BC_Group.txt"
+##dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE1456/Covariate/Histological__ELSTON.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE1456/GSE1456.txt.gz,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE1456/Class/Prognostic__Death_BC_Group.txt"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/adaboost/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/extra_trees/default*"
-classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/extra_trees/alt__bootstrap=True_class_weight=None_criterion=gini_n_estimators=1000_oob_score=False"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/extra_trees/alt__bootstrap=True_class_weight=None_criterion=gini_n_estimators=1000_oob_score=False"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/*/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/*/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default*"
@@ -67,7 +67,10 @@ classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/extra_trees
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/Bagging/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/DecisionTable/*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/decision_tree/*"
-#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/alt__base_estimator=SVCprobability=True_bootstrap=True_n_estimators=1000_oob_score=True"
+##classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/default*"
+##classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/alt__base_estimator=SVC_bootstrap=True_n_estimators=1000_oob_score=False"
+##classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/gaussian_process/default*"
+classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/nu_svc/default*"
 #classifAlgo="/tmp/algs.list"
 verbose=true
 #verbose=false

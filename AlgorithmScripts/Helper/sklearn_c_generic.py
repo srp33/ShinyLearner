@@ -13,11 +13,14 @@ from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+#from sklearn.gaussian_process import GaussianProcessClassifier
+#from sklearn.gaussian_process.kernels import *
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import SGDClassifier
 from sklearn.svm import SVC
+from sklearn.svm import NuSVC
 
 trainFile = argv[1]
 testFile = argv[2]
