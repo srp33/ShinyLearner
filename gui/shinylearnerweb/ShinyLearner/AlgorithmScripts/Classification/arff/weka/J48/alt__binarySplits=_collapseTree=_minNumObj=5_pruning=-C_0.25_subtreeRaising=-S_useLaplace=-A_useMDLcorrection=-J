@@ -1,0 +1,8 @@
+#!/bin/bash
+
+##########################################################
+# This algorithm is implemented in the weka
+# software package (http://www.cs.waikato.ac.nz/ml/weka/).
+##########################################################
+
+bash AlgorithmScripts/Helper/weka_c_generic "$1" "$2" "$3" "$4" "weka.classifiers.trees.J48 -C 0.25 -S  -M 5 -J  -A"

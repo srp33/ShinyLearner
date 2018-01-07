@@ -1,0 +1,8 @@
+#!/bin/bash
+
+##########################################################
+# This algorithm is implemented in the weka
+# software package (http://www.cs.waikato.ac.nz/ml/weka/).
+##########################################################
+
+bash AlgorithmScripts/Helper/weka_c_generic "$1" "$2" "$3" "$4" "weka.classifiers.rules.DecisionTable -E auc -X 5 -S "weka.attributeSelection.BestFirst -D 1 -N 5""

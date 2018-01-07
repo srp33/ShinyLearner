@@ -1,0 +1,8 @@
+#!/bin/bash
+
+##########################################################
+# This algorithm is implemented in the weka
+# software package (http://www.cs.waikato.ac.nz/ml/weka/).
+##########################################################
+
+bash AlgorithmScripts/Helper/weka_c_generic "$1" "$2" "$3" "$4" "weka.classifiers.trees.RandomForest -P 100 -I 100 -num-slots 1 -K 0 -M 1.0 -V 0.001 -S 1   "

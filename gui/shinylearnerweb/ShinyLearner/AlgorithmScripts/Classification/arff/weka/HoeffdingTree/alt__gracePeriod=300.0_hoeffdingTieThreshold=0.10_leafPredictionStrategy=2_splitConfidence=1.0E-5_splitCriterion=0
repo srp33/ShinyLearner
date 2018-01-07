@@ -1,0 +1,8 @@
+#!/bin/bash
+
+##########################################################
+# This algorithm is implemented in the weka
+# software package (http://www.cs.waikato.ac.nz/ml/weka/).
+##########################################################
+
+bash AlgorithmScripts/Helper/weka_c_generic "$1" "$2" "$3" "$4" "weka.classifiers.trees.HoeffdingTree -L 2 -S 0 -E 1.0E-5 -H 0.10 -M 0.01 -G 300.0 -N 0.0"

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -euo pipefail
+
+trainingFilePath="$1"
+testFilePath="$2"
+classOptions="$3"
+numCores="$4"
+algorithm="$5"
+
+source $(dirname $0)/../../scripts/shared_functions
+
+wekaLibPath=$(dirname $0)/lib
+classPath="$wekaLibPath/*:$wekaLibPath/wekalib/*"
+
+echo java $(getJavaArgs) -classpath "$classPath" $algorithm -t "$trainingFilePath" -T "$testFilePath" -p 0 -distribution | python3 $(dirname $0)/ReformatWekaClassificationParams.py | bash | python3 $(dirname $0)/ParseWekaPredictions.py "$classOptions"

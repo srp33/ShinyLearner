@@ -1,0 +1,18 @@
+#!/bin/bash
+
+./build_algorithm_scripts > /tmp/77
+
+python3 ~/Pipeline/code/Uniquify.py /tmp/77
+
+sort /tmp/77 > /tmp/66
+wc -l /tmp/66
+
+for f in $(cat /tmp/66)
+do
+  if [ ! -f "$f" ]
+  then
+    echo Could not find "$f"
+  fi
+done
+
+rm -f /tmp/66 /tmp/77

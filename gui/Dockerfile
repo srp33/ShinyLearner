@@ -1,8 +1,15 @@
 FROM rocker/shiny:latest
 
-ADD server.R /srv/shiny-server/shinylearner/
-ADD ui.R /srv/shiny-server/shinylearner/
+#ADD server.R /srv/shiny-server/shinylearnerweb/
+#ADD ui.R /srv/shiny-server/shinylearnerweb/
+#ADD www /srv/shiny-server/shinylearnerweb/
+#ADD ShinyLearner /srv/shiny-server/shinylearnerweb/
 
-EXPOSE 3838
+## Install packages from CRAN
+RUN R -e "install.packages(c('shiny'))"
 
-CMD ["/usr/bin/shiny-server.sh"]
+COPY ./shinylearnerweb/ /srv/shiny-server/shinylearnerweb/
+
+#EXPOSE 3838
+
+#CMD ["/usr/bin/shiny-server.sh"]
