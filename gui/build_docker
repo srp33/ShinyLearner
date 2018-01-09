@@ -11,7 +11,7 @@
 #cd $currentDir
 
 #sudo docker build -t shinylearnerweb .
-#sudo docker tag shinylearnerweb srp33/shinylearnerweb:v1
+sudo docker tag shinylearnerweb srp33/shinylearnerweb:v1
 
-sudo docker login
+#sudo docker login
 sudo docker push srp33/shinylearnerweb:v1

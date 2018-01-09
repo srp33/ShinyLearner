@@ -2,7 +2,8 @@ library(shiny)
 
 shinyServer(function(input, output, session) {
   
-  dockerhub_address <- 'srp33/shinylearner:version348'
+  session$allowReconnect(TRUE)
+  dockerhub_address <- 'srp33/shinylearner:version375'
   numFeaturesOptions <- '1,10,100,1000'
   defaultInputFiles <- ''
 #  defaultInputFiles <- 'StrongSignal_Both.tsv.gz'
@@ -458,7 +459,7 @@ shinyServer(function(input, output, session) {
 	  hostInputDir <- lapply(hostInputDir, FUN = function(x) gsub('.', '', x))
 	  hostInputFileName <- lapply(hostInputFileName, FUN = function(x) gsub('/', '\\\\', x))
 	  hostOutputDir = gsub('/', '\\\\', hostOutputDir)
-	  lines <- c(lines, 'docker run --rm')
+	  lines <- c(lines, 'docker run --rm -i')
 	  ## Mount Input Dirs
 	  for (i in 1:length(hostInputDir[[1]])){
 	    if (i > 1) {break} # currently only support one input direcory
@@ -491,7 +492,7 @@ shinyServer(function(input, output, session) {
   	  
   	## Linux/Mac  
 	} else if (os == 'linux/mac') {
-      lines <- c(lines, 'sudo docker run --rm')
+      lines <- c(lines, 'sudo docker run --rm -i')
 	  ## Mount Input Dirs
 	  for (i in 1:length(hostInputDir[[1]])){
         if (i > 1) {break} # currently only supports one input directory
