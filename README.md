@@ -32,7 +32,7 @@ ShinyLearner can be executed on Windows, Mac, or Linux operating systems. ShinyL
 
 #### Easy to execute
 
-ShinyLearner commands are executed via a [command-line interface](https://en.wikipedia.org/wiki/Command-line_interface) so that long-running analyses can be performed on a computer cluster or in the cloud. However, these commands can become a bit long and complex. Thus to make it easier to build these commands, we have created a Web application that enables our users to construct ShinyLearner commands more easily (see [https://shinylearner.byu.edu/shinylearnerweb](https://shinylearner.byu.edu/shinylearnerweb)). The user specifies input-data files, algorithms, hyperparameters, and a validation strategy. ShinyLearner takes care of the rest.
+ShinyLearner commands are executed via a [command-line interface](https://en.wikipedia.org/wiki/Command-line_interface) so that long-running analyses can be performed on a computer cluster or in the cloud. However, these commands can become a bit long and complex. Thus to make it easier to build these commands, we have created a Web application that enables our users to construct ShinyLearner commands more easily (see [https://bioapps.byu.edu/shinylearnerweb](https://bioapps.byu.edu/shinylearnerweb)). The user specifies input-data files, algorithms, hyperparameters, and a validation strategy. ShinyLearner takes care of the rest.
 
 #### No computer programming is required
 
