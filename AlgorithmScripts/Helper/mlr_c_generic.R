@@ -53,6 +53,9 @@ if (isGlmNet & ncol(testData) == 1)
   # So this is a workaround for that bug...
   trainingData <- cbind(rep(0, nrow(trainingData)), trainingData)
   testData <- cbind(rep(0, nrow(testData)), testData)
+
+  colnames(trainingData)[1] <- "Zeroes"
+  colnames(testData)[1] <- "Zeroes"
 }
 
 task <- makeClassifTask(data = trainingData, target = "Class")

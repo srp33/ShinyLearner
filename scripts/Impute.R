@@ -13,7 +13,7 @@ classColIndex <- which(colnames(data) == "Class")
 
 saveData <- FALSE
 
-proportionMissingPerFeature <- apply(data[,-classColIndex], 2, function(x) {sum(sapply(x, is.na)) / length(x)})
+proportionMissingPerFeature <- apply(data[,-classColIndex,drop=FALSE], 2, function(x) {sum(sapply(x, is.na)) / length(x)})
 
 if (any(proportionMissingPerFeature > 0.5))
 {
