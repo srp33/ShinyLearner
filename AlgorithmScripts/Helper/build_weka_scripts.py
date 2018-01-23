@@ -40,8 +40,9 @@ createScripts("Classification", packagePath, "weka_c_template", "HyperPipes", No
 J48 = "weka.classifiers.trees.J48 {pruning} {subtreeRaising} {binarySplits} -M {minNumObj} {useMDLcorrection} {collapseTree} {useLaplace}"
 createScripts("Classification", packagePath, "weka_c_template", "J48", None, J48, {"pruning": ["-C 0.25", "-U"], "useLaplace": ["", "-A"], "subtreeRaising": ["", "-S"], "binarySplits": ["", "-B"], "minNumObj": ["2", "5"], "useMDLcorrection": ["", "-J"], "collapseTree": ["", "-O"]}, summaryDict, {"pruning": "-U", "subtreeRaising": "-S"})
 
+# The usePruning -P option throws errors, so I removed it
 JRip = "weka.classifiers.rules.JRip -F 3 -N {minNo} -O {optimizations} -S 1 -num-decimal-places 7 {checkErrorRate} {usePruning}"
-createScripts("Classification", packagePath, "weka_c_template", "JRip", None, JRip, {"minNo": ["2.0", "4.0", "6.0"], "optimizations": ["2", "5"], "checkErrorRate": ["", "-E"], "usePruning": ["", "-P"]}, summaryDict)
+createScripts("Classification", packagePath, "weka_c_template", "JRip", None, JRip, {"minNo": ["2.0", "4.0", "6.0"], "optimizations": ["2", "5"], "checkErrorRate": ["", "-E"], "usePruning": [""]}, summaryDict)
 
 LibLINEAR = "weka.classifiers.functions.LibLINEAR -S {SVMType} -C {cost} -E {eps} -B {bias} -P -L {epsilonParameter} -I {maximumNumberOfIterations} {normalize}"
 createScripts("Classification", packagePath, "weka_c_template", "LibLINEAR", None, LibLINEAR, {"bias": ["1.0", "-1.0"], "eps": ["0.001"], "cost": cOptions, "SVMType": ["0"], "maximumNumberOfIterations": ["1000"], "normalize": ["", "-Z"], "epsilonParameter": ["0.1"]}, summaryDict)
