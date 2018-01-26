@@ -10,7 +10,7 @@ REQUIRED ARGUMENTS
     --inner-iterations [integer]
     --classif-algo [file_path]
     --fs-algo [file_path]
-    --num-features [file_path]
+    --num-features [comma_separated_list]
     --output-dir [dir_path]
 
 OPTIONAL ARGUMENTS
@@ -50,7 +50,7 @@ NOTES
 
     The --data, --classif-algo, and --fs-algo arguments must be used at least once but can be used multiple times. Wildcards may be used (in quotations).
 
-    The --num-features argument should be used once. Multiple values should be separated by commas.
+    The --num-features argument should be used once. It indicates the number of top-ranked features that should be used in nested cross-validation in an attempt to identify the optimal number of features to use for classification. Multiple values should be separated by commas.
 
     The --outer-iterations and --inner-iterations values must be positive integers. These values indicate the number of times that cross-validation should be performed. The inner iterations are used for algorithm selection, while the outer iterations are used to assess generalizability of the selected models.
 

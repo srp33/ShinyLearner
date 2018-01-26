@@ -11,7 +11,7 @@ REQUIRED ARGUMENTS
     --inner-folds [number]
     --classif-algo [file_path]
     --fs-algo [file_path]
-    --num-features [file_path]
+    --num-features [comma_separated_list]
     --output-dir [dir_path]
 
 OPTIONAL ARGUMENTS
@@ -49,7 +49,7 @@ NOTES
 
     The --data, --classif-algo, and --fs-algo arguments must be used at least once but can be used multiple times. Wildcards may be used (in quotations).
 
-    The --num-features argument should be used once. Multiple values should be separated by commas.
+    The --num-features argument should be used once. It indicates the number of top-ranked features that should be used in nested cross-validation in an attempt to identify the optimal number of features to use for classification. Multiple values should be separated by commas.
 
     The --iterations value must be a positive integer. It indicates the number of times that a full round of cross-validation should be performed.
 
