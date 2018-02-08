@@ -4,7 +4,7 @@ shinyServer(function(input, output, session) {
   
   session$allowReconnect(TRUE)
   dockerhub_address <- 'srp33/shinylearner:version375'
-  numFeaturesOptions <- '1,10,100,1000'
+  numFeaturesOptions <- '1,10,100,1000,10000'
   defaultInputFiles <- ''
 #  defaultInputFiles <- 'StrongSignal_Both.tsv.gz'
   defaultOutputDir <- ''

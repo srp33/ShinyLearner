@@ -107,6 +107,11 @@ parseOuterFileC $tmpDir/ocle2 "-k1,1 -k2,2n -k3" "$outSelectedFeaturesFile"
 parseOuterFileB $tmpDir/op "-k1,1 -k2,2n -k3" "$outPredictionsFile"
 parseOuterFileB $tmpDir/om "-k1,1 -k2,2n -k3" "$outMetricsFile"
 
+#cp $tmpDir/op /tmp/
+#cp $outPredictionsFile /tmp/
+#cp $tmpDir/om /tmp/
+#cp $outMetricsFile /tmp/
+
 function copyInnerFileA {
   if [[ "$3" != "" ]]
   then

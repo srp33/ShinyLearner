@@ -47,8 +47,8 @@ dataFile=$currentDir/Validation/${validation}.tsv.gz
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/decision_tree/*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*,$currentDir/AlgorithmScripts/Classification/tsv/sklearn/svm"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/svm"
-#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/knn/*"
-classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/default*"
+classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/knn/*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/alt__base_estimator=SVCprobability=True_bootstrap=True_n_estimators=1000_oob_score=True"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/alt__base_estimator=DecisionTreeClassifier_bootstrap=True_n_estimators=1000_oob_score=True"
 verbose=true
