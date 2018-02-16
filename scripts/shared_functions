@@ -15,7 +15,8 @@ function getMemAvailable {
   if command_exists free
   then
     # It's executing within the container
-    mem=$(free -m | tail -n3 | awk '{print $2}' | head -n 2 | tail -n 1)M # Gives total memory in MB (preferred over GB because it always rounds down)
+    #mem=$(free -m | tail -n3 | awk '{print $2}' | head -n 2 | tail -n 1)M # Gives total memory in MB (preferred over GB because it always rounds down)
+    mem=$(free -m | grep "Mem:" | awk '{print $2}' | head -n 2 | tail -n 1)M # Gives total memory in MB (preferred over GB because it always rounds down)
   else
     mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
   fi
@@ -23,15 +24,38 @@ function getMemAvailable {
   echo "$mem"
 }
 
+# Thanks: https://stackoverflow.com/questions/7596454/how-to-fetch-java-version-using-single-line-command-in-linux
+function checkJavaVersion {
+    for token in $(java -version 2>&1)
+    do
+        if [[ $token =~ \"([[:digit:]])\.([[:digit:]])\.(.*)\" ]]
+        then
+            export JAVA_MAJOR=${BASH_REMATCH[1]}
+            export JAVA_MINOR=${BASH_REMATCH[2]}
+            export JAVA_BUILD=${BASH_REMATCH[3]}
+            export JAVA_BUILD_MINOR=$(echo $JAVA_BUILD | cut -d "_" -f 2)
+            return 0
+        fi
+    done
+    return 1
+}
+
 function getJavaArgs {
-  if command_exists free
+  checkJavaVersion
+
+  if [[ $JAVA_MINOR -lt 8 ]]
   then
-    # It's executing within the container
+    echo The Java version must be at least 1.8.
+    exit 1
+  fi
+
+  if [[ $JAVA_BUILD_MINOR -lt 151 ]]
+  then
+    echo "-Xmx$(getMemAvailable) -server"
+  else
     # See https://twitter.com/analytically/status/894592422382063616
     # See https://blog.codecentric.de/en/2014/08/string-deduplication-new-feature-java-8-update-20-2/
     echo "-Xmx$(getMemAvailable) -server -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1 -XX:+UseG1GC -XX:+UseStringDeduplication"
-  else
-    echo "-Xmx$(getMemAvailable) -server"
   fi
 }
 

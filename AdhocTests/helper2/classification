@@ -83,7 +83,7 @@ scale=false
 #impute=false
 impute=true
 numCores=3
-tmpDir=/Users/srp33/Downloads/Temp
+tmpDir=~/Downloads/Temp
 
 if [[ "$validationType" == "montecarlo" ]]
 then
