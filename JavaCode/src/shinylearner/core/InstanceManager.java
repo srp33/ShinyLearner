@@ -28,7 +28,13 @@ public class InstanceManager
 			ArrayList<String> dataPointNames = dataProcessor.ParseDataPointNames("");
 
 			if (!dataPointNames.contains("Class"))
-				Log.ExceptionFatal("The input file included no variable named 'Class.'");
+			{
+				Log.Exception("The input file included no variable named 'Class'.");
+				Log.Debug("Here are the top few variable names:");
+				for (String dataPointName : dataPointNames)
+				    Log.Debug(dataPointName);
+				Log.ExceptionFatal("");
+			}
 
 			if (dataPointNames.contains("ID"))
 				dataPointNames.remove("ID");

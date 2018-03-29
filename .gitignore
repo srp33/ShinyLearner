@@ -33,3 +33,4 @@ Output
 *.tar.gz
 xgboost.model
 __pycache__
+install_shinylearner_fsl
