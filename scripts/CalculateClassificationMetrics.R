@@ -16,7 +16,8 @@ calculateMetrics <- function(predictionData)
   accuracy <- measureACC(truth, response)
   #auc <- ROCR::performance(ROCR::prediction(probabilities, truth, label.ordering=c(0, 1)), "auc")@y.values[[1L]]
   auc <- auc(roc(probabilities, truth))
-  balancedAccuracy <- measureBAC(truth, response, 0, 1)
+  #balancedAccuracy <- measureBAC(truth, response, 0, 1)
+  balancedAccuracy <- measureBAC(truth, response)
   brier <- measureBrier(probabilities, truth, 0, 1)
   fdr <- measureFDR(truth, response, 1)
   fn <- measureFN(truth, response, 0)
@@ -37,6 +38,10 @@ calculateMetrics <- function(predictionData)
   precision <- tp / (tp + fp)
   recall <- tp / (tp + fn)
   f1 <- (2 * precision * recall) / sum(precision, recall)
+
+  #logLoss <- measureLogloss(probabilities, truth)
+  #ssr <- measureSSR(probabilities, truth)
+  #multiHamLoss <- measureMultilabelHamloss(truth, response)
 
   list(Accuracy=accuracy, AUROC=auc, BalancedAccuracy=balancedAccuracy, Brier=brier, FDR=fdr, FNR=fnr, FPR=fpr, MCC=mcc, MMCE=mmce, PPV=ppv, NPV=npv, TNR=tnr, TPR=tpr, Recall=recall, F1=f1)
 }
