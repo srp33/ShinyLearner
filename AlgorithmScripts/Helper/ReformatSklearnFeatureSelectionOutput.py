@@ -1,7 +1,6 @@
 import sys
 
-classOptions = set(sys.argv[1])
-verbose = sys.argv[2] == "true"
+verbose = sys.argv[1] == "true"
 
 # This seems to be a somewhat reasonable way to avoid printing warnings.
 for line in sys.stdin:
