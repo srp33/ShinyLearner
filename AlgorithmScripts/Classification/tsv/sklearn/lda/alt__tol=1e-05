@@ -15,5 +15,5 @@ verbose="$5"
 
 #export JOBLIB_START_METHOD="forkserver"
 
-python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = LinearDiscriminantAnalysis(solver='svd', shrinkage=None, priors=None, n_components=None, store_covariance=False, tol=1e-05)" 2>&1
+python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = LinearDiscriminantAnalysis(solver='svd', shrinkage=None, priors=None, n_components=None, store_covariance=False, tol=1e-05)"
 #python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = LinearDiscriminantAnalysis(solver='svd', shrinkage=None, priors=None, n_components=None, store_covariance=False, tol=1e-05)" 2>&1 | python3 AlgorithmScripts/Helper/ReformatSklearnClassificationOutput.py "$classOptions" "$verbose"
