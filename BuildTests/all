@@ -23,7 +23,7 @@ cp -r BuildTests/* $tmpDir/
 cd $tmpDir
 
 sudo docker build -t srp33/shinylearner:version${version} .
-#exit
+exit
 
 #########################################################
 # Test all classification algorithms using monte carlo
