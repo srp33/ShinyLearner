@@ -1,8 +1,11 @@
 import sys
 
+verbose = sys.argv[1] == "true"
+
 for line in sys.stdin:
     #if not line.upper().startswith("WARNING:"):
     if not " " in line:
         print(line.rstrip())
     else:
-        sys.stderr.write(line)
+        if verbose:
+            sys.stderr.write(line)

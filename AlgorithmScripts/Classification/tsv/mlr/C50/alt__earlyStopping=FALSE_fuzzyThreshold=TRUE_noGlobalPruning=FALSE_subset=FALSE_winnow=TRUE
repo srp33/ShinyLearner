@@ -10,5 +10,6 @@ trainingFilePath="$1"
 testFilePath="$2"
 classOptions="$3"
 numCores="$4"
+verbose="$5"
 
-Rscript --no-save --no-restore --no-site-file --no-init-file --no-environ --max-ppsize=500000 AlgorithmScripts/Helper/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "'classif.C50', subset = FALSE, winnow = TRUE, noGlobalPruning = FALSE, CF = 0.25, minCases = 2, fuzzyThreshold = TRUE, sample = 0, earlyStopping = FALSE" 2>&1 | python3 AlgorithmScripts/Helper/ReformatMlrClassificationOutput.py "$classOptions"
+Rscript --no-save --no-restore --no-site-file --no-init-file --no-environ --max-ppsize=500000 AlgorithmScripts/Helper/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "'classif.C50', subset = FALSE, winnow = TRUE, noGlobalPruning = FALSE, CF = 0.25, minCases = 2, fuzzyThreshold = TRUE, sample = 0, earlyStopping = FALSE" 2>&1 | python3 AlgorithmScripts/Helper/ReformatMlrClassificationOutput.py "$classOptions" "$verbose"

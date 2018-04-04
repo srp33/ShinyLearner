@@ -27,7 +27,7 @@ public class Classification
 	private static String TrainTest(String trainingFilePath, String testFilePath) throws Exception
 	{
 		String dependentVariableOptions = ListUtilities.Join(AnalysisFileCreator.FormatClassValues(Singletons.Data.GetClassOptions()), ",");
-		String parameters = "\"" + trainingFilePath + "\" \"" + testFilePath + "\" \"" + dependentVariableOptions + "\" " + Settings.NUM_CORES;
+		String parameters = "\"" + trainingFilePath + "\" \"" + testFilePath + "\" \"" + dependentVariableOptions + "\" " + Settings.NUM_CORES + " " + Settings.DEBUG;
 
 		Log.Debug(Singletons.ExperimentItems.AlgorithmScriptFilePath + " " + parameters);
 		//Log.Exit(1);

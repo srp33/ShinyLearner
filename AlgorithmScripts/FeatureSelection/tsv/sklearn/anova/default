@@ -9,7 +9,8 @@ set -euo pipefail
 
 dataFilePath="$1"
 numCores="$2"
+verbose="$3"
 
 export JOBLIB_START_METHOD="forkserver"
 
-python3 AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "$numCores" "score" "F, score = f_classif(train_X, train_y)" 2>&1 | python3 AlgorithmScripts/Helper/ReformatSklearnOutput.py
+python3 AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "$numCores" "score" "F, score = f_classif(train_X, train_y)" 2>&1 | python3 AlgorithmScripts/Helper/ReformatSklearnOutput.py "$verbose"

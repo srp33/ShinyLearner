@@ -11,9 +11,8 @@ trainingFilePath="$1"
 testFilePath="$2"
 classOptions="$3"
 numCores="$4"
+verbose="$5"
 
-export JOBLIB_START_METHOD="forkserver"
+#export JOBLIB_START_METHOD="forkserver"
 
-python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = KNeighborsClassifier(n_neighbors=10, weights='uniform', algorithm='auto', leaf_size=30, p=1, metric='minkowski', metric_params=None, n_jobs={n_jobs})" 2>&1
-#python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = KNeighborsClassifier(n_neighbors=10, weights='uniform', algorithm='auto', leaf_size=30, p=1, metric='minkowski', metric_params=None, n_jobs={n_jobs})" 2>&1 | grep -v "DeprecationWarning" | python3 AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions
-#python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = KNeighborsClassifier(n_neighbors=10, weights='uniform', algorithm='auto', leaf_size=30, p=1, metric='minkowski', metric_params=None, n_jobs={n_jobs})" 2>&1 | python3 AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions
+python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = KNeighborsClassifier(n_neighbors=10, weights='uniform', algorithm='auto', leaf_size=30, p=1, metric='minkowski', metric_params=None, n_jobs={n_jobs})" 2>&1 | python3 AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions $verbose
