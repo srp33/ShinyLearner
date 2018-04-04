@@ -15,4 +15,5 @@ verbose="$5"
 
 #export JOBLIB_START_METHOD="forkserver"
 
-python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = AdaBoostClassifier(base_estimator=DecisionTreeClassifier(), n_estimators=1000, learning_rate=1.0, algorithm='SAMME', random_state=R_SEED)" 2>&1 | python3 AlgorithmScripts/Helper/ReformatSklearnOutput.py $classOptions $verbose
+python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = AdaBoostClassifier(base_estimator=DecisionTreeClassifier(), n_estimators=1000, learning_rate=1.0, algorithm='SAMME', random_state=R_SEED)" 2>&1
+#python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = AdaBoostClassifier(base_estimator=DecisionTreeClassifier(), n_estimators=1000, learning_rate=1.0, algorithm='SAMME', random_state=R_SEED)" 2>&1 | python3 AlgorithmScripts/Helper/ReformatSklearnClassificationOutput.py "$classOptions" "$verbose"
