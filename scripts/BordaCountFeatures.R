@@ -55,7 +55,8 @@ if ("ERROR" %in% data$Features)
 
 #overallRanks <- rankAggregate(groupRankMatrix)
 
-overallRanks <- rankAggregate(buildRankMatrix(data))
+rankMatrix <- buildRankMatrix(data)
+overallRanks <- rankAggregate(rankMatrix)
 
 if (!is.na(numTop))
 {
