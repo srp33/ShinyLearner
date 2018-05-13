@@ -1,7 +1,5 @@
 import sys
 
-sys.setdefaultencoding('ascii')
-
 classOptions = set(sys.argv[1].split(","))
 verbose = sys.argv[2] == "true"
 

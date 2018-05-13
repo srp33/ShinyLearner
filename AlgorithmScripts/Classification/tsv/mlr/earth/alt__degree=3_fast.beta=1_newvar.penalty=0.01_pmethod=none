@@ -12,4 +12,5 @@ classOptions="$3"
 numCores="$4"
 verbose="$5"
 
+export PYTHONIOENCODING=ascii
 Rscript --no-save --no-restore --no-site-file --no-init-file --no-environ --max-ppsize=500000 AlgorithmScripts/Helper/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "'classif.earth', degree=3, newvar.penalty=0.01, fast.beta=1, pmethod='none'" 2>&1 | python3 AlgorithmScripts/Helper/ReformatMlrClassificationOutput.py "$classOptions" "$verbose"
