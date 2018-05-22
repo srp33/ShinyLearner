@@ -85,7 +85,8 @@ scale=false
 #scale=true
 #impute=false
 impute=true
-numCores=3
+numCores=1
+#numCores=3
 seed=18
 tmpDir=~/Downloads/Temp
 

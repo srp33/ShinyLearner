@@ -22,7 +22,7 @@ learn <- function(parameterList)
 {
   set.seed(0)
 
-  fv = generateFilterValuesData(task, method = algorithm)$data
+  fv = suppressWarnings(generateFilterValuesData(task, method = algorithm)$data)
 
 #  if (algorithm == "permutation.importance") {
 #    fv = generateFilterValuesData(task, method = algorithm, learner="classif.logreg", ...)$data

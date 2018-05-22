@@ -64,12 +64,12 @@ learn <- function(learner)
 {
   #set.seed(0)
   set.seed(123, "L'Ecuyer")
-  mod <- train(learner, task)
+  mod <- suppressWarnings(train(learner, task))
 
-  task.pred <- predict(mod, newdata = testData)
+  task.pred <- suppressWarnings(predict(mod, newdata = testData))
   #classtypes <- as.vector(task.pred$task.desc$class.levels)
 
-  p1 <- getPredictionProbabilities(task.pred, classOptions)
+  p1 <- suppressWarnings(getPredictionProbabilities(task.pred, classOptions))
   p2 <- as.data.frame(getPredictionResponse(task.pred))
 
   output <- cbind(p2, p1)

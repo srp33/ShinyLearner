@@ -12,5 +12,5 @@ classOptions="$3"
 numCores="$4"
 verbose="$5"
 
-export PYTHONIOENCODING="UTF-8"
+#export PYTHONIOENCODING="UTF-8"
 Rscript --no-save --no-restore --no-site-file --no-init-file --no-environ --max-ppsize=500000 AlgorithmScripts/Helper/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "'classif.ksvm', scaled = TRUE, type = 'C-svc', kernel ='rbfdot', C = 100.0, shrinking = TRUE" 2>&1 | python3 AlgorithmScripts/Helper/ReformatMlrClassificationOutput.py "$classOptions" "$verbose"
