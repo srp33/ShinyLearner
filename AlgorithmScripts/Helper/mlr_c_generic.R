@@ -74,7 +74,7 @@ learn <- function(learner)
 
   output <- cbind(p2, p1)
 
-  write.table(output, "", sep="\t", row.names = FALSE, col.names=FALSE, quote = FALSE, fileEncoding="UTF-8")
+  write.table(output, "", sep="\t", row.names = FALSE, col.names=FALSE, quote = FALSE)
 }
 
 # Dynamically invoke the algorithm
