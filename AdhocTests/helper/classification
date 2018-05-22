@@ -36,7 +36,8 @@ validation=StrongSignal_Both
 #validation=StrongSignal_Continuous
 #validation=NoSignal_Both
 #dataFile="/tmp/ml_data/breast.cancer.arff"
-dataFile=$currentDir/Validation/${validation}.tsv.gz
+#dataFile=$currentDir/Validation/${validation}.tsv.gz
+dataFile="/Users/srp33/Downloads/TCGA_BLCA.txt.gz,/Users/srp33/Downloads/Class/Histological__histologic_subtype.txt"
 #dataFile="/Users/srp33/Downloads/GSE6532_U133A/*.txt.gz,/Users/srp33/Downloads/GSE6532_U133A/Class/Histological__grade.txt"
 #dataFile="/Users/srp33/Downloads/GSE6532_U133PLUS2/*.txt.gz,/Users/srp33/Downloads/GSE6532_U133PLUS2/Class/Histological__grade.txt"
 #dataFile="/Users/srp33/Downloads/GSE5462/*.txt.gz,/Users/srp33/Downloads/GSE5462/Class/Prognostic__Response.txt"
@@ -55,10 +56,10 @@ dataFile=$currentDir/Validation/${validation}.tsv.gz
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/extra_trees/alt__bootstrap=True_class_weight=None_criterion=gini_n_estimators=1000_oob_score=False"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/*/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/*/default*"
-#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default*"
+classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default*,$currentDir/AlgorithmScripts/Classification/arff/weka/LibSVM/default*,$currentDir/AlgorithmScripts/Classification/tsv/sklearn/svm/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/*/default*"
-classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/xgboost/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/xgboost/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/glmnet/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/h2o.deeplearning/default*"
 #classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/h2o.randomForest/default*"
@@ -79,16 +80,18 @@ verbose=true
 iterations=1
 #iterations=2
 folds=2
+folds=2
 scale=false
 #scale=true
 #impute=false
 impute=true
 numCores=3
+seed=18
 tmpDir=~/Downloads/Temp
 
 if [[ "$validationType" == "montecarlo" ]]
 then
-  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations $iterations --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir" --temp-dir $tmpDir --scale $scale --impute $impute --num-cores $numCores
+  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations $iterations --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir" --temp-dir $tmpDir --scale $scale --impute $impute --num-cores $numCores --seed 18
   cat $outputDir/Metrics.tsv | grep AUROC
 else
   UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations $iterations --folds $folds --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir" --scale $scale --impute $impute --num-cores $numCores
