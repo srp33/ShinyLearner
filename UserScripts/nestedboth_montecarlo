@@ -88,6 +88,11 @@ fi
 
 scripts/nestedboth "$analysisDataFile" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" "$outNestedBestFile" montecarlo $randomSeed $proportionTrain $impute "$tmpDir" "$outLogFile" "$numCores"
 
+echo "Testing - E..." | timestamp | tee -a "$outLogFile"
+
 cleanup
 
+echo "Testing - F..." | timestamp | tee -a "$outLogFile"
+
 source scripts/success_message
+echo "Testing - G..." | timestamp | tee -a "$outLogFile"
