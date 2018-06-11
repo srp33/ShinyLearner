@@ -140,9 +140,12 @@ echo "Testing - B..." | timestamp | tee -a "$outLogFile"
 
 if [[ "$outNestedSummarizedSelectedFeaturesFile" != "" ]]
 then
-  #Rscript --vanilla scripts/BordaCountFeatures.R "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile
-  python scripts/BordaCountFeatures.py "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile
-  printError $verbose $errFile
+  ##Rscript --vanilla scripts/BordaCountFeatures.R "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile
+  #python scripts/BordaCountFeatures.py "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile
+  #printError $verbose $errFile
+echo "Testing - B2..." | timestamp | tee -a "$outLogFile"
+  python scripts/BordaCountFeatures.py "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile"
+echo "Testing - B3..." | timestamp | tee -a "$outLogFile"
 fi
 
 echo "Testing - C..." | timestamp | tee -a "$outLogFile"
