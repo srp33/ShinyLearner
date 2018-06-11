@@ -12,7 +12,7 @@ failureOutput = ""
 for logFilePath in logFilePaths:
     logFile = open(logFilePath)
     for line in logFile:
-        if "Exception" in line or "[FAILED]" in line or ("Error" in line and "ErrorRate" not in line):
+        if "Exception" in line or "[FAILED]" in line or ("Error" in line and "ErrorRate" not in line) or "command not found" in line:
             failureOutput += "\n" + line
         elif "[PASSED]" in line:
             successLineCount += 1
