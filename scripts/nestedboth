@@ -128,29 +128,19 @@ function copyInnerFileB {
   fi
 }
 
-echo "Testing - A..." | timestamp | tee -a "$outLogFile"
-
 copyInnerFileA $tmpDir/if "-k1,1 -k2,2n -k3,3n -k4" "$outNestedSelectedFeaturesFile"
 copyInnerFileB $tmpDir/ip "-k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6" "$outNestedPredictionsFile"
 copyInnerFileB $tmpDir/im "-k1,1 -k2,2n -k3,3n -k4" "$outNestedMetricsFile"
 copyInnerFileA $tmpDir/ifb "-k1,1 -k2,2n -k3,3n -k4,4" "$outNestedFeatureSelectionBenchmarkFile"
 copyInnerFileB $tmpDir/icb "-k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6" "$outNestedClassificationBenchmarkFile"
 
-echo "Testing - B..." | timestamp | tee -a "$outLogFile"
-
 if [[ "$outNestedSummarizedSelectedFeaturesFile" != "" ]]
 then
   ##Rscript --vanilla scripts/BordaCountFeatures.R "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile
-  python scripts/BordaCountFeatures.py "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile
-  printError $verbose $errFile
-echo "Testing - B2..." | timestamp | tee -a "$outLogFile"
-#  python scripts/BordaCountFeatures.py "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile"
-echo "Testing - B3..." | timestamp | tee -a "$outLogFile"
+  python3 scripts/BordaCountFeatures.py "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile"
+  ##python scripts/BordaCountFeatures.py "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile
+  ##printError $verbose $errFile
 fi
-
-echo "Testing - C..." | timestamp | tee -a "$outLogFile"
 
 python3 scripts/SplitDescriptionColumn.py $tmpDir/ibest $iterationOutputHeader $tmpDir/ibest.sorttemp
 sortFile $tmpDir/ibest.sorttemp "-k1,1 -k2,2 -k3,3n -k4,4 -k5" "$outNestedBestFile"
-
-echo "Testing - D..." | timestamp | tee -a "$outLogFile"

@@ -18,7 +18,7 @@ analysisType=$(basename $0)
 dataFile="$inputDir/$description.tsv.gz"
 specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
-bash run_docker_command $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description \"$description\" $iterationsFolds --fs-algo \"$fsAlgo\" --output-dir $specificOutputDir $verbose --impute true --ohe true" | tee -a $logFile
+bash run_docker_command $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description \"$description\" $iterationsFolds --fs-algo \"$fsAlgo\" --output-dir $specificOutputDir $verbose --impute true --ohe true" 2>&1 | tee -a $logFile
 
 expectedNumAlgorithms=$(bash run_docker_command $version "ls $fsAlgo | wc -l")
 python3 CheckSelectedFeatures.py $analysisType $validationType $description "$specificOutputDir/SelectedFeatures.tsv" Algorithm False $expectedNumAlgorithms 2>&1 | tee -a $logFile

@@ -19,8 +19,8 @@ mv ShinyLearner.tar.gz $tmpDir/
 cp Dockerfile $tmpDir/
 cp -r Validation/*.gz $tmpDir/input
 ###################################################
-cp -r /Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE1456/* $tmpDir/input
-cp -r /Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE1456/*/* $tmpDir/input
+#cp -r /Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE1456/* $tmpDir/input
+#cp -r /Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE1456/*/* $tmpDir/input
 ###################################################
 cp -r BuildTests/* $tmpDir/
 

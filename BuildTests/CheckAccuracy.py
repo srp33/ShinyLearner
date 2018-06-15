@@ -18,6 +18,7 @@ failedAlgorithms = set()
 metricFile = open(metricFilePath)
 metricData = [line.rstrip().split("\t") for line in metricFile]
 metricFile.close()
+
 headerItems = metricData.pop(0)
 metricNameIndex = headerItems.index("Metric")
 valueIndex = headerItems.index("Value")

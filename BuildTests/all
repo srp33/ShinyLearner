@@ -113,6 +113,8 @@ fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default*"
 numFeaturesOptions="10,20"
 classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/s*/default*"
 
+##fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/mutual_info/default*"
+##classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/lda/default*"
 bash nestedboth $version StrongSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" "$verbose" 1.log &
 bash nestedboth $version NoSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" "$verbose" 2.log &
 bash nestedboth $version StrongSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" "$verbose" 3.log &
