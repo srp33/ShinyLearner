@@ -41,6 +41,15 @@ for (colName in colnames(data))
     next
   }
 
+  if (length(unique(data[,colName])) == 1)
+  {
+    print(data[,colName])
+    if (verbose)
+      print(paste("The ", colName, " column has only one distinct value across all samples, so it will not be scaled.", sep=""))
+
+    next
+  }
+
   if (verbose)
     print(paste("Scaling values for column ", colName, sep=""))
 
