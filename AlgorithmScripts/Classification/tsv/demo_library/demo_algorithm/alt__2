@@ -16,8 +16,8 @@ verbose="$5"
 #######################################################
 # Invoke a script that executes your algorithm. Relay
 # the ShinyLearner arguments to the script. In the
-# example below, default parameters of 5 and true
-# are passed to the script.
+# example below, an alternate value of 15 is used
+# for the first parameter.
 #######################################################
 
-python3 $(dirname $0)/example_algorithm.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "$verbose" "5" "true"
+python3 $(dirname $0)/example_algorithm.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "$verbose" "15" "true"

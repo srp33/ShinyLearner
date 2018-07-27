@@ -1,6 +1,14 @@
-## Incorporating new algorithms
+## Incorporating new classification algorithms into ShinyLearner
 
-ShinyLearner can be extended to support additional machine-learning algorithms. Users who wish to do this must do the following:
+ShinyLearner can be extended to use classification algorithms that are not yet supported. The key requirement is that the algorithm must be executable via a [bash script](https://ryanstutorials.net/bash-scripting-tutorial/bash-script.php). ShinyLearner takes care of splitting the data into training/testing sets, reformatting the data, etc. When executing a classification algorithm, it passes a training-data file (with class labels) and a test-data file (no class labels) to your bash script. That script should then load the data, train the algorithm, and make predictions for each test sample (more details below).
+
+Typically, classification algorithms support a set of [hyperparameters](https://en.wikipedia.org/wiki/Hyperparameter_(machine_learning)), which influence the algorithm's behavior. The user might wish to try various values for these hyperparameters to see what produces the highest accuracy (they should do this within a training set). ShinyLearner supports such parameter optimization via nested cross validation. When you incorporate a new algorithm into ShinyLearner, you will need to provide a bash script that uses default hyperparameter values for your algorithm. Then you could also provide additional bash scripts that use alternate hyperparameter values.
+
+Within each of these command-line scripts, you will provide logic
+
+If you want it to execute a new algorithm, basically you just  
+
+Users who wish to do this must do the following:
 
 1. Identify any software dependencies that are necessary to support the algorithm. This might include third-party machine-learning libraries or more generic dependencies. Software already included in ShinyLearner can be found [here](https://github.com/srp33/ShinyLearner_Environment/blob/master/Dockerfile). If you need to add dependencies, [clone](https://help.github.com/articles/cloning-a-repository/) [this repository](https://github.com/srp33/ShinyLearner_Environment) and modify the Dockerfile so that it downloads and installs the needed dependencies.
 

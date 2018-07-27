@@ -42,6 +42,8 @@ public class Classification
 
 		Log.Debug(predictionLines.length);
 		Log.Debug(testIDs.size());
+		//for (String line : predictionLines)
+		//	Log.Debug(line);
 		//System.exit(1);
 
 		ArrayList<String> tempTestIDs = ListUtilities.CreateStringList(testIDs);
