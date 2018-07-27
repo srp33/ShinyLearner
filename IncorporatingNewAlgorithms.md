@@ -1,31 +1,25 @@
 ## Incorporating new classification algorithms into ShinyLearner
 
-ShinyLearner can be extended to use classification algorithms that are not yet supported. The key requirement is that the algorithm must be executable via a [bash script](https://ryanstutorials.net/bash-scripting-tutorial/bash-script.php). ShinyLearner takes care of splitting the data into training/testing sets, reformatting the data, etc. When executing a classification algorithm, it passes a training-data file (with class labels) and a test-data file (no class labels) to your bash script. That script should then load the data, train the algorithm, and make predictions for each test sample (more details below).
+ShinyLearner can be extended to use classification algorithms that are not yet supported. The key requirement is that the algorithm must be executable via a [bash script](https://ryanstutorials.net/bash-scripting-tutorial/bash-script.php). ShinyLearner takes care of splitting the data into training/testing sets, reformatting the data, etc. When executing a classification algorithm, it passes a training-data file (with class labels) and a test-data file (no class labels) to your bash script. That bash script should then load the data, train the algorithm, and make predictions for each test sample (more details below). In most cases, this logic would be performed using a programming language like Python, R, or C++. The bash script simply passes those values from ShinyLearner to your algorithm.
 
 Typically, classification algorithms support a set of [hyperparameters](https://en.wikipedia.org/wiki/Hyperparameter_(machine_learning)), which influence the algorithm's behavior. The user might wish to try various values for these hyperparameters to see what produces the highest accuracy (they should do this within a training set). ShinyLearner supports such parameter optimization via nested cross validation. When you incorporate a new algorithm into ShinyLearner, you will need to provide a bash script that uses default hyperparameter values for your algorithm. Then you could also provide additional bash scripts that use alternate hyperparameter values.
 
-Within each of these command-line scripts, you will provide logic
+Each bash script should accept the following arguments:
 
-If you want it to execute a new algorithm, basically you just  
+1. A path to the training-data file.
+2. A path to the test-data file.
+3. A comma-separated list of class values. When your algorithm makes probabilistic predictions, it needs to keep track of which class is associated with each probability value. So it tells you the order in which those predictions should be printed in the output.
+4. The number of CPU cores that should be used by your algorithm. This will be an integer of 1 or greater. If your algorithm supports multi-core execution, please use it (based on the number of cores specified).
+5. A value of "true" or "false" that indicates whether to print verbose messages (to enable troubleshooting).
 
-Users who wish to do this must do the following:
+[Here](https://github.com/srp33/ShinyLearner/tree/master/AlgorithmScripts/Classification/tsv/demo_library/demo_algorithm) you can find an example implementation, including example bash scripts, input/output files, etc.
 
-1. Identify any software dependencies that are necessary to support the algorithm. This might include third-party machine-learning libraries or more generic dependencies. Software already included in ShinyLearner can be found [here](https://github.com/srp33/ShinyLearner_Environment/blob/master/Dockerfile). If you need to add dependencies, [clone](https://help.github.com/articles/cloning-a-repository/) [this repository](https://github.com/srp33/ShinyLearner_Environment) and modify the Dockerfile so that it downloads and installs the needed dependencies.
+After you have created scripts for your algorithm, please do the following:
 
-2. Submit a GitHub [pull request](https://github.com/srp33/ShinyLearner_Environment/pulls). (See tutorial [here](https://help.github.com/articles/about-pull-requests/)). We will then review and test these changes.
+1. Identify any software dependencies that are necessary to execute your scripts. This might include third-party machine-learning libraries or more generic dependencies. Software already included in ShinyLearner can be found [here](https://github.com/srp33/ShinyLearner_Environment/blob/master/Dockerfile). If you need to add dependencies, [clone](https://help.github.com/articles/cloning-a-repository/) [this repository](https://github.com/srp33/ShinyLearner_Environment) and modify the Dockerfile in [this repository](https://github.com/srp33/ShinyLearner_Environment) so that it installs the needed dependencies. Then submit a GitHub [pull request](https://github.com/srp33/ShinyLearner_Environment/pulls) with these changes. (See tutorial [here](https://help.github.com/articles/about-pull-requests/)). We will review and test these changes.
 
-3. Clone the main ShinyLearner GitHub [repository](https://github.com/srp33/ShinyLearner). Under *AlgorithmScripts*, you will find *Classification* and *FeatureSelection* directories. Navigate within these directories, depending on the type of algorithm you want to incorporate into ShinyLearner. These directories contain subdirectories that are named by convention, according to the required [input-data format](https://github.com/srp33/ShinyLearner/blob/master/InputFormats.md) for different algorithms. For example, Weka-implemented algorithms process algorithms in ```.arff``` format, so the Weka scripts in ShinyLearner are stored within ```ClassificationScripts/arff/weka```. [If your input format is not specified, please [contact us](https://github.com/srp33/ShinyLearner/blob/master/Contact.md).] Navigate to the directory associated with the input format that your algorithm will require. Then create a subdirectory with a representative name of the algorithm. Within that subdirectory, create a bash script called *default* that accepts specific arguments (see descriptions below) and invokes your algorithm. If you like, create additional bash scripts with representative names that use non-default parameters. You can find examples among the algorithms already included in ShinyLearner.
+2. Clone the main ShinyLearner [repository](https://github.com/srp33/ShinyLearner). Navigate to the ```AlgorithmScripts/Classification/tsv``` directory. Within that directory, create a new directory that describes the *category* of algorithm that you created. Within *that* directory, create a subdirectory named after the specific algorithm you are adding. For example, in ```AlgorithmScripts/Classification/tsv```, there is a directory called ```sklearn```. This category of algorithms includes all those from the [scikit-learn](http://scikit-learn.org) library that are included in ShinyLearner. Within the ```sklearn``` directory, there is a subdirectory for each of these algorithms.
 
-4. Submit a [pull request](https://github.com/srp33/ShinyLearner/pulls) with these changes. We will review and test these changes.
+3. Within the subdirectory that you just created, provide a bash script for each hyperparameter combination that you want to support. The script that uses default parameters should start with ```default__```. All other scripts should start with ```alt__```. Please use script names that are as descriptive as possible. Within this subdirectory, you would also include any code/binary files that are needed to execute your script.
 
-#### bash script arguments for classification algorithms
-
-1. Path to input training data file.
-2. Path to output training data file.
-3. A sorted list of class values, separated by commas. (This ensures that all algorithms output predictions in the same order for the classes.)
-
-#### bash script arguments for feature-selection algorithms
-
-1. Path to input training data file.
-
-Please [contact us](https://github.com/srp33/ShinyLearner/blob/master/Contact.md) with questions you may have.
+4. Submit a [pull request](https://github.com/srp33/ShinyLearner/pulls) with these changes.
