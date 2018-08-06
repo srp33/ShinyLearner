@@ -1,8 +1,7 @@
 ![ShinyLearner logo](gui/shinylearnerweb/www/Logo_Small.jpg)
 
-==========================
-
 [![Build Status](https://travis-ci.org/srp33/ShinyLearner.svg?branch=master)](https://travis-ci.org/srp33/ShinyLearner)
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/srp33/ShinyLearner/master?urlpath=https%3A%2F%2Fgithub.com%2Fsrp33%2FShinyLearner%2Fblob%2Fmaster%2FDemo%2FPMLB.ipynb)
 
 ## Introduction
 
