@@ -1,15 +1,16 @@
 from sys import argv
 from pandas import read_csv
+from numpy import random
+from numpy import array
 
 # Parse command-line arguments
 trainFilePath = argv[1]
 testFilePath = argv[2]
 classOptions = argv[3].split(",")
 numCores = argv[4]
-algorithmInstantiation = argv[5]
-verbose = argv[6] == "true"
-arg1 = int(argv[7])
-arg2 = argv[8] == "true"
+verbose = argv[5] == "true"
+arg1 = int(argv[6])
+arg2 = argv[7] == "true"
 
 # Set a random seed (assuming there is a stochastic nature to your algorithm)
 random.seed(0)
@@ -18,7 +19,7 @@ random.seed(0)
 train_df = read_csv(trainFilePath, sep='\t', index_col=0)
 
 # Parse the predictor variables from the training data, ignoring the class variable
-train_X = train_df.ix[:,:-1].values
+train_X = train_df.iloc[:,:-1].values
 
 # Parse the class labels from the training data
 # Convert these labels to integers in the order specified by classOptions
@@ -42,3 +43,7 @@ test_X = read_csv(testFilePath, sep='\t', index_col=0).values
 #     4. Probabilistic prediction for additional class options (if more than two classes)
 #
 ###########################################
+
+for testSample in test_X: # In real life, we wouldn't do this...
+    fakeProbabilities = ["0.0" for x in classOptions] # In real life, the probabilities would sum to 1.0
+    print("{}\t{}".format(classOptions[0], "\t".join(fakeProbabilities)))

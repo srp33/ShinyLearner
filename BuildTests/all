@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-#verbose="--verbose true"
-verbose="--verbose false"
+verbose="--verbose true"
+#verbose="--verbose false"
 currentDir=$(pwd)
 overallLogFile=log.overall
 tmpDir=/tmp/build_local_docker
@@ -31,6 +31,7 @@ sudo docker build -t srp33/shinylearner:version${version} .
 
 classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/*/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/demo*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default*"

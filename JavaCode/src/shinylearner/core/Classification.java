@@ -50,6 +50,7 @@ public class Classification
 
 		for (int i=0; i<predictionLines.length; i++)
 		{
+			//Log.Debug(predictionLines[i]);
 			String[] lineItems = predictionLines[i].split("\t");
 
 			String instanceID = tempTestIDs.remove(0);
@@ -61,7 +62,13 @@ public class Classification
 				probabilities.add(lineItems[j].trim());
 
 			predictions.add(new Prediction(instanceID, actualClass, prediction, probabilities));
+			//Log.Debug(instanceID);
+			//Log.Debug(actualClass);
+			//Log.Debug(prediction);
+			//Log.Debug(probabilities.size());
 		}
+		//Log.Debug("got here");
+		//Log.Exit(1);
 		
 		if (tempTestIDs.size() > 0)
 		{

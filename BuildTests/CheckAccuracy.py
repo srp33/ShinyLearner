@@ -44,6 +44,8 @@ if actualNumEnsemble != expectedNumEnsemble:
 for algorithm in uniqueAlgorithms:
     if "ZeroR" in algorithm:
         continue
+    if "demo" in algorithm:
+        continue
 
     idText = "{} - {} - {} - {}".format(taskType, validationType, metricFilePath, algorithm)
 
