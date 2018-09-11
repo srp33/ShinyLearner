@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -euo pipefail
+
+trainingFilePath="$1"
+testFilePath="$2"
+classOptions="$3"
+numCores="$4"
+verbose="$5"
+
+/anaconda/bin/python $(dirname $0)/dnn.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "$verbose" "0.5" "0.1" "true" "200"
