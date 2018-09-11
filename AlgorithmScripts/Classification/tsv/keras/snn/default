@@ -2,22 +2,10 @@
 
 set -euo pipefail
 
-#######################################################
-# Parse input arguments, which will be passed to the
-# script while ShinyLearner is executing.
-#######################################################
-
 trainingFilePath="$1"
 testFilePath="$2"
 classOptions="$3"
 numCores="$4"
 verbose="$5"
 
-#######################################################
-# Invoke a script that executes your algorithm. Relay
-# the ShinyLearner arguments to the script. In the
-# example below, default parameters of 5 and true
-# are passed to the script.
-#######################################################
-
-/anaconda/bin/python $(dirname $0)/dnn.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "$verbose" "0.5" "0.1" "true" "200"
+python3 $(dirname $0)/snn.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "$verbose" "0.2" "0.01" "200"

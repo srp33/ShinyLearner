@@ -4,12 +4,11 @@ import numpy as np
 from sklearn.preprocessing import RobustScaler, OneHotEncoder
 from sklearn.metrics import roc_auc_score
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Dropout, Dense, Input, Flatten, BatchNormalization, Activation
+from tensorflow.keras.layers import Dense, Input, Flatten, Activation, AlphaDropout
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import binary_crossentropy, categorical_crossentropy
 from tensorflow.keras import metrics
-from tensorflow.keras import backend as K
 from tensorflow.keras.utils import multi_gpu_model
 import tensorflow as tf
 
@@ -20,8 +19,7 @@ NUM_CORES = argv[4]
 VERBOSE = argv[5] == 'true'
 DROPOUT_RATE = float(argv[6])
 REGULARIZATION_RATE = float(argv[7])
-BATCH_NORMALIZATION = argv[8] == 'true'
-EPOCHS = int(argv[9])
+EPOCHS = int(argv[8])
 
 train_df = pd.read_csv(TRAIN_FILE, sep='\t', index_col=0)
 x_train = train_df.drop('Class', axis=1).values
@@ -36,23 +34,23 @@ def auroc(y_true, y_pred):
     return tf.py_func(roc_auc_score, (y_true, y_pred), tf.double)
 
 
-def dnn(x, y, test):
-    layers = [16, 16]
+def snn(x, y, test):
+    layers = [100, 100, 100, 100]
     n_inputs = x.shape[1]
     n_outputs = y.shape[1]
     input_layer = Input(shape=(n_inputs,), name='input')
     layer = Flatten()(input_layer)
     if DROPOUT_RATE > 0:
-        layer = Dropout(DROPOUT_RATE, name='dropout_input')(layer)
+        layer = AlphaDropout(DROPOUT_RATE, name='dropout_input')(layer)
     for i in range(len(layers)):
         layer = Dense(layers[i],
                       kernel_regularizer=l2(REGULARIZATION_RATE),
-                      activation='elu',
+                      kernel_initializer='lecun_normal',
+                      bias_initializer='zeros',
                       name='dense_{}'.format(i + 1))(layer)
-        if BATCH_NORMALIZATION:
-            layer = BatchNormalization(name='batch_norm_{}'.format(i + 1))(layer)
+        Activation('selu')
         if DROPOUT_RATE > 0:
-            layer = Dropout(DROPOUT_RATE, name='dropout_{}'.format(i + 1))(layer)
+            layer = AlphaDropout(DROPOUT_RATE, name='alpha_dropout_{}'.format(i + 1))(layer)
     logits = Dense(n_outputs, name='logits')(layer)
     probabilities = Activation('softmax', name='output')(logits)
     if n_outputs == 2:
@@ -76,5 +74,4 @@ def dnn(x, y, test):
         print('{}\t{}'.format(CLASS_OPTIONS[np.argmax(prediction)], '\t'.join(probs)))
 
 
-
-dnn(x_train, y_train, x_test)
+snn(x_train, y_train, x_test)
