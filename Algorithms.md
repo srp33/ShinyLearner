@@ -12,4 +12,4 @@ If you would like to learn more about the third-party libraries, please visit th
 
 * [scikit-learn](http://scikit-learn.org/stable/modules/feature_selection.html#feature-selection)
 * [Weka](http://weka.sourceforge.net/packageMetaData/)
-* [mlr](http://mlr-org.github.io/mlr-tutorial/release/html/filter_methods/index.html)
+* [mlr](https://mlr-org.github.io/mlr/articles/mlr.html
