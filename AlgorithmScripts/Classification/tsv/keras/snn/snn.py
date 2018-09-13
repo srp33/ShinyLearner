@@ -20,6 +20,8 @@ VERBOSE = argv[5] == 'true'
 DROPOUT_RATE = float(argv[6])
 REGULARIZATION_RATE = float(argv[7])
 EPOCHS = int(argv[8])
+LAYERS = list(map(int, argv[9].split(',')))
+
 
 train_df = pd.read_csv(TRAIN_FILE, sep='\t', index_col=0)
 x_train = train_df.drop('Class', axis=1).values
@@ -35,15 +37,14 @@ def auroc(y_true, y_pred):
 
 
 def snn(x, y, test):
-    layers = [100, 100, 100, 100]
     n_inputs = x.shape[1]
     n_outputs = y.shape[1]
     input_layer = Input(shape=(n_inputs,), name='input')
     layer = Flatten()(input_layer)
     if DROPOUT_RATE > 0:
         layer = AlphaDropout(DROPOUT_RATE, name='dropout_input')(layer)
-    for i in range(len(layers)):
-        layer = Dense(layers[i],
+    for i in range(len(LAYERS)):
+        layer = Dense(LAYERS[i],
                       kernel_regularizer=l2(REGULARIZATION_RATE),
                       kernel_initializer='lecun_normal',
                       bias_initializer='zeros',
@@ -63,7 +64,7 @@ def snn(x, y, test):
     try:
         model = multi_gpu_model(model, gpus=2)
     except:
-        print('Problem using multiple GPUs...', flush=True)
+        # print('Problem using multiple GPUs...', flush=True)
         pass
     model.compile(optimizer=Adam(), loss=loss, metrics=['accuracy', metric, auroc])
 
