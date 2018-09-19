@@ -25,4 +25,4 @@
 
 ## Additional information
 
-Descriptions from [*mlr*](http://mlr-org.github.io/mlr-tutorial/release/html/measures/) package
+Descriptions from [*mlr*](https://mlr-org.github.io/mlr/) package
