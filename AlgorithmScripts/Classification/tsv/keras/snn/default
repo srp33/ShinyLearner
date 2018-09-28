@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -euo pipefail
+
+trainingFilePath="$1"
+testFilePath="$2"
+classOptions="$3"
+numCores="$4"
+verbose="$5"
+
+python3 $(dirname $0)/snn.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "$verbose" "0.2" "0.01" "50" "16,16"
