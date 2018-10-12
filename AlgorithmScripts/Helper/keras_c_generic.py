@@ -3,14 +3,12 @@ import os
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import OneHotEncoder
-from sklearn.metrics import roc_auc_score
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dropout, Dense, Input, Flatten, BatchNormalization, Activation, AlphaDropout
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import binary_crossentropy, categorical_crossentropy
 from tensorflow.keras.utils import multi_gpu_model
-import tensorflow as tf
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
@@ -33,10 +31,6 @@ y_train = y_train.reshape(-1, 1)
 y_train = OneHotEncoder().fit_transform(y_train).toarray()
 
 x_test = pd.read_csv(TEST_FILE, sep='\t', index_col=0)
-
-
-def auroc(y_true, y_pred):
-    return tf.py_func(roc_auc_score, (y_true, y_pred), tf.double)
 
 
 def dnn(x, y, test):
@@ -72,8 +66,8 @@ def dnn(x, y, test):
         model = multi_gpu_model(model, gpus=2)
     except:
         pass
-    model.compile(optimizer=Adam(), loss=loss, metrics=['accuracy', auroc])
-    model.fit(x, y, verbose=VERBOSE, epochs=EPOCHS)
+    model.compile(optimizer=Adam(), loss=loss)
+    model.fit(x, y, verbose=0, epochs=EPOCHS, batch_size=200)
     predictions = model.predict(test, verbose=VERBOSE)
     for prediction in predictions:
         probs = [str(prob) for prob in list(prediction)]

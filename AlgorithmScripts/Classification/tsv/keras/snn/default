@@ -25,5 +25,5 @@ verbose="$5"
 #######################################################
 
 
-python3 AlgorithmScripts/Classification/tsv/keras/dnn/dnn.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "$verbose" \
+python3 AlgorithmScripts/Helper/keras_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "$verbose" \
 "snn" 16,16 "0.2" "0.1" "false" "100"
