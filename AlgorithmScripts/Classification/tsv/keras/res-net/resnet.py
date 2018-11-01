@@ -80,7 +80,7 @@ def resnet(x, y, test):
     except:
         pass
     model.compile(optimizer=Adam(LEARNING_RATE), loss=loss)
-    model.fit(x, y, verbose=1, epochs=EPOCHS, batch_size=200)
+    model.fit(x, y, verbose=0, epochs=EPOCHS, batch_size=200)
     predictions = model.predict(test, verbose=VERBOSE)
     for prediction in predictions:
         probs = [str(prob) for prob in list(prediction)]
