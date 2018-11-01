@@ -26,7 +26,6 @@ LEARNING_RATE = float(argv[11])
 EPOCHS = int(argv[12])
 # KEY_FILE = argv[13]
 
-print(LAYER_WIDTH, NUM_LAYERS, DROPOUT_RATE, REGULARIZATION, ACTIVATION, LEARNING_RATE, EPOCHS)
 train_df = pd.read_csv(TRAIN_FILE, sep='\t', index_col=0)
 x_train = train_df.drop('Class', axis=1).values
 y_train = np.array([CLASS_OPTIONS.index(str(y[0])) for y in train_df.loc[:, ["Class"]].values.tolist()])
