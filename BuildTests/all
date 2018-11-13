@@ -29,7 +29,7 @@ sudo docker build -t srp33/shinylearner:version${version} .
 # Test all classification algorithms using monte carlo
 #########################################################
 
-classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/demo*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default*"
@@ -40,7 +40,7 @@ classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/xgboost/default*"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/ZeroR/default*"
-#classifAlgo="AlgorithmScripts/Classification/tsv/keras/*/default"
+classifAlgo="AlgorithmScripts/Classification/tsv/keras/*/default"
 
 ##bash classification $version StrongSignal_Both montecarlo "--iterations 1" "$classifAlgo" "--verbose false" 1.log
 ##bash classification $version NoSignal_Both montecarlo "--iterations 1" "$classifAlgo" "--verbose false" 2.log
@@ -63,8 +63,8 @@ python3 CheckLogFiles.py $overallLogFile 1
 # Test all fs algorithms using monte carlo
 #########################################################
 
-fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default*"
-#fsAlgo="AlgorithmScripts/FeatureSelection/*/weka/*/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default*"
+fsAlgo="AlgorithmScripts/FeatureSelection/*/weka/*/default*"
 
 bash featureselection $version StrongSignal_Both montecarlo "--iterations 3" "$fsAlgo" "$verbose" 1.log &
 bash featureselection $version NoSignal_Both montecarlo "--iterations 3" "$fsAlgo" "$verbose" 2.log &
