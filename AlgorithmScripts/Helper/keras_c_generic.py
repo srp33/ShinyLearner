@@ -10,7 +10,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import binary_crossentropy, categorical_crossentropy
 from tensorflow.keras.utils import multi_gpu_model
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'
 
 TRAIN_FILE = argv[1]
 TEST_FILE = argv[2]
@@ -68,7 +68,8 @@ def dnn(x, y, test):
         pass
     model.compile(optimizer=Adam(), loss=loss)
     model.fit(x, y, verbose=0, epochs=EPOCHS, batch_size=200)
-    predictions = model.predict(test, verbose=VERBOSE)
+    #predictions = model.predict(test, verbose=VERBOSE)
+    predictions = model.predict(test, verbose=False)
     for prediction in predictions:
         probs = [str(prob) for prob in list(prediction)]
         print('{}\t{}'.format(CLASS_OPTIONS[np.argmax(prediction)], '\t'.join(probs)))

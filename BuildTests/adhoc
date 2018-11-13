@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-verbose="--verbose true"
-#verbose="--verbose false"
+#verbose="--verbose true"
+verbose="--verbose false"
 currentDir=$(pwd)
 tmpDir=/tmp/build_local_docker
 version=$(cat VERSION)
@@ -33,7 +33,9 @@ fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default*"
 
 #bash featureselection $version StrongSignal_Both montecarlo "--iterations 3" "$fsAlgo" "$verbose" 1.log
 
-classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/extra_trees/alt__bootstrap=True_class_weight=None_criterion=gini_n_estimators=1000_oob_score=False"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/extra_trees/alt__bootstrap=True_class_weight=None_criterion=gini_n_estimators=1000_oob_score=False"
+classifAlgo="AlgorithmScripts/Classification/tsv/keras/dnn/default"
+#classifAlgo="AlgorithmScripts/Classification/tsv/keras/snn/default"
 
 bash classification $version StrongSignal_Both montecarlo "--iterations 3 --num-cores 3" "$classifAlgo" "$verbose" 1.log
 
