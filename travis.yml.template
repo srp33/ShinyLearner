@@ -16,5 +16,5 @@ branches:
 script:
   - set -o errexit
   - BuildTests/all
-  - sudo docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+  - echo "$DOCKER_PASS" | sudo docker login -u="$DOCKER_USER" --password-stdin
   - sudo docker push srp33/shinylearner:version{version}
