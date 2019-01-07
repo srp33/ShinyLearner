@@ -30,7 +30,7 @@ train_df = pd.read_csv(TRAIN_FILE, sep='\t', index_col=0)
 x_train = train_df.drop('Class', axis=1).values
 y_train = np.array([CLASS_OPTIONS.index(str(y[0])) for y in train_df.loc[:, ["Class"]].values.tolist()])
 y_train = y_train.reshape(-1, 1)
-y_train = OneHotEncoder().fit_transform(y_train).toarray()
+y_train = OneHotEncoder(categories='auto').fit_transform(y_train).toarray()
 
 x_test = pd.read_csv(TEST_FILE, sep='\t', index_col=0)
 # y_test = pd.read_csv(KEY_FILE, sep='\t', index_col=0)
@@ -47,27 +47,29 @@ def resnet(x, y, test):
                   kernel_regularizer=l2(REGULARIZATION),
                   kernel_initializer='lecun_normal',
                   bias_initializer='zeros',
+                  activation=ACTIVATION,
                   name='reinjected_input')(input_layer)
     layer = None
     for i in range(NUM_LAYERS):
-        layer = Activation(ACTIVATION)(input if i == 0 else layer)
-        layer = dropout(DROPOUT_RATE, name='dropout{}_1'.format(i + 1))(layer)
         layer = Dense(LAYER_WIDTH,
                       kernel_regularizer=l2(REGULARIZATION),
                       kernel_initializer='lecun_normal',
                       bias_initializer='zeros',
                       activation=ACTIVATION,
-                      name='dense{}_1'.format(i + 1))(layer)
-        layer = dropout(DROPOUT_RATE, name='dropout{}_2'.format(i + 1))(layer)
+                      name='dense{}_1'.format(i + 1))(input if i == 0 else layer)
+        layer = dropout(DROPOUT_RATE, name='dropout{}_1'.format(i + 1))(layer)
         layer = Dense(LAYER_WIDTH,
                       kernel_regularizer=l2(REGULARIZATION),
                       kernel_initializer='lecun_normal',
                       bias_initializer='zeros',
                       name='dense{}_2'.format(i + 1))(layer)
         layer = Add(name='reinjection_{}'.format(i + 1))([input, layer])
-    layer = Activation(ACTIVATION)(layer)
-    layer = dropout(DROPOUT_RATE)(layer)
-    logits = Dense(n_outputs, name='logits')(layer)
+        layer = Activation(ACTIVATION, name='block_activation_{}'.format(i + 1))(layer)
+        layer = dropout(DROPOUT_RATE, name='dropout{}_2'.format(i + 1))(layer)
+    logits = Dense(n_outputs,
+                   kernel_initializer='lecun_normal',
+                   bias_initializer='zeros',
+                   name='logits')(layer)
     probabilities = Activation('softmax', name='output')(logits)
     if n_outputs == 2:
         loss = binary_crossentropy
