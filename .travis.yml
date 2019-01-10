@@ -17,4 +17,4 @@ script:
   - set -o errexit
   - BuildTests/all
   - echo "$DOCKER_PASS" | sudo docker login -u="$DOCKER_USER" --password-stdin
-  - sudo docker push srp33/shinylearner:version434
+  - sudo docker push srp33/shinylearner:version435

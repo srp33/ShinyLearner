@@ -50,8 +50,8 @@ classifAlgo="AlgorithmScripts/Classification/tsv/keras/*/default"
 ##bash classification $version StrongSignal_Both montecarlo "--iterations 3" "$classifAlgo" "$verbose" 1.log
 bash classification $version StrongSignal_Both montecarlo "--iterations 3" "$classifAlgo" "$verbose" 1.log &
 bash classification $version NoSignal_Both montecarlo "--iterations 3" "$classifAlgo" "$verbose" 2.log &
-#bash classification $version StrongSignal_Both_2Class montecarlo "--iterations 3" "$classifAlgo" "$verbose" 3.log &
-#bash classification $version NoSignal_Both_2Class montecarlo "--iterations 3" "$classifAlgo" "$verbose" 4.log &
+bash classification $version StrongSignal_Both_2Class montecarlo "--iterations 3" "$classifAlgo" "$verbose" 3.log &
+bash classification $version NoSignal_Both_2Class montecarlo "--iterations 3" "$classifAlgo" "$verbose" 4.log &
 wait
 
 cat output/*.log >> $overallLogFile
