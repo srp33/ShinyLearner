@@ -11,7 +11,6 @@ buildDir=/tmp/shinylearner_build
 rm -rf $buildDir
 
 mkdir -p $buildDir/shinylearner/src/shinylearner
-#cp -r java/src/shinylearner/* $buildDir/shinylearner/src/shinylearner
 cp -r JavaCode/src/shinylearner/* $buildDir/shinylearner/src/shinylearner
 cp build.xml $buildDir/
 
