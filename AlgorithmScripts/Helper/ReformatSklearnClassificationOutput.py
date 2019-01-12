@@ -1,6 +1,6 @@
 import sys
 
-classOptions = set(sys.argv[1])
+classOptions = set(sys.argv[1].split(","))
 verbose = sys.argv[2] == "true"
 
 # This seems to be a somewhat reasonable way to avoid printing warnings.

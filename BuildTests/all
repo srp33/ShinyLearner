@@ -29,7 +29,7 @@ sudo docker build -t srp33/shinylearner:version${version} .
 # Test all classification algorithms using monte carlo
 #########################################################
 
-#classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
+classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/demo*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default*"
@@ -40,7 +40,7 @@ sudo docker build -t srp33/shinylearner:version${version} .
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/xgboost/default*"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/ZeroR/default*"
-classifAlgo="AlgorithmScripts/Classification/arff/weka/SMO/default*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/SMO/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/keras/*/default"
 
 ##bash classification $version StrongSignal_Both montecarlo "--iterations 1" "$classifAlgo" "--verbose false" 1.log
@@ -48,11 +48,11 @@ classifAlgo="AlgorithmScripts/Classification/arff/weka/SMO/default*"
 ##bash classification $version StrongSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgo" "--verbose false" 3.log
 ##bash classification $version NoSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgo" "--verbose false" 4.log
 
-bash classification $version StrongSignal_Both montecarlo "--iterations 3" "$classifAlgo" "$verbose" 1.log
-#bash classification $version StrongSignal_Both montecarlo "--iterations 3" "$classifAlgo" "$verbose" 1.log &
-#bash classification $version NoSignal_Both montecarlo "--iterations 3" "$classifAlgo" "$verbose" 2.log &
-#bash classification $version StrongSignal_Both_2Class montecarlo "--iterations 3" "$classifAlgo" "$verbose" 3.log &
-#bash classification $version NoSignal_Both_2Class montecarlo "--iterations 3" "$classifAlgo" "$verbose" 4.log &
+#bash classification $version StrongSignal_Both montecarlo "--iterations 3" "$classifAlgo" "$verbose" 1.log
+bash classification $version StrongSignal_Both montecarlo "--iterations 3" "$classifAlgo" "$verbose" 1.log &
+bash classification $version NoSignal_Both montecarlo "--iterations 3" "$classifAlgo" "$verbose" 2.log &
+bash classification $version StrongSignal_Both_2Class montecarlo "--iterations 3" "$classifAlgo" "$verbose" 3.log &
+bash classification $version NoSignal_Both_2Class montecarlo "--iterations 3" "$classifAlgo" "$verbose" 4.log &
 wait
 
 cat output/*.log >> $overallLogFile

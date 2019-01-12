@@ -13,3 +13,6 @@ python3 build_sklearn_scripts.py $showStats
 
 rm -rf ../Classification/arff/weka/* ../FeatureSelection/arff/weka/*
 python3 build_weka_scripts.py $showStats
+
+rm -rf ../Classification/tsv/keras/*
+python3 build_keras_scripts.py $showStats

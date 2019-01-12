@@ -17,14 +17,16 @@ TEST_FILE = argv[2]
 CLASS_OPTIONS = argv[3].split(',')
 NUM_CORES = argv[4]
 VERBOSE = argv[5] == 'true'
-LAYER_WIDTH = int(argv[6])
-NUM_LAYERS = int(argv[7])
-DROPOUT_RATE = float(argv[8])
-REGULARIZATION = float(argv[9])
-ACTIVATION = argv[10]
-LEARNING_RATE = float(argv[11])
-EPOCHS = int(argv[12])
-# KEY_FILE = argv[13]
+ALGORITHM_ARGS = argv[6].split(";")
+
+LAYER_WIDTH = int(ALGORITHM_ARGS[0])
+NUM_LAYERS = int(ALGORITHM_ARGS[1])
+DROPOUT_RATE = float(ALGORITHM_ARGS[2])
+REGULARIZATION = float(ALGORITHM_ARGS[3])
+ACTIVATION = ALGORITHM_ARGS[4]
+LEARNING_RATE = float(ALGORITHM_ARGS[5])
+EPOCHS = int(ALGORITHM_ARGS[6])
+# KEY_FILE = ALGORITHM_ARGS[7]
 
 train_df = pd.read_csv(TRAIN_FILE, sep='\t', index_col=0)
 x_train = train_df.drop('Class', axis=1).values

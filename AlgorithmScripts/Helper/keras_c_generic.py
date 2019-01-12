@@ -17,12 +17,15 @@ TEST_FILE = argv[2]
 CLASS_OPTIONS = argv[3].split(',')
 NUM_CORES = argv[4]
 VERBOSE = argv[5] == 'true'
-MODEL_TYPE = argv[6]
-LAYERS = argv[7].split(',')
-DROPOUT_RATE = float(argv[8])
-REGULARIZATION_RATE = float(argv[9])
-BATCH_NORMALIZATION = (MODEL_TYPE != 'snn' and argv[10] == 'true')
-EPOCHS = int(argv[11])
+
+ALGORITHM_ARGS = argv[6].split(";")
+
+MODEL_TYPE = ALGORITHM_ARGS[0]
+LAYERS = ALGORITHM_ARGS[1].split(',')
+DROPOUT_RATE = float(ALGORITHM_ARGS[2])
+REGULARIZATION_RATE = float(ALGORITHM_ARGS[3])
+BATCH_NORMALIZATION = (MODEL_TYPE != 'snn' and ALGORITHM_ARGS[4] == 'true')
+EPOCHS = int(ALGORITHM_ARGS[5])
 
 train_df = pd.read_csv(TRAIN_FILE, sep='\t', index_col=0)
 x_train = train_df.drop('Class', axis=1).values
