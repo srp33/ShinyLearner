@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -euo pipefail
+
+#####################################################
+# This algorithm is implemented in the keras
+# software package (https://keras.io).
+#####################################################
+
+trainingFilePath="$1"
+testFilePath="$2"
+classOptions="$3"
+numCores="$4"
+verbose="$5"
+
+#######################################################
+# Args:
+# 1 - Training File
+# 2 - Test File
+# 3 - Class Options
+# 4 - Number of CPU cores
+# 5 - Verbosity
+# 6 - Layer Width
+# 7 - # of layers
+# 8 - Dropout (0.0-1.0)
+# 9 - Regularization (0.0-1.0)
+# 10 - Activation ('selu', 'elu', or 'relu')
+# 11 - Learning Rate (0.0001-0.01)
+# 12 - Number of epochs
+#######################################################
+
+python3 AlgorithmScripts/Helper/keras_c_resnet.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "$verbose" "32;100;0.5;0.1;selu;0.001;500" 2>&1 | python3 AlgorithmScripts/Helper/FilterKerasOutput.py "$classOptions" "$verbose"
