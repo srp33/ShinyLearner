@@ -22,7 +22,7 @@ cp -r BuildTests/* $tmpDir/
 
 cd $tmpDir
 
-sudo docker build -t srp33/shinylearner:version${version} .
+docker build -t srp33/shinylearner:version${version} .
 
 #########################################################
 # Test all classification algorithms using monte carlo
@@ -30,7 +30,7 @@ sudo docker build -t srp33/shinylearner:version${version} .
 
 classifAlgoFile=input/classifAlgos.list
 
-#classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
+classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/demo*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default*"
@@ -39,43 +39,64 @@ classifAlgoFile=input/classifAlgos.list
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/s*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/xgboost/default*"
-classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/ZeroR/default*"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/SMO/default*"
-#classifAlgo="AlgorithmScripts/Classification/tsv/keras/*/default*"
-#classifAlgo="AlgorithmScripts/Classification/tsv/keras/resnet/default*"
 
-ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" | grep -v h2o > $classifAlgoFile
+ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" | grep -v h2o | grep -v keras > $classifAlgoFile
 
 ##bash classification $version StrongSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 1.log
 ##bash classification $version NoSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 2.log
 ##bash classification $version StrongSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 3.log
 ##bash classification $version NoSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 4.log
 
-#bash classification $version StrongSignal_Both montecarlo "--iterations 3" "$classifAlgoFile" "$verbose" 1.log
+##bash classification $version StrongSignal_Both montecarlo "--iterations 3" "$classifAlgoFile" "$verbose" 1.log
 bash classification $version StrongSignal_Both montecarlo "--iterations 3" "$classifAlgoFile" "$verbose" 1.log &
 bash classification $version NoSignal_Both montecarlo "--iterations 3" "$classifAlgoFile" "$verbose" 2.log &
 bash classification $version StrongSignal_Both_2Class montecarlo "--iterations 3" "$classifAlgoFile" "$verbose" 3.log &
 bash classification $version NoSignal_Both_2Class montecarlo "--iterations 3" "$classifAlgoFile" "$verbose" 4.log &
 wait
 
+cat output/*.log >> $overallLogFile
+rm -f output/*.log
+python3 CheckLogFiles.py $overallLogFile 1
+
 #######################################################
 # Test h2o separately because they tend to throw errors
 # if you execute multiple in parallel.
 #######################################################
 
-#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/h2o*/default*"
-#ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" > $classifAlgoFile
+classifAlgo="AlgorithmScripts/Classification/tsv/mlr/h2o*/default*"
+ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" > $classifAlgoFile
 
-#bash classification $version StrongSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 1.log
-#bash classification $version NoSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 2.log
-#bash classification $version StrongSignal_Both_2Class montecarlo "--iterations 2" "$classifAlgoFile" "--verbose false" 3.log
-#bash classification $version NoSignal_Both_2Class montecarlo "--iterations 2" "$classifAlgoFile" "--verbose false" 4.log
+bash classification $version StrongSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 1.log
+bash classification $version NoSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 2.log
+bash classification $version StrongSignal_Both_2Class montecarlo "--iterations 2" "$classifAlgoFile" "--verbose false" 3.log
+bash classification $version NoSignal_Both_2Class montecarlo "--iterations 2" "$classifAlgoFile" "--verbose false" 4.log
 
 cat output/*.log >> $overallLogFile
 rm -f output/*.log
 python3 CheckLogFiles.py $overallLogFile 1
-exit
+
+#######################################################
+# Test keras separately because resnet is slow.
+#######################################################
+
+classifAlgo="AlgorithmScripts/Classification/tsv/keras/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/keras/dnn/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/keras/snn/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/keras/resnet/default*"
+ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" > $classifAlgoFile
+
+bash classification $version StrongSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 1.log &
+bash classification $version NoSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 2.log &
+bash classification $version StrongSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 3.log &
+bash classification $version NoSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 4.log &
+wait
+
+cat output/*.log >> $overallLogFile
+rm -f output/*.log
+python3 CheckLogFiles.py $overallLogFile 1
 
 #########################################################
 # Test all fs algorithms using monte carlo
@@ -94,15 +115,16 @@ cat output/*.log >> $overallLogFile
 rm -f output/*.log
 python3 CheckLogFiles.py $overallLogFile 1
 
-#########################################################
-# Test some fs and cl algorithms using k-fold
-#########################################################
+##########################################################
+## Test some fs and cl algorithms using k-fold
+##########################################################
 
 fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default*"
 classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/s*/default*"
+ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" > $classifAlgoFile
 
-bash classification $version StrongSignal_Both crossvalidation "--iterations 1 --folds 3" "$classifAlgo" "$verbose" 1.log &
-bash classification $version NoSignal_Both crossvalidation "--iterations 1 --folds 3" "$classifAlgo" "$verbose" 2.log &
+bash classification $version StrongSignal_Both crossvalidation "--iterations 1 --folds 3" "$classifAlgoFile" "$verbose" 1.log &
+bash classification $version NoSignal_Both crossvalidation "--iterations 1 --folds 3" "$classifAlgoFile" "$verbose" 2.log &
 bash featureselection $version StrongSignal_Both crossvalidation "--iterations 1 --folds 3" "$fsAlgo" "$verbose" 3.log &
 bash featureselection $version NoSignal_Both crossvalidation "--iterations 1 --folds 3" "$fsAlgo" "$verbose" 4.log &
 wait
@@ -116,11 +138,12 @@ python3 CheckLogFiles.py $overallLogFile 1
 #########################################################
 
 classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/s*/default*"
+ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" > $classifAlgoFile
 
-bash nestedclassification $version StrongSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$classifAlgo" "$verbose" 1.log &
-bash nestedclassification $version NoSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$classifAlgo" "$verbose" 2.log &
-bash nestedclassification $version StrongSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$classifAlgo" "$verbose" 3.log &
-bash nestedclassification $version NoSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$classifAlgo" "$verbose" 4.log &
+bash nestedclassification $version StrongSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$classifAlgoFile" "$verbose" 1.log &
+bash nestedclassification $version NoSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$classifAlgoFile" "$verbose" 2.log &
+bash nestedclassification $version StrongSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$classifAlgoFile" "$verbose" 3.log &
+bash nestedclassification $version NoSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$classifAlgoFile" "$verbose" 4.log &
 wait
 
 cat output/*.log >> $overallLogFile
@@ -134,13 +157,14 @@ python3 CheckLogFiles.py $overallLogFile 1
 fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default*"
 numFeaturesOptions="10,20"
 classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/s*/default*"
+ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" > $classifAlgoFile
 
-##fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/mutual_info/default*"
-##classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/lda/default*"
-bash nestedboth $version StrongSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" "$verbose" 1.log &
-bash nestedboth $version NoSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" "$verbose" 2.log &
-bash nestedboth $version StrongSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" "$verbose" 3.log &
-bash nestedboth $version NoSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" "$verbose" 4.log &
+###fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/mutual_info/default*"
+###classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/lda/default*"
+bash nestedboth $version StrongSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgoFile" "$verbose" 1.log &
+bash nestedboth $version NoSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgoFile" "$verbose" 2.log &
+bash nestedboth $version StrongSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgoFile" "$verbose" 3.log &
+bash nestedboth $version NoSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgoFile" "$verbose" 4.log &
 wait
 
 cat output/*.log >> $overallLogFile
@@ -162,5 +186,5 @@ python3 CheckLogFiles.py $overallLogFile 1
 #########################################################
 
 cd $currentDir
-sudo rm -rf $tmpDir
+rm -rf $tmpDir
 echo "All tests passed!!!"
