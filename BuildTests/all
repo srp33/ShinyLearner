@@ -40,9 +40,9 @@ classifAlgoFile=input/classifAlgos.list
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/s*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/xgboost/default*"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default*"
-#classifAlgo="AlgorithmScripts/Classification/arff/weka/ZeroR/default*"
+classifAlgo="AlgorithmScripts/Classification/arff/weka/ZeroR/default*"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/SMO/default*"
-classifAlgo="AlgorithmScripts/Classification/tsv/keras/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/keras/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/keras/resnet/default*"
 
 ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" | grep -v h2o > $classifAlgoFile
