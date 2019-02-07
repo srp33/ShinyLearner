@@ -186,5 +186,5 @@ python3 CheckLogFiles.py $overallLogFile 1
 #########################################################
 
 cd $currentDir
-rm -rf $tmpDir
+sudo rm -rf $tmpDir
 echo "All tests passed!!!"
