@@ -13,7 +13,8 @@ if not os.path.exists(metricFilePath):
     exit(1)
 
 successfulAlgorithms = set()
-failedAlgorithms = set()
+failedAlgorithms = []
+failedAlgorithmOutput = ""
 
 metricFile = open(metricFilePath)
 metricData = [line.rstrip().split("\t") for line in metricFile]
@@ -58,16 +59,20 @@ for algorithm in uniqueAlgorithms:
             print("[PASSED] The mean AUROC was {:.3f} for {} and {}. ({})".format(meanAUC, description, algorithm, idText))
             successfulAlgorithms.add(algorithm)
         else:
-            print("[FAILED] The mean AUROC was {:.3f} for {} and {}. The expected lower threshold is {:.3f}. ({})".format(meanAUC, description, algorithm, lowerThreshold, idText))
-            failedAlgorithms.add(algorithm)
+            error = "[FAILED] The mean AUROC was {:.3f} for {} and {}. The expected lower threshold is {:.3f}. ({})".format(meanAUC, description, algorithm, lowerThreshold, idText)
+            print(error)
+            failedAlgorithms.append(algorithm)
+            failedAlgorithmOutput += error + "\n"
     elif description.startswith("NoSignal"):
         upperThreshold = 0.75
         if meanAUC <= upperThreshold:
             print("[PASSED] The mean AUROC was {:.3f} for {} and {}. ({})".format(meanAUC, description, algorithm, idText))
             successfulAlgorithms.add(algorithm)
         else:
-            print("[FAILED] The mean AUROC was {:.3f} for {} and {}. The expected upper threshold is {:.3f}. ({})".format(meanAUC, description, algorithm, upperThreshold, idText))
-            failedAlgorithms.add(algorithm)
+            error = "[FAILED] The mean AUROC was {:.3f} for {} and {}. The expected upper threshold is {:.3f}. ({})".format(meanAUC, description, algorithm, upperThreshold, idText)
+            print(error)
+            failedAlgorithms.append(algorithm)
+            failedAlgorithmOutput += error + "\n"
 
 print("\n[TEST SUMMARY]\n")
 
@@ -79,6 +84,7 @@ if len(failedAlgorithms) > 0:
     print("The following algorithm(s) failed at least once:")
     for algorithm in failedAlgorithms:
         print("  {}".format(algorithm))
+    print("\n" + failedAlgorithmOutput)
     exit(1)
 else:
     print("Tests passed!\n")
