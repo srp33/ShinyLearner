@@ -2,10 +2,16 @@
 
 set -o errexit
 
+echo Running ShinyLearner build tests...
+
+SL_DOCKER_IMAGE_NAME="$1"
+
 if [[ "$SL_DOCKER_IMAGE_NAME" == "" ]]
 then
   SL_DOCKER_IMAGE_NAME=shinylearner
 fi
+
+echo Using Docker image $SL_DOCKER_IMAGE_NAME...
 
 #verbose="--verbose true"
 verbose="--verbose false"
