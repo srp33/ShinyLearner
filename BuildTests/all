@@ -2,12 +2,14 @@
 
 set -euo pipefail
 
+echo "got here"
 imageName="$1"
 
 if [[ "$imageName" == "" ]]
 then
   imageName=shinylearner
 fi
+echo "got here2"
 
 #verbose="--verbose true"
 verbose="--verbose false"
@@ -21,6 +23,7 @@ mkdir -p $tmpDir/input $tmpDir/output
 
 scripts/build
 tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION LICENSE UserScripts
+echo "got here3"
 
 mv ShinyLearner.tar.gz $tmpDir/
 cp Dockerfile $tmpDir/
