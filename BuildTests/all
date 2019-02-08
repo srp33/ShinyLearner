@@ -2,6 +2,13 @@
 
 set -euo pipefail
 
+imageName="$1"
+
+if [[ "$imageName" == "" ]]
+then
+  imageName=shinylearner
+fi
+
 #verbose="--verbose true"
 verbose="--verbose false"
 currentDir=$(pwd)
@@ -22,7 +29,7 @@ cp -r BuildTests/* $tmpDir/
 
 cd $tmpDir
 
-docker build -t srp33/shinylearner:version${version} .
+docker build -t srp33/${imageName}:version${version} .
 
 #########################################################
 # Test all classification algorithms using monte carlo
