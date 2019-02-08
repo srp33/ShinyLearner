@@ -2,13 +2,9 @@
 
 set -euo pipefail
 
-echo testing:
-imageName="$1"
-echo $imageName
-
-if [[ "$imageName" == "" ]]
+if [[ "$SL_DOCKER_IMAGE_NAME" == "" ]]
 then
-  imageName=shinylearner
+  SL_DOCKER_IMAGE_NAME=shinylearner
 fi
 
 #verbose="--verbose true"
@@ -31,7 +27,7 @@ cp -r BuildTests/* $tmpDir/
 
 cd $tmpDir
 
-docker build -t srp33/${imageName}:version${version} .
+docker build -t srp33/${SL_DOCKER_IMAGE_NAME}:version${version} .
 
 #########################################################
 # Test all classification algorithms using monte carlo
