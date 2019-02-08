@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -euo pipefail
+#set -euo pipefail
+set -o errexit
 
 echo larry bird
 if [[ "$SL_DOCKER_IMAGE_NAME" == "" ]]
