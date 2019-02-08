@@ -1,14 +1,11 @@
 #!/bin/bash
 
-#set -euo pipefail
 set -o errexit
 
-echo larry bird
 if [[ "$SL_DOCKER_IMAGE_NAME" == "" ]]
 then
   SL_DOCKER_IMAGE_NAME=shinylearner
 fi
-echo magic johnson
 
 #verbose="--verbose true"
 verbose="--verbose false"
