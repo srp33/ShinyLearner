@@ -28,5 +28,4 @@ git push origin master
 
 cd ../ShinyLearner_gpu
 
-./test_build
 ./commit "$message"
