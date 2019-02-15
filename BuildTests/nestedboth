@@ -2,15 +2,16 @@
 
 set -euo pipefail
 
-version="$1"
-description="$2"
-validationType="$3"
-iterationsFolds="$4"
-fsAlgo="$5"
-numFeaturesOptions="$6"
-classifAlgo="$7"
-verbose="$8"
-logFile="$9"
+imageName="$1"
+version="$2"
+description="$3"
+validationType="$4"
+iterationsFolds="$5"
+fsAlgo="$6"
+numFeaturesOptions="$7"
+classifAlgo="$8"
+verbose="$9"
+logFile="${10}"
 
 inputDir=input
 outputDir=output
@@ -20,11 +21,11 @@ analysisType=$(basename $0)
 dataFile="$inputDir/$description.tsv.gz"
 specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
-bash run_docker_command $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description "$description" $iterationsFolds --fs-algo \"$fsAlgo\" --num-features \"$numFeaturesOptions\" --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose --impute true --ohe true" 2>&1 | tee -a $logFile
+bash run_docker_command $imageName $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description "$description" $iterationsFolds --fs-algo \"$fsAlgo\" --num-features \"$numFeaturesOptions\" --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose --impute true --ohe true" 2>&1 | tee -a $logFile
 
 # Should only be the ensemble algorithm
-#expectedNumAlgorithms=$(bash run_docker_command $version "ls $classifAlgo | wc -l")
-expectedNumAlgorithms=$(bash run_docker_command $version "cat $classifAlgo | wc -l")
+#expectedNumAlgorithms=$(bash run_docker_command $imageName $version "ls $classifAlgo | wc -l")
+expectedNumAlgorithms=$(bash run_docker_command $imageName $version "cat $classifAlgo | wc -l")
 python3 CheckAccuracy.py $analysisType $validationType $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
 
 # Testing the nested selected features not necessary, as long as outer folds work fine
