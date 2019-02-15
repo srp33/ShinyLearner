@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#set -o errexit
+set -euo pipefail
+
+SL_DOCKER_IMAGE_NAME="$1"
+
+echo Building Docker image $SL_DOCKER_IMAGE_NAME...
+
+currentDir=$(pwd)
+tmpDir=/tmp/build_local_docker
+version=$(cat VERSION)
+
+rm -rf $tmpDir
+mkdir $tmpDir
+
+scripts/build
+tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION LICENSE UserScripts
+
+mv ShinyLearner.tar.gz $tmpDir/
+cp Dockerfile $tmpDir/
+
+cd $tmpDir
+docker build -t srp33/${SL_DOCKER_IMAGE_NAME}:version${version} . | grep -v "tar: "
+
+cd $currentDir
+rm -rf $tmpDir

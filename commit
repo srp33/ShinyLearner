@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -o errexit
+
 message="$1"
 
 if [[ "$message" == "" ]]
@@ -16,10 +18,15 @@ python scripts/UpdateVersion.py travis.yml.template VERSION True .travis.yml
 python scripts/UpdateVersion.py README_template.md VERSION False README.md
 python scripts/UpdateVersion.py GettingStarted_template.md VERSION False GettingStarted.md
 
+./scripts/build_image shinylearner
+./BuildTests/all
+
 git add .travis.yml
 git add --all .
 git commit -m "$message"
 git push origin master
 
 cd ../ShinyLearner_gpu
+
+./test_build
 ./commit "$message"
