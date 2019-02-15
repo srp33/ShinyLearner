@@ -27,15 +27,8 @@ scripts/build
 tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION LICENSE UserScripts
 
 mv ShinyLearner.tar.gz $tmpDir/
-
 #If you want to test ShinyLearner_gpu, run the test_build script in that directory.
-#if [[ "$SL_DOCKER_IMAGE_NAME" == "shinylearner_gpu" ]]
-#then
-#  cp ../ShinyLearner_gpu/Dockerfile $tmpDir/
-#else
-  cp Dockerfile $tmpDir/
-#fi
-
+cp Dockerfile $tmpDir/
 cp -r Validation/*.gz $tmpDir/input
 cp -r BuildTests/* $tmpDir/
 
@@ -49,31 +42,21 @@ docker build -t srp33/${SL_DOCKER_IMAGE_NAME}:version${version} . | grep -v "tar
 
 classifAlgoFile=input/classifAlgos.list
 
-#classifAlgo="AlgorithmScripts/Classification/tsv/keras/*/default*"
-classifAlgo="AlgorithmScripts/Classification/tsv/keras/dnn/default*"
+classifAlgo="AlgorithmScripts/Classification/tsv/keras/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/keras/dnn/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/keras/snn/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/keras/resnet/default*"
 ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" > $classifAlgoFile
 
-bash classification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 1.log
-#bash classification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 1.log &
-#bash classification "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 2.log &
-#bash classification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 3.log &
-#bash classification "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 4.log &
+bash classification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 1.log &
+bash classification "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 2.log &
+bash classification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 3.log &
+bash classification "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 4.log &
 wait
 
 cat output/*.log >> $overallLogFile
 rm -f output/*.log
 python3 CheckLogFiles.py $overallLogFile 1
-
-if [[ "$SL_DOCKER_IMAGE_NAME" == "shinylearner_gpu" ]]
-then
-  echo "got here1................................................................."
-  exit 0
-fi
-
-echo "got here2................................................................."
-exit 1
 
 #######################################################
 # Test h2o separately because they tend to throw errors
