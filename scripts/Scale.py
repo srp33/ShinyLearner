@@ -2,11 +2,9 @@ from sklearn.preprocessing import *
 import pandas as pd
 from sys import argv
 
-
 file_path = argv[7]
 verbose = argv[8] == "true"
 scaler = argv[9]
-
 
 #####################################################################################
 # Scaler Options
@@ -20,7 +18,6 @@ scaler = argv[9]
 # QuantileUniform = QuantileTransformer w/ uniform output
 # Normalizer = Normalizer
 #####################################################################################
-
 
 def scale_data(file_path, scaler='robust', verbose=False):
     scaler = scaler.lower()
@@ -86,6 +83,5 @@ def scale_data(file_path, scaler='robust', verbose=False):
     else:
         if verbose:
             print('No columns remain to be scaled, no action was performed')
-
 
 scale_data(file_path, scaler, verbose)

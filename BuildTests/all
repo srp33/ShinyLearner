@@ -34,14 +34,14 @@ classifAlgoFile=input/classifAlgos.list
 #   carlo cross validation.
 #########################################################
 
-#classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
+classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/demo*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default*"
-classifAlgo="AlgorithmScripts/Classification/tsv/mlr/s*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/s*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/xgboost/default*"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/arff/weka/ZeroR/default*"
@@ -65,10 +65,8 @@ cat output/*.log >> $overallLogFile
 rm -f output/*.log
 python3 CheckLogFiles.py $overallLogFile 1
 
-exit 0
-
 #######################################################
-# Test h2o separately because they tend to throw errors
+# Test h2o separately because it tends to throw errors
 # if you execute multiple in parallel.
 #######################################################
 
