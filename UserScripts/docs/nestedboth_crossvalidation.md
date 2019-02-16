@@ -18,7 +18,7 @@ OPTIONAL ARGUMENTS
 
     --verbose [false|true]
     --ohe [false|true]
-    --scale [false|true]
+    --scale [none|standard|robust|minmax|maxabs|power|quantnorm|quantunif|normalizer]
     --impute [false|true]
     --num-cores [integer]
     --temp-dir [dir_path]
@@ -34,7 +34,7 @@ EXAMPLE
       --classif-algo "AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default" \
       --fs-algo "AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default" \
       --num-features 5,10,50,100 \
-      --scale true \
+      --scale robust \
       --output-dir Output/
 
 NOTES
@@ -61,7 +61,7 @@ NOTES
 
     The --ohe argument is set to true by default. This means that any categorical variables will be [one-hot encoded](https://www.quora.com/What-is-one-hot-encoding-and-when-is-it-used-in-data-science).
     
-    The --scale argument is set to false by default. When set to true, any continuous variable(s) will be scaled to zero mean and unit variance. Integers will be scaled only if more than 50% of values are unique.
+    The --scale argument is set to none by default (no scaling is performed). When set to one of the other options, any continuous variable(s) will be scaled using the specified method. Information about the scaling methods can be found on the [scikit-learn site](https://scikit-learn.org/stable/auto_examples/preprocessing/plot_all_scaling.html#sphx-glr-auto-examples-preprocessing-plot-all-scaling-py). Continuous variables will be scaled only if more than 50% of values are unique.
 
     The --impute argument is set to false by default. When set to true, missing values will be imputed. Median-based imputation will be used for continuous and integer variables. Mode-based imputation will be used for discrete variables. Any variable missing more than 50% of values across all samples will be removed. Subsequently, any sample missing more than 50% of values across all features will be removed. In input data files, missing values should be specified as ?, NA, or null.
 

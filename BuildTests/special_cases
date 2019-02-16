@@ -79,3 +79,23 @@ bash run_docker_command $imageName $version "UserScripts/classification_montecar
 
 expectedNumAlgorithms=$(bash run_docker_command $imageName $version "ls $classifAlgo | wc -l")
 python3 CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
+
+#####################################
+# Test different scaling techniques
+#####################################
+
+description=StrongSignal_Both
+dataFiles="input/StrongSignal_Both.tsv.gz"
+specificOutputDir=output/$(basename $0)_${description}_montecarlo
+
+rm -rf $specificOutputDir/*
+
+for scaler in standard robust minmax maxabs power quantnorm quantunif normalizer
+do
+  bash run_docker_command $imageName $version "UserScripts/classification_montecarlo --data \"$dataFiles\" --description "$description" --iterations 1 --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose --impute true --scale $scaler" 2>&1 | tee -a $logFile
+
+  expectedNumAlgorithms=$(bash run_docker_command $imageName $version "ls $classifAlgo | wc -l")
+  python3 CheckAccuracy.py classification montecarlo $description "$specificOutputDir/Metrics.tsv" Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile
+
+  rm -rf $specificOutputDir/*
+done

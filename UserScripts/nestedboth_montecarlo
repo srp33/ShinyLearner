@@ -17,7 +17,7 @@ verbose="$(python3 scripts/ParseArgs.py --verbose FALSE false $@)"
 randomSeed="$(python3 scripts/ParseArgs.py --seed FALSE 1 $@)"
 proportionTrain="$(python3 scripts/ParseArgs.py --train-proportion FALSE 0.67 $@)"
 ohe="$(python3 scripts/ParseArgs.py --ohe FALSE true $@)"
-scale="$(python3 scripts/ParseArgs.py --scale FALSE false $@)"
+scale="$(python3 scripts/ParseArgs.py --scale FALSE none $@)"
 impute="$(python3 scripts/ParseArgs.py --impute FALSE false $@)"
 numCores="$(python3 scripts/ParseArgs.py --num-cores FALSE 1 $@)"
 tmpDir="$(python3 scripts/ParseArgs.py --temp-dir FALSE '' $@)"
@@ -80,10 +80,10 @@ then
   python3 scripts/OneHotEncode.py "$analysisDataFile" 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
-if [[ "$scale" == "true" ]]
+if [[ "$scale" != "none" ]]
 then
-  echo "Scaling numerical data (where applicable)..." 2>&1 | timestamp | tee -a "$outLogFile"
-  Rscript --vanilla scripts/Scale.R "$analysisDataFile" $verbose 2>&1 | timestamp | tee -a "$outLogFile"
+  echo "Scaling numerical data (where applicable)..." | timestamp | tee -a "$outLogFile"
+  python3 scripts/Scale.py "$analysisDataFile" "$scale" $verbose 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
 scripts/nestedboth "$analysisDataFile" "$description" "$outerNumIterations" "$innerNumIterations" "$verbose" "$fsAlgos" "$numFeaturesOptions" "$classifAlgos" "$outSelectedFeaturesFile" "$outPredictionsFile" "$outMetricsFile" "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" "$outNestedPredictionsFile" "$outNestedMetricsFile" "$outNestedFeatureSelectionBenchmarkFile" "$outNestedClassificationBenchmarkFile" "$outNestedBestFile" montecarlo $randomSeed $proportionTrain $impute "$tmpDir" "$outLogFile" "$numCores"
