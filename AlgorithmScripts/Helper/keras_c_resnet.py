@@ -89,8 +89,8 @@ def resnet(x, y, test):
         loss = categorical_crossentropy
     model = Model(input_layer, probabilities)
     try:
-        model = multi_gpu_model(model, gpus=2)
         gpu_setup()
+        model = multi_gpu_model(model, gpus=2)
     except:
         pass
     model.compile(optimizer=Adam(LEARNING_RATE), loss=loss)
