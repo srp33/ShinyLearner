@@ -3,6 +3,8 @@ import os
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import OneHotEncoder
+from tensorflow import ConfigProto, Session
+from tensorflow.keras import backend as K
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dropout, Dense, Input, Add, Activation, AlphaDropout
 from tensorflow.keras.regularizers import l2
@@ -40,6 +42,13 @@ x_test = pd.read_csv(TEST_FILE, sep='\t', index_col=0)
 # y_test = np.array([CLASS_OPTIONS.index(str(y[0])) for y in y_test.loc[:, ["Class"]].values.tolist()])
 # y_test = y_test.reshape(-1, 1)
 # y_test = OneHotEncoder().fit_transform(y_test).toarray()
+
+
+def gpu_setup():
+    cfg = ConfigProto()
+    cfg.gpu_options.allow_growth = True
+    K.set_session(Session(config=cfg))
+
 
 def resnet(x, y, test):
     dropout = AlphaDropout if ACTIVATION == 'snn' else Dropout
@@ -80,6 +89,7 @@ def resnet(x, y, test):
         loss = categorical_crossentropy
     model = Model(input_layer, probabilities)
     try:
+        gpu_setup()
         model = multi_gpu_model(model, gpus=2)
     except:
         pass

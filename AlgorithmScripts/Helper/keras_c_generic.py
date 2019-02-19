@@ -3,6 +3,8 @@ import os
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import OneHotEncoder
+from tensorflow import ConfigProto, Session
+from tensorflow.keras import backend as K
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dropout, Dense, Input, Flatten, BatchNormalization, Activation, AlphaDropout
 from tensorflow.keras.regularizers import l2
@@ -36,6 +38,12 @@ y_train = OneHotEncoder().fit_transform(y_train).toarray()
 x_test = pd.read_csv(TEST_FILE, sep='\t', index_col=0)
 
 
+def gpu_setup():
+    cfg = ConfigProto()
+    cfg.gpu_options.allow_growth = True
+    K.set_session(Session(config=cfg))
+
+
 def dnn(x, y, test):
     activation = 'selu' if MODEL_TYPE == 'snn' else 'elu'
     dropout = AlphaDropout if MODEL_TYPE == 'snn' else Dropout
@@ -66,6 +74,7 @@ def dnn(x, y, test):
         loss = categorical_crossentropy
     model = Model(input_layer, probabilities)
     try:
+        gpu_setup()
         model = multi_gpu_model(model, gpus=2)
     except:
         pass
