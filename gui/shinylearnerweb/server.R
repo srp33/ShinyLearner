@@ -492,7 +492,7 @@ shinyServer(function(input, output, session) {
   	  
   	## Linux/Mac  
 	} else if (os == 'linux/mac') {
-      lines <- c(lines, 'sudo docker run --rm -i')
+      lines <- c(lines, 'docker run --rm -i')
 	  ## Mount Input Dirs
 	  for (i in 1:length(hostInputDir[[1]])){
         if (i > 1) {break} # currently only supports one input directory
