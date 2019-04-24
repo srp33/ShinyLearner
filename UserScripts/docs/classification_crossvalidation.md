@@ -1,6 +1,6 @@
 **DESCRIPTION**
 
-This command will execute each specified algorithm using a k-fold cross-validation strategy. It will perform classification but not feature selection or algorithm optimization. It will output the performance of each algorithm and will use a majority-vote method to make multiple-classifier predictions.
+This {command} command executes the specified algorithm(s) using a k-fold cross-validation strategy. It performs classification (but not feature selection or hyperparameter optimization).
 
 **REQUIRED ARGUMENTS**
 
@@ -50,35 +50,35 @@ This command will execute each specified algorithm using a k-fold cross-validati
 
 **OUTPUT FILES**
 
-    Metrics.tsv
-
-    Predictions.tsv
-
-    ElapsedTime.tsv
-
-    Log.txt
-
 Please go [here](https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md) for descriptions of what these output files contain.
+
+* Metrics.tsv
+
+* Predictions.tsv
+
+* ElapsedTime.tsv
+
+* Log.txt
 
 **EXAMPLE**
 
-This example illustrates how to execute ShinyLearner using the [Docker](https://www.docker.com) software on a Unix-based system (e.g., Linux or Mac OS). For additional help or to learn about executing the software on Windows, go [here](http://bioapps.byu.edu/shinylearner/).
-
-    docker run --rm -i \
-      -v $(pwd)/:/InputData \
-      -v $(pwd)/Output:/OutputData \
-      srp33/shinylearner:version{version} \
-      UserScripts/classification_crossvalidation \
-        --data Data.tsv.gz \
-        --description "My_Interesting_Analysis" \
-        --iterations 1 \
-        --folds 10 \
-        --classif-algo "AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default" \
-        --scale robust \
-        --output-dir Output/
+The following example illustrates how to execute ShinyLearner using the [Docker](https://www.docker.com) software on a Unix-based system (e.g., Linux or Mac OS). For additional help or to learn about executing the software on Windows, go [here](http://bioapps.byu.edu/shinylearner/).
 
 The first -v argument specifies the directory where the input data files are stored on your computer. In the example above, they would be stored in the current working directory (`$(pwd)`). (Within the Docker container, ShinyLearner will access these files via `/InputData`.)
     
 The second `-v` argument specifies the directory where the output files will be stored; in the example above, they would be stored in a directory called `Output` that is a subdirectory of the current working directory (`$(pwd)`). (Within the Docker container, ShinyLearner will access these files via `/OutputData`.)
 
 The fourth line in the example indicates the name and version of the Docker image to be used.
+
+    docker run --rm -i \
+      -v $(pwd)/:/InputData \
+      -v $(pwd)/Output:/OutputData \
+      srp33/shinylearner:version{version} \
+      UserScripts/classification_crossvalidation \
+        --data /InputData/Data.tsv.gz \
+        --description "My_Interesting_Analysis" \
+        --iterations 1 \
+        --folds 10 \
+        --classif-algo "AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default" \
+        --scale robust \
+        --output-dir /OutputData/
