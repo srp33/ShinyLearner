@@ -22,16 +22,28 @@ OPTIONAL ARGUMENTS
 
 EXAMPLE
 
-    UserScripts/classification_crossvalidation \
-      --data Data.tsv.gz \
-      --description "My_Interesting_Analysis" \
-      --iterations 1 \
-      --folds 10 \
-      --classif-algo "AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default" \
-      --scale robust \
-      --output-dir Output/
+    docker run --rm -i \
+      -v $(pwd)/:/InputData \
+      -v $(pwd)/Output:/OutputData \
+      srp33/shinylearner:version{version} \
+      UserScripts/classification_crossvalidation \
+        --data Data.tsv.gz \
+        --description "My_Interesting_Analysis" \
+        --iterations 1 \
+        --folds 10 \
+        --classif-algo "AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default" \
+        --scale robust \
+        --output-dir Output/
 
 NOTES
+
+    The above example illustrates how to execute the software using the [Docker](https://www.docker.com) software. You must first install Docker on your computer.
+    
+    The first `-v` argument specifies the directory where the input data files are stored; in the example above, they would be stored in the current working directory (`$(pwd)`). (Within the Docker container, ShinyLearner will access these files via `/InputData`.)
+    
+    The second `-v` argument specifies the directory where the output files will be stored; in the example above, they would be stored in a directory called `Output` that is a subdirectory of the current working directory (`$(pwd)`). (Within the Docker container, ShinyLearner will access these files via `/OutputData`.)
+
+    The fourth line in the example indicates the name and version of the Docker image to be used.
 
     The --data argument allows you to specify input data file(s) in one of the supported formats (see https://github.com/srp33/ShinyLearner/blob/master/InputFormats.md).
 
