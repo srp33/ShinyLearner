@@ -1,19 +1,21 @@
-**DESCRIPTION**
+## DESCRIPTION
 
-This {command} command executes the specified algorithm(s) using a k-fold cross-validation strategy. It performs classification (but not feature selection or hyperparameter optimization).
+The `classification_crossvalidation` command executes the specified algorithm(s) using a k-fold cross-validation strategy. It performs classification (but not feature selection or hyperparameter optimization).
 
 **REQUIRED ARGUMENTS**
 
     --data [file_path]
     --description [description]
+    --output-dir [dir_path]
     --folds [number]
     --iterations [number]
     --classif-algo [file_path]
-    --output-dir [dir_path]
 
 The `--data` argument allows you to specify input data file(s) in one of the [supported formats](https://github.com/srp33/ShinyLearner/blob/master/InputFormats.md).
 
 The `--description` value should be a user-friendly description of the analysis that will be performed. This description will be specified in the output files. If the description contains space characters, be sure to surround it in quotation marks.
+
+The `--output-dir` argument allows you to indicate where [output files](https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md) will be stored. If this directory does not already exist, ShinyLearner will create it.
 
 The `--folds` argument must be an integer. If the value is either 0 or equal to the number of samples in the data set, leave-one-out cross validation will be used. If neither of these situations occurs, k-fold cross validation will be used, and the specified value will be used as *k*.
 
@@ -22,8 +24,6 @@ The `--iterations` value must be a positive integer. It indicates the number of 
 The `--classif-algo` argument allows you to specify a classification algorithm to be used in the analysis. The value should be a relative path to a script specified under the AlgorithmScripts directory (for example, `AlgorithmScripts/Classification/tsv/sklearn/svm`). The paths may contain wildcard characters (surround the path in quotes). Alternatively, you may specify the name of a text file that ends with ".list" and contains a list of [algorithms](https://github.com/srp33/ShinyLearner/blob/master/Algorithms.md) (one per line).
 
 The `--data` and `--classif-algo` arguments must be used at least once but can be used multiple times. Wildcards may be used (in quotations).
-
-The `--output-dir` argument allows you to indicate where [output files](https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md) will be stored. If this directory does not already exist, ShinyLearner will create it.
 
 **OPTIONAL ARGUMENTS**
 
@@ -75,8 +75,8 @@ The fourth line in the example below indicates the name and version of the Docke
       UserScripts/classification_crossvalidation \
         --data /InputData/Data.tsv.gz \
         --description "My_Interesting_Analysis" \
+        --output-dir /OutputData/ \
         --iterations 1 \
         --folds 10 \
         --classif-algo "AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default" \
-        --scale robust \
-        --output-dir /OutputData/
+        --scale robust
