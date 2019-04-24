@@ -1,8 +1,8 @@
-DESCRIPTION
+**DESCRIPTION**
 
-    This command will execute each specified algorithm using a k-fold cross-validation strategy. It will perform classification but not feature selection or algorithm optimization. It will output the performance of each algorithm and will use a majority-vote method to make multiple-classifier predictions.
+This command will execute each specified algorithm using a k-fold cross-validation strategy. It will perform classification but not feature selection or algorithm optimization. It will output the performance of each algorithm and will use a majority-vote method to make multiple-classifier predictions.
 
-REQUIRED ARGUMENTS
+**REQUIRED ARGUMENTS**
 
     --data [file_path]
     --description [description]
@@ -11,7 +11,7 @@ REQUIRED ARGUMENTS
     --classif-algo [file_path]
     --output-dir [dir_path]
 
-OPTIONAL ARGUMENTS
+**OPTIONAL ARGUMENTS**
 
     --verbose [false|true]
     --ohe [false|true]
@@ -20,7 +20,7 @@ OPTIONAL ARGUMENTS
     --num-cores [integer]
     --temp-dir [dir_path]
 
-ARGUMENT DESCRIPTIONS
+**ARGUMENT DESCRIPTIONS**
 
     The --data argument allows you to specify input data file(s) in one of the supported formats (see https://github.com/srp33/ShinyLearner/blob/master/InputFormats.md).
 
@@ -48,7 +48,7 @@ ARGUMENT DESCRIPTIONS
     
     When a value is specified for --temp-dir, temporary files will be stored in the specified location; otherwise, temporary files will be stored in the operating system's default location for temporary files.
 
-OUTPUT FILES
+**OUTPUT FILES**
 
     Metrics.tsv
 
@@ -60,7 +60,7 @@ OUTPUT FILES
 
 Please go [here](https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md) for descriptions of what these output files contain.
 
-EXAMPLE
+**EXAMPLE**
 
 This example illustrates how to execute ShinyLearner using the [Docker](https://www.docker.com) software on a Unix-based system (e.g., Linux or Mac OS). For additional help or to learn about executing the software on Windows, go [here](http://bioapps.byu.edu/shinylearner/).
 
