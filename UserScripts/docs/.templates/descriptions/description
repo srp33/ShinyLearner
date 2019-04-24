@@ -1,0 +1,1 @@
+The `--description` value should be a user-friendly description of the analysis that will be performed. This description will be specified in the output files. If the description contains space characters, be sure to surround it in quotation marks.

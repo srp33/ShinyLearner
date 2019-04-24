@@ -1,0 +1,11 @@
+#! /bin/bash
+
+this_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+for template_file in $this_dir/docs/*
+do
+  #out_file=../../$(basename $template_file)
+  out_file=/tmp/$(basename $template_file)
+
+  python3 BuildDoc.py $template_file $this_dir $out_file
+done

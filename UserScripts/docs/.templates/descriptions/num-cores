@@ -1,0 +1,1 @@
+The `--num-cores` argument is set to `1` by default. When set to a number greater than `1`, ShinyLearner will attempt to use multiple cores when executing a given algorithm. Not every algorithm supports multi-core processing.

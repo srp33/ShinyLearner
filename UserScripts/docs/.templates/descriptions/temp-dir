@@ -1,0 +1,1 @@
+When a value is specified for `--temp-dir`, temporary files will be stored in the specified location; otherwise, temporary files will be stored in the operating system's default location for temporary files.

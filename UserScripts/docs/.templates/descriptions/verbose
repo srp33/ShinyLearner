@@ -1,0 +1,1 @@
+The `--verbose` argument is set to `false` by default. If set to `true`, detailed information about the processing steps will be printed to standard out. This flag is typically used for debugging purposes.

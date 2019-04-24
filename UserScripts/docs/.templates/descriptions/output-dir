@@ -1,0 +1,1 @@
+The `--output-dir` argument allows you to indicate where [output files](https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md) will be stored. If this directory does not already exist, ShinyLearner will create it.

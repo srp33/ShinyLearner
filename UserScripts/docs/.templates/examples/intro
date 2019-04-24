@@ -1,0 +1,16 @@
+The following example illustrates how to execute ShinyLearner using [Docker](https://www.docker.com) on a Unix-based system (e.g., Linux or Mac OS). For additional help or to learn about executing the software on Windows, go [here](http://bioapps.byu.edu/shinylearner/).
+
+The first `-v` argument specifies the directory where the input data files are stored on your computer. In the example below, the data files would be stored in the current working directory (`$(pwd)`). (Within the Docker container, ShinyLearner will access these files via `/InputData`.)
+    
+The second `-v` argument specifies the directory where the output files will be stored after ShinyLearner performs the analysis. In the example below, the output files would be stored in a directory called `Output` that is a subdirectory of the current working directory (`$(pwd)`). (Within the Docker container, ShinyLearner will access these files via `/OutputData`.)
+
+The fourth line in the example below indicates the name and version of the Docker image to be used.
+
+    docker run --rm -i \
+      -v $(pwd)/:/InputData \
+      -v $(pwd)/Output:/OutputData \
+      srp33/shinylearner:version{version} \
+      UserScripts/classification_crossvalidation \
+        --data /InputData/Data.tsv.gz \
+        --description "My_Interesting_Analysis" \
+        --output-dir /OutputData/ \

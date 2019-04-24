@@ -1,0 +1,1 @@
+The `--ohe` argument is set to `true` by default. If set to `true`, any categorical variable in the data will be [one-hot encoded](https://www.quora.com/What-is-one-hot-encoding-and-when-is-it-used-in-data-science).
