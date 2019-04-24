@@ -2,7 +2,7 @@
 
 The `classification_crossvalidation` command executes the specified algorithm(s) using a k-fold cross-validation strategy. It performs classification (but not feature selection or hyperparameter optimization).
 
-**REQUIRED ARGUMENTS**
+## REQUIRED ARGUMENTS
 
     --data [file_path]
     --description [description]
@@ -25,7 +25,7 @@ The `--classif-algo` argument allows you to specify a classification algorithm t
 
 The `--data` and `--classif-algo` arguments must be used at least once but can be used multiple times. Wildcards may be used (in quotations).
 
-**OPTIONAL ARGUMENTS**
+## OPTIONAL ARGUMENTS
 
     --verbose [false|true]
     --ohe [false|true]
@@ -46,7 +46,7 @@ The `--num-cores` argument is set to `1` by default. When set to a number greate
 
 When a value is specified for `--temp-dir`, temporary files will be stored in the specified location; otherwise, temporary files will be stored in the operating system's default location for temporary files.
 
-**OUTPUT FILES**
+## OUTPUT FILES
 
 Please go [here](https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md) for descriptions of what these output files contain.
 
@@ -58,7 +58,7 @@ Please go [here](https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.m
 
 * Log.txt
 
-**EXAMPLE**
+## EXAMPLE
 
 The following example illustrates how to execute ShinyLearner using [Docker](https://www.docker.com) on a Unix-based system (e.g., Linux or Mac OS). For additional help or to learn about executing the software on Windows, go [here](http://bioapps.byu.edu/shinylearner/).
 

@@ -2,7 +2,7 @@
 
 The `classification_crossvalidation` command executes the specified algorithm(s) using a k-fold cross-validation strategy. It performs classification (but not feature selection or hyperparameter optimization).
 
-**REQUIRED ARGUMENTS**
+## REQUIRED ARGUMENTS
 
 {args/data}
 {args/description}
@@ -25,7 +25,7 @@ The `classification_crossvalidation` command executes the specified algorithm(s)
 
 {descriptions/multiple}
 
-**OPTIONAL ARGUMENTS**
+## OPTIONAL ARGUMENTS
 
 {args/verbose}
 {args/ohe}
@@ -46,7 +46,7 @@ The `classification_crossvalidation` command executes the specified algorithm(s)
 
 {descriptions/temp-dir}
 
-**OUTPUT FILES**
+## OUTPUT FILES
 
 {descriptions/output_files_intro}
 
@@ -58,7 +58,7 @@ The `classification_crossvalidation` command executes the specified algorithm(s)
 
 * Log.txt
 
-**EXAMPLE**
+## EXAMPLE
 
 {examples/intro}
 {examples/iterations}
