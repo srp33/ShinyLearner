@@ -1,5 +1,0 @@
-#!/bin/bash
-
-#sudo docker run --rm -p 80:3838 srp33/shinylearnerweb:v1
-sudo docker run -t -i --rm srp33/shinylearnerweb:v1 /bin/bash
-##sudo docker run --rm -p 443:3838 srp33/shinylearnerweb:v1

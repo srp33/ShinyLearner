@@ -1,4 +1,0 @@
-#!/bin/bash
-
-sudo docker pull srp33/shinylearnerweb:v1
-#sudo docker
