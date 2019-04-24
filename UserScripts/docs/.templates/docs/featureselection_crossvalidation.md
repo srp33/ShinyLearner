@@ -1,15 +1,15 @@
 ## DESCRIPTION
 
-The `classification_crossvalidation` command uses k-fold cross-validation. It performs classification (but not hyperparameter optimization or feature selection).
+The `featureselection_crossvalidation` command uses k-fold cross-validation. It performs feature selection (but not classification). It outputs a ranked list of features for each algorithm as well as a Borda Count list of features based on the rankings of all feature-selection algorithms.
 
 ## REQUIRED ARGUMENTS
 
 {args/data}
 {args/description}
 {args/output-dir}
-{args/folds}
 {args/iterations}
-{args/classif-algo}
+{args/folds}
+{args/fs-algo}
 
 {descriptions/data}
 
@@ -17,13 +17,13 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 
 {descriptions/output-dir}
 
-{descriptions/folds}
-
 {descriptions/iterations}
 
-{descriptions/classif-algo}
+{descriptions/folds}
 
-{descriptions/multiple_cl}
+{descriptions/fs-algo}
+
+{descriptions/multiple_fs}
 
 ## OPTIONAL ARGUMENTS
 
@@ -50,9 +50,9 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 
 {descriptions/output_files_intro}
 
-* Metrics.tsv
+* SelectedFeatures.tsv
 
-* Predictions.tsv
+* SelectedFeatures_Summarized.tsv
 
 * ElapsedTime.tsv
 
@@ -61,11 +61,11 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 ## EXAMPLE
 
 {examples/intro}
-      UserScripts/classification_crossvalidation \
+      UserScripts/featureselection_crossvalidation \
 {examples/data}
 {examples/description}
 {examples/output-dir}
 {examples/iterations}
 {examples/folds}
-{examples/classif-algo}
+{examples/fs-algo}
 {examples/scale}

@@ -1,0 +1,1 @@
+The `--inner-folds` argument must be an integer. If the value is either 0 or equal to the number of samples in the data set, leave-one-out cross validation will be used. If neither of these situations occurs, k-fold cross validation will be used, and the specified value will be used as *k*.

@@ -14,9 +14,18 @@ cd AlgorithmScripts/Helper
 ./build_algorithm_scripts
 cd ../..
 
+cd UserScripts/docs/.templates
+./build_docs
+cd ../../..
+
 python scripts/UpdateVersion.py travis.yml.template VERSION True .travis.yml
 python scripts/UpdateVersion.py README_template.md VERSION False README.md
 python scripts/UpdateVersion.py GettingStarted_template.md VERSION False GettingStarted.md
+
+for f in UserScripts/docs/*.md
+do
+  python scripts/UpdateVersion.py $f VERSION False $f
+done
 
 ./scripts/build_image shinylearner
 ./BuildTests/all

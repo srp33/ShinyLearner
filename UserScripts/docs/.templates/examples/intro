@@ -10,7 +10,3 @@ The fourth line in the example below indicates the name and version of the Docke
       -v $(pwd)/:/InputData \
       -v $(pwd)/Output:/OutputData \
       srp33/shinylearner:version{version} \
-      UserScripts/classification_crossvalidation \
-        --data /InputData/Data.tsv.gz \
-        --description "My_Interesting_Analysis" \
-        --output-dir /OutputData/ \

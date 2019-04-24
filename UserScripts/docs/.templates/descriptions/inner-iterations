@@ -1,0 +1,1 @@
+The `--inner-iterations` value must be a positive integer. The inner iterations are used for hyperparameter optimization, while the outer iterations are used to assess generalizability of the selected parameters. This value indicates the number of times that cross-validation should be performed. 

@@ -1,13 +1,14 @@
 ## DESCRIPTION
 
-The `classification_crossvalidation` command uses k-fold cross-validation. It performs classification (but not hyperparameter optimization or feature selection).
+The `nestedclassification_crossvalidation` command uses k-fold cross-validation. It performs classification and hyperparameter optimization (but not feature selection). It uses nested, k-fold cross validation for hyperparameter optimization. It outputs the performance of each algorithm for the inner (nested) folds and uses a select-best method for predictions in the outer folds.
 
 ## REQUIRED ARGUMENTS
 
 {args/data}
 {args/description}
 {args/output-dir}
-{args/folds}
+{args/outer-folds}
+{args/inner-folds}
 {args/iterations}
 {args/classif-algo}
 
@@ -17,7 +18,9 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 
 {descriptions/output-dir}
 
-{descriptions/folds}
+{descriptions/outer-folds}
+
+{descriptions/inner-folds}
 
 {descriptions/iterations}
 
@@ -54,6 +57,12 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 
 * Predictions.tsv
 
+* Nested_Metrics.tsv
+
+* Nested_Predictions.tsv
+
+* Nested_ElapsedTime.tsv
+
 * ElapsedTime.tsv
 
 * Log.txt
@@ -61,11 +70,12 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 ## EXAMPLE
 
 {examples/intro}
-      UserScripts/classification_crossvalidation \
+      UserScripts/nestedclassification_crossvalidation \
 {examples/data}
 {examples/description}
 {examples/output-dir}
 {examples/iterations}
-{examples/folds}
+{examples/outer-folds}
+{examples/inner-folds}
 {examples/classif-algo}
 {examples/scale}

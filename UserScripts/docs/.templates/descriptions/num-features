@@ -1,0 +1,1 @@
+The `--num-features` argument indicates the number of top-ranked features that should be used in nested cross-validation in an attempt to identify the optimal number of features for classification. Multiple values should be separated by commas.

@@ -12,12 +12,11 @@ versionFile.close()
 if increment:
     version = version + 1
 
-outFile = open(outFilePath, 'w')
 templateFile = open(templateFilePath)
-for line in templateFile:
-    line = line.replace("{version}", str(version))
-    outFile.write(line)
-templateFile.close()
+template = templateFile.read().replace("{version}", str(version))
+
+outFile = open(outFilePath, 'w')
+outFile.write(template)
 outFile.close()
 
 versionFile = open(versionFilePath, 'w')

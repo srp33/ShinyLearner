@@ -1,6 +1,6 @@
 ## DESCRIPTION
 
-The `classification_crossvalidation` command uses k-fold cross-validation. It performs classification (but not feature selection or hyperparameter optimization).
+The `classification_crossvalidation` command uses k-fold cross-validation. It performs classification (but not hyperparameter optimization or feature selection).
 
 ## REQUIRED ARGUMENTS
 
@@ -71,7 +71,7 @@ The fourth line in the example below indicates the name and version of the Docke
     docker run --rm -i \
       -v $(pwd)/:/InputData \
       -v $(pwd)/Output:/OutputData \
-      srp33/shinylearner:version{version} \
+      srp33/shinylearner:version477 \
       UserScripts/classification_crossvalidation \
         --data /InputData/Data.tsv.gz \
         --description "My_Interesting_Analysis" \

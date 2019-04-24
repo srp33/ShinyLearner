@@ -1,13 +1,12 @@
 ## DESCRIPTION
 
-The `classification_crossvalidation` command uses k-fold cross-validation. It performs classification (but not hyperparameter optimization or feature selection).
+The `classification_montecarlo` command uses Monte Carlo cross-validation. It performs classification (but not hyperparameter optimization or feature selection).
 
 ## REQUIRED ARGUMENTS
 
 {args/data}
 {args/description}
 {args/output-dir}
-{args/folds}
 {args/iterations}
 {args/classif-algo}
 
@@ -16,8 +15,6 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 {descriptions/description}
 
 {descriptions/output-dir}
-
-{descriptions/folds}
 
 {descriptions/iterations}
 
@@ -28,6 +25,8 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 ## OPTIONAL ARGUMENTS
 
 {args/verbose}
+{args/seed}
+{args/train-proportion}
 {args/ohe}
 {args/scale}
 {args/impute}
@@ -35,6 +34,10 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 {args/temp-dir}
 
 {descriptions/verbose}
+
+{descriptions/seed}
+
+{descriptions/train-proportion}
 
 {descriptions/ohe}
 
@@ -61,11 +64,11 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 ## EXAMPLE
 
 {examples/intro}
-      UserScripts/classification_crossvalidation \
+      UserScripts/classification_montecarlo \
 {examples/data}
 {examples/description}
 {examples/output-dir}
 {examples/iterations}
-{examples/folds}
 {examples/classif-algo}
+{examples/seed}
 {examples/scale}
