@@ -1,6 +1,6 @@
-**DESCRIPTION**
+## DESCRIPTION
 
-This `classification_crossvalidation` command executes the specified algorithm(s) using a k-fold cross-validation strategy. It performs classification (but not feature selection or hyperparameter optimization).
+The `classification_crossvalidation` command executes the specified algorithm(s) using a k-fold cross-validation strategy. It performs classification (but not feature selection or hyperparameter optimization).
 
 **REQUIRED ARGUMENTS**
 
