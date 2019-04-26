@@ -28,6 +28,7 @@ The `--data` and `--classif-algo` arguments must be used at least once but can b
 ## OPTIONAL ARGUMENTS
 
     --verbose [false|true]
+    --seed [integer]
     --ohe [false|true]
     --scale [none|standard|robust|minmax|maxabs|power|quantnorm|quantunif|normalizer]
     --impute [false|true]
@@ -35,6 +36,8 @@ The `--data` and `--classif-algo` arguments must be used at least once but can b
     --temp-dir [dir_path]
 
 The `--verbose` argument is set to `false` by default. If set to `true`, detailed information about the processing steps will be printed to standard out. This flag is typically used for debugging purposes.
+
+The `--seed` argument allows the user to specify a random seed for assigning samples to training and test set(s). This value is `1` by default.
 
 The `--ohe` argument is set to `true` by default. If set to `true`, any categorical variable in the data will be [one-hot encoded](https://www.quora.com/What-is-one-hot-encoding-and-when-is-it-used-in-data-science).
 
@@ -74,7 +77,7 @@ The fifth line in the example below indicates the name and version of the Docker
       -v "$(pwd)"/:"/InputData" \
       -v "$(pwd)/Output":"/OutputData" \
       --user $(id -u):$(id -g) \
-      srp33/shinylearner:version480 \
+      srp33/shinylearner:version483 \
       UserScripts/classification_crossvalidation \
         --data /InputData/Data.tsv.gz \
         --description "My_Interesting_Analysis" \
@@ -82,4 +85,5 @@ The fifth line in the example below indicates the name and version of the Docker
         --iterations 1 \
         --folds 10 \
         --classif-algo "AlgorithmScripts/Classification/tsv/sklearn/svm/default*" \
+        --seed 1 \
         --scale robust

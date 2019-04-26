@@ -38,6 +38,8 @@ shinyServer(function(input, output, session) {
   
   helpTextStylingOpen <- '<p style="color:rgb(128,128,128)">'
   helpTextStylingClose <- '</p>'
+  errorTextStylingOpen <- '<p style="color:rgb(256,0,0)">'
+  errorTextStylingClose <- '</p>'
   exp_desc_help_text <- 'Please enter a short, unique description of the analysis.'
   input_dir_help_text <- 'Please indicate the directory on your computer where your data files are stored. Please use an <a target="_blank" href="https://en.wikipedia.org/wiki/Path_(computing)">absolute file path</a>.'
   input_files_help_text <- 'Please indicate the name(s) of the data files that you would like to analyze. The files should be present in the directory specified above. You can specify multiple files by separate the file names with commas. Wildcards are also allowed (for example, *.csv). When multiple file names have been specified, ShinyLearner will merge them. <a target=_blank" href="https://github.com/srp33/ShinyLearner/blob/master/InputFormats.md">This page</a> explains the supported file formats.'
@@ -48,12 +50,15 @@ shinyServer(function(input, output, session) {
   sel_fsAlgos_help_text <- 'Choose one or more feature-selection algorithms. ShinyLearner has integrated a wide variety of algorithms from popular machine-learning libraries. You can learn more about these algorithms <a target="_blank" href="https://github.com/srp33/ShinyLearner/blob/master/Algorithms.md"><b>here</b></a>.'
   os_help_text <- 'ShinyLearner will be executed within a "software container" (explanation <a target="_blank" href="https://gigascience.biomedcentral.com/articles/10.1186/s13742-016-0135-4"><b>here</b></a>) using the <a target="_blank" href="https://www.docker.com">Docker</a> technology. Docker can be executed on many operating systems, including Mac OS, Windows, and Linux. But the command that you use to execute Docker may be different, depending on the operating system.'
   script_help_text <- 'Copy this script into a terminal / command prompt after turning on Docker.'
-  mc_help_text <- 'Machine-learning analyses can be executed in multiple iterations. When multiple iterations are used, it helps with estimating the consistency of the results. "Outer" iterations indicate the number of times that the overall process (training and testing) are performed. "Inner" iterations are used to optimize algorithm choice for each testing set, based solely on the training data. A larger number of iterations should lead to more robust results but will also increase computational time.'
-  kf_help_text <- 'Machine-learning analyses can be executed in multiple iterations. When multiple iterations are used, it helps with estimating the consistency of the results. "Outer" iterations indicate the number of times that the overall process (training and testing) are performed. "Inner" iterations are used to optimize algorithm choice for each testing set, based solely on the training data. A larger number of iterations should lead to more robust results but will also increase computational time.'
+  mc_help_text <- 'mc_help_textMonte Carlo cross validation is typically executed in multiple iterations. This helps with estimating the consistency of an algorithm\'s performance. In each iteration, a different training and test set is selected randomly from the full data set. A larger number of iterations should lead to more robust results but will also increase computational time.'
+  kf_help_text <- 'kf_help_textWhen performing <a target="_blank" href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)#k-fold_cross-validation">k-fold cross validation</a>, you must select a value for <em>k</em>. Higher <em>k</em> values result in a larger number of training and test sets but will also increase computational time.'
+  mc_nested_help_text <- 'mc_nested_help_textClassification analyses can be executed in multiple iterations. When multiple iterations are used, it helps with estimating the consistency of the results. "Outer" iterations indicate the number of times that the overall process (training and testing) is performed. "Inner" iterations are used to optimize algorithm choice (or to select features) for each testing set, based solely on the training data. A larger number of iterations should lead to more robust results but will also increase computational time.'
+  kf_nested_help_text <- 'kf_nested_help_textClassification analyses can be executed in multiple iterations. When multiple iterations are used, it helps with estimating the consistency of the results. "Outer" iterations indicate the number of times that the overall process (k-fold cross validation) is performed. "Inner" iterations are used to optimize algorithm choice (or to select features) for each testing set, based solely on the training data. A larger number of iterations should lead to more robust results but will also increase computational time.'
   ohe_help_text <- 'Many machine-learning algorithms are unable to process discrete variables, so one-hot encoding can be used to expand discrete variables into multiple binary variables. You can learn more about this option <a target="_blank" href="https://www.quora.com/What-is-one-hot-encoding-and-when-is-it-used-in-data-science">here</a>.'
   scale_help_text <- 'Many machine-learning algorithms require that continuous variables be scaled in a consistent way. This option makes it possible to scale continuous variables to have a zero mean and unit variance (more <a target="_blank" href="https://en.wikipedia.org/wiki/Feature_scaling">here</a>). Integers will be scaled only if more than 50% of values are unique.'
   impute_help_text <- 'Many machine-learning algorithms are unable to process missing data values. This option makes it possible to <a target="_blank" href="https://en.wikipedia.org/wiki/Imputation_(statistics)">impute</a> missing values. Median-based imputation is used for continuous and integer variables. Mode-based imputation is used for discrete variables. Any variable missing more than 50% of values across all samples will be removed. Subsequently, any sample missing more than 50% of values across all features will be removed. In input data files, missing values should be specified as ?, NA, or null.'
   seed_help_text <- 'When samples are assigned to training and testing sets, they are randomly assigned. To ensure that samples are assigned in a consistent manner when the same analysis is repeated, we use a random seed. ShinyLearner sets the seed by default, but you can change the seed using this option. Please specify an integer. Note: some machine-learning algorithms non-deterministic, so they may produce different results each time they are run, even when a seed is specified.'
+  incomplete_error_message <- "Please complete the other tabs before proceeding."
   
   ## Get Algorithms from File System
   prefix <- function(x) {
@@ -77,7 +82,6 @@ shinyServer(function(input, output, session) {
   # Initializations    
   shiny_script <- ''
   
-  # (1) Subpage
   ## Experiment Description
   output$exp_desc_textbox_ui <-renderUI({
     textInput("exp_desc_textbox", NULL, value="", width='100%')
@@ -109,7 +113,6 @@ shinyServer(function(input, output, session) {
     HTML(paste(helpTextStylingOpen, output_dir_help_text, helpTextStylingClose, sep=''))
   })
   
-  # (2) Subpage
   ## Choose Validation UI
   output$validation_radio_ui <- renderUI({
     radioButtons('validation_radio', NULL, validationChoices, selected=defaultValidation)
@@ -124,44 +127,70 @@ shinyServer(function(input, output, session) {
   output$feat_sel_help_message_ui <- renderUI({
     HTML(paste(helpTextStylingOpen, feat_sel_help_text, helpTextStylingClose, sep=''))
   })
+
+  is_validation_set <- function() {length(input$validation_radio) != 0}
+  is_monte_carlo <- function() {input$validation_radio == 'mc'}
+  is_k_fold <- function() {input$validation_radio == 'kf'}
+  is_nested_validation <- function() {
+    length(input$sel_classifAlgos) > 1 || 
+    input$feat_sel_radio == 'fs' ||
+    (!is.null(input$sel_classifOpt) && input$sel_classifOpt)
+  }
   
-  # (3) Subpage
   ## MC Inner Iterations
   output$mc_inner_iterations_radio_ui <- renderUI({ 
-    if (length(input$validation_radio) != 0 && input$validation_radio == 'mc') {
+    if (is_validation_set() && is_monte_carlo() && is_nested_validation()) {
       radioButtons('mc_inner_iterations_radio', 'Choose number of inner iterations:', mc_inner_options, selected = defaultInnerIterations)
     }
   })
   ## MC Outer Iterations
   output$mc_outer_iterations_radio_ui <- renderUI({
-    if (length(input$validation_radio) != 0 && input$validation_radio == 'mc') {
-      radioButtons('mc_outer_iterations_radio', 'Choose number of outer iterations:', mc_outer_options, selected=defaultOuterIterations)
+    if (is_validation_set()) {
+      if (is_monte_carlo()) {
+        message <- ifelse(is_nested_validation(), 'Choose number of outer iterations:', "Choose number of iterations:")
+        radioButtons('mc_outer_iterations_radio', message, mc_outer_options, selected=defaultOuterIterations)
+      }
+    } else {
+      HTML(paste0(errorTextStylingOpen, incomplete_error_message, errorTextStylingClose))
     }
   })
   ## KF Inner Folds
   output$kf_inner_folds_radio_ui <- renderUI({
-    if (length(input$validation_radio) != 0 && input$validation_radio == 'kf')
+    if (is_validation_set() && is_k_fold() && is_nested_validation())
       radioButtons('kf_inner_folds_radio', 'Choose number of inner folds:', kf_inner_options, selected=defaultInnerFolds)
   })
   ## KF Outer Folds
   output$kf_outer_folds_radio_ui <- renderUI({
-    if (length(input$validation_radio) != 0 && input$validation_radio == 'kf')
-      radioButtons('kf_outer_folds_radio', 'Choose number of outer folds:', kf_outer_options, selected=defaultOuterFolds)
+    if (is_validation_set()) {
+      if (is_k_fold()) {
+        message <- ifelse(is_nested_validation(), 'Choose number of outer folds:', 'Choose number of folds:')
+        radioButtons('kf_outer_folds_radio', message, kf_outer_options, selected=defaultOuterFolds)
+      }
+    }
   })
   ## KF Iterations
   output$kf_iterations_radio_ui <- renderUI({
-    if (length(input$validation_radio) != 0 && input$validation_radio == 'kf')
+    if (is_validation_set() && is_k_fold())
       radioButtons('kf_iterations_radio', 'Choose number of iterations:', kf_iterations_options, selected=defaultIterations)
   })
   output$val_settings_help_message_ui <- renderUI({
-    if (length(input$validation_radio) != 0 && input$validation_radio == 'mc') {
-      HTML(paste(helpTextStylingOpen, mc_help_text, helpTextStylingClose, sep=''))
-    } else if (length(input$validation_radio) != 0 && input$validation_radio == 'kf') {
-      HTML(paste(helpTextStylingOpen, kf_help_text, helpTextStylingClose, sep=''))
+    if (is_validation_set()) {
+      if (is_monte_carlo()) {
+        if (is_nested_validation()) {
+          HTML(paste(helpTextStylingOpen, mc_nested_help_text, helpTextStylingClose, sep=''))
+        } else {
+          HTML(paste(helpTextStylingOpen, mc_help_text, helpTextStylingClose, sep=''))
+        }
+      } else {
+        if (is_nested_validation()) {
+          HTML(paste(helpTextStylingOpen, kf_nested_help_text, helpTextStylingClose, sep=''))
+        } else {
+          HTML(paste(helpTextStylingOpen, kf_help_text, helpTextStylingClose, sep=''))
+        }
+      }
     }
   })
   
-  # (4) Subpage
   ## Classification Algorithm
   output$sel_classifAlgos_ui <- renderUI({
     selectizeInput('sel_classifAlgos', NULL, choices = classifAlgosOptions, multiple = TRUE, selected=defaultClassifAlgos)
@@ -191,7 +220,6 @@ shinyServer(function(input, output, session) {
     } else {return()}
   })
   
-  # (5) Subpage
   ## One-Hot-Encoding
   output$ohe_checkbox_ui <- renderUI({
     checkboxInput('ohe_checkbox', HTML('<b>One-hot encoding</b>'), value = defaultOHE)
@@ -221,7 +249,6 @@ shinyServer(function(input, output, session) {
     HTML(paste(helpTextStylingOpen, seed_help_text, helpTextStylingClose, sep=''))
   })
   
-  # (6) Subpage
   ## Operating System
   output$os_ui <- renderUI({
     radioButtons('os_radio', NULL, osOptions, selected=defaultOS)
@@ -230,7 +257,7 @@ shinyServer(function(input, output, session) {
     HTML(paste(helpTextStylingOpen, os_help_text, helpTextStylingClose, sep=''))
   })
 
-  ## This function synthesizes all of the user's input, and assigns the resulting string to the global variable 'shiny_script'.
+  ## This function synthesizes all of the user's input, and assigns the resulting string to the variable 'shiny_script'.
   output$shiny_script <- renderText({
     
     # Validate required fields (we only need to check one per page - and some pages don't need to be checked)
@@ -241,7 +268,7 @@ shinyServer(function(input, output, session) {
                     !is.null(input$ohe_checkbox) &
                     !is.null(input$sel_classifOpt) &
                     input$seed_textbox != '',
-                  "Please complete the other tabs before proceeding."))
+                  incomplete_error_message))
     
     tilde_error_message <- "The ~ character is not allowed in the input or output directory path. Please use absolute paths."
     validate(need(!grepl("~", input$input_dir_textbox), tilde_error_message))
@@ -300,11 +327,13 @@ shinyServer(function(input, output, session) {
     data_line <- paste0('  --data "', clientInputFiles, '"')
     desc_line <- paste0('  --description "', expDesc, '"')
     output_dir_line <- paste0('  --output-dir "', containerOutputDir, '"')
-    iter_line <- paste('  --iterations', kf_iterations)
     outer_iter_line <- paste('  --outer-iterations', mc_outer)
     inner_iter_line <- paste('  --inner-iterations', mc_inner)
+    iter_line <- paste('  --iterations', mc_outer)
     outer_folds_line <- paste('  --outer-folds', kf_outer)
     inner_folds_line <- paste('  --inner-folds', kf_inner)
+    kf_folds_line <- paste('  --folds', kf_outer)
+    kf_iter_line <- paste('  --iterations', kf_iterations)
     fs_algo_line <- paste0('  --fs-algo "', fsAlgos, '"')
     classif_algo_line <- paste0('  --classif-algo "', classifAlgos, '"')
     num_features_line <- paste('  --num-features', numFeaturesOptions)
@@ -314,20 +343,32 @@ shinyServer(function(input, output, session) {
         lines <- c(lines, '/UserScripts/nestedboth_montecarlo')
         lines <- c(lines, data_line, desc_line, output_dir_line)
         lines <- c(lines, outer_iter_line, inner_iter_line, fs_algo_line, classif_algo_line, num_features_line)
-      } else if (validation == 'kf') {
+      } else {
         lines <- c(lines, '/UserScripts/nestedboth_crossvalidation')
         lines <- c(lines, data_line, desc_line, output_dir_line)
         lines <- c(lines, iter_line, outer_folds_line, inner_folds_line, fs_algo_line, classif_algo_line, num_features_line)
       }
-    } else if (fs == 'no_fs') {
+    } else {
       if (validation == 'mc') {
-        lines <- c(lines, '/UserScripts/nestedclassification_montecarlo')
-        lines <- c(lines, data_line, desc_line, output_dir_line)
-        lines <- c(lines, outer_iter_line, inner_iter_line, classif_algo_line)
-      } else if (validation == 'kf') {
-        lines <- c(lines, '/UserScripts/nestedclassification_crossvalidation')
-        lines <- c(lines, data_line, desc_line, output_dir_line)
-        lines <- c(lines, iter_line, outer_folds_line, inner_folds_line, classif_algo_line)
+        if (is_nested_validation()) {
+          lines <- c(lines, '/UserScripts/nestedclassification_montecarlo')
+          lines <- c(lines, data_line, desc_line, output_dir_line)
+          lines <- c(lines, outer_iter_line, inner_iter_line, classif_algo_line)
+        } else {
+          lines <- c(lines, '/UserScripts/classification_montecarlo')
+          lines <- c(lines, data_line, desc_line, output_dir_line)
+          lines <- c(lines, iter_line, classif_algo_line)
+        }
+      } else {
+        if (is_nested_validation()) {
+          lines <- c(lines, '/UserScripts/nestedclassification_crossvalidation')
+          lines <- c(lines, data_line, desc_line, output_dir_line)
+          lines <- c(lines, iter_line, outer_folds_line, inner_folds_line, classif_algo_line)
+        } else {
+          lines <- c(lines, '/UserScripts/classification_crossvalidation')
+          lines <- c(lines, data_line, desc_line, output_dir_line)
+          lines <- c(lines, kf_iter_line, kf_folds_line, classif_algo_line)
+        }
       }
     }
 
