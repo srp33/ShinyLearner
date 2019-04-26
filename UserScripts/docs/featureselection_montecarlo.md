@@ -65,21 +65,24 @@ Please go [here](https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.m
 
 The following example illustrates how to execute ShinyLearner using [Docker](https://www.docker.com) on a Unix-based system (e.g., Linux or Mac OS). For additional help or to learn about executing the software on Windows, go [here](http://bioapps.byu.edu/shinylearner/).
 
-The first `-v` argument specifies the directory where the input data files are stored on your computer. In the example below, the data files would be stored in the current working directory (`$(pwd)`). (Within the Docker container, ShinyLearner will access these files via `/InputData`.)
-    
-The second `-v` argument specifies the directory where the output files will be stored after ShinyLearner performs the analysis. In the example below, the output files would be stored in a directory called `Output` that is a subdirectory of the current working directory (`$(pwd)`). (Within the Docker container, ShinyLearner will access these files via `/OutputData`.)
+The first `-v` argument specifies the directory where the input data files are stored on your computer. In the example below, the data files would be stored in the current working directory (`$(pwd)`). (Within the Docker container, ShinyLearner will access these files via `/InputData`.) If your data files were stored in a location other than the current working directory, you would use something like this: `-v /some/other/directory:/InputData`. It must be an *absolute* path (the `~` shortcut is not supported).
 
-The fourth line in the example below indicates the name and version of the Docker image to be used.
+The second `-v` argument specifies the directory where the output files will be stored after ShinyLearner performs the analysis. In the example below, the output files would be stored in a directory called `Output` that is a subdirectory of the current working directory (`$(pwd)`). (Within the Docker container, ShinyLearner will access these files via `/OutputData`.) If you wanted the output files to be placed somewhere else, you would use something like this: `-v /some/other/directory:/OutputData`. It must be an *absolute* path (the `~` shortcut is not supported).
+
+The fourth line in the example below tells Docker to run under the current user's account.
+
+The fifth line in the example below indicates the name and version of the Docker image to be used.
 
     docker run --rm -i \
-      -v $(pwd)/:/InputData \
-      -v $(pwd)/Output:/OutputData \
-      srp33/shinylearner:version477 \
+      -v "$(pwd)"/:"/InputData" \
+      -v "$(pwd)/Output":"/OutputData" \
+      --user $(id -u):$(id -g) \
+      srp33/shinylearner:version480 \
       UserScripts/featureselection_montecarlo \
         --data /InputData/Data.tsv.gz \
         --description "My_Interesting_Analysis" \
         --output-dir /OutputData/ \
         --iterations 1 \
         --fs-algo "AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default" \
-        --seed 33 \
+        --seed 1 \
         --scale robust

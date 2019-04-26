@@ -15,6 +15,7 @@ verbose="$(python3 scripts/ParseArgs.py --verbose FALSE false $@)"
 ohe="$(python3 scripts/ParseArgs.py --ohe FALSE true $@)"
 scale="$(python3 scripts/ParseArgs.py --scale FALSE none $@)"
 impute="$(python3 scripts/ParseArgs.py --impute FALSE false $@)"
+randomSeed="$(python3 scripts/ParseArgs.py --seed FALSE 0 $@)"
 numCores="$(python3 scripts/ParseArgs.py --num-cores FALSE 1 $@)"
 tmpDir="$(python3 scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
@@ -28,6 +29,7 @@ checkParamParseOutput "$verbose"
 checkParamParseOutput "$ohe"
 checkParamParseOutput "$scale"
 checkParamParseOutput "$impute"
+checkParamParseOutput "$randomSeed"
 checkParamParseOutput "$numCores"
 checkParamParseOutput "$tmpDir"
 
@@ -83,7 +85,9 @@ do
   echo "Beginning analysis for cross-validation fold ${iteration}" | timestamp | tee -a "$outLogFile"
   echo "**************************************************************" | timestamp | tee -a "$outLogFile"
 
-  scripts/classification "$analysisDataFile" "$description" "$numFolds" "$verbose" "$classifAlgos" "$iterationOutDir/outpreds" "$iterationOutDir/outmetrics" "$iterationOutDir/outbench" crossvalidation $iteration NA $impute "$iterationOutDir" "$outLogFile" "$numCores"
+  randomSeed2=$(($randomSeed + $iteration))
+
+  scripts/classification "$analysisDataFile" "$description" "$numFolds" "$verbose" "$classifAlgos" "$iterationOutDir/outpreds" "$iterationOutDir/outmetrics" "$iterationOutDir/outbench" crossvalidation $randomSeed2 NA $impute "$iterationOutDir" "$outLogFile" "$numCores"
 done
 
 echo 2>&1 | timestamp | tee -a "$outLogFile"

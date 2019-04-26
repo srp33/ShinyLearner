@@ -1,1 +1,1 @@
-        --classif-algo "AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default" \
+        --classif-algo "AlgorithmScripts/Classification/tsv/sklearn/svm/default*" \

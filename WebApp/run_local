@@ -1,0 +1,20 @@
+#!/bin/bash
+
+dir=/tmp/sl_web_test
+
+rm -rf $dir
+mkdir -p $dir
+
+cp run_local $dir/
+cp ui.R $dir/
+cp server_template.R $dir/server.R
+cp shiny-server.conf $dir/
+cp -r www $dir/
+mkdir $dir/ShinyLearner
+cp -r ~/Dropbox/ShinyLearner/AlgorithmScripts $dir/ShinyLearner/
+rm -rf $dir/ShinyLearner/AlgorithmScripts/Classification/tsv/demo_library
+
+cd $dir
+R -e "shiny::runApp('.', launch.browser=TRUE)"
+cd -
+rm -rf $dir

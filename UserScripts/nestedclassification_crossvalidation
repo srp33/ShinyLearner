@@ -16,6 +16,7 @@ verbose="$(python3 scripts/ParseArgs.py --verbose FALSE false $@)"
 ohe="$(python3 scripts/ParseArgs.py --ohe FALSE true $@)"
 scale="$(python3 scripts/ParseArgs.py --scale FALSE none $@)"
 impute="$(python3 scripts/ParseArgs.py --impute FALSE false $@)"
+randomSeed="$(python3 scripts/ParseArgs.py --seed FALSE 0 $@)"
 numCores="$(python3 scripts/ParseArgs.py --num-cores FALSE 1 $@)"
 tmpDir="$(python3 scripts/ParseArgs.py --temp-dir FALSE '' $@)"
 
@@ -30,6 +31,7 @@ checkParamParseOutput "$verbose"
 checkParamParseOutput "$ohe"
 checkParamParseOutput "$scale"
 checkParamParseOutput "$impute"
+checkParamParseOutput "$randomSeed"
 checkParamParseOutput "$numCores"
 checkParamParseOutput "$tmpDir"
 
@@ -115,12 +117,13 @@ do
   fi
 
   outNestedBestFileIteration=$outDir/outnestedbest
+  randomSeed2=$(($randomSeed + $iteration))
 
   echo 2>&1 | timestamp | tee -a "$outLogFile"
   echo "**************************************************************" | timestamp | tee -a "$outLogFile"
   echo "Beginning analysis for cross-validation fold ${iteration}" | timestamp | tee -a "$outLogFile"
   echo "**************************************************************" | timestamp | tee -a "$outLogFile"
-  scripts/nestedclassification "$analysisDataFile" "$description" "$outerNumFolds" "$innerNumFolds" "$verbose" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedBenchmarkFileIteration" "$outNestedBestFileIteration" crossvalidation $iteration NA $impute $outDir "$outLogFile" "$numCores"
+  scripts/nestedclassification "$analysisDataFile" "$description" "$outerNumFolds" "$innerNumFolds" "$verbose" "$classifAlgos" "$outPredictionsFileIteration" "$outMetricsFileIteration" "$outNestedPredictionsFileIteration" "$outNestedMetricsFileIteration" "$outNestedBenchmarkFileIteration" "$outNestedBestFileIteration" crossvalidation $randomSeed2 NA $impute $outDir "$outLogFile" "$numCores"
 done
 
 echo 2>&1 | timestamp | tee -a "$outLogFile"

@@ -28,6 +28,7 @@ The `featureselection_crossvalidation` command uses k-fold cross-validation. It 
 ## OPTIONAL ARGUMENTS
 
 {args/verbose}
+{args/seed}
 {args/ohe}
 {args/scale}
 {args/impute}
@@ -35,6 +36,8 @@ The `featureselection_crossvalidation` command uses k-fold cross-validation. It 
 {args/temp-dir}
 
 {descriptions/verbose}
+
+{descriptions/seed}
 
 {descriptions/ohe}
 
@@ -68,4 +71,5 @@ The `featureselection_crossvalidation` command uses k-fold cross-validation. It 
 {examples/iterations}
 {examples/folds}
 {examples/fs-algo}
+{examples/seed}
 {examples/scale}

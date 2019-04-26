@@ -31,6 +31,7 @@ The `nestedclassification_crossvalidation` command uses k-fold cross-validation.
 ## OPTIONAL ARGUMENTS
 
 {args/verbose}
+{args/seed}
 {args/ohe}
 {args/scale}
 {args/impute}
@@ -38,6 +39,8 @@ The `nestedclassification_crossvalidation` command uses k-fold cross-validation.
 {args/temp-dir}
 
 {descriptions/verbose}
+
+{descriptions/seed}
 
 {descriptions/ohe}
 
@@ -78,4 +81,5 @@ The `nestedclassification_crossvalidation` command uses k-fold cross-validation.
 {examples/outer-folds}
 {examples/inner-folds}
 {examples/classif-algo}
+{examples/seed}
 {examples/scale}

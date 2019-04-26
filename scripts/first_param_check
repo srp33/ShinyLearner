@@ -4,14 +4,15 @@ set -euo pipefail
 
 callingDir=$(dirname $0)
 callingFile=$(basename $0)
-helpFile=$callingDir/docs/$callingFile.md
-helpMessage="$(cat $helpFile)"
+#helpFile=$callingDir/docs/$callingFile.md
+#helpMessage="$(cat $helpFile)"
+helpMessage="See https://github.com/srp33/ShinyLearner/blob/master/UserScripts/docs/${callingFile}.md for this command's documentation."
 
 if [ $# -eq 0 ]; then
-    echo No arguments provided.
-    echo
-	echo "$helpMessage"
-    echo
+#    >&2 echo No arguments provided.
+    >&2 echo
+    >&2 echo "$helpMessage"
+    >&2 echo
     exit 1
 fi
 

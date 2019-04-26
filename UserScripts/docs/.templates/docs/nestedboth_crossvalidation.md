@@ -37,6 +37,7 @@ The `nestedboth_crossvalidation` command uses k-fold cross-validation. It perfor
 ## OPTIONAL ARGUMENTS
 
 {args/verbose}
+{args/seed}
 {args/ohe}
 {args/scale}
 {args/impute}
@@ -44,6 +45,8 @@ The `nestedboth_crossvalidation` command uses k-fold cross-validation. It perfor
 {args/temp-dir}
 
 {descriptions/verbose}
+
+{descriptions/seed}
 
 {descriptions/ohe}
 
@@ -92,4 +95,5 @@ The `nestedboth_crossvalidation` command uses k-fold cross-validation. It perfor
 {examples/classif-algo}
 {examples/fs-algo}
 {examples/num-features}
+{examples/seed}
 {examples/scale}

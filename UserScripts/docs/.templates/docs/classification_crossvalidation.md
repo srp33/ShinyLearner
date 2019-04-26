@@ -28,6 +28,7 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 ## OPTIONAL ARGUMENTS
 
 {args/verbose}
+{args/seed}
 {args/ohe}
 {args/scale}
 {args/impute}
@@ -35,6 +36,8 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 {args/temp-dir}
 
 {descriptions/verbose}
+
+{descriptions/seed}
 
 {descriptions/ohe}
 
@@ -68,4 +71,5 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 {examples/iterations}
 {examples/folds}
 {examples/classif-algo}
+{examples/seed}
 {examples/scale}

@@ -27,6 +27,8 @@ do
   python scripts/UpdateVersion.py $f VERSION False $f
 done
 
+python scripts/UpdateVersion.py WebApp/server_template.R VERSION False WebApp/server.R
+
 ./scripts/build_image shinylearner
 ./BuildTests/all
 
