@@ -1,6 +1,6 @@
-# Input Data File Formats
+# Input File Formats
 
-ShinyLearner uses file-naming conventions--a file's extension determines how ShinyLearner will parse the files. Currently ShinyLearner supports five different file extensions, including ```.tsv```, ```.ttsv```, ```.csv```, ```.tcsv```, and ```.arff``` (described below). Each has a unique way of organizing data. An *instance* (sample) is an individual or entity that has been observed, while a feature (variable) is one type of measurement collected for that instance. For example, instances could be medical patients, and features could be measurements that have been collected for each patient, such as age, height, sex, and so forth. The row or column that identifies the instance's class must be named 'Class'. Input files may be gzipped (append '.gz' to file name).
+ShinyLearner uses file-naming conventions--a file's extension determines how ShinyLearner will parse the files. Currently ShinyLearner supports five file extensions, including ```.tsv```, ```.ttsv```, ```.csv```, ```.tcsv```, and ```.arff```. Each has a unique way of organizing data. An *instance* (sample) is an individual or entity that has been observed, while a feature (variable) is one type of measurement collected for that instance. For example, instances could be medical patients, and features could be measurements that have been collected for each patient--such as age, height, sex, and so forth. The row or column that identifies the instance's class must be named 'Class'. Input files may be gzipped (append '.gz' to file name).
 
 ## Tab-Separated Values File (.tsv)
 
