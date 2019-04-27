@@ -19,9 +19,9 @@ shinyServer(function(input, output, session) {
   defaultOuterIterations <- 10
   mc_outer_options <- list(1,5,10,50,100)
   defaultInnerFolds <- 5
-  kf_inner_options <- list(5,10)
+  kf_inner_options <- list(2, 3, 5,10)
   defaultOuterFolds <- 10
-  kf_outer_options <- list(5,10)
+  kf_outer_options <- list(2, 3, 5,10)
   defaultIterations <- 1
   kf_iterations_options <- list(1,5,10,50,100)
   defaultOS <- 'linux/mac'
@@ -40,20 +40,22 @@ shinyServer(function(input, output, session) {
   helpTextStylingClose <- '</p>'
   errorTextStylingOpen <- '<p style="color:rgb(256,0,0)">'
   errorTextStylingClose <- '</p>'
-  exp_desc_help_text <- 'Please enter a short, unique description of the analysis.'
-  input_dir_help_text <- 'Please indicate the directory on your computer where your data files are stored. Please use an <a target="_blank" href="https://en.wikipedia.org/wiki/Path_(computing)">absolute file path</a>.'
-  input_files_help_text <- 'Please indicate the name(s) of the data files that you would like to analyze. The files should be present in the directory specified above. You can specify multiple files by separate the file names with commas. Wildcards are also allowed (for example, *.csv). When multiple file names have been specified, ShinyLearner will merge them. <a target=_blank" href="https://github.com/srp33/ShinyLearner/blob/master/InputFormats.md">This page</a> explains the supported file formats.'
+  exp_desc_help_text <- 'Please enter a short, unique description of the analysis. This descriptor will be included in the output files so you can uniquely identify this analysis. (Avoid using space characters in this description ShinyLearner will replace spaces with underscore characters.)'
+  input_dir_help_text <- 'Please indicate the directory on your computer where the data files that you want to analyze are stored. Please use an <a target="_blank" href="https://en.wikipedia.org/wiki/Path_(computing)">absolute file path</a>.'
+  input_files_help_text <- 'Please indicate the name(s) of the data files that you would like to analyze. The files should be present in the directory specified above. <a target=_blank" href="https://github.com/srp33/ShinyLearner/blob/master/InputFormats.md">This page</a> explains the supported file formats. You can specify multiple files by separating the file names with commas. Wildcards are also allowed (for example, *.csv). When multiple file names have been specified, ShinyLearner will merge them.'
   output_dir_help_text <- 'Please specify a directory on your computer where the output files will be stored after ShinyLearner has completed the analysis. Please use an <a target="_blank" href="https://en.wikipedia.org/wiki/Path_(computing)">absolute file path</a>. Text files that contain the results of the analysis will be created in this directory.'
-  validation_help_text <- 'An important aspect of supervised machine learning is to assess how well the algorithmic predictions will generalize (make successful predictions on new data). ShinyLearner supports two ways of assessing generalizability: Monte Carlo cross validation and k-fold cross validation. You can read more about these methods <a target="_blank" href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)"><b>here</b></a>. The Monte Carlo method randomly assigns samples to training and testing sets and repeats this process for many iterations. The k-fold method assigns samples to training and testing sets such that each sample is tested exactly once per iteration.'
+  validation_help_text <- 'An important aspect of supervised machine learning is to assess how well the algorithmic predictions will generalize (make successful predictions on new data). ShinyLearner supports two ways of assessing generalizability: Monte Carlo cross validation and k-fold cross validation. You can read more about these methods <a target="_blank" href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)">here</a>. The Monte Carlo method randomly assigns samples to training and testing sets and repeats this process for many iterations. The k-fold method assigns samples to training and testing sets such that each sample is tested exactly once per iteration. (You can also execute multiple iterations of k-fold cross validation.)'
   feat_sel_help_text <- 'Feature selection algorithms seek to identify features (independent variables) that are most informative. Oftentimes, reducing the size of the data via feature selection leads to higher accuracy. Feature selection may also make it easier for a human to understand which parts of the data are most important. However, feature selection does increase the computer-execution time.'
-  sel_classifAlgos_help_text <- 'Choose one or more classification algorithms. ShinyLearner supports a wide variety of algorithms from popular machine-learning libraries. You can learn more about these algorithms <a target="_blank" href="https://github.com/srp33/ShinyLearner/blob/master/Algorithms.md"><b>here</b></a>. (Please let us know if you would like us to support additional algorithms or hyperparameters). When "Optimize hyperparameters" is selected, all hyperparameter combinations currently supported in ShinyLearner will be used for optimization; this will increase runtime considerably, but it will likely increase accuracy, too.'
-  sel_fsAlgos_help_text <- 'Choose one or more feature-selection algorithms. ShinyLearner has integrated a wide variety of algorithms from popular machine-learning libraries. You can learn more about these algorithms <a target="_blank" href="https://github.com/srp33/ShinyLearner/blob/master/Algorithms.md"><b>here</b></a>.'
-  os_help_text <- 'ShinyLearner will be executed within a "software container" (explanation <a target="_blank" href="https://gigascience.biomedcentral.com/articles/10.1186/s13742-016-0135-4"><b>here</b></a>) using the <a target="_blank" href="https://www.docker.com">Docker</a> technology. Docker can be executed on many operating systems, including Mac OS, Windows, and Linux. But the command that you use to execute Docker may be different, depending on the operating system.'
+  sel_classifAlgos_help_text <- 'Choose one or more classification algorithms. ShinyLearner supports a wide variety of algorithms from popular machine-learning libraries. You can learn more about these algorithms <a target="_blank" href="https://github.com/srp33/ShinyLearner/blob/master/Algorithms.md">here</a>. (Please let us know if you would like us to support additional algorithms or hyperparameters). When "Optimize hyperparameters" is selected, all hyperparameter combinations currently supported in ShinyLearner will be used for optimization; this will increase runtimes considerably, but it may increase accuracy, too.'
+  sel_fsAlgos_help_text <- 'Choose one or more feature-selection algorithms. ShinyLearner has integrated a wide variety of algorithms from popular machine-learning libraries. You can learn more about these algorithms <a target="_blank" href="https://github.com/srp33/ShinyLearner/blob/master/Algorithms.md">here</a>.'
+  os_help_text <- 'ShinyLearner will be executed within a "software container" (explanation <a target="_blank" href="https://gigascience.biomedcentral.com/articles/10.1186/s13742-016-0135-4">here</a>) using the <a target="_blank" href="https://www.docker.com">Docker</a> technology. Docker can be executed on many operating systems, including Mac OS, Windows, and Linux. But the command that you use to execute Docker may be different, depending on the operating system.'
   script_help_text <- 'Copy this script into a terminal / command prompt after turning on Docker.'
-  mc_help_text <- 'mc_help_textMonte Carlo cross validation is typically executed in multiple iterations. This helps with estimating the consistency of an algorithm\'s performance. In each iteration, a different training and test set is selected randomly from the full data set. A larger number of iterations should lead to more robust results but will also increase computational time.'
-  kf_help_text <- 'kf_help_textWhen performing <a target="_blank" href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)#k-fold_cross-validation">k-fold cross validation</a>, you must select a value for <em>k</em>. Higher <em>k</em> values result in a larger number of training and test sets but will also increase computational time.'
-  mc_nested_help_text <- 'mc_nested_help_textClassification analyses can be executed in multiple iterations. When multiple iterations are used, it helps with estimating the consistency of the results. "Outer" iterations indicate the number of times that the overall process (training and testing) is performed. "Inner" iterations are used to optimize algorithm choice (or to select features) for each testing set, based solely on the training data. A larger number of iterations should lead to more robust results but will also increase computational time.'
-  kf_nested_help_text <- 'kf_nested_help_textClassification analyses can be executed in multiple iterations. When multiple iterations are used, it helps with estimating the consistency of the results. "Outer" iterations indicate the number of times that the overall process (k-fold cross validation) is performed. "Inner" iterations are used to optimize algorithm choice (or to select features) for each testing set, based solely on the training data. A larger number of iterations should lead to more robust results but will also increase computational time.'
+  mc_help_text <- 'Monte Carlo cross validation is typically executed in multiple iterations. This helps with estimating the consistency of an algorithm\'s performance. In each iteration, a different training and test set is selected randomly from the full data set. A larger number of iterations should lead to more robust results but will also increase computational time.'
+  kf_help_text <- 'This setting allows you to select a value for <em>k</em> when performing k-fold cross-validation. Higher <em>k</em> values result in a larger number of training and test sets but also increases computational time.'
+  kf_iterations_help_text <- 'You may also indicate the number of times that k-fold cross validation should be repeated. Different training and test sets will be selected randomly for each iteration.'
+  mc_nested_help_text <- 'Monte Carlo cross validation is typically executed in multiple "outer" iterations. This helps with estimating the consistency of an algorithm\'s performance. In each "outer" iteration, a different training and test set is selected randomly from the full data set. A larger number of "outer" iterations should lead to more robust results but also increases computational time. When using multiple algorithms, optimizing hyperparameters, or performing feature selection, you need a way to select from among these options. The "inner" iterations allow you to break each training set into sub-training and sub-test tests and try various options (e.g., parameters, features). A larger number of "inner" iterations should lead to better selections but also increases computational time.'
+  kf_nested_help_text <- 'These settings allow you to select values for <em>k</em> when performing k-fold cross-validation. Higher <em>k</em> values result in a larger number of training and test sets but also increases computational time. When using multiple algorithms, optimizing hyperparameters, or performing feature selection, you need a way to select from among these options. The "inner" folds allow you to break each training set into sub-training and sub-test tests and try various options (e.g., parameters, features). A larger number of "inner" folds should lead to better selections but will also increase computational time.'
+  kf_nested_iterations_help_text <- 'You may also indicate the number of times that k-fold cross validation should be repeated. Different training and test sets will be selected randomly for each outer and inner fold.'
   ohe_help_text <- 'Many machine-learning algorithms are unable to process discrete variables, so one-hot encoding can be used to expand discrete variables into multiple binary variables. You can learn more about this option <a target="_blank" href="https://www.quora.com/What-is-one-hot-encoding-and-when-is-it-used-in-data-science">here</a>.'
   scale_help_text <- 'Many machine-learning algorithms require that continuous variables be scaled in a consistent way. This option makes it possible to scale continuous variables to have a zero mean and unit variance (more <a target="_blank" href="https://en.wikipedia.org/wiki/Feature_scaling">here</a>). Integers will be scaled only if more than 50% of values are unique.'
   impute_help_text <- 'Many machine-learning algorithms are unable to process missing data values. This option makes it possible to <a target="_blank" href="https://en.wikipedia.org/wiki/Imputation_(statistics)">impute</a> missing values. Median-based imputation is used for continuous and integer variables. Mode-based imputation is used for discrete variables. Any variable missing more than 50% of values across all samples will be removed. Subsequently, any sample missing more than 50% of values across all features will be removed. In input data files, missing values should be specified as ?, NA, or null.'
@@ -140,15 +142,15 @@ shinyServer(function(input, output, session) {
   ## MC Inner Iterations
   output$mc_inner_iterations_radio_ui <- renderUI({ 
     if (is_validation_set() && is_monte_carlo() && is_nested_validation()) {
-      radioButtons('mc_inner_iterations_radio', 'Choose number of inner iterations:', mc_inner_options, selected = defaultInnerIterations)
+      radioButtons('mc_inner_iterations_radio', HTML('Choose the number of <em>inner</em> Monte Carlo iterations:'), mc_inner_options, selected = defaultInnerIterations)
     }
   })
   ## MC Outer Iterations
   output$mc_outer_iterations_radio_ui <- renderUI({
     if (is_validation_set()) {
       if (is_monte_carlo()) {
-        message <- ifelse(is_nested_validation(), 'Choose number of outer iterations:', "Choose number of iterations:")
-        radioButtons('mc_outer_iterations_radio', message, mc_outer_options, selected=defaultOuterIterations)
+        message <- ifelse(is_nested_validation(), 'Choose the number of <i>outer</i> Monte Carlo iterations:', "Choose the number of Monte Carlo iterations:")
+        radioButtons('mc_outer_iterations_radio', HTML(message), mc_outer_options, selected=defaultOuterIterations)
       }
     } else {
       HTML(paste0(errorTextStylingOpen, incomplete_error_message, errorTextStylingClose))
@@ -157,21 +159,21 @@ shinyServer(function(input, output, session) {
   ## KF Inner Folds
   output$kf_inner_folds_radio_ui <- renderUI({
     if (is_validation_set() && is_k_fold() && is_nested_validation())
-      radioButtons('kf_inner_folds_radio', 'Choose number of inner folds:', kf_inner_options, selected=defaultInnerFolds)
+      radioButtons('kf_inner_folds_radio', HTML('Choose the number of <em>inner</em> folds for k-fold cross validation:'), kf_inner_options, selected=defaultInnerFolds)
   })
   ## KF Outer Folds
   output$kf_outer_folds_radio_ui <- renderUI({
     if (is_validation_set()) {
       if (is_k_fold()) {
-        message <- ifelse(is_nested_validation(), 'Choose number of outer folds:', 'Choose number of folds:')
-        radioButtons('kf_outer_folds_radio', message, kf_outer_options, selected=defaultOuterFolds)
+        message <- ifelse(is_nested_validation(), 'Choose the number of <em>outer</em> folds for k-fold cross validation:', 'Choose number of folds for k-fold cross validation:')
+        radioButtons('kf_outer_folds_radio', HTML(message), kf_outer_options, selected=defaultOuterFolds)
       }
     }
   })
   ## KF Iterations
   output$kf_iterations_radio_ui <- renderUI({
     if (is_validation_set() && is_k_fold())
-      radioButtons('kf_iterations_radio', 'Choose number of iterations:', kf_iterations_options, selected=defaultIterations)
+      radioButtons('kf_iterations_radio', HTML('Choose the number of iterations:'), kf_iterations_options, selected=defaultIterations)
   })
   output$val_settings_help_message_ui <- renderUI({
     if (is_validation_set()) {
@@ -186,6 +188,17 @@ shinyServer(function(input, output, session) {
           HTML(paste(helpTextStylingOpen, kf_nested_help_text, helpTextStylingClose, sep=''))
         } else {
           HTML(paste(helpTextStylingOpen, kf_help_text, helpTextStylingClose, sep=''))
+        }
+      }
+    }
+  })
+  output$val_settings_iterations_help_message_ui <- renderUI({
+    if (is_validation_set()) {
+      if (!is_monte_carlo()) {
+        if (is_nested_validation()) {
+          HTML(paste(helpTextStylingOpen, kf_nested_iterations_help_text, helpTextStylingClose, sep=''))
+        } else {
+          HTML(paste(helpTextStylingOpen, kf_iterations_help_text, helpTextStylingClose, sep=''))
         }
       }
     }

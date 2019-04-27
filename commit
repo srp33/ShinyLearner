@@ -30,7 +30,7 @@ done
 python scripts/UpdateVersion.py WebApp/server_template.R VERSION False WebApp/server.R
 
 ./scripts/build_image shinylearner
-./BuildTests/all
+#./BuildTests/all
 
 git add .travis.yml
 git add --all .
