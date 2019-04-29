@@ -32,6 +32,8 @@ checkParamParseOutput "$randomSeed"
 checkParamParseOutput "$proportionTrain"
 checkParamParseOutput "$numCores"
 
+dataFiles=$(checkDataFiles "$dataFiles")
+
 outputDir=/OutputData
 checkOutputDir $outputDir
 

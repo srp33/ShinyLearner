@@ -36,6 +36,7 @@ __pycache__
 install_shinylearner_fsl
 Biomarker_Benchmark_Data
 rendering
+run_local
 Demo_Datasets
 Demo_Results_Basic
 Demo_Results_ParamsOptimized
