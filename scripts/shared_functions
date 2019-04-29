@@ -142,7 +142,7 @@ function checkOutputDir {
 
   if [ ! -w "$logFile" ]
   then
-    echo "Write permission has not been granted on ${logFile}. This could also indicate that the output directory has not been created. You must create it first."
+    echo "Write permission has not been granted on the output directory. This could also indicate that the output directory has not been created. You must create it first."
     exit 1
   fi
 }

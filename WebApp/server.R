@@ -9,7 +9,7 @@ library(shiny)
 shinyServer(function(input, output, session) {
   
   session$allowReconnect(TRUE)
-  docker_image_name <- 'srp33/shinylearner:version486'
+  docker_image_name <- 'srp33/shinylearner:version487'
   numFeaturesOptions <- '1,10,100,1000,10000'
   defaultValidation <- 'mc'
   validationChoices <- list('Monte Carlo cross validation' = 'mc', 'k-fold cross validation' = 'kf')
