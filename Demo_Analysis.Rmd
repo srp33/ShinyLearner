@@ -1,0 +1,221 @@
+---
+title: "ShinyLearner: Demo Analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Only need to run this if tidyverse packages have not been installed previously
+#install.packages(tidyverse)
+```
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+# Import and Parse Data
+
+## Preparation
+
+In the current working directory, we should have directories named "Demo_Results_Basic" and "Demo_Results_ParamsOptimized", which contain the results of the classification analysis with and without hyperparamter optimization, respectively (see Demo.ipynb). These directories contains sub-directories labeled by dataset, each of which holds a "Metrics.tsv" file. For example, the relative path to the hyperparameter-optimized for the iris dataset would be "Demo_Results_ParamsOptimized/iris/Metrics.tsv".
+
+For later use, we will create paths to all Metrics files and store them in a vector 
+```{r, message=FALSE, warning=FALSE}
+data_dir_path <- "Demo_Datasets"
+datasets <- sub(".tsv", "", list.files(data_dir_path, full.names = FALSE, recursive = FALSE))
+
+basic_metrics_file_paths = list.files(paste0(data_dir_path, "/", datasets), glob2rx("Metrics.tsv"))
+
+# Function that creates the path to Metrics.tsv
+Get_Metrics_Path <- function(metrics_type, dataset) {
+  path <- paste('./', metrics_type, '/', dataset, '/Metrics.tsv', sep="")
+  return(path)
+} 
+
+# Put all paths into a vector for later use
+# Non-optimized
+regular_paths <- vector()
+for (data in datasets) {
+  curr_path <- Get_Metrics_Path('Metrics', data)
+  regular_paths <- c(regular_paths, curr_path)
+}
+
+# Optimized
+optimized_paths <- vector()
+for (data in datasets) {
+  curr_path <- Get_Metrics_Path('Metrics_Optimized', data)
+  optimized_paths <- c(optimized_paths, curr_path)
+}
+
+# Non-optimized, optimized
+all_paths <- mapply(c, regular_paths, optimized_paths, SIMPLIFY = FALSE)
+```
+
+## Calculations
+
+### AUROC Means
+We calculated the mean AUROC value for each algorithm in "Metrics.tsv".
+```{r, message=FALSE, warning=FALSE}
+
+#"Calculate_Mean" is a function that calculates the mean AUROC value for each algorithm in "Metrics.tsv".
+Calculate_Mean <- function(path_to_metrics) {
+  # Read Metrics.tsv as a dataframe and only keep rows with AUROC
+  metrics_df <- as.data.frame(read_tsv(path_to_metrics))
+  auroc_df <- filter(metrics_df, Metric == 'AUROC')
+  
+  # For each algorithm, calculate the mean across all iterations
+  means_df <- group_by(auroc_df, Algorithm) %>% summarize(Mean = mean(Value))
+  means_df <- mutate(means_df, Dataset = unique(auroc_df$Description), TotalIterations = length(unique(auroc_df$Iteration)))
+  means_df <- means_df[,c(3, 1, 4, 2)]
+  
+  # For simplicity, only keep machine-learning library and algorithm name in label. Delete the rest.
+  means_df$Algorithm <- gsub("AlgorithmScripts/Classification/arff/", "", means_df$Algorithm)
+  means_df$Algorithm <- gsub("AlgorithmScripts/Classification/tsv/", "", means_df$Algorithm)
+  
+  return(means_df)
+}
+
+# Make new dataframes that contains all means
+# Not optimized
+reg_df <- data.frame()
+for (path in regular_paths) {
+  df <- Calculate_Mean(path)
+  reg_df <- rbind(reg_df, df)  # Join datasets vertically
+}
+
+# Optimized
+opt_df <- data.frame()
+for (path in optimized_paths) {
+  df <- Calculate_Mean(path)
+  opt_df <- rbind(opt_df, df)  # Join datasets vertically
+}
+
+```
+
+### Difference between AUROC Means and their Medians
+We also used the median of the means in each dataset, and calculated the difference of each mean from that median. 
+```{r, message=FALSE, warning=FALSE}
+
+# Calculate the median of means
+medians_df <- group_by(reg_df, Dataset) %>% summarize(Median = median(Mean))
+
+# Calculate each mean's difference from its median and add to new column in reg_df
+reg_df <- inner_join(reg_df, medians_df, by = "Dataset")
+reg_df <- mutate(reg_df, DiffFromMedian = Mean - Median)
+
+```
+
+### Calculate Medians from Optimized and Non-Optimized Data
+Finally, we calculated the medians of differences between the optimized and non-optimized AUROC values for each algorithm. Then, we calculated a second set of medians across all datasets for each algorithm using the first medians.
+```{r, message=FALSE, warning=FALSE}
+
+# "Calculate_Median1" is a function that calculates the median of differences between the opt and non-opt values
+Calculate_Median1 <- function(nonopt_path, opt_path) {
+  # Read Metrics.tsv as a dataframe and only keep rows with AUROC
+  # Not optimized
+  nonopt_df <- as.data.frame(read_tsv(nonopt_path))
+  nonopt_df <- filter(nonopt_df, Metric == "AUROC")
+  # Optimized
+  opt_df <- as.data.frame(read_tsv(opt_path))
+  opt_df <- filter(opt_df, Metric == "AUROC")
+  
+  # Make a new dataframe of the differences between optimized and non-optimized
+  differences_df <- inner_join(nonopt_df, opt_df, by = c("Iteration", "Algorithm", "Metric"))
+  differences_df <- select(differences_df, -Description.y)
+  differences_df <- mutate(differences_df, Difference = Value.y - Value.x)
+    
+  # For simplicity, only keep machine-learning library and algorithm name in label. Delete the rest.
+  differences_df$Algorithm <- gsub("AlgorithmScripts/Classification/arff/", "", differences_df$Algorithm)
+  differences_df$Algorithm <- gsub("AlgorithmScripts/Classification/tsv/", "", differences_df$Algorithm)
+  
+  # Find the median of the differences for each algorithm
+  median1 <- group_by(differences_df, Algorithm) %>% summarise(Median = median(Difference))
+  # Add a column with the name of the dataset for future reference and reorder the columns so that the dataset column comes first
+  median1 <- mutate(median1, Dataset = unique(nonopt_df$Description))
+  median1 <- median1[,c(3, 1, 2)]
+  
+  return(median1)
+}
+
+# Make a new dataframe that contains all of the first set of medians
+median1_df <- data.frame()
+for (paths in all_paths) {
+  df <- Calculate_Median1(paths[1], paths[2])
+  median1_df <- rbind(median1_df, df)  # Join datasets vertically
+}
+
+# Calculate median of all datasets for each algorithm using the first set of medians above
+median2_df <- group_by(median1_df, Algorithm) %>% summarize(Median2 = median(Median))
+
+```
+
+# Plots
+
+## Graphing AUROC Means
+This boxplot depicts the mean AUROC value for each algorithm across all the datasets.
+```{r, message=FALSE, warning=FALSE}
+# Graph AUROC values across all datasets. Jitter algorithms in each box.  
+ggplot(reg_df, aes(x = Dataset, y = Mean)) +
+  geom_boxplot(fill = "grey", outlier.shape = NA, alpha = 0.3) +
+  geom_jitter(aes(shape = Algorithm), size = 3) +
+  scale_shape_manual(values = 1:10) +
+  scale_y_continuous(breaks = seq(0,1,0.1)) +
+  labs(title = "AUROC Means Across Datasets",
+       y = "Mean",
+       x = "Dataset",
+       shape = "Algorithm") +
+  theme_bw() +
+  theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
+        axis.text.x = element_text(angle = 40, hjust = 1),
+        axis.title = element_text(face = "bold"),
+        legend.title = element_text(face = "bold"))
+
+# Save to a .pdf file in the "Graphs" directory
+ggsave("./Graphs/AUROC_means.pdf", width=10, height=7)
+```
+
+## Graphing Difference from AUROC Medians (of Means)
+This boxplot depicts how much each mean deviated from its corresponding median in each algorithm. 
+```{r, message=FALSE, warning=FALSE}
+# Graph difference from medians across all algorithms.
+ggplot(reg_df, aes(x = reorder(Algorithm, -DiffFromMedian, median), y = DiffFromMedian)) +
+  geom_boxplot(fill = "grey", outlier.shape = NA, alpha = 0.3) +
+  geom_jitter() + #position = position_jitter(width = 0.15)) +
+  scale_y_continuous(breaks = seq(-0.5, 0.5, 0.1)) +
+  labs(title = "AUROC Averages - Differences from Median",
+       y = "Difference from Median",
+       x = "Algorithm") +
+  theme_bw() +
+  theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
+        axis.text.x = element_text(angle = 40, hjust = 1),
+        axis.title = element_text(face = "bold"))
+
+# Save to a .pdf file in the "Graphs" directory
+ggsave("./Graphs/AUROC_medians.pdf", width=10, height=7)
+```
+
+## Graphing Non-Optimization vs. Optimization AUROC Differences
+This barchart depicts whether there has been improvement or loss in machine-learning performance when optimizing vs. not optimizing parameters.
+```{r, message=FALSE, warning=FALSE}
+# Graph improvement in AUROC medians across algorithms.
+createBarPlot <- function(plotData) {
+  maxDiffValue <- round(max(plotData$Median2), digits = 2)
+  
+  ggplot(plotData, aes(x = reorder(Algorithm, Median2), y = Median2)) +
+    geom_bar(stat = "identity", fill = '#67a9cf') +
+    labs(title = "AUROC: Non-Optimized vs. Optimized", 
+         y = "AUROC (Improvement After Optimization)",
+         x = "Algorithm") +
+    theme_classic() +
+    theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
+          axis.title = element_text(size = 10, face = "bold"),
+          axis.text.x = element_text(angle = 40, hjust = 1),
+          axis.line.x = element_line(colour = 'black', size=0.25,linetype='solid'),
+          axis.line.y = element_line(colour = 'black', linetype='solid')) +
+    scale_y_continuous(expand = c(0,0), breaks=seq(0, maxDiffValue + 0.02, 0.002))
+}
+
+print(createBarPlot(median2_df))
+# Save to a .pdf file in the "Graphs" directory
+ggsave("./Graphs/AUROC_opt_vs_nonopt.pdf", plot = last_plot(), width=10, height=6.75)
+
+```

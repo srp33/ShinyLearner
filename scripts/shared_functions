@@ -135,3 +135,14 @@ function checkParamParseOutput {
 function timestamp {
   python3 -c 'import sys,time;sys.stdout.write("".join(( " ".join((time.strftime("[%Y-%m-%d %H:%M:%S]", time.localtime()), line)) for line in sys.stdin )))'
 }
+
+function checkOutputDir {
+  outputDir="$1"
+  logFile="$outputDir/Log.txt"
+
+  if [ ! -w "$logFile" ]
+  then
+    echo "Write permission has not been granted on ${logFile}. This could also indicate that the output directory has not been created. You must create it first."
+    exit 1
+  fi
+}

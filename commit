@@ -19,7 +19,6 @@ cd UserScripts/docs/.templates
 cd ../../..
 
 python scripts/UpdateVersion.py travis.yml.template VERSION True .travis.yml
-#python scripts/UpdateVersion.py README_template.md VERSION False README.md
 
 for f in UserScripts/docs/*.md
 do
@@ -29,7 +28,7 @@ done
 python scripts/UpdateVersion.py WebApp/server_template.R VERSION False WebApp/server.R
 
 ./scripts/build_image shinylearner
-./BuildTests/all
+#./BuildTests/all
 
 git add .travis.yml
 git add --all .

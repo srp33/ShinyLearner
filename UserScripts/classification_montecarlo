@@ -9,7 +9,7 @@ dataFiles="$(python3 scripts/ParseArgs.py --data TRUE "$@")"
 description="$(python3 scripts/ParseArgs.py --description TRUE $@)"
 numIterations="$(python3 scripts/ParseArgs.py --iterations TRUE $@)"
 classifAlgos="$(python3 scripts/ParseArgs.py --classif-algo TRUE "$@")"
-outputDir="$(python3 scripts/ParseArgs.py --output-dir TRUE $@)"
+#outputDir="$(python3 scripts/ParseArgs.py --output-dir TRUE $@)"
 verbose="$(python3 scripts/ParseArgs.py --verbose FALSE false $@)"
 ohe="$(python3 scripts/ParseArgs.py --ohe FALSE true $@)"
 scale="$(python3 scripts/ParseArgs.py --scale FALSE none $@)"
@@ -23,7 +23,7 @@ checkParamParseOutput "$dataFiles"
 checkParamParseOutput "$description"
 checkParamParseOutput "$numIterations"
 checkParamParseOutput "$classifAlgos"
-checkParamParseOutput "$outputDir"
+#checkParamParseOutput "$outputDir"
 checkParamParseOutput "$verbose"
 checkParamParseOutput "$ohe"
 checkParamParseOutput "$scale"
@@ -32,7 +32,9 @@ checkParamParseOutput "$randomSeed"
 checkParamParseOutput "$proportionTrain"
 checkParamParseOutput "$numCores"
 
-mkdir -p $outputDir
+outputDir=/OutputData
+checkOutputDir $outputDir
+
 outPredictionsFile="$outputDir/Predictions.tsv"
 outMetricsFile="$outputDir/Metrics.tsv"
 outBenchmarkFile="$outputDir/ElapsedTime.tsv"
