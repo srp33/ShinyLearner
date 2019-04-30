@@ -98,7 +98,7 @@ The fifth line in the example below indicates the name and version of the Docker
       -v "$(pwd)"/:"/InputData" \
       -v "$(pwd)/Output":"/OutputData" \
       --user $(id -u):$(id -g) \
-      srp33/shinylearner:version495 \
+      srp33/shinylearner:version496 \
       UserScripts/nestedboth_crossvalidation \
         --data /InputData/Data.tsv.gz \
         --description "My_Interesting_Analysis" \
