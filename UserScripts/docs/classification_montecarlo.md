@@ -80,7 +80,7 @@ The fifth line in the Docker command indicates the name and version of the Docke
       -v "$(pwd)"/:"/InputData" \
       -v "$(pwd)/Output":"/OutputData" \
       --user $(id -u):$(id -g) \
-      srp33/shinylearner:version505 \
+      srp33/shinylearner:version507 \
       UserScripts/classification_montecarlo \
         --data Data.tsv.gz \
         --description "My_Interesting_Analysis" \
