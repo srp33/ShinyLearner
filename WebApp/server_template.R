@@ -326,21 +326,22 @@ shinyServer(function(input, output, session) {
     if(length(input$os_radio) != 0)
       os <- input$os_radio
     
-    lines <- list()
     if (os == 'linux/mac') {
-      lines <- c(lines, paste0('mkdir -p ', clientInputDir))
+      shiny_script <- paste0('mkdir -p "', clientInputDir, '"', getLineEnding(os), getLineEnding(os))
     } else {
-      lines <- c(lines, paste0('if not exist "', clientInputDir, '" mkdir "', clientInputDir, '"'))
+      shiny_script <- paste0('if not exist "', clientInputDir, '" mkdir "', clientInputDir, '"', getLineEnding(os), getLineEnding(os))
     }
     lines <- c(lines, '')
+
+    lines <- list()
     lines <- c(lines, 'docker run --rm -i')
-    lines <- c(lines, paste0('-v "', clientInputDir, '":"', containerInputDir, '"'))
-    lines <- c(lines, paste0('-v "', clientOutputDir, '":"', containerOutputDir, '"'))
+    lines <- c(lines, paste0('  -v "', clientInputDir, '":"', containerInputDir, '"'))
+    lines <- c(lines, paste0('  -v "', clientOutputDir, '":"', containerOutputDir, '"'))
     
     if (os == 'linux/mac')
-      lines <- c(lines, "--user $(id -u):$(id -g)")
+      lines <- c(lines, "  --user $(id -u):$(id -g)")
     
-    lines <- c(lines, docker_image_name)
+    lines <- c(lines, paste0("  ", docker_image_name))
     
     data_line <- paste0('  --data "', clientInputFiles, '"')
     desc_line <- paste0('  --description "', expDesc, '"')
@@ -357,33 +358,33 @@ shinyServer(function(input, output, session) {
 
     if (fs == 'fs') {
       if (validation == 'mc') {
-        lines <- c(lines, '/UserScripts/nestedboth_montecarlo')
-        lines <- c(lines, data_line, desc_line, output_dir_line)
+        lines <- c(lines, '  /UserScripts/nestedboth_montecarlo')
+        lines <- c(lines, data_line, desc_line)
         lines <- c(lines, outer_iter_line, inner_iter_line, fs_algo_line, classif_algo_line, num_features_line)
       } else {
-        lines <- c(lines, '/UserScripts/nestedboth_crossvalidation')
-        lines <- c(lines, data_line, desc_line, output_dir_line)
+        lines <- c(lines, '  /UserScripts/nestedboth_crossvalidation')
+        lines <- c(lines, data_line, desc_line)
         lines <- c(lines, iter_line, outer_folds_line, inner_folds_line, fs_algo_line, classif_algo_line, num_features_line)
       }
     } else {
       if (validation == 'mc') {
         if (is_nested_validation()) {
-          lines <- c(lines, '/UserScripts/nestedclassification_montecarlo')
-          lines <- c(lines, data_line, desc_line, output_dir_line)
+          lines <- c(lines, '  /UserScripts/nestedclassification_montecarlo')
+          lines <- c(lines, data_line, desc_line)
           lines <- c(lines, outer_iter_line, inner_iter_line, classif_algo_line)
         } else {
-          lines <- c(lines, '/UserScripts/classification_montecarlo')
-          lines <- c(lines, data_line, desc_line, output_dir_line)
+          lines <- c(lines, '  /UserScripts/classification_montecarlo')
+          lines <- c(lines, data_line, desc_line)
           lines <- c(lines, iter_line, classif_algo_line)
         }
       } else {
         if (is_nested_validation()) {
-          lines <- c(lines, '/UserScripts/nestedclassification_crossvalidation')
-          lines <- c(lines, data_line, desc_line, output_dir_line)
+          lines <- c(lines, '  /UserScripts/nestedclassification_crossvalidation')
+          lines <- c(lines, data_line, desc_line)
           lines <- c(lines, iter_line, outer_folds_line, inner_folds_line, classif_algo_line)
         } else {
-          lines <- c(lines, '/UserScripts/classification_crossvalidation')
-          lines <- c(lines, data_line, desc_line, output_dir_line)
+          lines <- c(lines, '  /UserScripts/classification_crossvalidation')
+          lines <- c(lines, data_line, desc_line)
           lines <- c(lines, kf_iter_line, kf_folds_line, classif_algo_line)
         }
       }
@@ -393,14 +394,8 @@ shinyServer(function(input, output, session) {
     lines <- c(lines, paste('  --ohe', ohe))
     lines <- c(lines, paste('  --scale', scale))
     lines <- c(lines, paste('  --impute', impute))
-
-    if (os == 'linux/mac') {
-       lines <- paste(lines, collapse=' \\\n  ')
-    } else {
-       lines <- paste(lines, collapse=' ^\r\n  ')
-    }
-
-    shiny_script <- lines
+    
+    shiny_script <- paste0(shiny_script, paste(lines, collapse=paste0(getLineContinuation(os), getLineEnding(os))))
   })
   
   output$display_script_ui <- renderUI({
@@ -475,3 +470,19 @@ shinyServer(function(input, output, session) {
     updateTabsetPanel(session, 'main_panel', selected = '5')
   })
 })
+
+getLineContinuation <- function(os) {
+  if (os == 'linux/mac') {
+    return(' \\')
+  } else {
+    return(' ^')
+  }
+}
+
+getLineEnding <- function(os) {
+  if (os == 'linux/mac') {
+    return('\n')
+  } else {
+    return('\r\n')
+  }
+}
