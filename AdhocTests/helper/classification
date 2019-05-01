@@ -35,8 +35,10 @@ validation=StrongSignal_Both
 #validation=StrongSignalLarge_Both
 #validation=StrongSignal_Continuous
 #validation=NoSignal_Both
+dataFile=Validation/${validation}.tsv.gz,abc.tsv.gz
+#dataFile=Validation/${validation}.tsv.gz
 #dataFile="/tmp/ml_data/breast.cancer.arff"
-dataFile=$currentDir/Validation/${validation}.tsv.gz
+#dataFile=$currentDir/Validation/${validation}.tsv.gz
 #dataFile="/Users/srp33/Downloads/TCGA_BLCA.txt.gz,/Users/srp33/Downloads/Class/Histological__histologic_subtype.txt"
 #dataFile="/Users/srp33/Downloads/GSE6532_U133A/*.txt.gz,/Users/srp33/Downloads/GSE6532_U133A/Class/Histological__grade.txt"
 #dataFile="/Users/srp33/Downloads/GSE6532_U133PLUS2/*.txt.gz,/Users/srp33/Downloads/GSE6532_U133PLUS2/Class/Histological__grade.txt"
@@ -97,8 +99,8 @@ tmpDir=~/Downloads/Temp
 if [[ "$validationType" == "montecarlo" ]]
 then
   UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations $iterations --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir" --temp-dir $tmpDir --scale $scale --impute $impute --num-cores $numCores --seed 18
-  cat $outputDir/Metrics.tsv | grep AUROC
+  #cat $outputDir/Metrics.tsv | grep AUROC
 else
   UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations $iterations --folds $folds --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir" --scale $scale --impute $impute --num-cores $numCores
-  cat $outputDir/Metrics.tsv | grep AUROC
+  #cat $outputDir/Metrics.tsv | grep AUROC
 fi

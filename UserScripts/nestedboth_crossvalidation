@@ -13,7 +13,6 @@ innerNumFolds="$(python3 scripts/ParseArgs.py --inner-folds TRUE $@)"
 classifAlgos="$(python3 scripts/ParseArgs.py --classif-algo TRUE "$@")"
 numFeaturesOptions="$(python3 scripts/ParseArgs.py --num-features TRUE "$@")"
 fsAlgos="$(python3 scripts/ParseArgs.py --fs-algo TRUE "$@")"
-outputDir="$(python3 scripts/ParseArgs.py --output-dir TRUE $@)"
 verbose="$(python3 scripts/ParseArgs.py --verbose FALSE false $@)"
 ohe="$(python3 scripts/ParseArgs.py --ohe FALSE true $@)"
 scale="$(python3 scripts/ParseArgs.py --scale FALSE none $@)"
@@ -30,7 +29,6 @@ checkParamParseOutput "$innerNumFolds"
 checkParamParseOutput "$classifAlgos"
 checkParamParseOutput "$numFeaturesOptions"
 checkParamParseOutput "$fsAlgos"
-checkParamParseOutput "$outputDir"
 checkParamParseOutput "$verbose"
 checkParamParseOutput "$ohe"
 checkParamParseOutput "$scale"
@@ -39,7 +37,11 @@ checkParamParseOutput "$randomSeed"
 checkParamParseOutput "$numCores"
 checkParamParseOutput "$tmpDir"
 
-mkdir -p $outputDir
+dataFiles="$(modifyDataFilePaths "$dataFiles")"
+
+outputDir=/OutputData
+checkOutputDir $outputDir
+
 outSelectedFeaturesFile="$outputDir/SelectedFeatures.tsv"
 outPredictionsFile="$outputDir/Predictions.tsv"
 outMetricsFile="$outputDir/Metrics.tsv"

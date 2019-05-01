@@ -6,7 +6,6 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 
 {args/data}
 {args/description}
-{args/output-dir}
 {args/folds}
 {args/iterations}
 {args/classif-algo}
@@ -14,8 +13,6 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 {descriptions/data}
 
 {descriptions/description}
-
-{descriptions/output-dir}
 
 {descriptions/folds}
 
@@ -67,7 +64,6 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
       UserScripts/classification_crossvalidation \
 {examples/data}
 {examples/description}
-{examples/output-dir}
 {examples/iterations}
 {examples/folds}
 {examples/classif-algo}

@@ -6,7 +6,6 @@ The `nestedclassification_crossvalidation` command uses k-fold cross-validation.
 
 {args/data}
 {args/description}
-{args/output-dir}
 {args/outer-folds}
 {args/inner-folds}
 {args/iterations}
@@ -15,8 +14,6 @@ The `nestedclassification_crossvalidation` command uses k-fold cross-validation.
 {descriptions/data}
 
 {descriptions/description}
-
-{descriptions/output-dir}
 
 {descriptions/outer-folds}
 
@@ -76,7 +73,6 @@ The `nestedclassification_crossvalidation` command uses k-fold cross-validation.
       UserScripts/nestedclassification_crossvalidation \
 {examples/data}
 {examples/description}
-{examples/output-dir}
 {examples/iterations}
 {examples/outer-folds}
 {examples/inner-folds}

@@ -6,7 +6,6 @@ The `nestedboth_montecarlo` command uses Monte Carlo cross-validation. It perfor
 
 {args/data}
 {args/description}
-{args/output-dir}
 {args/outer-iterations}
 {args/inner-iterations}
 {args/classif-algo}
@@ -16,8 +15,6 @@ The `nestedboth_montecarlo` command uses Monte Carlo cross-validation. It perfor
 {descriptions/data}
 
 {descriptions/description}
-
-{descriptions/output-dir}
 
 {descriptions/outer-iterations}
 
@@ -88,7 +85,6 @@ The `nestedboth_montecarlo` command uses Monte Carlo cross-validation. It perfor
       UserScripts/nestedboth_montecarlo \
 {examples/data}
 {examples/description}
-{examples/output-dir}
 {examples/outer-iterations}
 {examples/inner-iterations}
 {examples/classif-algo}

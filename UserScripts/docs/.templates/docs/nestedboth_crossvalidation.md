@@ -6,7 +6,6 @@ The `nestedboth_crossvalidation` command uses k-fold cross-validation. It perfor
 
 {args/data}
 {args/description}
-{args/output-dir}
 {args/outer-folds}
 {args/inner-folds}
 {args/iterations}
@@ -17,8 +16,6 @@ The `nestedboth_crossvalidation` command uses k-fold cross-validation. It perfor
 {descriptions/data}
 
 {descriptions/description}
-
-{descriptions/output-dir}
 
 {descriptions/outer-folds}
 
@@ -88,7 +85,6 @@ The `nestedboth_crossvalidation` command uses k-fold cross-validation. It perfor
       UserScripts/nestedboth_crossvalidation \
 {examples/data}
 {examples/description}
-{examples/output-dir}
 {examples/iterations}
 {examples/outer-folds}
 {examples/inner-folds}

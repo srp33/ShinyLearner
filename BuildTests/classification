@@ -7,21 +7,21 @@ version="$2"
 description="$3"
 validationType="$4"
 iterationsFolds="$5"
-classifAlgo="$6"
+classifAlgoFile="$6"
 verbose="$7"
 logFile="$8"
 
-inputDir=input
-outputDir=output
+inputDir=$(pwd)/input
+outputDir=$(pwd)/output
 logFile=$outputDir/$logFile
 
 analysisType=$(basename $0)
-dataFile="$inputDir/$description.tsv.gz"
-#dataFile="$inputDir/Histological__ELSTON.txt,$inputDir/GSE1456.txt.gz,$inputDir/Prognostic__Death_BC_Group.txt"
+dataFile="$description.tsv.gz"
 specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
-bash run_docker_command $imageName $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description "$description" $iterationsFolds --classif-algo \"$classifAlgo\" --output-dir $specificOutputDir $verbose --impute true --ohe true" 2>&1 | tee -a $logFile
+classifAlgos=$(cat $classifAlgoFile | paste -sd "," -)
 
-#expectedNumAlgorithms=$(bash run_docker_command $imageName $version "ls $classifAlgo | wc -l")
-expectedNumAlgorithms=$(bash run_docker_command $imageName $version "cat $classifAlgo | wc -l")
+bash run_docker_command $inputDir $specificOutputDir $imageName $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description "$description" $iterationsFolds --classif-algo \"$classifAlgos\" $verbose --impute true --ohe true" 2>&1 | tee -a $logFile
+
+expectedNumAlgorithms=$(cat $classifAlgoFile | wc -l)
 python3 CheckAccuracy.py $analysisType $validationType $description ${specificOutputDir}/Metrics.tsv Algorithm $expectedNumAlgorithms 0 2>&1 | tee -a $logFile

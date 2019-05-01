@@ -9,7 +9,7 @@ library(shiny)
 shinyServer(function(input, output, session) {
   
   session$allowReconnect(TRUE)
-  docker_image_name <- 'srp33/shinylearner:version496'
+  docker_image_name <- 'srp33/shinylearner:version505'
   numFeaturesOptions <- '1,10,100,1000,10000'
   defaultValidation <- 'mc'
   validationChoices <- list('Monte Carlo cross validation' = 'mc', 'k-fold cross validation' = 'kf')
@@ -42,14 +42,13 @@ shinyServer(function(input, output, session) {
   errorTextStylingClose <- '</p>'
   exp_desc_help_text <- 'Please enter a short, unique description of the analysis. This descriptor will be included in the output files so you can uniquely identify this analysis. (Avoid using space characters in this description ShinyLearner will replace spaces with underscore characters.)'
   input_dir_help_text <- 'Please indicate the directory on your computer where the data files that you want to analyze are stored. Please use an <a target="_blank" href="https://en.wikipedia.org/wiki/Path_(computing)">absolute file path</a>.'
-  input_files_help_text <- 'Please indicate the name(s) of the data files that you would like to analyze. The files should be present in the directory specified above. <a target=_blank" href="https://github.com/srp33/ShinyLearner/blob/master/InputFormats.md">This page</a> explains the supported file formats. You can specify multiple files by separating the file names with commas. Wildcards are also allowed (for example, *.csv). When multiple file names have been specified, ShinyLearner will merge them.'
+  input_files_help_text <- 'Please indicate the name(s) of the data files that you would like to analyze. The files should be present in the "Input data directory" specified above. Files can also be present in a subdirectory of the input data directory; in this case, use relative paths. <a target=_blank" href="https://github.com/srp33/ShinyLearner/blob/master/InputFormats.md">This page</a> explains the supported file formats. You can specify multiple files by separating the file names with commas. Wildcards are also allowed (for example, *.csv). When multiple file names have been specified, ShinyLearner will merge them.'
   output_dir_help_text <- 'Please specify a directory on your computer where the output files will be stored after ShinyLearner has completed the analysis. Please use an <a target="_blank" href="https://en.wikipedia.org/wiki/Path_(computing)">absolute file path</a>. Text files that contain the results of the analysis will be created in this directory.'
   validation_help_text <- 'An important aspect of supervised machine learning is to assess how well the algorithmic predictions will generalize (make successful predictions on new data). ShinyLearner supports two ways of assessing generalizability: Monte Carlo cross validation and k-fold cross validation. You can read more about these methods <a target="_blank" href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)">here</a>. The Monte Carlo method randomly assigns samples to training and testing sets and repeats this process for many iterations. The k-fold method assigns samples to training and testing sets such that each sample is tested exactly once per iteration. (You can also execute multiple iterations of k-fold cross validation.)'
   feat_sel_help_text <- 'Feature selection algorithms seek to identify features (independent variables) that are most informative. Oftentimes, reducing the size of the data via feature selection leads to higher accuracy. Feature selection may also make it easier for a human to understand which parts of the data are most important. However, feature selection does increase the computer-execution time.'
   sel_classifAlgos_help_text <- 'Choose one or more classification algorithms. ShinyLearner supports a wide variety of algorithms from popular machine-learning libraries. You can learn more about these algorithms <a target="_blank" href="https://github.com/srp33/ShinyLearner/blob/master/Algorithms.md">here</a>. (Please let us know if you would like us to support additional algorithms or hyperparameters). When "Optimize hyperparameters" is selected, all hyperparameter combinations currently supported in ShinyLearner will be used for optimization; this will increase runtimes considerably, but it may increase accuracy, too.'
   sel_fsAlgos_help_text <- 'Choose one or more feature-selection algorithms. ShinyLearner has integrated a wide variety of algorithms from popular machine-learning libraries. You can learn more about these algorithms <a target="_blank" href="https://github.com/srp33/ShinyLearner/blob/master/Algorithms.md">here</a>.'
   os_help_text <- 'ShinyLearner will be executed within a "software container" (explanation <a target="_blank" href="https://gigascience.biomedcentral.com/articles/10.1186/s13742-016-0135-4">here</a>) using the <a target="_blank" href="https://www.docker.com">Docker</a> technology. Docker can be executed on many operating systems, including Mac OS, Windows, and Linux. But the command that you use to execute Docker may be different, depending on the operating system.'
-  script_help_text <- 'Copy this script into a terminal / command prompt after turning on Docker.'
   mc_help_text <- 'Monte Carlo cross validation is typically executed in multiple iterations. This helps with estimating the consistency of an algorithm\'s performance. In each iteration, a different training and test set is selected randomly from the full data set. A larger number of iterations should lead to more robust results but will also increase computational time.'
   kf_help_text <- 'This setting allows you to select a value for <em>k</em> when performing k-fold cross-validation. Higher <em>k</em> values result in a larger number of training and test sets but also increases computational time.'
   kf_iterations_help_text <- 'You may also indicate the number of times that k-fold cross validation should be repeated. Different training and test sets will be selected randomly for each iteration.'
@@ -291,7 +290,7 @@ shinyServer(function(input, output, session) {
     ## Get user-specified options
     expDesc <- gsub(' ', '_', input$exp_desc_textbox)
     clientInputDir <- input$input_dir_textbox
-    clientInputFiles <- paste0(containerInputDir, "/", strsplit(input$input_files_textbox, ',')[[1]])
+    clientInputFiles <- strsplit(input$input_files_textbox, ',')[[1]]
     clientOutputDir <- input$output_dir_textbox
     
     ## Trim trailing '/'
@@ -328,6 +327,12 @@ shinyServer(function(input, output, session) {
       os <- input$os_radio
     
     lines <- list()
+    if (os == 'linux/mac') {
+      lines <- c(lines, paste0('mkdir -p ', clientInputDir))
+    } else {
+      lines <- c(lines, paste0('if not exist "', clientInputDir, '" mkdir "', clientInputDir, '"'))
+    }
+    lines <- c(lines, '')
     lines <- c(lines, 'docker run --rm -i')
     lines <- c(lines, paste0('-v "', clientInputDir, '":"', containerInputDir, '"'))
     lines <- c(lines, paste0('-v "', clientOutputDir, '":"', containerOutputDir, '"'))
@@ -339,7 +344,6 @@ shinyServer(function(input, output, session) {
     
     data_line <- paste0('  --data "', clientInputFiles, '"')
     desc_line <- paste0('  --description "', expDesc, '"')
-    output_dir_line <- paste0('  --output-dir "', containerOutputDir, '"')
     outer_iter_line <- paste('  --outer-iterations', mc_outer)
     inner_iter_line <- paste('  --inner-iterations', mc_inner)
     iter_line <- paste('  --iterations', mc_outer)

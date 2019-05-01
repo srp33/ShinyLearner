@@ -138,11 +138,14 @@ function timestamp {
 
 function checkOutputDir {
   outputDir="$1"
-  logFile="$outputDir/Log.txt"
 
-  if [ ! -w "$logFile" ]
+  if [ ! -w "$outputDir" ]
   then
     echo "Write permission has not been granted on the output directory. This could also indicate that the output directory has not been created. You must create it first."
     exit 1
   fi
+}
+
+function modifyDataFilePaths {
+  python3 scripts/PrependInputFilePaths.py "$1" "/InputData/"
 }

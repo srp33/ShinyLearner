@@ -10,7 +10,6 @@ description="$(python3 scripts/ParseArgs.py --description TRUE $@)"
 outerNumIterations="$(python3 scripts/ParseArgs.py --outer-iterations TRUE $@)"
 innerNumIterations="$(python3 scripts/ParseArgs.py --inner-iterations TRUE $@)"
 classifAlgos="$(python3 scripts/ParseArgs.py --classif-algo TRUE "$@")"
-outputDir="$(python3 scripts/ParseArgs.py --output-dir TRUE $@)"
 verbose="$(python3 scripts/ParseArgs.py --verbose FALSE false $@)"
 randomSeed="$(python3 scripts/ParseArgs.py --seed FALSE 1 $@)"
 proportionTrain="$(python3 scripts/ParseArgs.py --train-proportion FALSE 0.67 $@)"
@@ -25,7 +24,6 @@ checkParamParseOutput "$description"
 checkParamParseOutput "$outerNumIterations"
 checkParamParseOutput "$innerNumIterations"
 checkParamParseOutput "$classifAlgos"
-checkParamParseOutput "$outputDir"
 checkParamParseOutput "$verbose"
 checkParamParseOutput "$ohe"
 checkParamParseOutput "$scale"
@@ -33,7 +31,11 @@ checkParamParseOutput "$impute"
 checkParamParseOutput "$numCores"
 checkParamParseOutput "$tmpDir"
 
-mkdir -p $outputDir
+dataFiles="$(modifyDataFilePaths "$dataFiles")"
+
+outputDir=/OutputData
+checkOutputDir $outputDir
+
 outPredictionsFile="$outputDir/Predictions.tsv"
 outMetricsFile="$outputDir/Metrics.tsv"
 outNestedPredictionsFile="$outputDir/Nested_Predictions.tsv"

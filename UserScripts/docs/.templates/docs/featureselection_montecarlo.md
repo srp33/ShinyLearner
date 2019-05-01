@@ -6,15 +6,12 @@ The `featureselection_montecarlo` command uses Monte Carlo cross-validation. It 
 
 {args/data}
 {args/description}
-{args/output-dir}
 {args/iterations}
 {args/fs-algo}
 
 {descriptions/data}
 
 {descriptions/description}
-
-{descriptions/output-dir}
 
 {descriptions/iterations}
 
@@ -67,7 +64,6 @@ The `featureselection_montecarlo` command uses Monte Carlo cross-validation. It 
       UserScripts/featureselection_montecarlo \
 {examples/data}
 {examples/description}
-{examples/output-dir}
 {examples/iterations}
 {examples/fs-algo}
 {examples/seed}

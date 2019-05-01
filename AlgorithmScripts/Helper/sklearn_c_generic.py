@@ -35,7 +35,6 @@ R_SEED = 0
 random.seed(R_SEED)
 
 train_df = readData(trainFile)
-#train_X = train_df.ix[:,:-1].values
 train_X = train_df.iloc[:,:-1].values
 train_y = array([classOptions.index(str(y[0])) for y in train_df.loc[:,["Class"]].values.tolist()])
 

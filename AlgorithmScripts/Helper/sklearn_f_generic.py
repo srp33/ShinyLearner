@@ -25,7 +25,7 @@ R_SEED = 0
 random.seed(R_SEED)
 
 train_df = read_csv(dataFilePath, sep='\t', index_col=0)
-train_X = train_df.ix[:,:-1].values
+train_X = train_df.iloc[:,:-1].values
 
 train_y = [y[0] for y in train_df.loc[:,["Class"]].values.tolist()]
 classOptions = sorted(list(set(train_y)))

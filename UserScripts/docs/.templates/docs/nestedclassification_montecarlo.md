@@ -6,7 +6,6 @@ The `nestedclassification_montecarlo` command uses Monte Carlo cross-validation.
 
 {args/data}
 {args/description}
-{args/output-dir}
 {args/outer-iterations}
 {args/inner-iterations}
 {args/classif-algo}
@@ -14,8 +13,6 @@ The `nestedclassification_montecarlo` command uses Monte Carlo cross-validation.
 {descriptions/data}
 
 {descriptions/description}
-
-{descriptions/output-dir}
 
 {descriptions/outer-iterations}
 
@@ -74,7 +71,6 @@ The `nestedclassification_montecarlo` command uses Monte Carlo cross-validation.
       UserScripts/nestedclassification_montecarlo \
 {examples/data}
 {examples/description}
-{examples/output-dir}
 {examples/outer-iterations}
 {examples/inner-iterations}
 {examples/classif-algo}

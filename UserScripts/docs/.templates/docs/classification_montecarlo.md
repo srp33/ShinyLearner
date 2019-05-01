@@ -6,15 +6,12 @@ The `classification_montecarlo` command uses Monte Carlo cross-validation. It pe
 
 {args/data}
 {args/description}
-{args/output-dir}
 {args/iterations}
 {args/classif-algo}
 
 {descriptions/data}
 
 {descriptions/description}
-
-{descriptions/output-dir}
 
 {descriptions/iterations}
 
@@ -67,7 +64,6 @@ The `classification_montecarlo` command uses Monte Carlo cross-validation. It pe
       UserScripts/classification_montecarlo \
 {examples/data}
 {examples/description}
-{examples/output-dir}
 {examples/iterations}
 {examples/classif-algo}
 {examples/seed}

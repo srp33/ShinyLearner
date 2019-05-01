@@ -6,7 +6,6 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 
     --data [file_path]
     --description [description]
-    --output-dir [dir_path]
     --folds [number]
     --iterations [number]
     --classif-algo [file_path]
@@ -14,8 +13,6 @@ The `classification_crossvalidation` command uses k-fold cross-validation. It pe
 The `--data` argument allows you to specify input data file(s) in one of the [supported formats](https://github.com/srp33/ShinyLearner/blob/master/InputFormats.md).
 
 The `--description` value should be a user-friendly description of the analysis that will be performed. This description will be specified in the output files. If the description contains space characters, be sure to surround it in quotation marks.
-
-The `--output-dir` argument allows you to indicate where [output files](https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.md) will be stored. If this directory does not already exist, ShinyLearner will create it.
 
 The `--folds` argument must be an integer. If the value is either 0 or equal to the number of samples in the data set, leave-one-out cross validation will be used. If neither of these situations occurs, k-fold cross validation will be used, and the specified value will be used as *k*.
 
@@ -65,23 +62,28 @@ Please go [here](https://github.com/srp33/ShinyLearner/blob/master/OutputFiles.m
 
 The following example illustrates how to execute ShinyLearner using [Docker](https://www.docker.com) on a Unix-based system (e.g., Linux or Mac OS). For additional help or to learn about executing the software on Windows, go [here](http://bioapps.byu.edu/shinylearner/).
 
-The first `-v` argument specifies the directory where the input data files are stored on your computer. In the example below, the data files would be stored in the current working directory (`$(pwd)`). (Within the Docker container, ShinyLearner will access these files via `/InputData`.) If your data files were stored in a location other than the current working directory, you would use something like this: `-v /some/other/directory:/InputData`. It must be an *absolute* path (the `~` shortcut is not supported).
+The first command creates the output directory if it doesn't already exist.
 
-The second `-v` argument specifies the directory where the output files will be stored after ShinyLearner performs the analysis. In the example below, the output files would be stored in a directory called `Output` that is a subdirectory of the current working directory (`$(pwd)`). (Within the Docker container, ShinyLearner will access these files via `/OutputData`.) If you wanted the output files to be placed somewhere else, you would use something like this: `-v /some/other/directory:/OutputData`. It must be an *absolute* path (the `~` shortcut is not supported).
+The second (long) command executes ShinyLearner within a Docker container. 
 
-The fourth line in the example below tells Docker to run under the current user's account.
+* The `-v` arguments tell Docker where to find and store files on your computer. In the example below, the first `-v` argument specifies the directory where the input data files are stored on your computer. In this example, the data files would be stored in the current working directory (`$(pwd)`). The path *after* the colon indicates the path that ShinyLearner will use to access these files within the container (`/InputData`.) If your data files are stored in a location other than the current working directory, you could use something like this: `-v /some/other/directory:/InputData`. It must be an *absolute* path (the `~` shortcut is not supported).
 
-The fifth line in the example below indicates the name and version of the Docker image to be used.
+* The second `-v` argument specifies the directory where the output files will be placed after ShinyLearner performs the analysis. In the example below, the output files would be stored in a directory called `Output` that is a subdirectory of the current working directory (`$(pwd)`). (Within the Docker container, ShinyLearner will access these files via `/OutputData`.) If you want the output files to be placed somewhere else, you could use something like this: `-v /some/other/directory:/OutputData`. It must be an *absolute* path (the `~` shortcut is not supported).
+
+The fourth line in the Docker command tells Docker to run under the current user's account.
+
+The fifth line in the Docker command indicates the name and version of the Docker image to be used.
+
+    mkdir -p $(pwd)/Output
 
     docker run --rm -i \
       -v "$(pwd)"/:"/InputData" \
       -v "$(pwd)/Output":"/OutputData" \
       --user $(id -u):$(id -g) \
-      srp33/shinylearner:version496 \
+      srp33/shinylearner:version505 \
       UserScripts/classification_crossvalidation \
-        --data /InputData/Data.tsv.gz \
+        --data Data.tsv.gz \
         --description "My_Interesting_Analysis" \
-        --output-dir /OutputData/ \
         --iterations 1 \
         --folds 10 \
         --classif-algo "AlgorithmScripts/Classification/tsv/sklearn/svm/default*" \

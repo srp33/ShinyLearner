@@ -1,9 +1,16 @@
 #!/bin/bash
 
-imageName="$1"
-version="$2"
-cmd="$3"
+inputDir="$1"
+outputDir="$2"
+imageName="$3"
+version="$4"
+cmd="$5"
 
-docker run --rm -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/${imageName}:version${version} bash -c "$cmd"
+mkdir -p $outputDir
 
-#sudo docker run --rm --name inputdata -v $(pwd)/input:/input -v $(pwd)/output:/output srp33/${imageName}:version${version} $cmd
+docker run --rm \
+    -v $inputDir:/InputData \
+    -v $outputDir:/OutputData \
+    --user $(id -u):$(id -g) \
+    srp33/${imageName}:version${version} \
+    bash -c "$cmd"

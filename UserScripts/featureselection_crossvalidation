@@ -10,7 +10,6 @@ description="$(python3 scripts/ParseArgs.py --description TRUE $@)"
 numIterations="$(python3 scripts/ParseArgs.py --iterations TRUE $@)"
 numFolds="$(python3 scripts/ParseArgs.py --folds TRUE $@)"
 fsAlgos="$(python3 scripts/ParseArgs.py --fs-algo TRUE "$@")"
-outputDir="$(python3 scripts/ParseArgs.py --output-dir TRUE $@)"
 verbose="$(python3 scripts/ParseArgs.py --verbose FALSE false $@)"
 ohe="$(python3 scripts/ParseArgs.py --ohe FALSE true $@)"
 scale="$(python3 scripts/ParseArgs.py --scale FALSE none $@)"
@@ -24,7 +23,6 @@ checkParamParseOutput "$description"
 checkParamParseOutput "$numIterations"
 checkParamParseOutput "$numFolds"
 checkParamParseOutput "$fsAlgos"
-checkParamParseOutput "$outputDir"
 checkParamParseOutput "$verbose"
 checkParamParseOutput "$ohe"
 checkParamParseOutput "$scale"
@@ -33,7 +31,11 @@ checkParamParseOutput "$randomSeed"
 checkParamParseOutput "$numCores"
 checkParamParseOutput "$tmpDir"
 
-mkdir -p $outputDir
+dataFiles="$(modifyDataFilePaths "$dataFiles")"
+
+outputDir=/OutputData
+checkOutputDir $outputDir
+
 outFeaturesFile="$outputDir/SelectedFeatures.tsv"
 outSummarizedFeaturesFile="$outputDir/SelectedFeatures_Summarized.tsv"
 outBenchmarkFile="$outputDir/ElapsedTime.tsv"

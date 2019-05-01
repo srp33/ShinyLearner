@@ -7,20 +7,22 @@ version="$2"
 description="$3"
 validationType="$4"
 iterationsFolds="$5"
-fsAlgo="$6"
+fsAlgoFile="$6"
 verbose="$7"
 logFile="$8"
 
-inputDir=input
-outputDir=output
+inputDir=$(pwd)/input
+outputDir=$(pwd)/output
 logFile=$outputDir/$logFile
 
 analysisType=$(basename $0)
-dataFile="$inputDir/$description.tsv.gz"
+dataFile="$description.tsv.gz"
 specificOutputDir=$outputDir/${analysisType}_${description}_${validationType}
 
-bash run_docker_command $imageName $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description \"$description\" $iterationsFolds --fs-algo \"$fsAlgo\" --output-dir $specificOutputDir $verbose --impute true --ohe true" 2>&1 | tee -a $logFile
+fsAlgos=$(cat $fsAlgoFile | paste -sd "," -)
 
-expectedNumAlgorithms=$(bash run_docker_command $imageName $version "ls $fsAlgo | wc -l")
+bash run_docker_command $inputDir $specificOutputDir $imageName $version "UserScripts/${analysisType}_${validationType} --data \"$dataFile\" --description \"$description\" $iterationsFolds --fs-algo \"$fsAlgos\" $verbose --impute true --ohe true" 2>&1 | tee -a $logFile
+
+expectedNumAlgorithms=$(cat $fsAlgoFile | wc -l)
 python3 CheckSelectedFeatures.py $analysisType $validationType $description "$specificOutputDir/SelectedFeatures.tsv" Algorithm False $expectedNumAlgorithms 2>&1 | tee -a $logFile
 python3 CheckSummarizedSelectedFeatures.py "$specificOutputDir/SelectedFeatures_Summarized.tsv" 2>&1 | tee -a $logFile

@@ -6,7 +6,6 @@ The `featureselection_crossvalidation` command uses k-fold cross-validation. It 
 
 {args/data}
 {args/description}
-{args/output-dir}
 {args/iterations}
 {args/folds}
 {args/fs-algo}
@@ -14,8 +13,6 @@ The `featureselection_crossvalidation` command uses k-fold cross-validation. It 
 {descriptions/data}
 
 {descriptions/description}
-
-{descriptions/output-dir}
 
 {descriptions/iterations}
 
@@ -67,7 +64,6 @@ The `featureselection_crossvalidation` command uses k-fold cross-validation. It 
       UserScripts/featureselection_crossvalidation \
 {examples/data}
 {examples/description}
-{examples/output-dir}
 {examples/iterations}
 {examples/folds}
 {examples/fs-algo}
