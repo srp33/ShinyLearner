@@ -66,8 +66,10 @@ public class TransposedDelimitedDataProcessor extends AbstractDataProcessor
         HashMap<String, String> nameValueMap;
         for (int i=0; i<instanceIDs.size(); i++)
         {
-            int instanceIndex = dataInstanceCollection.GetIndexOfInstance(instanceIDs.get(i));
-            if (instanceIndex == -1)
+            String instanceID = instanceIDs.get(i);
+
+            Integer instanceIndex = dataInstanceCollection.GetIndexOfInstance(instanceID);
+            if (instanceIndex == null)
                 continue;
 
             nameValueMap = new HashMap<String, String>();

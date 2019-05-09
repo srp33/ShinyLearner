@@ -16,7 +16,7 @@ library(tidyverse)
 
 ## Preparation
 
-In the current working directory, we should have directories named "Demo_Results_Basic" and "Demo_Results_ParamsOptimized", which contain the results of the classification analysis with and without hyperparameter optimization, respectively (see Execute_Algorithms.ipynb). These directories contains sub-directories labeled by dataset, each of which holds a "Metrics.tsv" file. For example, the relative path to the hyperparameter-optimized results for the iris dataset would be "Demo_Results_ParamsOptimized/iris/Metrics.tsv".
+In the current working directory, we should have directories named "Results_Basic" and "Results_ParamsOptimized", which contain the results of the classification analysis with and without hyperparameter optimization, respectively (see Execute_Algorithms.ipynb). These directories contains subdirectories labeled by dataset, each of which holds a "Metrics.tsv" file. For example, the relative path to the hyperparameter-optimized results for the iris dataset would be "Results_ParamsOptimized/iris/Metrics.tsv".
 
 For later use, we will create paths to all Metrics files and store them in a vector.
 
