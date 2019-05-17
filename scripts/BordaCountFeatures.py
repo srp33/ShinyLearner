@@ -21,29 +21,35 @@ for line in inFile:
         sys.exit(1)
 
     features = features.split(",")
+    algorithm = lineItems[-2]
+
+    if not algorithm in rankDict:
+        rankDict[algorithm] = {}
 
     # Populate the dictionary with ranks for each iteration
     for i in range(len(features)):
         rank = i + 1
         feature = features[i]
 
-        if feature in rankDict:
-            rankDict[feature].append(float(rank))
+        if feature in rankDict[algorithm]:
+            rankDict[algorithm][feature].append(float(rank))
         else:
-            rankDict[feature] = [float(rank)]
+            rankDict[algorithm][feature] = [float(rank)]
 
 inFile.close()
 
-# Calculate mean ranks and build nested list
-meanRanks = []
-for feature, ranks in rankDict.items():
-    meanRank = sum(ranks) / len(ranks)
-    meanRanks.append([feature, meanRank])
-
-meanRanks.sort(key=itemgetter(1))
-
 outFile = open(outFilePath, 'w')
-outFile.write("Feature\tMean_Rank\n")
-for x in meanRanks:
-    outFile.write("%s\t%.1f\n" % (x[0], x[1]))
+outFile.write("Feature_Selection_Algorithm\tFeature\tMean_Rank\n")
+
+for algorithm, algoRankDict in sorted(rankDict.items()):
+    meanRanks = []
+    for feature, ranks in algoRankDict.items():
+        meanRank = sum(ranks) / len(ranks)
+        meanRanks.append([feature, meanRank])
+
+    meanRanks.sort(key=itemgetter(1))
+
+    for x in meanRanks:
+        outFile.write("{}\t{}\t{:.1f}\n".format(algorithm, x[0], x[1]))
+
 outFile.close()

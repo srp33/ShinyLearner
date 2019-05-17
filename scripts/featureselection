@@ -56,6 +56,5 @@ parseOutputFile "$tmpDir/ob" "$outBenchmarkFile"
 if [[ "$outSummarizedFeaturesFile" != "" ]]
 then
   echo "Summarizing feature ranks..." | timestamp | tee -a "$outLogFile"
-  Rscript --vanilla scripts/BordaCountFeatures.R "$outFeaturesFile" "$outSummarizedFeaturesFile" 2> $errFile
-  printError $verbose $errFile
+  python3 scripts/BordaCountFeatures.py "$outFeaturesFile" "$outSummarizedFeaturesFile"
 fi

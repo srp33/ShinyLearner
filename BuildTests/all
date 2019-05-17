@@ -20,6 +20,8 @@ currentDir=$(pwd)
 overallLogFile=log.overall
 tmpDir=/tmp/test_shinylearner_docker
 version=$(cat VERSION)
+classifAlgoFile=$tmpDir/input/classifAlgos.list
+fsAlgoFile=$tmpDir/input/fsAlgos.list
 
 rm -rf $tmpDir
 mkdir -p $tmpDir/input $tmpDir/output
@@ -32,12 +34,9 @@ currentDir=$(pwd)
 
 cd $tmpDir
 
-classifAlgoFile=$tmpDir/input/classifAlgos.list
-fsAlgoFile=$tmpDir/input/fsAlgos.list
-
 #########################################################
-# Test all other classification algorithm using monte
-#   carlo cross validation.
+# Test most classification algorithm using monte carlo
+# cross validation.
 #########################################################
 
 classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"

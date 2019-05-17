@@ -47,7 +47,7 @@ When nested cross validation is used to optimize hyperparameters or to select fe
 
 ## Nested_SelectedFeatures_Summarized.tsv
 
-* A ranked list of features, averaged (using [Borda count](https://en.wikipedia.org/wiki/Borda_count)) across all feature-selection algorithms.
+* A ranked list of features, averaged (using [Borda count](https://en.wikipedia.org/wiki/Borda_count)) across all iterations, for each feature-selection algorithm.
 * [Example](https://github.com/srp33/ShinyLearner/blob/master/Validation/ExampleFiles/Nested_SelectedFeatures_Summarized.tsv)
 * Note: If multiple data files were used as input, the path to the file name will be used as a prefix before each feature name.
 

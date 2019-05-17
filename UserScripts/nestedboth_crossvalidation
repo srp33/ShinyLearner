@@ -179,8 +179,9 @@ if [[ "$verbose" == "true" ]]
 then
   errFile=$(mktemp $tmpDir/XXXXXXXXX)
 fi
-Rscript --vanilla scripts/BordaCountFeatures.R "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile | timestamp | tee -a "$outLogFile"
-printError $verbose $errFile
+python scripts/BordaCountFeatures.py "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile"
+#Rscript --vanilla scripts/BordaCountFeatures.R "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile | timestamp | tee -a "$outLogFile"
+#printError $verbose $errFile
 
 cleanup
 

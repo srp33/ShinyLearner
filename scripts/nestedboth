@@ -136,10 +136,7 @@ copyInnerFileB $tmpDir/icb "-k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6" "$outNestedCla
 
 if [[ "$outNestedSummarizedSelectedFeaturesFile" != "" ]]
 then
-  ##Rscript --vanilla scripts/BordaCountFeatures.R "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile
   python3 scripts/BordaCountFeatures.py "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile"
-  ##python scripts/BordaCountFeatures.py "$outNestedSelectedFeaturesFile" "$outNestedSummarizedSelectedFeaturesFile" 2> $errFile
-  ##printError $verbose $errFile
 fi
 
 python3 scripts/SplitDescriptionColumn.py $tmpDir/ibest $iterationOutputHeader $tmpDir/ibest.sorttemp

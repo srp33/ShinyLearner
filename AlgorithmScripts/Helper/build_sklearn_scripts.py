@@ -83,7 +83,7 @@ createScripts("FeatureSelection", packagePath, "sklearn_f_template", "anova", "s
 mutual_info = "score = 1 - mutual_info_classif(train_X, train_y, n_neighbors={n_neighbors})"
 createScripts("FeatureSelection", packagePath, "sklearn_f_template", "mutual_info", "score", mutual_info, {"n_neighbors": [3]}, summaryDict)
 
-random_forest_rfe = "selector = RFE(RandomForestClassifier(n_estimators=50, random_state=R_SEED), n_features_to_select=1, step={step})"
+random_forest_rfe = "selector = RFE(RandomForestClassifier(n_estimators=100, random_state=R_SEED), n_features_to_select=1, step={step})"
 createScripts("FeatureSelection", packagePath, "sklearn_f_template", "random_forest_rfe", "rfe", random_forest_rfe, {"step": [0.1]}, summaryDict)
 
 random_logistic_regression = "scorer = RandomizedLogisticRegression(C={C}, scaling={scaling}, sample_fraction={sample_fraction}, n_resampling={n_resampling}, selection_threshold={selection_threshold}, tol={tol}, fit_intercept=True, verbose=False, normalize=True, random_state=R_SEED)"
