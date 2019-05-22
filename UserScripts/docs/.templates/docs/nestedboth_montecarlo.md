@@ -1,6 +1,6 @@
 ## DESCRIPTION
 
-The `nestedboth_montecarlo` command uses Monte Carlo cross-validation. It performs classification, hyperparameter optimization, and feature selection. It uses nested, Monte Carlo cross validation for hyperparameter optimization and feature selection. It outputs the performance of each algorithm for the inner (nested) folds and uses a select-best method for predictions in the outer folds. It also outputs a ranked list of features for each feature-selection algorithm as well as a Borda Count list of features based on the rankings of all feature-selection algorithms.
+The `nestedboth_montecarlo` command uses Monte Carlo cross-validation. It performs classification and can perform hyperparameter optimization as well as feature selection. It uses nested, Monte Carlo cross validation for hyperparameter optimization and feature selection. It outputs the performance of each algorithm for the inner (nested) folds and uses a select-best method for predictions in the outer folds. It also outputs a ranked list of features for each feature-selection algorithm as well as a Borda Count list of features based on the rankings of all feature-selection algorithms.
 
 ## REQUIRED ARGUMENTS
 
