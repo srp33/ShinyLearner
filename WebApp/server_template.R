@@ -9,7 +9,8 @@ library(shiny)
 shinyServer(function(input, output, session) {
   
   session$allowReconnect(TRUE)
-  docker_image_name <- 'srp33/shinylearner:version{version}'
+  docker_image_name <- 'srp33/shinylearner'
+  docker_image_tag <- 'version{version}'
   numFeaturesOptions <- '1,10,100,1000,10000'
   defaultValidation <- 'mc'
   validationChoices <- list('Monte Carlo cross validation' = 'mc', 'k-fold cross validation' = 'kf')
@@ -29,6 +30,7 @@ shinyServer(function(input, output, session) {
   defaultFSAlgos <- 'AlgorithmScripts/FeatureSelection/tsv/sklearn/anova'
   defaultClassifAlgos <- 'AlgorithmScripts/Classification/tsv/sklearn/svm'
   defaultClassifOpt <- FALSE
+  defaultGPUOpt <- FALSE
   defaultOHE <- TRUE
   defaultScale <- FALSE
   defaultImpute <- FALSE
@@ -68,6 +70,7 @@ shinyServer(function(input, output, session) {
   short_names <- function(x) {
     return(paste(strsplit(x, '/')[[1]][c(4,5)], collapse='/'))
   }
+
   # Get Classifier and Features Selector options from files system and sort by name
   classifAlgosOptions <-  list.dirs(path='./ShinyLearner/AlgorithmScripts/Classification', recursive=TRUE)
   classifAlgosOptions <- classifAlgosOptions[sapply(classifAlgosOptions, function(x) length(list.dirs(x, recursive = FALSE)) == 0)] # https://stackoverflow.com/questions/41961474/list-leaf-directories-in-r
@@ -210,6 +213,11 @@ shinyServer(function(input, output, session) {
   output$sel_classifOpt_ui <- renderUI({
     checkboxInput('sel_classifOpt', 'Optimize hyperparameters?', value = defaultClassifOpt)
   })
+  output$sel_gpu_ui <- renderUI({
+    if (!is.null(input$sel_classifAlgos) & any(grepl("keras", input$sel_classifAlgos))) {
+      checkboxInput('sel_gpuOpt', 'Execute on GPUs (where possible)?', value = defaultGPUOpt)
+    }
+  })
   output$sel_classifAlgos_header_ui <- renderUI({
     h4('Classification algorithms (required)')
   })
@@ -279,6 +287,7 @@ shinyServer(function(input, output, session) {
                     input$output_dir_textbox != "" &
                     !is.null(input$ohe_checkbox) &
                     !is.null(input$sel_classifOpt) &
+                    !is.null(input$sel_gpuOpt) &
                     input$seed_textbox != '',
                   incomplete_error_message))
     
@@ -341,7 +350,8 @@ shinyServer(function(input, output, session) {
     if (os == 'linux/mac')
       lines <- c(lines, "  --user $(id -u):$(id -g)")
     
-    lines <- c(lines, paste0("  ", docker_image_name))
+    docker_image_name <- ifelse(input$sel_gpuOpt, paste0(docker_image_name, "_gpu"), docker_image_name)
+    lines <- c(lines, paste0("  ", docker_image_name, ":", docker_image_tag))
     
     data_line <- paste0('  --data "', clientInputFiles, '"')
     desc_line <- paste0('  --description "', expDesc, '"')

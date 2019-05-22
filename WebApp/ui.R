@@ -53,6 +53,7 @@ shinyUI(fluidPage(
 		           fluidRow(column(4, uiOutput('sel_classifAlgos_header_ui'))),
 		           uiOutput('sel_classifAlgos_ui'),
 		           uiOutput('sel_classifOpt_ui'),
+		           uiOutput('sel_gpu_ui'),
 		           uiOutput('sel_classifAlgos_help_message_ui'),
 		           fluidRow(column(4, uiOutput('sel_fsAlgos_header_ui'))),
 		           uiOutput('sel_fsAlgos_ui'),
