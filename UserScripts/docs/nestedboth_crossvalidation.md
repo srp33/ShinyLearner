@@ -95,6 +95,8 @@ The fourth line in the Docker command tells Docker to run under the current user
 
 The fifth line in the Docker command indicates the name and version of the Docker image to be used.
 
+Some algorithms support the use of graphical processing units for faster performance. To use this, you must install [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) and substitute `srp33/shinylearner` with `srp33/shinylearner_gpu` in the Docker command that you execute.
+
     mkdir -p $(pwd)/Output
 
     docker run --rm -i \

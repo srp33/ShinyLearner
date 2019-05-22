@@ -1,6 +1,6 @@
 ## Installing software
 
-To execute ShinyLearner, you will need to install the [Docker engine](https://docs.docker.com/engine/installation).
+To execute ShinyLearner, you will need to install the [Docker engine](https://docs.docker.com/engine/installation). If you would like to use graphical processing units, you must also install [nvidia-docker](https://github.com/NVIDIA/nvidia-docker).
 
 ## Preparing data
 
