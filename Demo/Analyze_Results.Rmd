@@ -15,16 +15,14 @@ source("Helper.R")
 
 ## Data preparation
 
-In the current working directory, we should have directories named "Results_Basic" and "Results_ParamsOptimized", which contain the results of the classification analysis with and without hyperparameter optimization, respectively (see Execute_Algorithms.ipynb). These directories contains subdirectories labeled by dataset, each of which holds a "Metrics.tsv" file and a "Predictions.tsv" file. As an example, the relative path to the hyperparameter-optimized results for the iris dataset would be located at "Results_ParamsOptimized/iris/Metrics.tsv".
+In the current working directory, we should have directories named "Results_Basic" and "Results_ParamsOptimized", which contain the results of the classification analysis with and without hyperparameter optimization, respectively (see Execute_Algorithms.ipynb). There should also be a directory called "Results_FeatureSelection," which contain results from executing the algorithms with feature selection. Each of these directories contains subdirectories labeled by dataset, each of which holds multiple tab-separated value (.tsv) files with the results.
 
-For later use, we will create paths to the Metrics.tsv files and store them in a vector.
+For later use, we will create paths to the TSV files and store them in vectors. We will also build data frames with the results.
 
 ```{r}
 data_dir_path <- "Datasets"
 datasets <- sub(".tsv", "", list.files(data_dir_path, full.names = FALSE, recursive = FALSE))
 ```
-
-Now we will extract data from the results files.
 
 ```{r}
 basic_time_file_paths = paste0("Results_Basic/", datasets, "/ElapsedTime.tsv.gz")
@@ -52,7 +50,13 @@ for (path in basic_metrics_file_paths) {
     bind_rows(basic_metrics)
 }
 
-basic_metrics <- mutate(basic_metrics, Description = as.factor(Description)) %>%
+null_basic_metrics <- filter(basic_metrics, Description == "null") %>%
+  dplyr::select(-Description) %>%
+  mutate(Algorithm = as.factor(Algorithm)) %>%
+  mutate(AnalysisType="Basic")
+
+basic_metrics <- filter(basic_metrics, Description != "null") %>%
+  mutate(Description = as.factor(Description)) %>%
   mutate(Algorithm = as.factor(Algorithm))
 ```
 
@@ -68,7 +72,13 @@ for (path in optimized_metrics_file_paths) {
     bind_rows(optimized_metrics)
 }
 
-optimized_metrics <- mutate(optimized_metrics, Description = as.factor(Description)) %>%
+null_optimized_metrics <- filter(optimized_metrics, Description == "null") %>%
+  dplyr::select(-Description) %>%
+  mutate(Algorithm = as.factor(Algorithm)) %>%
+  mutate(AnalysisType="Optimized hyperparameters")
+
+optimized_metrics <- filter(optimized_metrics, Description != "null") %>%
+  mutate(Description = as.factor(Description)) %>%
   mutate(Algorithm = as.factor(Algorithm))
 ```
 
@@ -78,6 +88,7 @@ nested_metrics <- NULL
 
 for (path in nested_metrics_file_paths) {
   nested_metrics <- suppressMessages(read_tsv(path)) %>%
+    filter(Description != "null") %>%
     filter(Metric == 'AUROC') %>%
     mutate(Params = paste0(basename(Algorithm))) %>%
     group_by(Description, Algorithm, Outer_Iteration, Params) %>%
@@ -105,6 +116,23 @@ predictions_data <- suppressMessages(read_tsv("Results_Basic/diabetes/Prediction
   dplyr::select(-Iteration) %>%
   mutate(Algorithm=factor(paste0(basename(dirname(dirname(Algorithm))), "/", basename(dirname(Algorithm))))) %>%
   mutate(Description=factor(Description)) %>%
+  dplyr::select(-Description, -ActualClass, -PredictedClass, -InstanceID, -`1`) %>%
+  dplyr::rename(Probability_of_Positive=`2`)
+```
+
+```{r}
+optimized_predictions_data <- suppressMessages(read_tsv("Results_ParamsOptimized/diabetes/Nested_Predictions.tsv.gz")) %>%
+  filter(Outer_Iteration==1 & Inner_Iteration == 1) %>%
+  dplyr::select(-Outer_Iteration, -Inner_Iteration) %>%
+  mutate(Params = paste0(basename(Algorithm))) %>%
+  mutate(Algorithm=factor(paste0(basename(dirname(dirname(Algorithm))), "/", basename(dirname(Algorithm))))) %>%
+  mutate(IsDefault = grepl("^default__", Params)) %>%
+  mutate(Params=str_replace(Params, "default__", "")) %>%
+  mutate(Params=str_replace(Params, "alt__", "")) %>%
+  mutate(Params=str_replace_all(Params, "_", ", ")) %>%
+  mutate(Params=factor(Params)) %>%
+  mutate(InstanceID=factor(InstanceID)) %>%
+  mutate(Description=factor(Description)) %>%
   dplyr::select(-Description, -ActualClass, -PredictedClass, -`1`) %>%
   dplyr::rename(Probability_of_Positive=`2`)
 ```
@@ -121,7 +149,13 @@ for (path in fs_metrics_file_paths) {
     bind_rows(fs_metrics)
 }
 
-fs_metrics <- mutate(fs_metrics, Description = as.factor(Description)) %>%
+null_fs_metrics <- filter(fs_metrics, Description == "null") %>%
+  dplyr::select(-Description) %>%
+  mutate(Algorithm = as.factor(Algorithm)) %>%
+  mutate(AnalysisType="Feature selection")
+
+fs_metrics <- filter(fs_metrics, Description != "null") %>%
+  mutate(Description = as.factor(Description)) %>%
   mutate(Algorithm = as.factor(Algorithm))
 ```
 
@@ -138,8 +172,8 @@ for (path in nested_fs_metrics_file_paths) {
     mutate(Classification_Algorithm=paste0(basename(dirname(dirname(Classification_Algorithm))), "/", basename(dirname(Classification_Algorithm))))
   
   tmp2 = spread(tmp, Feature_Selection_Algorithm, Value)
-  ranks = t(apply(tmp2, 1, function(x) { rank(x[(length(x) - 3):length(x)])}))
-  tmp2[(ncol(tmp2) - 3):ncol(tmp2)] = ranks
+  ranks = t(apply(tmp2, 1, function(x) { rank(x[(length(x) - 9):length(x)])}))
+  tmp2[(ncol(tmp2) - 9):ncol(tmp2)] = ranks
   tmp2 = gather(tmp2, -Description, -Outer_Iteration, -Inner_Iteration, -Num_Features, -Classification_Algorithm, key=Feature_Selection_Algorithm, value=Value) %>%
     dplyr::rename(Rank=Value)
   
@@ -148,20 +182,32 @@ for (path in nested_fs_metrics_file_paths) {
     bind_rows(nested_fs_metrics)
 }
 
-nested_fs_metrics <- mutate(nested_fs_metrics,
-                         Description = as.factor(Description),
-                         Outer_Iteration = as.factor(Outer_Iteration),
-                         Inner_Iteration = as.factor(Inner_Iteration),
-                         Feature_Selection_Algorithm = as.factor(Feature_Selection_Algorithm),
-                         Num_Features = as.factor(Num_Features),
-                         Classification_Algorithm = as.factor(Classification_Algorithm))
+nested_fs_metrics <- filter(nested_fs_metrics, Description != "null")  %>%
+  mutate(Description = as.factor(Description),
+         Outer_Iteration = as.factor(Outer_Iteration),
+         Inner_Iteration = as.factor(Inner_Iteration),
+         Feature_Selection_Algorithm = as.factor(Feature_Selection_Algorithm),
+         Num_Features = as.factor(Num_Features),
+         Classification_Algorithm = as.factor(Classification_Algorithm))
+```
+
+```{r}
+file_path = "Results_FeatureSelection/dermatology/Nested_SelectedFeatures_Summarized.tsv.gz"
+
+nested_feature_ranks <- suppressMessages(read_tsv(file_path)) %>%
+  dplyr::rename(Algorithm=Feature_Selection_Algorithm) %>%
+  mutate(Algorithm = factor(paste0(basename(dirname(dirname(Algorithm))), "/", basename(dirname(Algorithm))))) %>%
+  mutate(Feature = factor(Feature))
 ```
 
 ## Prepare for plotting
 
 ```{r}
-unlink("Graphs", recursive = TRUE)
-dir.create("Graphs", showWarnings = FALSE)
+unlink("Figures", recursive = TRUE)
+dir.create("Figures", showWarnings = FALSE)
+
+unlink("Tables", recursive = TRUE)
+dir.create("Tables", showWarnings = FALSE)
 
 dimension_1 = 7
 dimension_2 = 9
@@ -175,14 +221,14 @@ axis_label_angle = 40
 
 ```{r}
 plot_data <- group_by(basic_time, Algorithm) %>%
-  summarize(ElapsedSeconds=median(ElapsedSeconds))
+ summarize(ElapsedSeconds=median(ElapsedSeconds))
 
 make_bar_plot(plot_data,
               x="Algorithm",
               y="ElapsedSeconds",
               xlab="Algorithm",
               ylab="Elapsed seconds",
-              out_file_path="Graphs/Datasets_Basic_ElapsedTime.pdf")
+              out_file_path="Figures/Datasets_Basic_ElapsedTime.pdf")
 ```
 
 ## AUROC values for each dataset (not hyperparameter optimized)
@@ -197,26 +243,50 @@ make_faceted_point_plot(plot_data,
                         ylab="AUROC (averaged across 10 iterations)",
                         palette=colorPalette,
                         facet_column="Description",
-                        out_file_path="Graphs/Datasets_Basic_AUROC.pdf")
+                        out_file_path="Figures/Datasets_Basic_AUROC.pdf",
+                        y_lines=c(0.5, 1))
 ```
 
-## Relative performance of each algorithm (not hyperparameter optimized)
+## Performance on null data
 
 ```{r}
+plot_data <- bind_rows(null_basic_metrics, null_optimized_metrics, null_fs_metrics) %>%
+  mutate(AnalysisType=factor(AnalysisType, levels=c("Basic", "Optimized hyperparameters", "Feature selection"))) %>%
+  group_by(AnalysisType, Algorithm) %>%
+  summarize(AUROC=median(Value))
+
+make_faceted_point_plot(plot_data,
+                        x="Algorithm",
+                        y="AUROC",
+                        ylab="AUROC (averaged across 10 iterations)",
+                        palette=colorPalette,
+                        facet_column="AnalysisType",
+                        out_file_path="Figures/Datasets_null_AUROC.pdf",
+                        y_lines=c(0.5),
+                        ncol=1)
+```
+
+## Performance of each algorithm (not hyperparameter optimized)
+
+```{r}
+plot_data = group_by(basic_metrics, Description, Algorithm) %>%
+  summarize(AUROC=median(Value))
+
 median_per_dataset <- group_by(plot_data, Description) %>%
   summarize(AUROC = median(AUROC))
 
 plot_data2 <- inner_join(plot_data, median_per_dataset, by="Description") %>%
   mutate(AUROC_Diff = AUROC.x - AUROC.y)
+#  mutate(AUROC_Diff = (AUROC.x / AUROC.y - 1) * 100)
 
 make_faceted_point_plot(plot_data2,
                         x="Description",
                         y="AUROC_Diff",
-                        ylab="AUROC (difference from median)",
+                        ylab="AUROC relative to median (per dataset)",
                         palette=colorPalette,
                         facet_column="Algorithm",
-                        out_file_path="Graphs/Algorithms_Basic_AUROC.pdf",
-                        y_line=0)
+                        out_file_path="Figures/Algorithms_Basic_AUROC.pdf",
+                        y_lines=0)
 ```
 
 ## Consistency performance of "same" algorithm in different software packages (not hyperparameter optimized)
@@ -225,21 +295,37 @@ make_faceted_point_plot(plot_data2,
 make_algo_comparison_plot(basic_metrics,
                           algo1="mlr/mlp",
                           algo2="weka/MultilayerPerceptron",
-                          out_file_path="Graphs/Algorithms_Compare_MLP.pdf")
+                          out_file_path="Figures/Algorithms_Compare_MLP.pdf")
 
 make_algo_comparison_plot(basic_metrics,
                           algo1="sklearn/logistic_regression",
                           algo2="weka/SimpleLogistic",
-                          out_file_path="Graphs/Algorithms_Compare_Logistic.pdf")
+                          out_file_path="Figures/Algorithms_Compare_Logistic.pdf")
 ```
 
-## Consistency of results across Monte Carlo iterations for each algorithm
+## Consistency of results across datasets for each algorithm (lower values = less variation)
 
 ```{r}
 coef_var = function(x) {
   sd(x) / mean(x) * 100
 }
 
+plot_data <- group_by(basic_metrics, Algorithm, Description) %>%
+  summarize(AUROC=median(Value)) %>%
+  group_by(Algorithm) %>%
+  summarize(AUROC_CV=coef_var(AUROC))
+
+make_bar_plot(plot_data,
+              x="Algorithm",
+              y="AUROC_CV",
+              xlab="Algorithm",
+              ylab="Coefficient of variation (AUROC)",
+              out_file_path="Figures/Algorithms_CoV_AUROC.pdf")
+```
+
+## Consistency of results across Monte Carlo iterations for each algorithm (lower values = less variation)
+
+```{r}
 plot_data <- group_by(basic_metrics, Algorithm, Description) %>%
   summarize(AUROC_CV=coef_var(Value)) %>%
   group_by(Algorithm) %>%
@@ -250,7 +336,7 @@ make_bar_plot(plot_data,
               y="AUROC_CV",
               xlab="Algorithm",
               ylab="Coefficient of variation (AUROC)",
-              out_file_path="Graphs/Algorithms_SDev_AUROC.pdf")
+              out_file_path="Figures/AlgorithmIterations_CoV_AUROC.pdf")
 ```
 
 ## Sample-level predictions for each algorithm
@@ -263,89 +349,121 @@ ggplot(predictions_data, aes(Probability_of_Positive)) +
   ylab("Count") +
   theme_bw(base_size=18)
 
-ggsave("Graphs/Predictions_Histograms.pdf", width=dimension_1, height=dimension_2)
+ggsave("Figures/Predictions_Histograms.pdf", width=dimension_1, height=dimension_2)
 ```
 
 ## Performance when optimizing vs. not optimizing hyperparameters
 
 ```{r}
 plot_data <- inner_join(basic_metrics, optimized_metrics, by=c("Description", "Iteration", "Algorithm")) %>%
-  mutate(AUROC_Diff = Value.y - Value.x) %>%
+  mutate(AUROC_Diff = ((Value.y / Value.x) - 1) * 100) %>%
   group_by(Description, Algorithm) %>%
-  summarize(AUROC_Diff=median(AUROC_Diff))
+  summarize(AUROC_Diff=median(AUROC_Diff)) %>%
+  ungroup() %>%
+  mutate(Above_Zero=factor(AUROC_Diff > 0))
 
-make_faceted_point_plot(plot_data,
-                        x="Description",
-                        y="AUROC_Diff",
-                        ylab="AUROC (improvement)",
-                        palette=colorPalette,
-                        facet_column="Algorithm",
-                        out_file_path="Graphs/Algorithms_ParamsImprovement_AUROC.pdf",
-                        y_line=0)
+make_diff_bar_plot(plot_data,
+                   x = "Description",
+                   y = "AUROC_Diff",
+                   fill_column = "Above_Zero",
+                   facet_column = "Algorithm",
+                   xlab = "Dataset",
+                   ylab = "Percent change in AUROC (median per iteration)",
+                   out_file_path = "Figures/Algorithms_ParamsImprovement_AUROC.pdf")
+
+# make_faceted_point_plot(plot_data,
+#                         x="Description",
+#                         y="AUROC_Diff",
+#                         ylab="Percent change in AUROC after hyperparameter optimization",
+#                         palette=colorPalette,
+#                         facet_column="Algorithm",
+#                         out_file_path="Figures/Algorithms_ParamsImprovement_AUROC.pdf",
+#                         y_lines=0)
 ```
 
-## Performance of different hyperparameter combinations
+## Performance of different hyperparameter combinations (for one algorithm) in nested cross-validation folds
 
 ```{r}
-#########################################
-#TODO
-#########################################
-# default_results <- filter(nested_metrics, grepl("default__", Params)) %>%
-#   rename(Default_AUROC=AUROC)
-# 
-# plot_data <- filter(nested_metrics, !grepl("default__", Params)) %>%
-#   inner_join(default_results, by=c("Description")) %>%
-#   rename(Params=Params.x) %>%
-# #  select(-Params.y) %>%
-#   mutate(AUROC_Diff = AUROC - Default_AUROC) %>%
-#   mutate(AUROC_Diff = factor(round(AUROC_Diff, 1), levels=seq(-0.4, 0.4, 0.1))) %>%
-# #  select(-AUROC, -Default_AUROC) %>%
-#   mutate(Params=str_replace(Params, "alt__", "")) %>%
-#   mutate(Params=str_replace_all(Params, "_", ", "))
-# 
-# ggplot(plot_data, aes(x = Params, y = Description)) +
-#   geom_tile(aes(fill=AUROC_Diff), color="white") +
-#   scale_fill_manual(name="Difference", values = c("#92c5de", "#f7f7f7", "#fddbc7", "#f4a582", "#b2182b")) +
-#   xlab("Hyperparameters") +
-#   ylab("Dataset") +
-#   theme_bw() +
-#   theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5))
-# 
-# ggsave("Graphs/Optimized_NestedMetrics_Heatmap.pdf", width=dimension_1, height=dimension_2)
+default_results <- filter(nested_metrics, Algorithm == "keras/dnn") %>%
+  dplyr::select(-Algorithm) %>%
+  filter(IsDefault) %>%
+  dplyr::select(-IsDefault) %>%
+  rename(Default_AUROC=AUROC)
+
+alt_results <- filter(nested_metrics, Algorithm == "keras/dnn") %>%
+  dplyr::select(-Algorithm) %>%
+  filter(!IsDefault) %>%
+  dplyr::select(-IsDefault)
+
+plot_data <- inner_join(default_results, alt_results, by=c("Description", "Iteration")) %>%
+  rename(Params=Params.y) %>%
+  dplyr::select(-Params.x) %>%
+  mutate(AUROC_Diff = AUROC - Default_AUROC) %>%
+  dplyr::select(-AUROC, -Default_AUROC) %>%
+  group_by(Description, Params) %>%
+  summarize(AUROC_Diff=median(AUROC_Diff))
+
+make_continuous_heatmap(plot_data,
+                        x="Params",
+                        y="Description",
+                        fill_column = "AUROC_Diff",
+                        xlabel="Hyperparameter combination",
+                        ylabel="Dataset",
+                        legend_title="",
+                        out_file_path="Figures/Optimized_NestedMetrics_Heatmap.pdf",
+                        keep_x_axis = FALSE)
+
+write_tsv(spread(plot_data, key=Description, value=AUROC_Diff), "Tables/ParamOpt_Improvement.tsv")
 ```
 
 ## How much sample-level predictions change for different hyperparameters
 
 ```{r}
-ggplot(predictions_data, aes(Probability_of_Positive)) +
-  geom_histogram(bins=40) +
-  facet_wrap(~Algorithm, ncol=2) +
-  xlab("Probabilistic prediction of positive diagnosis per patient") +
-  ylab("Count") +
-  theme_bw(base_size=18)
+plot_data = filter(optimized_predictions_data, as.integer(InstanceID) < 4) %>%
+  filter(Algorithm=="keras/dnn")
 
-ggsave("Graphs/Predictions_Histograms.pdf", width=dimension_1, height=dimension_2)
+ggplot(plot_data, aes(x=Params, y=Probability_of_Positive, color=InstanceID, group=InstanceID)) +
+  geom_point() +
+  geom_line(alpha=0.3) +
+  xlab("Hyperparameter combination") +
+  ylab("Probabilistic prediction of positive diagnosis") +
+  scale_color_manual(values=colorPalette[c(2, 4, 8)]) +
+  guides(color=FALSE) +
+  theme_bw(base_size=18) +
+  theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
+
+ggsave("Figures/Predictions_Hyperparams.pdf", width=dimension_1, height=dimension_2)
 ```
 
 ## Performance when performing feature selection vs. not
 
 ```{r}
 plot_data <- inner_join(basic_metrics, fs_metrics, by=c("Description", "Iteration", "Algorithm")) %>%
-  mutate(AUROC_Diff = Value.y - Value.x) %>%
+  mutate(AUROC_Diff = ((Value.y / Value.x) - 1) * 100) %>%
   group_by(Description, Algorithm) %>%
-  summarize(AUROC_Diff=median(AUROC_Diff))
+  summarize(AUROC_Diff=median(AUROC_Diff)) %>%
+  mutate(Above_Zero=factor(AUROC_Diff > 0))
 
-make_faceted_point_plot(plot_data,
-                        x="Description",
-                        y="AUROC_Diff",
-                        ylab="AUROC (improvement)",
-                        palette=colorPalette,
-                        facet_column="Algorithm",
-                        out_file_path="Graphs/Algorithms_FSImprovement_AUROC.pdf",
-                        y_line=0)
+make_diff_bar_plot(plot_data,
+                   x = "Description",
+                   y = "AUROC_Diff",
+                   fill_column = "Above_Zero",
+                   facet_column = "Algorithm",
+                   xlab = "Dataset",
+                   ylab = "Percent change in AUROC after feature selection",
+                   out_file_path = "Figures/Algorithms_FSImprovement_AUROC.pdf")
+
+# make_faceted_point_plot(plot_data,
+#                         x="Description",
+#                         y="AUROC_Diff",
+#                         ylab="Percent change in AUROC after feature selection",
+#                         palette=colorPalette,
+#                         facet_column="Algorithm",
+#                         out_file_path="Figures/Algorithms_FSImprovement_AUROC.pdf",
+#                         y_lines=0)
 ```
 
-## Performance for combinations of classification and feature-selection algorithms
+## Performance for combinations of classification and feature-selection algorithms (higher average rank = better)
 
 ```{r}
 plot_data = group_by(nested_fs_metrics, Description, Outer_Iteration, Feature_Selection_Algorithm, Num_Features, Classification_Algorithm) %>%
@@ -364,8 +482,9 @@ make_continuous_heatmap(plot_data,
                         fill_column = "Rank",
                         xlabel="Classification algorithm",
                         ylabel="Feature-selection algorithm",
-                        legend_title="Average rank",
-                        out_file_path="Graphs/FS_vs_CL.pdf")
+                        legend_title="Average rank\n(higher is better)",
+                        out_file_path="Figures/FS_vs_CL.pdf",
+                        fill_values_range=NULL)
 ```
 
 ## Performance of feature-selection algorithms by number of features
@@ -392,12 +511,21 @@ make_continuous_heatmap(plot_data,
                         xlabel="Dataset",
                         ylabel="Number of features",
                         legend_title=NULL,
-                        out_file_path="Graphs/FS_NumFeatures.pdf")
+                        out_file_path="Figures/FS_NumFeatures.pdf",
+                        fill_values_range=NULL)
 ```
 
-## Top features selected
+## Top features selected in one of the datasets
 
 ```{r}
-#TODO: Can't do this one yet. When you can, make a heatmap with numbers in it.
-#      Something like this: geom_text(aes(label = round(value, 1)))
+make_continuous_heatmap(nested_feature_ranks,
+                        x="Algorithm",
+                        y="Feature",
+                        fill_column = "Mean_Rank",
+                        xlabel="Algorithm",
+                        ylabel="Feature",
+                        legend_title="Average rank\n(lower is better)",
+                        out_file_path="Figures/FS_RankedFeatures.pdf",
+                        fill_values_range=NULL,
+                        base_size=11)
 ```
