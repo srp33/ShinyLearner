@@ -59,6 +59,9 @@ if ("ERROR" %in% predictionsData$PredictedClass) {
   predictionStartIndex <- which(colnames(predictionsData) == "PredictedClass") + 1
   classOptions <- colnames(predictionsData)[predictionStartIndex:ncol(predictionsData)]
 
+  # The Description column is a concatenation of multiple values (e.g, description, iteration, num features).
+  #   This is different depending on what type of analysis we are doing. But we since they are all
+  #   combined, we can aggregate the results consistently based on that column.
   uniqueCombinations <- distinct(select(predictionsData, Description, Algorithm))
 
   outDescriptions <- NULL
@@ -76,44 +79,33 @@ if ("ERROR" %in% predictionsData$PredictedClass) {
     if (length(classOptions) == 2) {
       classOptions <- classOptions[1]
     }
-#      combinationPredictionData$Probabilities <- combinationPredictionData[,classOptions[2]]
-#      metrics <- calculateMetrics(combinationPredictionData)
-#
-#      for (metric in names(metrics))
-#      {
-#        outDescriptions <- c(outDescriptions, description)
-#        outAlgorithms <- c(outAlgorithms, algorithm)
-#        outMetrics <- c(outMetrics, metric)
-#        outValues <- c(outValues, metrics[[metric]])
-#      }
-#    } else {
-      for (classOption in classOptions)
+
+    for (classOption in classOptions)
+    {
+      tmpPred <- combinationPredictionData
+
+      actual <- as.character(tmpPred$ActualClass)
+      actual[tmpPred$ActualClass==classOption] <- 1
+      actual[tmpPred$ActualClass!=classOption] <- 0
+      tmpPred$ActualClass <- actual
+
+      predicted <- as.character(tmpPred$PredictedClass)
+      predicted[tmpPred$PredictedClass==classOption] <- 1
+      predicted[tmpPred$PredictedClass!=classOption] <- 0
+      tmpPred$PredictedClass <- predicted
+
+      colnames(tmpPred)[which(colnames(tmpPred)==classOption)] <- "Probabilities"
+
+      metrics <- calculateMetrics(tmpPred)
+
+      for (metric in names(metrics))
       {
-        tmpPred <- combinationPredictionData
-
-        actual <- as.character(tmpPred$ActualClass)
-        actual[tmpPred$ActualClass==classOption] <- 1
-        actual[tmpPred$ActualClass!=classOption] <- 0
-        tmpPred$ActualClass <- actual
-
-        predicted <- as.character(tmpPred$PredictedClass)
-        predicted[tmpPred$PredictedClass==classOption] <- 1
-        predicted[tmpPred$PredictedClass!=classOption] <- 0
-        tmpPred$PredictedClass <- predicted
-
-        colnames(tmpPred)[which(colnames(tmpPred)==classOption)] <- "Probabilities"
-
-        metrics <- calculateMetrics(tmpPred)
-
-        for (metric in names(metrics))
-        {
-          outDescriptions <- c(outDescriptions, description)
-          outAlgorithms <- c(outAlgorithms, algorithm)
-          outMetrics <- c(outMetrics, metric)
-          outValues <- c(outValues, metrics[[metric]])
-        }
+        outDescriptions <- c(outDescriptions, description)
+        outAlgorithms <- c(outAlgorithms, algorithm)
+        outMetrics <- c(outMetrics, metric)
+        outValues <- c(outValues, metrics[[metric]])
       }
-#    }
+    }
   }
 
   outData <- data.frame(Description=outDescriptions, Algorithm=outAlgorithms, Metric=outMetrics, Value=outValues)

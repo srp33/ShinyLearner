@@ -31,7 +31,7 @@ shinyUI(fluidPage(
 		         h4('Data preprocessing options:'),
 		         uiOutput('ohe_checkbox_ui'),
 		         uiOutput('ohe_help_message_ui'),
-		         uiOutput('scale_checkbox_ui'),
+		         uiOutput('scale_dropdown_ui'),
 		         uiOutput('scale_help_message_ui'),
 		         uiOutput('impute_checkbox_ui'),
 		         uiOutput('impute_help_message_ui'),

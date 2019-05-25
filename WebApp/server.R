@@ -10,7 +10,7 @@ shinyServer(function(input, output, session) {
   
   session$allowReconnect(TRUE)
   docker_image_name <- 'srp33/shinylearner'
-  docker_image_tag <- 'version512'
+  docker_image_tag <- 'version513'
   numFeaturesOptions <- '1,10,100,1000,10000'
   defaultValidation <- 'mc'
   validationChoices <- list('Monte Carlo cross validation' = 'mc', 'k-fold cross validation' = 'kf')
@@ -32,7 +32,7 @@ shinyServer(function(input, output, session) {
   defaultClassifOpt <- FALSE
   defaultGPUOpt <- FALSE
   defaultOHE <- TRUE
-  defaultScale <- FALSE
+  defaultScale <- 'robust'
   defaultImpute <- FALSE
   defaultSeed <- 1
   containerInputDir <- '/InputData'
@@ -58,7 +58,7 @@ shinyServer(function(input, output, session) {
   kf_nested_help_text <- 'These settings allow you to select values for <em>k</em> when performing k-fold cross-validation. Higher <em>k</em> values result in a larger number of training and test sets but also increases computational time. When using multiple algorithms, optimizing hyperparameters, or performing feature selection, you need a way to select from among these options. The "inner" folds allow you to break each training set into sub-training and sub-test tests and try various options (e.g., parameters, features). A larger number of "inner" folds should lead to better selections but will also increase computational time.'
   kf_nested_iterations_help_text <- 'You may also indicate the number of times that k-fold cross validation should be repeated. Different training and test sets will be selected randomly for each outer and inner fold.'
   ohe_help_text <- 'Many machine-learning algorithms are unable to process discrete variables, so one-hot encoding can be used to expand discrete variables into multiple binary variables. You can learn more about this option <a target="_blank" href="https://www.quora.com/What-is-one-hot-encoding-and-when-is-it-used-in-data-science">here</a>.'
-  scale_help_text <- 'Many machine-learning algorithms require that continuous variables be scaled in a consistent way. This option makes it possible to scale continuous variables to have a zero mean and unit variance (more <a target="_blank" href="https://en.wikipedia.org/wiki/Feature_scaling">here</a>). Integers will be scaled only if more than 50% of values are unique.'
+  scale_help_text <- 'Many machine-learning algorithms require that continuous variables be scaled to ensure that the algorithms evaluate the variables consistently. ShinyLearner can scale data using one of several methods (<a target="_blank" href="https://scikit-learn.org/stable/auto_examples/preprocessing/plot_all_scaling.html#sphx-glr-auto-examples-preprocessing-plot-all-scaling-py">described here</a>).'
   impute_help_text <- 'Many machine-learning algorithms are unable to process missing data values. This option makes it possible to <a target="_blank" href="https://en.wikipedia.org/wiki/Imputation_(statistics)">impute</a> missing values. Median-based imputation is used for continuous and integer variables. Mode-based imputation is used for discrete variables. Any variable missing more than 50% of values across all samples will be removed. Subsequently, any sample missing more than 50% of values across all features will be removed. In input data files, missing values should be specified as ?, NA, or null.'
   seed_help_text <- 'When samples are assigned to training and testing sets, they are randomly assigned. To ensure that samples are assigned in a consistent manner when the same analysis is repeated, we use a random seed. ShinyLearner sets the seed by default, but you can change the seed using this option. Please specify an integer. Note: some machine-learning algorithms non-deterministic, so they may produce different results each time they are run, even when a seed is specified.'
   incomplete_error_message <- "Please complete the other tabs before proceeding."
@@ -248,8 +248,9 @@ shinyServer(function(input, output, session) {
     HTML(paste(helpTextStylingOpen, ohe_help_text, helpTextStylingClose, sep=''))
   })
   ## Scale Data
-  output$scale_checkbox_ui <- renderUI({
-    checkboxInput('scale_checkbox', HTML('<b>Scale data</b>'), value = defaultScale)
+  output$scale_dropdown_ui <- renderUI({
+    choices = c("None"="none", "StandardScaler (center and scale to unit variance)"="standard", "RobustScaler (center and scale based on percentiles)"="robust", "MinMaxScaler (scale to the range [0, 1])"="minmax", "MaxAbsScaler (scale absolute values to the range [0, 1])"="maxabs", "PowerTransformer (scale to a Gaussian distribution using a power transformation)"="power", "QuantNorm (scale to a Gaussian distribution using quantiles)"="quantnorm", "QuantUnif (scale to the range [0, 1] using quantiles)"="quantunif", "Normalizer (rescale each sample)"="normalizer")
+    selectInput('scale_dropdown', HTML('<b>Scale data</b>'), choices=choices, selected = defaultScale, selectize=FALSE)
   })
   output$scale_help_message_ui <- renderUI({
     HTML(paste(helpTextStylingOpen, scale_help_text, helpTextStylingClose, sep=''))
@@ -287,7 +288,6 @@ shinyServer(function(input, output, session) {
                     input$output_dir_textbox != "" &
                     !is.null(input$ohe_checkbox) &
                     !is.null(input$sel_classifOpt) &
-                    !is.null(input$sel_gpuOpt) &
                     input$seed_textbox != '',
                   incomplete_error_message))
     
@@ -328,9 +328,9 @@ shinyServer(function(input, output, session) {
     classifAlgos <- paste0("/", input$sel_classifAlgos, algo_suffix)
     
     ohe <- ifelse(input$ohe_checkbox, 'true', 'false')
-    scale <- ifelse(input$scale_checkbox, 'true', 'false')
+    scale <- ifelse(is.null(input$scale_dropdown), 'none', input$scale_dropdown)
     impute <- ifelse(input$impute_checkbox, 'true', 'false')
-    seed <- ifelse(as.integer(input$seed_textbox), defaultSeed)
+    seed <- ifelse(is.null(input$seed_textbox), defaultSeed, as.integer(input$seed_textbox))
 
     if(length(input$os_radio) != 0)
       os <- input$os_radio
@@ -350,21 +350,22 @@ shinyServer(function(input, output, session) {
     if (os == 'linux/mac')
       lines <- c(lines, "  --user $(id -u):$(id -g)")
     
-    docker_image_name <- ifelse(input$sel_gpuOpt, paste0(docker_image_name, "_gpu"), docker_image_name)
+    if (!is.null(input$sel_gpuOpt))
+      docker_image_name <- ifelse(input$sel_gpuOpt, paste0(docker_image_name, "_gpu"), docker_image_name)
     lines <- c(lines, paste0("  ", docker_image_name, ":", docker_image_tag))
     
-    data_line <- paste0('  --data "', clientInputFiles, '"')
-    desc_line <- paste0('  --description "', expDesc, '"')
-    outer_iter_line <- paste('  --outer-iterations', mc_outer)
-    inner_iter_line <- paste('  --inner-iterations', mc_inner)
-    iter_line <- paste('  --iterations', mc_outer)
-    outer_folds_line <- paste('  --outer-folds', kf_outer)
-    inner_folds_line <- paste('  --inner-folds', kf_inner)
-    kf_folds_line <- paste('  --folds', kf_outer)
-    kf_iter_line <- paste('  --iterations', kf_iterations)
-    fs_algo_line <- paste0('  --fs-algo "', fsAlgos, '"')
-    classif_algo_line <- paste0('  --classif-algo "', classifAlgos, '"')
-    num_features_line <- paste('  --num-features', numFeaturesOptions)
+    data_line <- paste0('    --data "', clientInputFiles, '"')
+    desc_line <- paste0('    --description "', expDesc, '"')
+    outer_iter_line <- paste('    --outer-iterations', mc_outer)
+    inner_iter_line <- paste('    --inner-iterations', mc_inner)
+    iter_line <- paste('    --iterations', mc_outer)
+    outer_folds_line <- paste('    --outer-folds', kf_outer)
+    inner_folds_line <- paste('    --inner-folds', kf_inner)
+    kf_folds_line <- paste('    --folds', kf_outer)
+    kf_iter_line <- paste('    --iterations', kf_iterations)
+    fs_algo_line <- paste0('    --fs-algo "', fsAlgos, '"')
+    classif_algo_line <- paste0('    --classif-algo "', classifAlgos, '"')
+    num_features_line <- paste('    --num-features', numFeaturesOptions)
 
     if (fs == 'fs') {
       if (validation == 'mc') {
@@ -400,10 +401,10 @@ shinyServer(function(input, output, session) {
       }
     }
 
-    lines <- c(lines, paste('  --seed', seed))
-    lines <- c(lines, paste('  --ohe', ohe))
-    lines <- c(lines, paste('  --scale', scale))
-    lines <- c(lines, paste('  --impute', impute))
+    lines <- c(lines, paste('    --seed', seed))
+    lines <- c(lines, paste('    --ohe', ohe))
+    lines <- c(lines, paste('    --scale', scale))
+    lines <- c(lines, paste('    --impute', impute))
     
     shiny_script <- paste0(shiny_script, paste(lines, collapse=paste0(getLineContinuation(os), getLineEnding(os))))
   })

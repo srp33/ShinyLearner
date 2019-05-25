@@ -1,3 +1,0 @@
-#!/bin/bash
-
-AdhocTests/helper/featureselection crossvalidation

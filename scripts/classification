@@ -52,6 +52,7 @@ java $(getJavaArgs) -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile"
 
 echo "Calculating classification metrics..." | timestamp | tee -a "$outLogFile"
 Rscript --vanilla scripts/CalculateClassificationMetrics.R "$tmpDir/op" "$tmpDir/om" #2> $errFile
+cp $tmpDir/op $outPredictionsFile.abc
 #printError $verbose $errFile
 
 function parseOutputFile {

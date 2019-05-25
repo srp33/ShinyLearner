@@ -2,8 +2,6 @@
 
 set -euo pipefail
 
-#verbose="--verbose true"
-verbose="--verbose false"
 currentDir=$(pwd)
 tmpDir=/tmp/shinylearner_adhoc
 version=$(cat VERSION)
@@ -17,28 +15,28 @@ tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md
 mv ShinyLearner.tar.gz $tmpDir/
 cp Dockerfile $tmpDir/
 cp -r BuildTests/* $tmpDir/
+
 ###################################################
 ###################################################
 # Copy data to where Docker can find it
 ###################################################
 ###################################################
-#cp -r Validation/*.gz $tmpDir/input
-cp ~/Downloads/TCGA_COAD.ttsv $tmpDir/input
-cp ~/Downloads/Prognostic__overall_survival.txt $tmpDir/input
-data=TCGA_COAD.ttsv,Prognostic__overall_survival.txt
-###################################################
-###################################################
+#data=StrongSignal_Both.tsv.gz
+#cp -r Validation/$data $tmpDir/input/
 
+data=iris.tsv
+cp ~/Dropbox/ShinyLearner/Demo/Datasets/$data $tmpDir/input/
+
+###################################################
+###################################################
+# General settings
+###################################################
+###################################################
 imageName=shinylearner
-./scripts/build_image $imageName
 
-cd $tmpDir
-
-#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default*"
-#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/InfoGain/default*"
-#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/OneR/default*"
-
-#bash featureselection $version StrongSignal_Both montecarlo "--iterations 3" "$fsAlgo" "$verbose" 1.log
+fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default*"
+#fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/InfoGain/default*"
+#fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/OneR/default*"
 
 classifAlgos="AlgorithmScripts/Classification/tsv/sklearn/random_forest/default*"
 #classifAlgos="AlgorithmScripts/Classification/tsv/sklearn/extra_trees/alt__bootstrap=True_class_weight=None_criterion=gini_n_estimators=1000_oob_score=False"
@@ -46,15 +44,32 @@ classifAlgos="AlgorithmScripts/Classification/tsv/sklearn/random_forest/default*
 #classifAlgos="AlgorithmScripts/Classification/tsv/keras/snn/default"
 #classifAlgos="AlgorithmScripts/Classification/tsv/keras/resnet/default"
 
-scriptName=classification_montecarlo
-iterationsFolds="--iterations 1"
-impute=false
-ohe=false
-scale=false
+#verbose="--verbose true"
+verbose="--verbose false"
+impute=true
+ohe=true
+scale=robust
 
-bash run_docker_command $tmpDir/input $tmpDir/Output $imageName $version "UserScripts/$scriptName --data "$data" --description "Test" $iterationsFolds --classif-algo \"$classifAlgos\" $verbose --impute $impute --ohe $ohe" --scale $scale
-####bash classification $SL_DOCKER_IMAGE_NAME $version StrongSignal_Both montecarlo "--iterations 1 --num-cores 1" "$classifAlgo" "$verbose" 1.log
+###################################################
+###################################################
+# Settings for different user scripts
+###################################################
+###################################################
+
+#scriptName=classification_montecarlo
+#iterationsFolds="--iterations 2"
+#algos="--classif-algo \"${classifAlgos}\""
+
+scriptName=nestedboth_montecarlo
+iterationsFolds="--outer-iterations 2 --inner-iterations 2"
+algos="--classif-algo \"$classifAlgos\" --fs-algo \"$fsAlgos\" --num-features 1,2,5,10,20,50,100,1000"
+
+###################################################
+###################################################
+
+./scripts/build_image $imageName
+
+cd $tmpDir
+bash run_docker_command $tmpDir/input $tmpDir/Output $imageName $version "UserScripts/$scriptName --data "$data" --description "Test" $iterationsFolds $algos $verbose --impute $impute --ohe $ohe" --scale $scale
+
 echo See results in $tmpDir/output.
-
-#cd -
-#rm -rf $tmpDir

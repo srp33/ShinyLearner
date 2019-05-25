@@ -7,7 +7,7 @@ mkdir -p $dir
 
 cp run_local $dir/
 cp ui.R $dir/
-cp server_template.R $dir/server.R
+python ../scripts/UpdateVersion.py server_template.R ../VERSION False $dir/server.R
 cp shiny-server.conf $dir/
 cp -r www $dir/
 mkdir $dir/ShinyLearner

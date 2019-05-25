@@ -5,11 +5,13 @@ output: html_document
 
 ```{r setup, include=FALSE}
 # Only need to run this if tidyverse packages have not been installed previously
-#install.packages(tidyverse)
+#install.packages("tidyverse")
+#install.packages("cowplot")
 ```
 
 ```{r}
 library(tidyverse)
+library(cowplot)
 source("Helper.R")
 ```
 
@@ -170,13 +172,14 @@ for (path in nested_fs_metrics_file_paths) {
     dplyr::select(-Metric) %>%
     mutate(Feature_Selection_Algorithm=paste0(basename(dirname(dirname(Feature_Selection_Algorithm))), "/", basename(dirname(Feature_Selection_Algorithm)))) %>%
     mutate(Classification_Algorithm=paste0(basename(dirname(dirname(Classification_Algorithm))), "/", basename(dirname(Classification_Algorithm))))
-  
+
   tmp2 = spread(tmp, Feature_Selection_Algorithm, Value)
   ranks = t(apply(tmp2, 1, function(x) { rank(x[(length(x) - 9):length(x)])}))
   tmp2[(ncol(tmp2) - 9):ncol(tmp2)] = ranks
+  
   tmp2 = gather(tmp2, -Description, -Outer_Iteration, -Inner_Iteration, -Num_Features, -Classification_Algorithm, key=Feature_Selection_Algorithm, value=Value) %>%
     dplyr::rename(Rank=Value)
-  
+
   nested_fs_metrics = dplyr::rename(tmp, AUROC=Value) %>%
     inner_join(tmp2) %>%
     bind_rows(nested_fs_metrics)
@@ -210,7 +213,7 @@ unlink("Tables", recursive = TRUE)
 dir.create("Tables", showWarnings = FALSE)
 
 dimension_1 = 7
-dimension_2 = 9
+dimension_2 = 8
 
 colorPalette = c("#a50026", "#d73027", "#f46d43", "#fdae61", "#fee090", "#abd9e9", "#74add1", "#4575b4", "#313695", "gray50")
 
@@ -240,11 +243,12 @@ plot_data <- group_by(basic_metrics, Description, Algorithm) %>%
 make_faceted_point_plot(plot_data,
                         x="Algorithm",
                         y="AUROC",
-                        ylab="AUROC (averaged across 10 iterations)",
+                        ylab="AUROC (median per iteration)",
                         palette=colorPalette,
                         facet_column="Description",
                         out_file_path="Figures/Datasets_Basic_AUROC.pdf",
-                        y_lines=c(0.5, 1))
+                        y_lines=c(0.5, 1),
+                        ncol=2)
 ```
 
 ## Performance on null data
@@ -258,11 +262,11 @@ plot_data <- bind_rows(null_basic_metrics, null_optimized_metrics, null_fs_metri
 make_faceted_point_plot(plot_data,
                         x="Algorithm",
                         y="AUROC",
-                        ylab="AUROC (averaged across 10 iterations)",
+                        ylab="AUROC (median per iteration)",
                         palette=colorPalette,
                         facet_column="AnalysisType",
                         out_file_path="Figures/Datasets_null_AUROC.pdf",
-                        y_lines=c(0.5),
+                        y_lines=c(0.5, 1),
                         ncol=1)
 ```
 
@@ -414,6 +418,29 @@ make_continuous_heatmap(plot_data,
                         keep_x_axis = FALSE)
 
 write_tsv(spread(plot_data, key=Description, value=AUROC_Diff), "Tables/ParamOpt_Improvement.tsv")
+
+plot_data2 <- separate(plot_data, Params, into=c("dropme", "dropout", "epochs", "layers", "regularization"), sep="=") %>%
+  select(-dropme) %>%
+  mutate(dropout=factor(str_replace(dropout, ", epochs", ""))) %>%
+  mutate(epochs=factor(str_replace(epochs, ", layers", ""), levels=c(10, 50, 100))) %>%
+  mutate(layers=str_replace(layers, ", regularization", "")) %>%
+  mutate(layers=str_replace(layers, "16161616", "16x16x16x16")) %>%
+  mutate(layers=str_replace(layers, "1616", "16x16")) %>%
+  mutate(layers=str_replace(layers, "300100", "300x100")) %>%
+  mutate(layers=factor(layers)) %>%
+  mutate(regularization=factor(regularization))
+
+y="AUROC_Diff"
+ylab="AUROC (relative to default)"
+
+A = make_param_box_plot(plot_data2, x="dropout", y=y, xlab="Dropout rate", ylab=ylab)
+B = make_param_box_plot(plot_data2, x="epochs", y=y, xlab="# training epochs", ylab=ylab)
+C = make_param_box_plot(plot_data2, x="layers", y=y, xlab="Layer structure", ylab=ylab)
+D = make_param_box_plot(plot_data2, x="regularization", y=y, xlab="Regularization rate", ylab=ylab)
+
+p = plot_grid(A, B, C, D, labels=c("A", "B", "C", "D"), label_size=16, ncol=2)
+print(p)
+ggsave("Figures/dnn_params.pdf", width=dimension_1, height=dimension_2)
 ```
 
 ## How much sample-level predictions change for different hyperparameters
@@ -482,9 +509,10 @@ make_continuous_heatmap(plot_data,
                         fill_column = "Rank",
                         xlabel="Classification algorithm",
                         ylabel="Feature-selection algorithm",
-                        legend_title="Average rank\n(higher is better)",
+                        legend_title="",
                         out_file_path="Figures/FS_vs_CL.pdf",
-                        fill_values_range=NULL)
+                        fill_values_range=NULL,
+                        base_size=16)
 ```
 
 ## Performance of feature-selection algorithms by number of features
@@ -500,6 +528,8 @@ for (dataset in levels(plot_data$Description)) {
   matching_subset = filter(plot_data, Description==dataset)
   plot_data = filter(plot_data, Description != dataset)
 
+  # We have to scale the data even after ranking it because different datasets
+  #   have different numbers of features.
   matching_subset$AUROC = min_max_scale(pull(matching_subset, AUROC))
   plot_data = bind_rows(plot_data, matching_subset)
 }
@@ -524,7 +554,7 @@ make_continuous_heatmap(nested_feature_ranks,
                         fill_column = "Mean_Rank",
                         xlabel="Algorithm",
                         ylabel="Feature",
-                        legend_title="Average rank\n(lower is better)",
+                        legend_title="",
                         out_file_path="Figures/FS_RankedFeatures.pdf",
                         fill_values_range=NULL,
                         base_size=11)
