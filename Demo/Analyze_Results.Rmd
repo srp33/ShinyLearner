@@ -4,7 +4,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-# Only need to run this if tidyverse packages have not been installed previously
+# Only need to run this if the packages have not been installed previously
 #install.packages("tidyverse")
 #install.packages("cowplot")
 ```
@@ -509,7 +509,7 @@ make_continuous_heatmap(plot_data,
                         fill_column = "Rank",
                         xlabel="Classification algorithm",
                         ylabel="Feature-selection algorithm",
-                        legend_title="",
+                        legend_title=NULL,
                         out_file_path="Figures/FS_vs_CL.pdf",
                         fill_values_range=NULL,
                         base_size=16)
@@ -548,14 +548,24 @@ make_continuous_heatmap(plot_data,
 ## Top features selected in one of the datasets
 
 ```{r}
-make_continuous_heatmap(nested_feature_ranks,
+feature_order = group_by(nested_feature_ranks, Feature) %>%
+  summarize(Mean_Rank=median(Mean_Rank)) %>%
+  ungroup() %>%
+  arrange(Mean_Rank) %>%
+  pull(Feature) %>%
+  as.character()
+
+plot_data = mutate(nested_feature_ranks, Feature = factor(as.character(Feature), levels=feature_order))
+
+make_continuous_heatmap(plot_data,
                         x="Algorithm",
                         y="Feature",
                         fill_column = "Mean_Rank",
                         xlabel="Algorithm",
                         ylabel="Feature",
-                        legend_title="",
+                        legend_title=NULL,
                         out_file_path="Figures/FS_RankedFeatures.pdf",
                         fill_values_range=NULL,
-                        base_size=11)
+                        base_size=11,
+                        reverse_colors=TRUE)
 ```
