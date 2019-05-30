@@ -223,15 +223,34 @@ axis_label_angle = 40
 ## Execution time per algorithm
 
 ```{r}
-plot_data <- group_by(basic_time, Algorithm) %>%
+#plot_data <- group_by(basic_time, Algorithm) %>%
+# summarize(ElapsedSeconds=median(ElapsedSeconds))
+
+#make_bar_plot(plot_data,
+#              x="Algorithm",
+#              y="ElapsedSeconds",
+#              xlab="Algorithm",
+#              ylab="Elapsed seconds",
+#              out_file_path="Figures/Datasets_Basic_ElapsedTime.pdf")
+
+plot_data1 = group_by(basic_time, Algorithm, Iteration) %>%
  summarize(ElapsedSeconds=median(ElapsedSeconds))
 
-make_bar_plot(plot_data,
-              x="Algorithm",
-              y="ElapsedSeconds",
-              xlab="Algorithm",
-              ylab="Elapsed seconds",
-              out_file_path="Figures/Datasets_Basic_ElapsedTime.pdf")
+plot_data2 = group_by(basic_metrics, Algorithm, Iteration) %>%
+  summarize(AUROC=median(Value))
+
+plot_data = inner_join(plot_data1, plot_data2, by = c("Algorithm", "Iteration"))
+
+p = ggplot(plot_data, aes(x=ElapsedSeconds, y=AUROC)) +
+  geom_point(size=5, aes(color=Algorithm)) +
+  scale_color_manual(values=colorPalette, name="Classification algorithm") +
+  xlab("Median execution time (seconds)") +
+  ylab("Median AUROC") +
+  theme_bw(base_size=14)
+
+print(p)
+  
+ggsave("Figures/Datasets_Basic_ElapsedTime.pdf", width=dimension_2, height=dimension_1)
 ```
 
 ## AUROC values for each dataset (not hyperparameter optimized)
