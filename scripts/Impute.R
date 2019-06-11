@@ -13,7 +13,11 @@ classColIndex <- which(colnames(data) == "Class")
 
 saveData <- FALSE
 
-proportionMissingPerFeature <- apply(data[,-classColIndex,drop=FALSE], 2, function(x) {sum(sapply(x, is.na)) / length(x)})
+if (length(classColIndex) > 0) {
+  proportionMissingPerFeature <- apply(data[,-classColIndex,drop=FALSE], 2, function(x) {sum(sapply(x, is.na)) / length(x)})
+} else {
+  proportionMissingPerFeature <- apply(data[,,drop=FALSE], 2, function(x) {sum(sapply(x, is.na)) / length(x)})
+}
 
 if (any(proportionMissingPerFeature > 0.5))
 {
@@ -47,10 +51,16 @@ if (any(proportionMissingPerSample > 0))
 
   cNames <- colnames(data)
   classColIndex <- which(colnames(data) == "Class")
-  colnames(data) <- paste("X", 1:ncol(data), sep="")
-  colnames(data)[classColIndex] <- "Class"
 
-  data <- impute(data, target="Class", classes = list(numeric = imputeMedian(), integer = imputeMedian(), factor = imputeMode()), impute.new.levels=FALSE)$data
+  if (length(classColIndex) > 0) {
+    colnames(data) <- paste("X", 1:ncol(data), sep="")
+    colnames(data)[classColIndex] <- "Class"
+    data <- impute(data, target="Class", classes = list(numeric = imputeMedian(), integer = imputeMedian(), factor = imputeMode()), impute.new.levels=FALSE)$data
+  } else {
+    colnames(data) <- paste("X", 1:ncol(data), sep="")
+    data <- impute(data, classes = list(numeric = imputeMedian(), integer = imputeMedian(), factor = imputeMode()), impute.new.levels=FALSE)$data
+  }
+
   rownames(data) <- rNames
   colnames(data) <- cNames
 

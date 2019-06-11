@@ -7,6 +7,7 @@ output: html_document
 # Only need to run this if the packages have not been installed previously
 #install.packages("tidyverse")
 #install.packages("cowplot")
+setwd("~/Dropbox/ShinyLearner/Demo")
 ```
 
 ```{r}
@@ -27,7 +28,7 @@ datasets <- sub(".tsv", "", list.files(data_dir_path, full.names = FALSE, recurs
 ```
 
 ```{r}
-basic_time_file_paths = paste0("Results_Basic/", datasets, "/ElapsedTime.tsv.gz")
+basic_time_file_paths = paste0("Results_Basic/", datasets, "/ElapsedTime.tsv")
 basic_time <- NULL
 
 for (path in basic_time_file_paths) {
@@ -41,7 +42,7 @@ basic_time <- mutate(basic_time, Description = as.factor(Description)) %>%
 ```
 
 ```{r}
-basic_metrics_file_paths = paste0("Results_Basic/", datasets, "/Metrics.tsv.gz")
+basic_metrics_file_paths = paste0("Results_Basic/", datasets, "/Metrics.tsv")
 basic_metrics <- NULL
 
 for (path in basic_metrics_file_paths) {
@@ -63,7 +64,7 @@ basic_metrics <- filter(basic_metrics, Description != "null") %>%
 ```
 
 ```{r}
-optimized_metrics_file_paths = paste0("Results_ParamsOptimized/", datasets, "/Metrics.tsv.gz")
+optimized_metrics_file_paths = paste0("Results_ParamsOptimized/", datasets, "/Metrics.tsv")
 optimized_metrics <- NULL
 
 for (path in optimized_metrics_file_paths) {
@@ -85,7 +86,7 @@ optimized_metrics <- filter(optimized_metrics, Description != "null") %>%
 ```
 
 ```{r}
-nested_metrics_file_paths = paste0("Results_ParamsOptimized/", datasets, "/Nested_Metrics.tsv.gz")
+nested_metrics_file_paths = paste0("Results_ParamsOptimized/", datasets, "/Nested_Metrics.tsv")
 nested_metrics <- NULL
 
 for (path in nested_metrics_file_paths) {
@@ -113,7 +114,7 @@ nested_metrics <- mutate(nested_metrics,
 ```
 
 ```{r}
-predictions_data <- suppressMessages(read_tsv("Results_Basic/diabetes/Predictions.tsv.gz")) %>%
+predictions_data <- suppressMessages(read_tsv("Results_Basic/diabetes/Predictions.tsv")) %>%
   filter(Iteration==1) %>%
   dplyr::select(-Iteration) %>%
   mutate(Algorithm=factor(paste0(basename(dirname(dirname(Algorithm))), "/", basename(dirname(Algorithm))))) %>%
@@ -123,7 +124,7 @@ predictions_data <- suppressMessages(read_tsv("Results_Basic/diabetes/Prediction
 ```
 
 ```{r}
-optimized_predictions_data <- suppressMessages(read_tsv("Results_ParamsOptimized/diabetes/Nested_Predictions.tsv.gz")) %>%
+optimized_predictions_data <- suppressMessages(read_tsv("Results_ParamsOptimized/diabetes/Nested_Predictions.tsv")) %>%
   filter(Outer_Iteration==1 & Inner_Iteration == 1) %>%
   dplyr::select(-Outer_Iteration, -Inner_Iteration) %>%
   mutate(Params = paste0(basename(Algorithm))) %>%
@@ -140,7 +141,7 @@ optimized_predictions_data <- suppressMessages(read_tsv("Results_ParamsOptimized
 ```
 
 ```{r}
-fs_metrics_file_paths = paste0("Results_FeatureSelection/", datasets, "/Metrics.tsv.gz")
+fs_metrics_file_paths = paste0("Results_FeatureSelection/", datasets, "/Metrics.tsv")
 fs_metrics = NULL
 
 for (path in fs_metrics_file_paths) {
@@ -162,7 +163,7 @@ fs_metrics <- filter(fs_metrics, Description != "null") %>%
 ```
 
 ```{r}
-nested_fs_metrics_file_paths = paste0("Results_FeatureSelection/", datasets, "/Nested_Metrics.tsv.gz")
+nested_fs_metrics_file_paths = paste0("Results_FeatureSelection/", datasets, "/Nested_Metrics.tsv")
 nested_fs_metrics = NULL
 
 # There's probably a tidier way to do this
@@ -195,7 +196,7 @@ nested_fs_metrics <- filter(nested_fs_metrics, Description != "null")  %>%
 ```
 
 ```{r}
-file_path = "Results_FeatureSelection/dermatology/Nested_SelectedFeatures_Summarized.tsv.gz"
+file_path = "Results_FeatureSelection/dermatology/Nested_SelectedFeatures_Summarized.tsv"
 
 nested_feature_ranks <- suppressMessages(read_tsv(file_path)) %>%
   dplyr::rename(Algorithm=Feature_Selection_Algorithm) %>%
@@ -293,10 +294,12 @@ make_faceted_point_plot(plot_data,
 
 ```{r}
 plot_data = group_by(basic_metrics, Description, Algorithm) %>%
-  summarize(AUROC=median(Value))
+  summarize(AUROC=median(Value)) %>%
+  ungroup()
 
 median_per_dataset <- group_by(plot_data, Description) %>%
-  summarize(AUROC = median(AUROC))
+  summarize(AUROC = median(AUROC)) %>%
+  ungroup()
 
 plot_data2 <- inner_join(plot_data, median_per_dataset, by="Description") %>%
   mutate(AUROC_Diff = AUROC.x - AUROC.y)
@@ -310,6 +313,12 @@ make_faceted_point_plot(plot_data2,
                         facet_column="Algorithm",
                         out_file_path="Figures/Algorithms_Basic_AUROC.pdf",
                         y_lines=0)
+
+summary = dplyr::select(plot_data2, Algorithm, AUROC_Diff) %>%
+  group_by(Algorithm) %>%
+  summarize(Min_Diff=min(AUROC_Diff), Max_Diff=max(AUROC_Diff)) %>%
+  ungroup()
+write_tsv(summary, "Tables/Basic_DiffFromMedian.tsv")
 ```
 
 ## Consistency performance of "same" algorithm in different software packages (not hyperparameter optimized)

@@ -38,7 +38,8 @@ def scale_data(file_path, scaler, verbose):
         print('\t', ', '.join(sorted(list(set(non_num_columns)))))
 
     # Add the class column, which should never be scaled
-    non_num_columns.append('Class')
+    if "Class" in data:
+        non_num_columns.append('Class')
 
 #    # Ignore columns that contain numbers, but where fewer than half are distinct values
 #    categorical_columns = []
