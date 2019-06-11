@@ -7,7 +7,7 @@ verbose = commandArgs()[8] == "true"
 suppressMessages(suppressWarnings(data <- read_tsv(inFilePath, progress=FALSE) %>% mutate_if(is.character, factor) %>% as.data.frame))
 
 rownames(data) <- data[,1]
-data <- data[,-1]
+data <- data[,-1,drop=FALSE]
 
 classColIndex <- which(colnames(data) == "Class")
 
@@ -23,7 +23,7 @@ if (any(proportionMissingPerFeature > 0.5))
 {
   print(paste("More than 50% of instances were missing data for ", sum(proportionMissingPerFeature > 0.5), " feature(s), which exceeds the threshold for imputation. These data were removed.", sep=""))
 
-  data <- data[, which(proportionMissingPerFeature <= 0.5)]
+  data <- data[, which(proportionMissingPerFeature <= 0.5),drop=FALSE]
   saveData <- TRUE
 }
 
@@ -33,7 +33,7 @@ if (any(proportionMissingPerSample > 0.5))
 {
   print(paste("More than 50% of data values were missing for ", sum(proportionMissingPerSample > 0.5), " instance(s), which exceeds the threshold for imputation. These data were removed.", sep=""))
 
-  data <- data[which(proportionMissingPerSample <= 0.5),]
+  data <- data[which(proportionMissingPerSample <= 0.5),,drop=FALSE]
   saveData <- TRUE
 }
 
