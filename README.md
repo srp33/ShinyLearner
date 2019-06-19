@@ -2,11 +2,9 @@
 
 [![Build Status](https://travis-ci.org/srp33/ShinyLearner.svg?branch=master)](https://travis-ci.org/srp33/ShinyLearner)
 
-[![Open in Code Ocean](https://codeocean.com/codeocean-assets/badge/open-in-code-ocean.svg)](https://codeocean.com/capsule/5449763/tree)
-
 ## Introduction
 
-*ShinyLearner* enables scientists to benchmark [classification](https://en.wikipedia.org/wiki/Statistical_classification) and [feature-selection](https://en.wikipedia.org/wiki/Feature_selection) algorithms in a flexible and tidy manner.
+*ShinyLearner* enables scientists to benchmark [classification](https://en.wikipedia.org/wiki/Statistical_classification) and [feature-selection](https://en.wikipedia.org/wiki/Feature_selection) algorithms in a flexible and tidy manner. Please see our [preprint article](https://www.biorxiv.org/content/10.1101/675181v1), which describes this tool in detail as well as our [demo analysis](https://github.com/srp33/ShinyLearner/tree/master/Demo).
 
 ## Background
 
