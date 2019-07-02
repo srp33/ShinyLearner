@@ -70,16 +70,16 @@ then
   Rscript --vanilla scripts/Impute.R "$analysisDataFile" $verbose 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
-if [[ "$ohe" == "true" ]]
-then
-  echo "One-hot encoding categorical data (where applicable)..." 2>&1 | timestamp | tee -a "$outLogFile"
-  python3 scripts/OneHotEncode.py "$analysisDataFile" 2>&1 | timestamp | tee -a "$outLogFile"
-fi
-
 if [[ "$scale" != "none" ]]
 then
   echo "Scaling numerical data (where applicable)..." | timestamp | tee -a "$outLogFile"
   python3 scripts/Scale.py "$analysisDataFile" "$scale" $verbose 2>&1 | timestamp | tee -a "$outLogFile"
+fi
+
+if [[ "$ohe" == "true" ]]
+then
+  echo "One-hot encoding categorical data (where applicable)..." 2>&1 | timestamp | tee -a "$outLogFile"
+  python3 scripts/OneHotEncode.py "$analysisDataFile" 2>&1 | timestamp | tee -a "$outLogFile"
 fi
 
 for iteration in $(seq 1 $numIterations)
