@@ -392,7 +392,7 @@ shinyServer(function(input, output, session) {
         if (is_nested_validation()) {
           lines <- c(lines, '  /UserScripts/nestedclassification_crossvalidation')
           lines <- c(lines, data_line, desc_line)
-          lines <- c(lines, iter_line, outer_folds_line, inner_folds_line, classif_algo_line)
+          lines <- c(lines, kf_iter_line, outer_folds_line, inner_folds_line, classif_algo_line)
         } else {
           lines <- c(lines, '  /UserScripts/classification_crossvalidation')
           lines <- c(lines, data_line, desc_line)

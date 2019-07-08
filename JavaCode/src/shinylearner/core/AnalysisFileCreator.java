@@ -186,22 +186,7 @@ public class AnalysisFileCreator
 	 */
 	public static String FormatName(String name)
 	{
-		return name.replace("/", "FoRwArD").replace(" ", "SpAcE").replace("*", "StAr").replace("-", "HyPhEn").replace("'", "ApOsTrApHe").replace("\"", "DbLqUoTe");
-	}
-
-	/** Some external libraries do not work well with special characters. After a name has been formatted, this method changes the characters back to the original characters.
-	 *
-	 * @param names List of names to be unformatted
-	 * @return Unformatted names
-	 */
-	public static ArrayList<String> UnformatNames(ArrayList<String> names)
-	{
-		ArrayList<String> unformatted = new ArrayList<String>();
-
-		for (String name : names)
-			unformatted.add(UnformatName(name));
-
-		return unformatted;
+		return name.replace("/", "FoRwArD").replace(" ", "SpAcE").replace("*", "StAr").replace("-", "HyPhEn").replace("'", "ApOsTrApHe").replace("\"", "DbLqUoTe").replace(",", "ComMa").replace("%", "PeRcENtSiGN");
 	}
 
 	/** Some external libraries do not work well with special characters. After a name has been formatted, this method changes the characters back to the original characters.
@@ -211,7 +196,7 @@ public class AnalysisFileCreator
 	 */
 	public static String UnformatName(String name)
 	{
-		return name.replace("FoRwArD", "/").replace("SpAcE", " ").replace("StAr", "*").replace("HyPhEn", "-").replace("ApOsTrApHe", "'").replace("DbLqUoTe", "\"");
+		return name.replace("FoRwArD", "/").replace("SpAcE", " ").replace("StAr", "*").replace("HyPhEn", "-").replace("ApOsTrApHe", "'").replace("DbLqUoTe", "\"").replace("ComMa", ",").replace("PeRcENtSiGN", "%");
 	}
 
 	private static String CLASS_TEMP_PREFIX = "cLaSs___";
