@@ -38,20 +38,14 @@ public class Classification
 	private static ArrayList<AbstractPrediction> ParsePredictions(String predictionOutput, ArrayList<String> testIDs) throws Exception
 	{
 		ArrayList<AbstractPrediction> predictions = new ArrayList<AbstractPrediction>();
-		String[] predictionLines = predictionOutput.split("\n");
-
-		Log.Debug(predictionLines.length);
-		Log.Debug(testIDs.size());
-		//for (String line : predictionLines)
-		//	Log.Debug(line);
-		//System.exit(1);
-
 		ArrayList<String> tempTestIDs = ListUtilities.CreateStringList(testIDs);
 
-		for (int i=0; i<predictionLines.length; i++)
+		for (String line : predictionOutput.split("\n"))
 		{
-			//Log.Debug(predictionLines[i]);
-			String[] lineItems = predictionLines[i].split("\t");
+			if (!line.startsWith(AnalysisFileCreator.CLASS_TEMP_PREFIX))
+				continue;
+
+			String[] lineItems = line.split("\t");
 
 			String instanceID = tempTestIDs.remove(0);
 			String actualClass = Singletons.Data.GetClassValue(instanceID);

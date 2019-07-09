@@ -33,7 +33,7 @@ train_df = pd.read_csv(TRAIN_FILE, sep='\t', index_col=0)
 x_train = train_df.drop('Class', axis=1).values
 y_train = np.array([CLASS_OPTIONS.index(str(y[0])) for y in train_df.loc[:, ["Class"]].values.tolist()])
 y_train = y_train.reshape(-1, 1)
-y_train = OneHotEncoder().fit_transform(y_train).toarray()
+y_train = OneHotEncoder(categories="auto").fit_transform(y_train).toarray()
 
 x_test = pd.read_csv(TEST_FILE, sep='\t', index_col=0)
 

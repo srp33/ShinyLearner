@@ -28,4 +28,5 @@ verbose="$5"
 # 11 - Number of epochs
 #######################################################
 
-python3 AlgorithmScripts/Helper/keras_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "$verbose" "{algorithmInstantiation}" 2>&1 | python3 AlgorithmScripts/Helper/FilterKerasOutput.py "$classOptions" "$verbose"
+python3 AlgorithmScripts/Helper/keras_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "$verbose" "{algorithmInstantiation}"
+# 2>&1 | python3 AlgorithmScripts/Helper/FilterKerasOutput.py "$classOptions" "$verbose"

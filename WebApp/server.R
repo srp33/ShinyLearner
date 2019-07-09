@@ -10,7 +10,7 @@ shinyServer(function(input, output, session) {
   
   session$allowReconnect(TRUE)
   docker_image_name <- 'srp33/shinylearner'
-  docker_image_tag <- 'version517'
+  docker_image_tag <- 'version520'
   numFeaturesOptions <- '1,10,100,1000,10000'
   defaultValidation <- 'mc'
   validationChoices <- list('Monte Carlo cross validation' = 'mc', 'k-fold cross validation' = 'kf')
@@ -392,7 +392,7 @@ shinyServer(function(input, output, session) {
         if (is_nested_validation()) {
           lines <- c(lines, '  /UserScripts/nestedclassification_crossvalidation')
           lines <- c(lines, data_line, desc_line)
-          lines <- c(lines, iter_line, outer_folds_line, inner_folds_line, classif_algo_line)
+          lines <- c(lines, kf_iter_line, outer_folds_line, inner_folds_line, classif_algo_line)
         } else {
           lines <- c(lines, '  /UserScripts/classification_crossvalidation')
           lines <- c(lines, data_line, desc_line)

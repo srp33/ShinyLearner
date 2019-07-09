@@ -13,4 +13,5 @@ numCores="$4"
 verbose="$5"
 
 #export PYTHONIOENCODING="UTF-8"
-Rscript --no-save --no-restore --no-site-file --no-init-file --no-environ --max-ppsize=500000 AlgorithmScripts/Helper/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "'classif.RRF', ntree=500, replace=TRUE, coefReg=0.8, flagReg=1" 2>&1 | python3 AlgorithmScripts/Helper/ReformatMlrClassificationOutput.py "$classOptions" "$verbose"
+Rscript --no-save --no-restore --no-site-file --no-init-file --no-environ --max-ppsize=500000 AlgorithmScripts/Helper/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "'classif.RRF', ntree=500, replace=TRUE, coefReg=0.8, flagReg=1"
+#2>&1 | python3 AlgorithmScripts/Helper/ReformatMlrClassificationOutput.py "$classOptions" "$verbose"

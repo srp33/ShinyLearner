@@ -199,7 +199,7 @@ public class AnalysisFileCreator
 		return name.replace("FoRwArD", "/").replace("SpAcE", " ").replace("StAr", "*").replace("HyPhEn", "-").replace("ApOsTrApHe", "'").replace("DbLqUoTe", "\"").replace("ComMa", ",").replace("PeRcENtSiGN", "%");
 	}
 
-	private static String CLASS_TEMP_PREFIX = "cLaSs___";
+	public static String CLASS_TEMP_PREFIX = "cLaSs___";
 
 	public static String FormatClassValue(String value)
 	{
