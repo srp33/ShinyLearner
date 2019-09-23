@@ -8,7 +8,7 @@ You will need to prepare input data in one of the [file formats](https://github.
 
 ## Executing the analysis
 
-Once you have prepared the data, you will need to select the algorithm(s) and settings that ShinyLearner will use for your analysis. We have created a [graphical user interface](http://bioapps.byu.edu/shinylearner) that simplifies this process. This web-based tool asks you to indicate the name(s) of your input files, the algorithm(s) to execute, which validation strategy to use, etc. Based on the options you choose, it will generate a Docker command, which you can execute at the command line. ShinyLearner (and Docker) will take care of the rest.
+Once you have prepared the data, you will need to select the algorithm(s) and settings that ShinyLearner will use for your analysis. We have created a [graphical user interface](https://bioapps.byu.edu/shinylearner) that simplifies this process. This web-based tool asks you to indicate the name(s) of your input files, the algorithm(s) to execute, which validation strategy to use, etc. Based on the options you choose, it will generate a Docker command, which you can execute at the command line. ShinyLearner (and Docker) will take care of the rest.
 
 Alternatively, you can see examples of how to execute analyses at the following pages:
 
