@@ -10,6 +10,7 @@ then
 fi
 
 ./scripts/build_image $SL_DOCKER_IMAGE_NAME
+exit
 
 echo Running ShinyLearner build tests...
 echo Using Docker image $SL_DOCKER_IMAGE_NAME...

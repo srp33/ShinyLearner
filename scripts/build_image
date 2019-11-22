@@ -14,8 +14,8 @@ version=$(cat VERSION)
 rm -rf $tmpDir
 mkdir $tmpDir
 
-scripts/build
-tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION LICENSE UserScripts
+tar -zcf ShinyLearner.tar.gz JavaCode build.xml scripts AlgorithmScripts README.md VERSION LICENSE UserScripts
+exit
 
 mv ShinyLearner.tar.gz $tmpDir/
 cp Dockerfile $tmpDir/

@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-#javaDir="/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Commands"
 javaDir="/usr/bin"
 
 currentDir=$(pwd)
