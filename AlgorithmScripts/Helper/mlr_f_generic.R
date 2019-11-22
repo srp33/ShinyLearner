@@ -16,6 +16,12 @@ if (numCores > 1)
 
 data <- read.table(dataFilePath, sep="\t", stringsAsFactors = TRUE, header=TRUE, row.names = 1, check.names=FALSE)
 
+columnNames <- colnames(data)
+classIndex <- which(columnNames=="Class")
+modColumnNames <- paste("Column", 1:ncol(data), sep="")
+modColumnNames[classIndex] <- "Class"
+colnames(data) <- modColumnNames
+
 task <- makeClassifTask(data = data, target = "Class")
 
 learn <- function(parameterList)
@@ -23,6 +29,7 @@ learn <- function(parameterList)
   set.seed(0)
 
   fv = suppressWarnings(generateFilterValuesData(task, method = algorithm)$data)
+  fv[,1] = columnNames[-classIndex]
 
 #  if (algorithm == "permutation.importance") {
 #    fv = generateFilterValuesData(task, method = algorithm, learner="classif.logreg", ...)$data
@@ -30,7 +37,7 @@ learn <- function(parameterList)
 #    fv = do.call(generateFilterValuesData, parameterList)$data
 #  }
 
-  fv <- fv[order(fv[,algorithm], decreasing=TRUE),,drop=FALSE]
+  fv <- fv[order(fv$value, decreasing=TRUE),,drop=FALSE]
   features <- paste(fv[,1], collapse=",")
   output <- t(as.data.frame(features))
 
