@@ -8,8 +8,8 @@ sudo: required
 services:
   - docker
 language: java
-install: true
-jdk: oraclejdk8
+install: ant deps
+jdk: oraclejdk9
 branches:
   only:
     - master
