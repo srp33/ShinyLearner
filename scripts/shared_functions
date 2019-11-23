@@ -56,6 +56,7 @@ function getJavaArgs {
     # See https://twitter.com/analytically/status/894592422382063616
     # See https://blog.codecentric.de/en/2014/08/string-deduplication-new-feature-java-8-update-20-2/
     echo "-Xmx$(getMemAvailable) -server -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1 -XX:+UseG1GC -XX:+UseStringDeduplication"
+    #echo "-Xmx$(getMemAvailable) -server -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+UseStringDeduplication"
   fi
 }
 

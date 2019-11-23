@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-javaDir="/usr/bin"
+#javaDir="/usr/bin"
 
 currentDir=$(pwd)
 buildDir=/tmp/shinylearner_build
@@ -16,7 +16,8 @@ cp build.xml $buildDir/
 cd $buildDir
 
 find shinylearner -name *.java > sources_list.txt
-$javaDir/javac @sources_list.txt
+#$javaDir/javac @sources_list.txt
+javac @sources_list.txt
 rm sources_list.txt
 
 ant

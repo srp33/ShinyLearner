@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -euo pipefail
+
+#####################################################
+# This algorithm is implemented in the scikit-learn
+# software package (http://scikit-learn.org/stable/).
+#####################################################
+
+trainingFilePath="$1"
+testFilePath="$2"
+classOptions="$3"
+numCores="$4"
+verbose="$5"
+
+#export JOBLIB_START_METHOD="forkserver"
+
+python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = SGDClassifier(loss='modified_huber', penalty='elasticnet', alpha=1e-05, l1_ratio=0.15, fit_intercept=True, early_stopping=True, shuffle=True, verbose=0, epsilon=0.1, n_jobs={n_jobs}, learning_rate='adaptive', eta0=0.0, power_t=0.5, class_weight='balanced', warm_start=False, average=False, random_state=R_SEED)"
+#python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = SGDClassifier(loss='modified_huber', penalty='elasticnet', alpha=1e-05, l1_ratio=0.15, fit_intercept=True, early_stopping=True, shuffle=True, verbose=0, epsilon=0.1, n_jobs={n_jobs}, learning_rate='adaptive', eta0=0.0, power_t=0.5, class_weight='balanced', warm_start=False, average=False, random_state=R_SEED)" 2>&1 | python3 AlgorithmScripts/Helper/ReformatSklearnClassificationOutput.py "$classOptions" "$verbose"

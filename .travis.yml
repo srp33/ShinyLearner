@@ -7,13 +7,12 @@
 sudo: required
 services:
   - docker
-language: java
-install: ant
-jdk: oraclejdk9
+language: generic
+install: true
 branches:
   only:
     - master
 script:
   - ./scripts/build_image shinylearner
   - echo "$DOCKER_PASS" | sudo docker login -u="$DOCKER_USER" --password-stdin
-  - sudo docker push srp33/shinylearner:version526
+  - sudo docker push srp33/shinylearner:version560

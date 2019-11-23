@@ -1,6 +1,6 @@
-FROM srp33/shinylearner_environment:version58
+FROM srp33/shinylearner_environment:version60
 
-COPY ShinyLearner.tar.gz /
-RUN tar -zxf ShinyLearner.tar.gz; rm ShinyLearner.tar.gz
+COPY . /
+RUN bash /scripts/build
 
 WORKDIR /

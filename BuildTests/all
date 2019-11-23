@@ -10,13 +10,12 @@ then
 fi
 
 ./scripts/build_image $SL_DOCKER_IMAGE_NAME
-exit
 
 echo Running ShinyLearner build tests...
 echo Using Docker image $SL_DOCKER_IMAGE_NAME...
 
-#verbose="--verbose true"
-verbose="--verbose false"
+verbose="--verbose true"
+#verbose="--verbose false"
 currentDir=$(pwd)
 overallLogFile=log.overall
 tmpDir=/tmp/test_shinylearner_docker
@@ -40,10 +39,10 @@ cd $tmpDir
 # cross validation.
 #########################################################
 
-classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/demo*/*/default*"
-#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default*"
+classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default*"
@@ -70,6 +69,7 @@ wait
 cat output/*.log >> $overallLogFile
 rm -f output/*.log
 python3 CheckLogFiles.py $overallLogFile 1
+exit
 
 #######################################################
 # Test h2o separately because it tends to throw errors

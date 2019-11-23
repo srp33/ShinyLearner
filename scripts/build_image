@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#set -o errexit
 set -euo pipefail
 
 SL_DOCKER_IMAGE_NAME="$1"
@@ -14,14 +13,20 @@ version=$(cat VERSION)
 rm -rf $tmpDir
 mkdir $tmpDir
 
-tar -zcf ShinyLearner.tar.gz JavaCode build.xml scripts AlgorithmScripts README.md VERSION LICENSE UserScripts
-exit
-
-mv ShinyLearner.tar.gz $tmpDir/
+cp -r AlgorithmScripts $tmpDir/
+cp build.xml $tmpDir/
 cp Dockerfile $tmpDir/
+cp -r JavaCode $tmpDir/
+cp LICENSE $tmpDir/
+cp README.md $tmpDir/
+cp -r scripts $tmpDir/
+cp -r UserScripts $tmpDir/
+cp VERSION $tmpDir/
 
 cd $tmpDir
-docker build -t srp33/${SL_DOCKER_IMAGE_NAME}:version${version} . | grep -v "tar: "
+
+docker build -t srp33/${SL_DOCKER_IMAGE_NAME}:version${version} .
+# | grep -v "tar: "
 
 cd $currentDir
 rm -rf $tmpDir
