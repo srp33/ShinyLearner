@@ -92,7 +92,7 @@ for selectedFeaturesFilePath in selectedFeaturesFilePaths:
             proportionSelected = getProportionSelected(algorithmFeatureData, featureNames)
 
             success = False
-            if description.startswith("StrongSignal") and proportionSelected > 0.7:
+            if description.startswith("StrongSignal") and proportionSelected > 0.6:
                 success = True
             if description.startswith("NoSignal") and proportionSelected < 0.3:
                 success = True

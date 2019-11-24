@@ -10,7 +10,6 @@ from numpy import random
 from sklearn.feature_selection import f_classif
 from sklearn.feature_selection import mutual_info_classif
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import RandomizedLogisticRegression
 from sklearn.svm import SVC
 from sklearn.feature_selection import RFE
 
