@@ -86,8 +86,8 @@ createScripts("FeatureSelection", packagePath, "sklearn_f_template", "mutual_inf
 random_forest_rfe = "selector = RFE(RandomForestClassifier(n_estimators=100, random_state=R_SEED), n_features_to_select=1, step={step})"
 createScripts("FeatureSelection", packagePath, "sklearn_f_template", "random_forest_rfe", "rfe", random_forest_rfe, {"step": [0.1]}, summaryDict)
 
-random_logistic_regression = "scorer = RandomizedLogisticRegression(C={C}, scaling={scaling}, sample_fraction={sample_fraction}, n_resampling={n_resampling}, selection_threshold={selection_threshold}, tol={tol}, fit_intercept=True, verbose=False, normalize=True, random_state=R_SEED)"
-createScripts("FeatureSelection", packagePath, "sklearn_f_template", "random_logistic_regression", "coef", random_logistic_regression, {"C": [1], "scaling": [0.5], "sample_fraction": [0.75], "n_resampling": [200], "selection_threshold": [0.25], "tol": [0.001]}, summaryDict)
+#random_logistic_regression = "scorer = RandomizedLogisticRegression(C={C}, scaling={scaling}, sample_fraction={sample_fraction}, n_resampling={n_resampling}, selection_threshold={selection_threshold}, tol={tol}, fit_intercept=True, verbose=False, normalize=True, random_state=R_SEED)"
+#createScripts("FeatureSelection", packagePath, "sklearn_f_template", "random_logistic_regression", "coef", random_logistic_regression, {"C": [1], "scaling": [0.5], "sample_fraction": [0.75], "n_resampling": [200], "selection_threshold": [0.25], "tol": [0.001]}, summaryDict)
 
 svm_rfe = "selector = RFE(SVC(random_state=R_SEED, kernel='linear'), n_features_to_select=1, step={step})"
 createScripts("FeatureSelection", packagePath, "sklearn_f_template", "svm_rfe", "rfe", svm_rfe, {"step": [0.1]}, summaryDict)
