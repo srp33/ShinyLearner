@@ -9,30 +9,23 @@ version=$(cat VERSION)
 rm -rf $tmpDir
 mkdir -p $tmpDir/input $tmpDir/output
 
-scripts/build
-tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION LICENSE UserScripts
-
-mv ShinyLearner.tar.gz $tmpDir/
-cp Dockerfile $tmpDir/
-cp -r BuildTests/* $tmpDir/
+imageName=shinylearner
+./scripts/build_image $imageName
 
 ###################################################
 ###################################################
 # Copy data to where Docker can find it
 ###################################################
 ###################################################
-#data=StrongSignal_Both.tsv.gz
-#cp -r Validation/$data $tmpDir/input/
 
-data=iris.tsv
-cp ~/Dropbox/ShinyLearner/Demo/Datasets/$data $tmpDir/input/
+data=StrongSignal_Both.tsv.gz
+cp -r Validation/$data $tmpDir/input/
 
 ###################################################
 ###################################################
 # General settings
 ###################################################
 ###################################################
-imageName=shinylearner
 
 fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default*"
 #fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/InfoGain/default*"
@@ -66,10 +59,12 @@ algos="--classif-algo \"$classifAlgos\" --fs-algo \"$fsAlgos\" --num-features 1,
 
 ###################################################
 ###################################################
-
-./scripts/build_image $imageName
+# Execute the analysis
+###################################################
+###################################################
 
 cd $tmpDir
-bash run_docker_command $tmpDir/input $tmpDir/Output $imageName $version "UserScripts/$scriptName --data "$data" --description "Test" $iterationsFolds $algos $verbose --impute $impute --ohe $ohe" --scale $scale
+
+bash $currentDir/BuildTests/run_docker_command $tmpDir/input $tmpDir/output $imageName $version "UserScripts/$scriptName --data "$data" --description "Test" $iterationsFolds $algos $verbose --impute $impute --ohe $ohe" --scale $scale
 
 echo See results in $tmpDir/output.
