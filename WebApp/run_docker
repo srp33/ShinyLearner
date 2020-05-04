@@ -1,0 +1,8 @@
+#!/bin/bash
+
+## This will execute the container in interactive mode.
+## Hit Ctrl-C when you want to close the container.
+dockerImage=srp33/shinylearner_webapp:v$(cat ../VERSION)
+
+docker run --rm -i -t --name shinylearner -p 8080:3838 \
+    $dockerImage

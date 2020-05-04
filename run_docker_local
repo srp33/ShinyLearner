@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker run -t -i --rm -v /tmp/VolInput:/InputData -v /tmp/VolOutput:/OutputData srp33/shinylearner:version$(cat VERSION) /bin/bash

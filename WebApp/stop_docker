@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# This will stop the container when it is running in detached mode.
+docker container stop shinylearner

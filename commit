@@ -27,7 +27,7 @@ done
 
 python scripts/UpdateVersion.py WebApp/server_template.R VERSION False WebApp/server.R
 
-#./BuildTests/all
+./BuildTests/all
 
 git add .travis.yml
 git add --all .

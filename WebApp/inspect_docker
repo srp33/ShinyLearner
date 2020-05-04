@@ -1,0 +1,11 @@
+#!/bin/bash
+
+############################################
+# When the container is running, you can use
+#   this script to enter the container and
+#   see how it is configured.
+############################################
+
+dockerImage=srp33/shinylearner_webapp:v$(cat ../VERSION)
+
+docker run -t -i --rm $dockerImage /bin/bash

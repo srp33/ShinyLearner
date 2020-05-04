@@ -1,0 +1,29 @@
+#!/bin/bash
+
+############################################
+# This script has the logic for building a
+# Docker image based on the Dockerfile.
+############################################
+
+tmpDir=/tmp/ShinyLearner_WebApp_build
+currentDir="$(pwd)"
+dockerImage=srp33/shinylearner_webapp:v$(cat ../VERSION)
+
+rm -rf $tmpDir
+mkdir -p $tmpDir
+
+cp Dockerfile $tmpDir/
+cp -r *.R $tmpDir/
+python ../scripts/UpdateVersion.py server_template.R ../VERSION False $tmpDir/server.R
+cp *.conf $tmpDir/
+cp -r www $tmpDir/
+mkdir -p $tmpDir/ShinyLearner
+cp -r ../AlgorithmScripts $tmpDir/ShinyLearner/
+rm -rf $tmpDir/ShinyLearner/AlgorithmScripts/Helper
+rm -rf $tmpDir/ShinyLearner/AlgorithmScripts/Classification/tsv/demo_library
+
+cd $tmpDir
+docker build -t $dockerImage .
+
+cd "$currentDir"
+rm -rf $tmpDir
