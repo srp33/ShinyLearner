@@ -34,6 +34,9 @@ git add --all .
 git commit -m "$message"
 git push origin master
 
+docker login
+docker push srp33/shinylearner:version$(cat VERSION)
+
 cd ../ShinyLearner_gpu
 
 ./commit "$message"

@@ -1,4 +1,4 @@
-FROM srp33/shinylearner_environment:version60
+FROM srp33/shinylearner_environment:version61
 
 COPY . /
 RUN bash /scripts/build

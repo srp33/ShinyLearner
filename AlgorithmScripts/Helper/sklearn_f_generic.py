@@ -7,11 +7,12 @@ from numpy import array
 from numpy import lexsort
 from numpy import random
 
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_selection import f_classif
 from sklearn.feature_selection import mutual_info_classif
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVC
 from sklearn.feature_selection import RFE
+from sklearn.feature_selection import SequentialFeatureSelector
+from sklearn.svm import SVC
 
 dataFilePath = argv[1]
 numCores = argv[2]
@@ -50,10 +51,17 @@ elif algorithmClass == 'rfe':
 
     rankedFeatures = [y[1] for y in sorted(zip(map(lambda x: round(x, 4), selector.ranking_), features))]
 
+#Not used?
 elif algorithmClass == 'coef':
     scorer.fit(train_X, train_y)
     rankedFeatures = [y[1] for y in sorted(zip(map(lambda x: round(x, 4), scorer.scores_), features), reverse=True)]
 
+# This currently doesn't work but could be added in the future.
+# It only returns the list of selected features.
+# It doesn't return a ranking. I believe ShinyLearner would need to be modified to work with this.
+#elif algorithmClass == 'wrapper':
+#    wrapper.fit(train_X, train_y)
+#    rankedFeatures = features[wrapper.get_support()]
 else:
     print("Invalid algorithm type.")
 

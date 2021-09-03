@@ -30,6 +30,7 @@ cp -r Validation/$data $tmpDir/input/
 fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default*"
 #fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/InfoGain/default*"
 #fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/OneR/default*"
+#fsAlgos="AlgorithmScripts/FeatureSelection/*/sklearn/*_wrapper/default*"
 
 classifAlgos="AlgorithmScripts/Classification/tsv/sklearn/random_forest/default*"
 #classifAlgos="AlgorithmScripts/Classification/tsv/sklearn/extra_trees/alt__bootstrap=True_class_weight=None_criterion=gini_n_estimators=1000_oob_score=False"
@@ -37,8 +38,8 @@ classifAlgos="AlgorithmScripts/Classification/tsv/sklearn/random_forest/default*
 #classifAlgos="AlgorithmScripts/Classification/tsv/keras/snn/default"
 #classifAlgos="AlgorithmScripts/Classification/tsv/keras/resnet/default"
 
-#verbose="--verbose true"
-verbose="--verbose false"
+verbose="--verbose true"
+#verbose="--verbose false"
 impute=true
 ohe=true
 scale=robust
