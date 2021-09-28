@@ -105,17 +105,17 @@ createScripts("Classification", packagePath, "mlr_c_template", "xgboost", None, 
 # Feature selection
 #################################################################
 
-cforest_importance = "cforest.importance"
-createScripts("FeatureSelection", packagePath, "mlr_f_template", "cforest.importance", None, cforest_importance, {}, summaryDict)
+cforest_importance = "'cforest.importance', mincriterion='{mincriterion}', nperm={nperm}"
+createScripts("FeatureSelection", packagePath, "mlr_f_template", "cforest.importance", None, cforest_importance, {"mincriterion": [0, 0.95, 0.99], "nperm": [1, 5, 10]}, summaryDict)
 
 kruskal_test = "kruskal.test"
 createScripts("FeatureSelection", packagePath, "mlr_f_template", "kruskal.test", None, kruskal_test, {}, summaryDict)
 
-randomForestSRC_rfsrc = "randomForestSRC.rfsrc"
-createScripts("FeatureSelection", packagePath, "mlr_f_template", "randomForestSRC.rfsrc", None, randomForestSRC_rfsrc, {}, summaryDict)
+randomForestSRC_rfsrc = "'randomForestSRC.rfsrc', ntree = {ntree}, bootstrap = '{bootstrap}', importance = '{importance}', proximity = '{proximity}', nodesize={nodesize}"
+createScripts("FeatureSelection", packagePath, "mlr_f_template", "randomForestSRC.rfsrc", None, randomForestSRC_rfsrc, {"ntree": [1000, 100], "bootstrap": ["by.root", "by.node", "none"], "importance": ["none", "permute"], "proximity": ["inbag", "oob", "all"], "nodesize": nodeSizeOptions}, summaryDict)
 
-randomForestSRC_var_select = "randomForestSRC.var.select"
-createScripts("FeatureSelection", packagePath, "mlr_f_template", "randomForestSRC.var.select", None, randomForestSRC_var_select, {}, summaryDict)
+randomForestSRC_var_select = "'randomForestSRC.var.select', ntree = {ntree}, method = '{method}', conservative = '{conservative}', nodesize={nodesize}"
+createScripts("FeatureSelection", packagePath, "mlr_f_template", "randomForestSRC.var.select", None, randomForestSRC_var_select, {"ntree": [1000, 100], "method": ["md", "vh", "vh.vimp"], "conservative": ["medium", "low", "high"], "nodesize": nodeSizeOptions}, summaryDict)
 
 ##Failed test with default parameters = univariate.model.score, variance
 ## permutation.test requires a learner algorithm, but none is provided by default

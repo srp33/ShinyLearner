@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -euo pipefail
+
+#####################################################
+# This algorithm is implemented in the scikit-learn
+# software package (http://scikit-learn.org/stable/).
+#####################################################
+
+dataFilePath="$1"
+numCores="$2"
+verbose="$3"
+
+#export JOBLIB_START_METHOD="forkserver"
+
+python3 AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "$numCores" "rfe" "selector = RFE(SVC(random_state=R_SEED, kernel='linear'), n_features_to_select=1, step=0.05)" 2>&1 | python3 AlgorithmScripts/Helper/ReformatSklearnFeatureSelectionOutput.py "$verbose"

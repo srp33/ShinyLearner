@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -euo pipefail
+
+#####################################################
+# This algorithm is implemented in the scikit-learn
+# software package (http://scikit-learn.org/stable/).
+#####################################################
+
+dataFilePath="$1"
+numCores="$2"
+verbose="$3"
+
+#export JOBLIB_START_METHOD="forkserver"
+
+python3 AlgorithmScripts/Helper/sklearn_f_generic.py "$dataFilePath" "$numCores" "score" "score = 1 - mutual_info_classif(train_X, train_y, n_neighbors=1)" 2>&1 | python3 AlgorithmScripts/Helper/ReformatSklearnFeatureSelectionOutput.py "$verbose"

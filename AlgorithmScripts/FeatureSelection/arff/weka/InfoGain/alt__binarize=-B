@@ -1,0 +1,8 @@
+#!/bin/bash
+
+##########################################################
+# This algorithm is implemented in the weka
+# software package (http://www.cs.waikato.ac.nz/ml/weka/).
+##########################################################
+
+bash AlgorithmScripts/Helper/weka_f_generic "$1" 'weka.attributeSelection.InfoGainAttributeEval -B -s "weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1"'
