@@ -112,7 +112,8 @@ kruskal_test = "kruskal.test"
 createScripts("FeatureSelection", packagePath, "mlr_f_template", "kruskal.test", None, kruskal_test, {}, summaryDict)
 
 randomForestSRC_rfsrc = "'randomForestSRC.rfsrc', ntree = {ntree}, bootstrap = '{bootstrap}', importance = '{importance}', proximity = '{proximity}', nodesize={nodesize}"
-createScripts("FeatureSelection", packagePath, "mlr_f_template", "randomForestSRC.rfsrc", None, randomForestSRC_rfsrc, {"ntree": [1000, 100], "bootstrap": ["by.root", "by.node", "none"], "importance": ["none", "permute"], "proximity": ["inbag", "oob", "all"], "nodesize": nodeSizeOptions}, summaryDict)
+createScripts("FeatureSelection", packagePath, "mlr_f_template", "randomForestSRC.rfsrc", None, randomForestSRC_rfsrc, {"ntree": [1000, 100], "bootstrap": ["by.root", "by.node", "none"], "importance": ["none", "permute"], "proximity": ["inbag"], "nodesize": nodeSizeOptions}, summaryDict)
+#createScripts("FeatureSelection", packagePath, "mlr_f_template", "randomForestSRC.rfsrc", None, randomForestSRC_rfsrc, {"ntree": [1000, 100], "bootstrap": ["by.root", "by.node", "none"], "importance": ["none", "permute"], "proximity": ["inbag", "oob", "all"], "nodesize": nodeSizeOptions}, summaryDict)
 
 randomForestSRC_var_select = "'randomForestSRC.var.select', ntree = {ntree}, method = '{method}', conservative = '{conservative}', nodesize={nodesize}"
 createScripts("FeatureSelection", packagePath, "mlr_f_template", "randomForestSRC.var.select", None, randomForestSRC_var_select, {"ntree": [1000, 100], "method": ["md", "vh", "vh.vimp"], "conservative": ["medium", "low", "high"], "nodesize": nodeSizeOptions}, summaryDict)
