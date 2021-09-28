@@ -39,9 +39,9 @@ description="Test most classification algorithm using monte carlo cross validati
 echo "$description"
 #########################################################
 
-classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/*/*/default*"
-#classifAlgo="AlgorithmScripts/Classification/tsv/demo*/*/default*"
+classifAlgo="AlgorithmScripts/Classification/tsv/demo*/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm/default*"
 #classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default*"
