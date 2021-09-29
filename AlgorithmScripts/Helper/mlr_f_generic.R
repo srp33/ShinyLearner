@@ -29,7 +29,7 @@ learn <- function(parameterList)
   set.seed(0)
 
   # Dynamically execute the code for the specified algorithm and parameters.
-  eval(parse0(text = "fv = suppressWarnings(generateFilterValuesData(task, method = ", algorithm, ")$data)"))
+  eval(parse(text = paste0("fv = suppressWarnings(generateFilterValuesData(task, method = ", algorithm, ")$data)")))
 
   #fv = suppressWarnings(generateFilterValuesData(task, method = algorithm)$data)
   fv[,1] = columnNames[-classIndex]
