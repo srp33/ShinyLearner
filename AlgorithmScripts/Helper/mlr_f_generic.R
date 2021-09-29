@@ -28,9 +28,10 @@ learn <- function(parameterList)
 {
   set.seed(0)
 
-  print("The algorithm is:")
-  print(algorithm)
-  fv = suppressWarnings(generateFilterValuesData(task, method = algorithm)$data)
+  # Dynamically execute the code for the specified algorithm and parameters.
+  eval(parse0(text = "fv = suppressWarnings(generateFilterValuesData(task, method = ", algorithm, ")$data)"))
+
+  #fv = suppressWarnings(generateFilterValuesData(task, method = algorithm)$data)
   fv[,1] = columnNames[-classIndex]
 
 #  if (algorithm == "permutation.importance") {
