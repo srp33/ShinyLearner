@@ -28,6 +28,7 @@ learn <- function(parameterList)
 {
   set.seed(0)
 
+  print(algorithm)
   fv = suppressWarnings(generateFilterValuesData(task, method = algorithm)$data)
   fv[,1] = columnNames[-classIndex]
 
