@@ -82,7 +82,7 @@ Some algorithms support the use of graphical processing units for faster perform
       -v "$(pwd)"/:"/InputData" \
       -v "$(pwd)/Output":"/OutputData" \
       --user $(id -u):$(id -g) \
-      srp33/shinylearner:version592 \
+      srp33/shinylearner:version593 \
       UserScripts/featureselection_montecarlo \
         --data Data.tsv.gz \
         --description "My_Interesting_Analysis" \

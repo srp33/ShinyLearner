@@ -29,6 +29,9 @@ learn <- function(parameterList)
   set.seed(0)
 
   # Dynamically execute the code for the specified algorithm and parameters.
+  code = paste0("fv = suppressWarnings(generateFilterValuesData(task, method = ", algorithm, ")$data)")
+  print("the code is:")
+  print(code)
   eval(parse(text = paste0("fv = suppressWarnings(generateFilterValuesData(task, method = ", algorithm, ")$data)")))
 
   #fv = suppressWarnings(generateFilterValuesData(task, method = algorithm)$data)
