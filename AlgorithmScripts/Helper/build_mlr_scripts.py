@@ -105,8 +105,8 @@ createScripts("Classification", packagePath, "mlr_c_template", "xgboost", None, 
 # Feature selection
 #################################################################
 
-cforest_importance = "'cforest.importance', mincriterion='{mincriterion}', nperm={nperm}"
-createScripts("FeatureSelection", packagePath, "mlr_f_template", "cforest.importance", None, cforest_importance, {"mincriterion": [0, 0.95, 0.99], "nperm": [1, 5, 10]}, summaryDict)
+cforest_importance = "'cforest.importance', conditional={conditional}, nperm={nperm}, threshold={threshold}"
+createScripts("FeatureSelection", packagePath, "mlr_f_template", "cforest.importance", None, cforest_importance, {"conditional": ["TRUE", "FALSE"], "nperm": [1, 5], "threshold": [0.1, 0.5, 0.9]}, summaryDict)
 
 kruskal_test = "kruskal.test"
 createScripts("FeatureSelection", packagePath, "mlr_f_template", "kruskal.test", None, kruskal_test, {}, summaryDict)
