@@ -10,4 +10,4 @@ dataFilePath="$1"
 numCores="$2"
 verbose="$3"
 
-Rscript --no-save --no-restore --no-site-file --no-init-file --no-environ --max-ppsize=500000 AlgorithmScripts/Helper/mlr_f_generic.R "$dataFilePath" "$numCores" "'randomForestSRC.rfsrc', ntree = 1000, bootstrap = 'none', proximity = 'inbag', nodesize=1" 2>&1 | python3 AlgorithmScripts/Helper/ReformatMlrFeatureSelectionOutput.py "$verbose"
+Rscript --no-save --no-restore --no-site-file --no-init-file --no-environ --max-ppsize=500000 AlgorithmScripts/Helper/mlr_f_generic.R "$dataFilePath" "$numCores" "'randomForestSRC.rfsrc', ntree = 1000, bootstrap = 'none', nodesize=1" 2>&1 | python3 AlgorithmScripts/Helper/ReformatMlrFeatureSelectionOutput.py "$verbose"
