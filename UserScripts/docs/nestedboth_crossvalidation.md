@@ -103,7 +103,7 @@ Some algorithms support the use of graphical processing units for faster perform
       -v "$(pwd)"/:"/InputData" \
       -v "$(pwd)/Output":"/OutputData" \
       --user $(id -u):$(id -g) \
-      srp33/shinylearner:version595 \
+      srp33/shinylearner:version596 \
       UserScripts/nestedboth_crossvalidation \
         --data Data.tsv.gz \
         --description "My_Interesting_Analysis" \
