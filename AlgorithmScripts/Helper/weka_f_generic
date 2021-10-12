@@ -12,3 +12,4 @@ wekaLibPath=$(dirname $0)/lib
 classPath="$wekaLibPath/*:$wekaLibPath/wekalib/*"
 
 echo java $(getJavaArgs) -classpath $classPath $algorithm -i $dataFilePath | python3 $(dirname $0)/ReformatWekaFSParams.py | bash | python3 $(dirname $0)/ParseWekaFSResults.py
+#echo java $(getJavaArgs) -classpath $classPath $algorithm -i $dataFilePath | python3 $(dirname $0)/ReformatWekaFSParams.py | bash

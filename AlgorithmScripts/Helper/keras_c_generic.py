@@ -3,14 +3,12 @@ import os
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import OneHotEncoder
-from tensorflow import ConfigProto, Session
 from tensorflow.keras import backend as K
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dropout, Dense, Input, Flatten, BatchNormalization, Activation, AlphaDropout
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import binary_crossentropy, categorical_crossentropy
-from tensorflow.keras.utils import multi_gpu_model
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'
 
@@ -39,6 +37,9 @@ x_test = pd.read_csv(TEST_FILE, sep='\t', index_col=0)
 
 
 def gpu_setup():
+    #gpuoptions = tf.compat.v1.GPUOptions(allow_growth=True)
+    #session = tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(gpu_options=gpuoptions))
+    #K.set_session(session)
     cfg = ConfigProto()
     cfg.gpu_options.allow_growth = True
     K.set_session(Session(config=cfg))
@@ -74,6 +75,8 @@ def dnn(x, y, test):
         loss = categorical_crossentropy
     model = Model(input_layer, probabilities)
     try:
+        from tensorflow import ConfigProto, Session
+        from tensorflow.keras.utils import multi_gpu_model
         gpu_setup()
         model = multi_gpu_model(model, gpus=2)
     except:

@@ -120,6 +120,15 @@ createScripts("FeatureSelection", packagePath, "weka_f_template", "SVMRFE", None
 SymmetricalUncertainty = 'weka.attributeSelection.SymmetricalUncertAttributeEval -s \"weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1\"'
 createScripts("FeatureSelection", packagePath, "weka_f_template", "SymmetricalUncertainty", None, SymmetricalUncertainty, {}, summaryDict)
 
+#OneR_Wrapper = 'weka.attributeSelection.WrapperSubsetEval -B weka.classifiers.rules.OneR -F 5 -T 0.01 -R 1 -E AUC -- -B 6 -s \"weka.attributeSelection.GreedyStepwise -R -T -1.7976931348623157E308 -N -1 -num-slots 1\"'
+#createScripts("FeatureSelection", packagePath, "weka_f_template", "OneR_Wrapper", None, OneR_Wrapper, {}, summaryDict)
+
+#SMO_Wrapper = 'weka.attributeSelection.WrapperSubsetEval -B weka.classifiers.functions.SMO -F 5 -T 0.01 -R 1 -E AUC -- -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K \"weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007\" -calibrator \"weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4\" -s \"weka.attributeSelection.GreedyStepwise -R -T -1.7976931348623157E308 -N -1 -num-slots 1\"'
+#createScripts("FeatureSelection", packagePath, "weka_f_template", "SMO_Wrapper", None, SMO_Wrapper, {}, summaryDict)
+
+#RandomForest_Wrapper = 'weka.attributeSelection.WrapperSubsetEval -B weka.classifiers.trees.RandomForest -F 5 -T 0.01 -R 1 -E AUC -- -P 100 -I 100 -num-slots 1 -K 0 -M 1.0 -V 0.001 -S 1 -s \"weka.attributeSelection.GreedyStepwise -R -T -1.7976931348623157E308 -N -1 -num-slots 1\"'
+#createScripts("FeatureSelection", packagePath, "weka_f_template", "RandomForest_Wrapper", None, RandomForest_Wrapper, {}, summaryDict)
+
 if showStats:
     print("#######################################")
     for key, value in sorted(summaryDict.items()):
