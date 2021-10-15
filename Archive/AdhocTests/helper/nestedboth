@@ -1,0 +1,57 @@
+#!/bin/bash
+
+set -euo pipefail
+
+validationType=$1
+
+if [[ "$validationType" == "" ]]
+then
+  echo No validation type was specified. This may not be the script you want to be executing.
+  exit 1
+fi
+
+./scripts/build
+
+currentDir=$(pwd)
+testDir=/tmp/ML_Flex_Lite_Test_NestedBoth
+outputDir=$currentDir/TestOutput/nestedboth/$validationType
+
+rm -rf $testDir
+mkdir -p $testDir
+
+cp -r shinylearner.jar $testDir/
+cp -r scripts $testDir/
+cp -r AlgorithmScripts $testDir/
+cp -r UserScripts $testDir/
+cp -r VERSION $testDir/
+
+rm -rf $outputDir
+mkdir -p $outputDir
+
+cd $testDir
+
+validation=StrongSignal_Both
+dataFile=$currentDir/Validation/${validation}.tsv.gz
+#dataFile="$currentDir/debug_data/*.tsv.gz"
+#dataFile="/tmp/ml_data/breast.cancer.arff"
+fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/random*/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/random*/*"
+numFeaturesOptions="10,20"
+classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/l*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/l*/*"
+#verbose=true
+verbose=false
+impute=true
+outerIterations=2
+innerIterations=2
+
+if [[ "$validationType" == "montecarlo" ]]
+then
+  UserScripts/nestedboth_${validationType} --data "$dataFile" --description $validation --outer-iterations $outerIterations --inner-iterations $innerIterations --verbose $verbose --fs-algo "$fsAlgo" --num-features "$numFeaturesOptions" --classif-algo "$classifAlgo" --output-dir "$outputDir" --impute $impute
+else
+  #UserScripts/nestedboth_${validationType} --data "$dataFile" --description $validation --iterations 1 --inner-folds 2 --outer-folds 2 --verbose $verbose --fs-algo "$fsAlgo" --num-features "$numFeaturesOptions" --classif-algo "$classifAlgo" --output-dir "$outputDir" --impute $impute
+  UserScripts/nestedboth_${validationType} --data "$dataFile" --description $validation --iterations 2 --inner-folds 2 --outer-folds 2 --verbose $verbose --fs-algo "$fsAlgo" --num-features "$numFeaturesOptions" --classif-algo "$classifAlgo" --output-dir "$outputDir" --impute $impute
+fi

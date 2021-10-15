@@ -1,0 +1,28 @@
+# shinylearner.byu.edu uses \r\n for new lines when 'Windows' is selected
+# since I saved this file on my Mac, I think that only \n is represented here
+# however, it is my understanding that cmd.exe will correct this automatically
+
+docker run --rm ^
+  -v %cd%\Validation:/InputData ^
+  -v %cd%\TestOutput\Docker:/OutputData ^
+  srp33/shinylearner:version225 ^
+  /UserScripts/nestedboth_montecarlo ^
+  InputData/StrongSignal_Both.tsv.gz ^
+  My_Interesting_Analysis ^
+  1 ^
+  5 ^
+  false ^
+  AlgorithmScripts/FeatureSelection/tsv/mlr/kruskal.test/default ^
+  5,10,50,100,500,1000 ^
+  AlgorithmScripts/Classification/tsv/sklearn/extra_trees/default ^
+  OutputData/SelectedFeatures.tsv ^
+  OutputData/Predictions.tsv ^
+  OutputData/Metrics.tsv ^
+  OutputData/NestedSelectedFeaturesFiles.tsv ^
+  OutputData/NestedSummarizedSelectedFeaturesFiles.tsv ^
+  OutputData/NestedPredictionsFile.tsv ^
+  OutputData/NestedMetricsFile.tsv ^
+  OutputData/NestedFeatureSelectionBenchmarkFile.tsv ^
+  OutputData/NestedClassificationBenchmarkFile.tsv ^
+  OutputData/LogFile.txt ^
+  

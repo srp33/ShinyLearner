@@ -1,0 +1,15 @@
+#!/bin/bash
+
+sudo docker run --rm \
+  -v $(pwd)/Validation:/InputData \
+  -v $(pwd)/TestOutput/Docker/nestedboth/montecarlo:/OutputData \
+  srp33/shinylearner:version267 \
+  /UserScripts/nestedboth_montecarlo \
+  --data InputData/StrongSignal_Both.tsv.gz \
+  --description StrongSignal_Both_Docker \
+  --outer-iterations 2 \
+  --inner-iterations 2 \
+  --classif-algo AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default \
+  --fs-algo AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default \
+  --num-features 5,10,50,100,500,1000 \
+  --output-dir OutputData

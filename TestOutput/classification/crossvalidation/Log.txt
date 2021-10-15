@@ -1,0 +1,24 @@
+***********************************************************************
+Command that was executed for analysis on Fri Dec 29 11:52:23 MST 2017:
+
+UserScripts/classification_crossvalidation --data /Users/srp33/Dropbox/ShinyLearner/Validation/NoSignal_Both.tsv.gz --description NoSignal_Both --iterations 1 --folds 2 --verbose false --classif-algo /Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default* --output-dir /Users/srp33/Dropbox/ShinyLearner/TestOutput/classification/crossvalidation --scale false --impute true --num-cores 3
+ShinyLearner version: 362
+***********************************************************************
+[2017-12-29 11:52:23] Parsing data...
+[2017-12-29 11:52:23] After filtering, data were available for 60 instances and 101 data points.
+[2017-12-29 11:52:23] Imputing missing data (where applicable)...
+[2017-12-29 11:52:25] One-hot encoding categorical data (where applicable)...
+[2017-12-29 11:52:25] 
+[2017-12-29 11:52:25] **************************************************************
+[2017-12-29 11:52:25] Beginning analysis for cross-validation fold 1
+[2017-12-29 11:52:25] **************************************************************
+[2017-12-29 11:52:26] Starting classification...
+[2017-12-29 11:52:28] Calculating classification metrics...
+[2017-12-29 11:52:29] Preparing output files...
+[2017-12-29 11:52:29] 
+[2017-12-29 11:52:29] **************************************************************
+[2017-12-29 11:52:29] Finalizing analysis
+[2017-12-29 11:52:29] **************************************************************
+[2017-12-29 11:52:29] 
+[2017-12-29 11:52:29] Combining results across cross-validation iterations...
+[2017-12-29 11:52:30] Analysis completed!

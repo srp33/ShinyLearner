@@ -1,0 +1,76 @@
+***********************************************************************
+Command that was executed for analysis on Tue Jun 13 13:35:55 UTC 2017:
+
+/UserScripts/nestedclassification_montecarlo --data InputData/StrongSignal_Both.tsv.gz --description StrongSignal_Both_Docker --outer-iterations 2 --inner-iterations 2 --classif-algo AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default --fs-algo AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default --num-features 5,10,50,100,500,1000 --output-dir OutputData
+ShinyLearner version: 267
+***********************************************************************
+Preparing for analysis...
+After filtering, data were available for 60 instances and 151 data points.
+Classifying for inner iterations...
+Starting analysis...
+Progress: 0% #Progress: 33% #################Progress: 66% ##################################Progress: 100% ###################################################                                                          
+Calculating classification metrics for inner iterations...
+Parsing inner classification results...
+Identifying best combination of algorithms...
+Classifying for outer iterations...
+Starting analysis...
+Progress: 0% #Progress: 100% ###################################################                                                          
+Calculating classification metrics for outer iterations...
+Preparing output files...
+Analysis successfully completed!
+***********************************************************************
+Command that was executed for analysis on Tue Jun 13 14:18:06 UTC 2017:
+
+/UserScripts/nestedclassification_montecarlo --data InputData/StrongSignal_Both.tsv.gz2 --description StrongSignal_Both_Docker --outer-iterations 2 --inner-iterations 2 --classif-algo AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default --fs-algo AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default --num-features 5,10,50,100,500,1000 --output-dir OutputData
+ShinyLearner version: 267
+***********************************************************************
+Preparing for analysis...
+java.lang.Exception: No file exists at 
+	at shinylearner.core.Log.ExceptionFatal(Log.java:66)
+	at shinylearner.core.Settings.ParseCommandLineSettings(Settings.java:42)
+	at shinylearner.Main.main(Main.java:23)
+
+***********************************************************************
+Command that was executed for analysis on Tue Jun 13 14:18:54 UTC 2017:
+
+/UserScripts/nestedclassification_montecarlo --data InputData/StrongSignal_Both.tsv.gz2 --description StrongSignal_Both_Docker --outer-iterations 2 --inner-iterations 2 --classif-algo AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default --fs-algo AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default --num-features 5,10,50,100,500,1000 --output-dir OutputData
+ShinyLearner version: 268
+***********************************************************************
+Preparing for analysis...
+java.lang.Exception: An empty file path was found. The full value specified for RAW_DATA_FILES was InputData/StrongSignal_Both.tsv.gz2.
+	at shinylearner.core.Log.ExceptionFatal(Log.java:66)
+	at shinylearner.core.Settings.ParseCommandLineSettings(Settings.java:42)
+	at shinylearner.Main.main(Main.java:23)
+
+***********************************************************************
+Command that was executed for analysis on Tue Jun 13 14:53:54 UTC 2017:
+
+/UserScripts/nestedclassification_montecarlo --data InputData/StrongSignal_Both.tsv.gz2 --description StrongSignal_Both_Docker --outer-iterations 2 --inner-iterations 2 --classif-algo AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default --fs-algo AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default --num-features 5,10,50,100,500,1000 --output-dir OutputData
+ShinyLearner version: 269
+***********************************************************************
+Preparing for analysis...
+java.lang.Exception: No input data was found that matches this pattern: InputData/StrongSignal_Both.tsv.gz2.
+	at shinylearner.core.Log.ExceptionFatal(Log.java:66)
+	at shinylearner.core.Settings.ParseCommandLineSettings(Settings.java:43)
+	at shinylearner.Main.main(Main.java:23)
+
+***********************************************************************
+Command that was executed for analysis on Tue Jun 13 14:54:06 UTC 2017:
+
+/UserScripts/nestedclassification_montecarlo --data InputData/StrongSignal_Both.tsv.gz --description StrongSignal_Both_Docker --outer-iterations 2 --inner-iterations 2 --classif-algo AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default --fs-algo AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default --num-features 5,10,50,100,500,1000 --output-dir OutputData
+ShinyLearner version: 269
+***********************************************************************
+Preparing for analysis...
+After filtering, data were available for 60 instances and 151 data points.
+Classifying for inner iterations...
+Starting analysis...
+Progress: 0% #Progress: 33% #################Progress: 66% ##################################Progress: 100% ###################################################                                                          
+Calculating classification metrics for inner iterations...
+Parsing inner classification results...
+Identifying best combination of algorithms...
+Classifying for outer iterations...
+Starting analysis...
+Progress: 0% #Progress: 100% ###################################################                                                          
+Calculating classification metrics for outer iterations...
+Preparing output files...
+Analysis successfully completed!

@@ -1,0 +1,106 @@
+#!/bin/bash
+
+set -euo pipefail
+
+validationType=$1
+
+if [[ "$validationType" == "" ]]
+then
+  echo No validation type was specified. This may not be the script you want to be executing.
+  exit 1
+fi
+
+./scripts/build
+
+currentDir=$(pwd)
+testDir=/tmp/ML_Flex_Lite_Test_CL
+outputDir=$currentDir/TestOutput/classification/$validationType
+
+rm -rf $testDir
+mkdir -p $testDir
+
+cp -r shinylearner.jar $testDir/
+cp -r scripts $testDir/
+cp -r AlgorithmScripts $testDir/
+cp -r UserScripts $testDir/
+cp -r VERSION $testDir/
+
+rm -rf $outputDir
+mkdir -p $outputDir
+
+cd $testDir
+
+validation=StrongSignal_Both
+#validation=StrongSignal_Both_2Class
+#validation=StrongSignalLarge_Both
+#validation=StrongSignal_Continuous
+#validation=NoSignal_Both
+#dataFile=Validation/${validation}.tsv.gz,abc.tsv.gz
+#dataFile=Validation/${validation}.tsv.gz
+#dataFile="/tmp/ml_data/breast.cancer.arff"
+#dataFile=$currentDir/Validation/${validation}.tsv.gz
+#dataFile="/Users/srp33/Downloads/TCGA_BLCA.txt.gz,/Users/srp33/Downloads/Class/Histological__histologic_subtype.txt"
+#dataFile="/Users/srp33/Downloads/GSE6532_U133A/*.txt.gz,/Users/srp33/Downloads/GSE6532_U133A/Class/Histological__grade.txt"
+#dataFile="/Users/srp33/Downloads/GSE6532_U133PLUS2/*.txt.gz,/Users/srp33/Downloads/GSE6532_U133PLUS2/Class/Histological__grade.txt"
+#dataFile="/Users/srp33/Downloads/GSE5462/*.txt.gz,/Users/srp33/Downloads/GSE5462/Class/Prognostic__Response.txt"
+#dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE4271/Class/Stage__specimen_type.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE4271/Covariate/PatientCharacteristic__Sex.txt"
+#dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/Class/MolecularMarker__somatic_tp53_mutation.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/GSE63885.txt.gz"
+#dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE37745/Class/PatientCharacteristic__performance_status_corresponding_to_who_criteria.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE37745/Covariate/PatientCharacteristic__age.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE37745/Covariate/PatientCharacteristic__gender.txt"
+#dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/Class/Prognostic__os_group.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/Covariate/*"
+#dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE1456/Covariate/Histological__ELSTON.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE1456/GSE1456.txt.gz,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE1456/Class/Prognostic__Death_BC_Group.txt"
+#dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE19804/Covariate/PatientCharacteristic__age.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE19804/Class/Stage__stage.txt"
+#dataFile=/Users/srp33/Downloads/annHighEditTidyClass.tsv
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/demo*/demo*/default*"
+classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/adaboost/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/extra_trees/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/extra_trees/alt__bootstrap=True_class_weight=None_criterion=gini_n_estimators=1000_oob_score=False"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/*/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/*/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default*,$currentDir/AlgorithmScripts/Classification/arff/weka/LibSVM/default*,$currentDir/AlgorithmScripts/Classification/tsv/sklearn/svm/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/*/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/xgboost/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/glmnet/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/h2o.deeplearning/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/h2o.randomForest/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/h2o.gbm/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/h2o.*/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/mlp/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/glmnet/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/Bagging/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka/DecisionTable/*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/decision_tree/*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/earth/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/mlr/earth/alt*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/keras/dnn/default"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/keras/res-net/default"
+#classifAlgo="/tmp/algs.list"
+#verbose=true
+verbose=false
+iterations=1
+#iterations=2
+folds=2
+folds=2
+#scale=none
+scale=robust
+#scale=minmax
+#impute=false
+impute=true
+numCores=1
+#numCores=3
+seed=18
+tmpDir=~/Downloads/Temp
+
+if [[ "$validationType" == "montecarlo" ]]
+then
+  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations $iterations --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir" --temp-dir $tmpDir --scale $scale --impute $impute --num-cores $numCores --seed 18
+  #cat $outputDir/Metrics.tsv | grep AUROC
+else
+  UserScripts/classification_${validationType} --data "$dataFile" --description "$validation" --iterations $iterations --folds $folds --verbose "$verbose" --classif-algo "$classifAlgo" --output-dir "$outputDir" --scale $scale --impute $impute --num-cores $numCores
+  #cat $outputDir/Metrics.tsv | grep AUROC
+fi

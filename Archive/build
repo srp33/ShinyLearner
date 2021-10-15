@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -euo pipefail
+
+#javaDir="/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Commands"
+javaDir="/usr/bin"
+
+currentDir=$(pwd)
+buildDir=/tmp/shinylearner_build
+
+rm -rf $buildDir
+
+mkdir -p $buildDir/shinylearner/src/shinylearner
+#cp -r java/src/shinylearner/* $buildDir/shinylearner/src/shinylearner
+cp -r JavaCode/src/shinylearner/* $buildDir/shinylearner/src/shinylearner
+cp build.xml $buildDir/
+#mkdir -p $buildDir/lib
+#cp -r lib/* $buildDir/lib/
+#cp -r JavaCode/lib/* $buildDir/lib/
+
+cd $buildDir
+
+find shinylearner -name *.java > sources_list.txt
+#$javaDir/javac @sources_list.txt
+#$javaDir/javac -Djava.ext.dirs=lib @sources_list.txt
+$javaDir/javac @sources_list.txt
+rm sources_list.txt
+
+ant
+
+cp shinylearner.jar $currentDir/
+
+cd $currentDir
+rm -rf $buildDir
+
+echo
+echo Successfully built new version of source code!
+echo

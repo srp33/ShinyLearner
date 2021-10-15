@@ -1,0 +1,118 @@
+#!/bin/bash
+
+set -o errexit
+
+dataFiles="$1"
+description="$2"
+outerNumIterations="$3"
+innerNumIterations="$4"
+debug="$5"
+fsAlgos="$6"
+numFeaturesOptions="$7"
+classifAlgos="$8"
+outFeaturesFile="$9"
+outPredictionsFile="${10}"
+outMetricsFile="${11}"
+outBenchmarkFile="${12}"
+
+function checkParam {
+  value="$1"
+  messageDescription="$2"
+
+  if [ "$value" == "" ]
+  then
+    echo "No value was specified for $messageDescription."
+    exit 1
+  fi
+}
+
+checkParam "$dataFiles" "data files"
+checkParam "$description" "description"
+checkParam "$outerNumIterations" "outer number of iterations"
+checkParam "$innerNumIterations" "inner number of iterations"
+checkParam "$debug" "debug"
+checkParam "$fsAlgos" "feature selection algorithm(s)"
+checkParam "$numFeaturesOptions" "number of features options"
+checkParam "$classifAlgos" "classification algorithm(s)"
+checkParam "$outFeaturesFile" "output features file"
+checkParam "$outPredictionsFile" "output predictions file"
+checkParam "$outMetricsFile" "output metrics file"
+checkParam "$outBenchmarkFile" "output benchmark file"
+
+tmpDir=/tmp/$(mktemp XXXXXXXXXXXXX)
+
+function cleanup {
+  rm -rf $tmpDir
+}
+
+cleanup
+mkdir -p $tmpDir
+
+#trap cleanup INT TERM EXIT
+
+allIDFile=$tmpDir/id
+classFile=$tmpDir/cl
+outerTrainTestFile=$tmpDir/ott
+innerTrainTestFile=$tmpDir/itt
+innerTrainTestFile2=$tmpDir/itt2
+innerTrainTestFile3=$tmpDir/itt3
+
+python scripts/IdentifySamples.py $dataFiles "$description" $allIDFile $classFile
+python scripts/AssignTrainingTesting.py $allIDFile $classFile "Iteration" $outerTrainTestFile $outerNumIterations
+python scripts/AssignTrainingTesting.py $outerTrainTestFile $classFile "Inner" $innerTrainTestFile $innerNumIterations
+python scripts/AddAlgorithmScripts.py $innerTrainTestFile "$fsAlgos" $innerTrainTestFile2
+python scripts/AddAlgorithmScripts.py $innerTrainTestFile "$classifAlgos" $innerTrainTestFile3
+#vim $outerTrainTestFile
+#vim $innerTrainTestFile
+#vim $innerTrainTestFile2
+#vim $innerTrainTestFile3
+
+mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
+
+tmpInnerFeaturesFile=$tmpDir/iff
+tmpInnerFeaturesBenchmarkFile=$tmpDir/ifb
+
+## Select features for inner iterations
+java -Xmx${mem} -jar mlflexlite.jar DATA_FILES="$dataFiles" EXPERIMENT_FILE=$innerTrainTestFile2 OUTPUT_FEATURES_FILE_PATH="$tmpInnerFeaturesFile" OUTPUT_BENCHMARK_FILE_PATH="$tmpInnerFeaturesBenchmarkFile" DEBUG=$debug TEMP_DIR=$tmpDir
+
+tmpInnerSelectedFeaturesTrainTestFile=$tmpDir/isff
+
+python scripts/AppendInnerSelectedFeatures.py $tmpInnerFeaturesFile $innerTrainTestFile3 "$numFeaturesOptions" $tmpInnerSelectedFeaturesTrainTestFile
+#vim $tmpInnerSelectedFeaturesTrainTestFile
+
+tmpInnerClassificationMetricsFile=$tmpDir/icmf
+tmpInnerClassificationBenchmarkFile=$tmpDir/icmf
+
+## Classify using selected features for inner iterations
+java -Xmx${mem} -jar mlflexlite.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$tmpInnerSelectedFeaturesTrainTestFile DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=$tmpInnerClassificationBenchmarkFile  OUTPUT_METRICS_FILE_PATH=$tmpInnerClassificationMetricsFile TEMP_DIR=$tmpDir
+#vim $tmpInnerClassificationMetricsFile
+
+tmpInnerBestResultsFile=$tmpDir/ibrf
+
+python scripts/ReformatInnerResults.py $tmpInnerClassificationMetricsFile $tmpInnerBestResultsFile
+#vim $tmpInnerBestResultsFile
+
+outerFSExperimentFile=$tmpDir/ofse
+outerNumFeaturesExperimentFile=$tmpDir/onfe
+outerCLExperimentFile=$tmpDir/ocle
+outerCLExperimentFile2=$tmpDir/ocle2
+
+Rscript --vanilla scripts/SelectBestInnerResults.R $tmpInnerBestResultsFile $outerTrainTestFile $outerFSExperimentFile $outerNumFeaturesExperimentFile $outerCLExperimentFile
+#vim $outerFSExperimentFile
+#vim $outerNumFeaturesExperimentFile
+#vim $outerCLExperimentFile
+
+outerSelectedFeaturesFile=$tmpDir/osff
+
+java -Xmx${mem} -jar mlflexlite.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$outerFSExperimentFile DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=/dev/null OUTPUT_FEATURES_FILE_PATH=$outerSelectedFeaturesFile TEMP_DIR=$tmpDir
+
+python scripts/AppendOuterSelectedFeatures.py $outerSelectedFeaturesFile $outerCLExperimentFile $outerNumFeaturesExperimentFile $outerCLExperimentFile2
+#vim $outerCLExperimentFile2
+
+outerMetricsFile=$tmpDir/omf
+
+java -Xmx${mem} -jar mlflexlite.jar DATA_FILES=$dataFiles EXPERIMENT_FILE=$outerCLExperimentFile2 DEBUG=$debug OUTPUT_BENCHMARK_FILE_PATH=/dev/null OUTPUT_METRICS_FILE_PATH=$outerMetricsFile TEMP_DIR=$tmpDir
+#vim $outerMetricsFile
+
+python scripts/ReformatOuterResults.py $outerMetricsFile $outMetricsFile
+vim $outMetricsFile

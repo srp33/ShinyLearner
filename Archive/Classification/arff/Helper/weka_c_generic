@@ -1,0 +1,19 @@
+#!/bin/bash
+
+mlflexDirPath="$1"
+classPath2="$2"
+trainingFilePath="$3"
+testFilePath="$4"
+parameters="$5"
+classOptions="$6"
+
+classPath="$mlflexDirPath:$mlflexDirPath/lib/weka.jar"
+
+if [ "$classPath2" != "" ]
+then
+  classPath="$classPath:$classPath2"
+fi
+
+mem=$(top -l 1 | awk '/PhysMem:/ {print $2}' | tr '[:upper:]' '[:lower:]')
+
+echo java -Xmx${mem} -classpath $classPath $parameters -t "$trainingFilePath" -T "$testFilePath" -p 0 -distribution | python $(dirname $0)/ReformatWekaParameters.py | sh | python $(dirname $0)/ParseWekaPredictions.py "$classOptions"

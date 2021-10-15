@@ -1,0 +1,94 @@
+#!/bin/bash
+
+set -euo pipefail
+
+inputDir=$1
+outputDir=$2
+debug=$3
+outLogFile=$4
+
+validationType=montecarlo
+numIterations=1
+classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default"
+
+mkdir -p /tmp/special_log
+
+function gz_tmp {
+  rm -f /tmp/${1/\.gz/}
+  cp $inputDir/${1} /tmp/
+  gunzip /tmp/${1}
+}
+
+function testMultipleInputFiles {
+  signal=$1
+
+  gz_tmp ${signal}Signal_Continuous.tsv.gz
+  python $(dirname $0)/SelectColumns.py /tmp/${signal}Signal_Continuous.tsv 0to-2 /tmp/${signal}Signal_Continuous_NoClass.tsv
+
+  description=${signal}SignalMultipleDataFiles
+  dataFiles="/tmp/${signal}Signal_Continuous_NoClass.tsv,$inputDir/${signal}Signal_Discrete.tsv.gz"
+
+  outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
+  UserScripts/classification_${validationType} "$dataFiles" $description $numIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null /tmp/special_log/$description
+  python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Algorithm 2>&1 | tee -a /tmp/special_log/$description
+
+  rm /tmp/${signal}Signal_Continuous_NoClass.tsv
+}
+
+testMultipleInputFiles Strong
+testMultipleInputFiles No
+
+#####################################
+# Checks for missing values scenarios
+#####################################
+
+signal=Strong
+gz_tmp ${signal}Signal_Continuous.tsv.gz
+
+# Make sure we get a warning when instance is missing class value
+python BuildTests/SelectColumns.py /tmp/${signal}Signal_Continuous.tsv 0to-2 /tmp/${signal}Signal_Continuous_NoClass.tsv
+python BuildTests/SelectColumns.py /tmp/${signal}Signal_Continuous.tsv 0,-1 /tmp/${signal}Signal_Class.tsv
+head -n 1 /tmp/${signal}Signal_Class.tsv > /tmp/${signal}Signal_Class_1.tsv
+tail -n +3 /tmp/${signal}Signal_Class.tsv > /tmp/${signal}Signal_Class_2.tsv
+cat /tmp/${signal}Signal_Class_?.tsv > /tmp/${signal}Signal_Class.tsv
+
+description=${signal}Signal_MissingDependentVariable
+dataFiles="/tmp/${signal}Signal_Continuous_NoClass.tsv,/tmp/${signal}Signal_Class.tsv"
+
+outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
+UserScripts/classification_${validationType} "$dataFiles" $description $numIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null /tmp/special_log/$description
+python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Algorithm 2>&1 | tee -a /tmp/special_log/$description
+python BuildTests/CheckLogForMessage.py /tmp/special_log/$description "Data for instance [Instance1] are excluded from this analysis because there is no dependent-variable (class) value for this instance." 2>&1 | tee -a /tmp/special_log/$description
+
+# Make sure we get a warning when instance has class value but no data
+python BuildTests/SelectColumns.py /tmp/${signal}Signal_Continuous.tsv 0to-2 /tmp/${signal}Signal_Continuous_NoClass.tsv
+python BuildTests/SelectColumns.py /tmp/${signal}Signal_Continuous.tsv 0,-1 /tmp/${signal}Signal_Class.tsv
+head -n 1 /tmp/${signal}Signal_Continuous_NoClass.tsv > /tmp/${signal}Signal_Continuous_NoClass_1.tsv
+tail -n +3 /tmp/${signal}Signal_Continuous_NoClass.tsv > /tmp/${signal}Signal_Continuous_NoClass_2.tsv
+cat /tmp/${signal}Signal_Continuous_NoClass_?.tsv > /tmp/${signal}Signal_Continuous_NoClass.tsv
+
+description=${signal}Signal_MissingIndependentVariable
+dataFiles="/tmp/${signal}Signal_Continuous_NoClass.tsv,/tmp/${signal}Signal_Class.tsv"
+
+outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
+UserScripts/classification_${validationType} "$dataFiles" $description $numIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null /tmp/special_log/$description
+python BuildTests/CheckAccuracy.py classification $validationType $description "$classifAlgo" "${outPrefix}_Metrics.tsv" Algorithm 2>&1 | tee -a /tmp/special_log/$description
+python BuildTests/CheckLogForMessage.py /tmp/special_log/$description "excluded from this analysis because there is no independent-variable data for this instance" 2>&1 | tee -a /tmp/special_log/$description
+
+# Make sure we get a warning when all instances have class value but some data missing
+python BuildTests/SelectColumns.py /tmp/${signal}Signal_Continuous.tsv 0to-2 /tmp/${signal}Signal_Continuous_NoClass.tsv
+head -n 1 /tmp/${signal}Signal_Continuous_NoClass.tsv > /tmp/${signal}Signal_Continuous_NoClass_1.tsv
+tail -n +3 /tmp/${signal}Signal_Continuous_NoClass.tsv > /tmp/${signal}Signal_Continuous_NoClass_2.tsv
+cat /tmp/${signal}Signal_Continuous_NoClass_?.tsv > /tmp/${signal}Signal_Continuous_NoClass.tsv
+
+description=${signal}Signal_MissingData
+dataFiles="/tmp/${signal}Signal_Continuous_NoClass.tsv,$inputDir/${signal}Signal_Discrete.tsv.gz"
+
+outPrefix=$outputDir/$(basename $0)_${description}_${validationType}
+UserScripts/classification_${validationType} "$dataFiles" $description $numIterations $debug "$classifAlgo" ${outPrefix}_Predictions.tsv ${outPrefix}_Metrics.tsv /dev/null /tmp/special_log/$description
+python BuildTests/CheckLogForMessage.py /tmp/special_log/$description "WARNING: The following instances were missing a value for at least one data point, so they were excluded from the analysis" 2>&1 | tee -a /tmp/special_log/$description
+
+rm /tmp/${signal}Signal*
+
+cat /tmp/special_log/* >> $outLogFile
+rm -rf /tmp/special_log

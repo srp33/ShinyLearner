@@ -1,0 +1,13 @@
+#!/bin/bash
+
+dataFile=../Validation/StrongSignal_Continuous.tsv.gz
+description=StrongSignal_Continuous
+#idFile=/tmp/test_imbalance_idFile
+#classFile=/tmp/test_imbalance_classFile
+trainTestFile=/tmp/test_imbalance_trainTest
+outDataFile=/tmp/test_imbalance_outData
+numIterations=2
+randomSeed=0
+
+#python3 scripts/IdentifySamples.py "$dataFile" "$description" $idFile $classFile
+python3 scripts/TestImbalance.py $dataFile Iteration $numIterations $randomSeed $trainTestFile $outDataFile

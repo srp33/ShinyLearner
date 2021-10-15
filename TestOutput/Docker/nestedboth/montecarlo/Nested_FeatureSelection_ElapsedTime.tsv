@@ -1,0 +1,5 @@
+Description	Outer_Iteration	Inner_Iteration	Algorithm	ElapsedSeconds
+StrongSignal_Both_Docker	1	1	AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default	0.471280224
+StrongSignal_Both_Docker	1	2	AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default	0.590890368
+StrongSignal_Both_Docker	2	1	AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default	0.450437312
+StrongSignal_Both_Docker	2	2	AlgorithmScripts/FeatureSelection/tsv/sklearn/anova/default	0.450533088

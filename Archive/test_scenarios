@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -o errexit
+
+./scripts/build
+
+currentDir=$(pwd)
+testDir=/tmp/ML_Flex_Lite_Test_CL
+
+mkdir -p $testDir
+rm -rfv $testDir/*
+
+cp -rv release/* $testDir/
+cp -rv scripts $testDir/
+cp -rv AlgorithmScripts $testDir/
+
+cd $testDir
+
+fsAlgo=AlgorithmScripts/FeatureSelection/arff/weka__info_gain
+classifAlgo=AlgorithmScripts/Classification/arff/weka__rules__one_r
+debug=true
+
+#scripts/shinylearner_classification "$currentDir/TestFiles/Classes.txt,$currentDir/TestFiles/GeneExpression.txt,$currentDir/TestFiles/GeneExpression_WithMissingValue.txt" "Missing Value" 3 $debug "$classifAlgo" /tmp/Missing_Values_Predictions.txt
+#vim /tmp/Missing_Values_Predictions.txt
+
+scripts/shinylearner_nested_featureselection "$currentDir/TestFiles/*blca*" "BLCA" 2 2 $debug "$fsAlgo" "5,10" "$classifAlgo" /dev/null /dev/null /dev/null
+
+#vim /tmp/BLCA.txt

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+mlflexDirPath="$1"
+dataFilePath="$2"
+
+parameters='weka.attributeSelection.WrapperSubsetEval -B weka.classifiers.lazy.IBk -F 5 -T 0.01 -R 1 -E DEFAULT -- -K 1 -W 0 -A "weka.core.neighboursearch.LinearNNSearch -A \"weka.core.EuclideanDistance -R first-last\"" -s "weka.attributeSelection.GreedyStepwise -T -1.7976931348623157E308 -N -1 -num-slots 1"'
+
+classPath=""
+
+sh "$(dirname $0)"/Helper/weka_fs_generic "$mlflexDirPath" "$classPath" "$dataFilePath" "$parameters"

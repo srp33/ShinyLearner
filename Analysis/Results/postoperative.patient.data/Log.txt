@@ -1,0 +1,15 @@
+***********************************************************************
+Command that was executed for analysis on Tue May 30 22:37:07 MDT 2017:
+
+UserScripts/classification_montecarlo --data /tmp/ml_data/postoperative.patient.data.tsv --description postoperative.patient.data --iterations 2 --classif-algo AlgorithmScripts/Classification/arff/weka/B*/default,AlgorithmScripts/Classification/arff/weka/D*/default,AlgorithmScripts/Classification/arff/weka/H*/default,AlgorithmScripts/Classification/arff/weka/J*/default,AlgorithmScripts/Classification/arff/weka/L*/default,AlgorithmScripts/Classification/arff/weka/M*/default,AlgorithmScripts/Classification/arff/weka/N*/default,AlgorithmScripts/Classification/arff/weka/O*/default,AlgorithmScripts/Classification/arff/weka/REP*/default,AlgorithmScripts/Classification/arff/weka/Random*/default,AlgorithmScripts/Classification/arff/weka/S*/default,AlgorithmScripts/Classification/arff/weka/V*/default --output-dir /tmp/ml_data/output/postoperative.patient.data
+ShinyLearner version: 252
+***********************************************************************
+Preparing for analysis...
+After filtering, data were available for 90 instances and 8 data points.
+Starting classification...
+Starting analysis...
+Progress: 0% #Progress: 2% ##Progress: 5% ###Progress: 7% ####Progress: 10% ######Progress: 12% #######Progress: 15% ########Progress: 17% #########Progress: 20% ###########Progress: 23% ############Progress: 25% #############Progress: 28% ###############Progress: 30% ################Progress: 33% #################Progress: 35% ##################Progress: 38% ####################Progress: 41% #####################Progress: 43% ######################Progress: 46% ########################Progress: 48% #########################Progress: 51% ##########################Progress: 53% ###########################Progress: 56% #############################Progress: 58% ##############################Progress: 61% ###############################Progress: 64% #################################Progress: 66% ##################################Progress: 69% ###################################Progress: 71% ####################################Progress: 74% ######################################Progress: 76% #######################################Progress: 79% ########################################Progress: 82% ##########################################Progress: 84% ###########################################Progress: 87% ############################################Progress: 89% #############################################Progress: 92% ###############################################Progress: 94% ################################################Progress: 97% #################################################Progress: 100% ###################################################                                                          
+Making aggregate predictions...
+Calculating classification metrics...
+Preparing output files...
+Analysis successfully completed!

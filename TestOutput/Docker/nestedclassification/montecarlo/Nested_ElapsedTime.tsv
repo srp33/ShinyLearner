@@ -1,0 +1,5 @@
+Description	Outer_Iteration	Inner_Iteration	Algorithm	ElapsedSeconds
+StrongSignal_Both_Docker	1	1	AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default	0.48170784
+StrongSignal_Both_Docker	1	2	AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default	0.58096256
+StrongSignal_Both_Docker	2	1	AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default	0.461208
+StrongSignal_Both_Docker	2	2	AlgorithmScripts/Classification/tsv/sklearn/svm_linear/default	0.4598648

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+mlflexDirPath="$1"
+trainingFilePath="$2"
+testFilePath="$3"
+classOptions="$4"
+
+parameters="weka.classifiers.rules.ZeroR"
+
+sh "$(dirname $0)"/Helper/weka_c_generic "$mlflexDirPath" "" "$trainingFilePath" "$testFilePath" "$parameters" "$classOptions"

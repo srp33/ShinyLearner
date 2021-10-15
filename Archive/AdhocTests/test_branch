@@ -1,0 +1,53 @@
+#!/bin/bash
+
+set -euo pipefail
+
+currentDir=$(pwd)
+branchPath=/Users/srp33/GitRepos/ShinyLearner
+validationType=montecarlo
+testDir=/tmp/ShinyLearner_Test_Branch
+version=$(cat $currentDir/VERSION)
+
+./scripts/build
+
+rm -rf $testDir
+mkdir -p $testDir
+
+cp -r shinylearner.jar $testDir/
+cp -r scripts $testDir/
+cp -r $branchPath/AlgorithmScripts $testDir/
+cp -r UserScripts $testDir/
+cp -r VERSION $testDir/
+
+cd $testDir
+tar -zcvf ShinyLearner.tar.gz *
+rm -rf $(ls | grep -v "ShinyLearner.tar.gz")
+
+cp $currentDir/Dockerfile .
+sudo docker build -t srp33/shinylearner:version${version} .
+
+mkdir input output
+cp -r $currentDir/Validation/*.gz input/
+
+#validation=StrongSignal_Both
+validation=StrongSignal_Continuous
+#validation=NoSignal_Both
+dataFile=${validation}.tsv.gz
+#classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/demo*/demo*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/lda/default*"
+classifAlgo="AlgorithmScripts/Classification/tsv/keras/dnn/default*"
+
+docker run --rm \
+  -v $(pwd)/input:/InputData \
+  -v $(pwd)/output:/OutputData \
+  srp33/shinylearner:version${version} \
+  /UserScripts/classification_montecarlo \
+    --data /InputData/$dataFile \
+    --description TestBranch \
+    --iterations 2 \
+    --impute true \
+    --scale false \
+    --verbose false \
+    --classif-algo "$classifAlgo" \
+    --output-dir /OutputData

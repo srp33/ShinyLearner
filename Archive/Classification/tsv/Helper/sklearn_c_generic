@@ -1,0 +1,12 @@
+#!/bin/bash
+
+trainingFilePath="$1"
+testFilePath="$2"
+classOptions="$3"
+callingScript="$4"
+
+dirName=$(dirname $0)
+
+algorithmAbbreviated=$(python $dirName/ParseAlgorithmName.py $callingScript)
+
+python $dirName/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "${algorithmAbbreviated}" 2>&1 | python $dirName/ReformatOutput.py $classOptions

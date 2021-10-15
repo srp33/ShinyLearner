@@ -1,0 +1,1 @@
+The `--data` argument allows you to specify input data file(s) in one of the [supported formats](https://github.com/srp33/ShinyLearner/blob/master/InputFormats.md).

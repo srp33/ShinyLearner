@@ -1,0 +1,49 @@
+#!/bin/bash
+
+set -euo pipefail
+
+module load python/3/6
+module load jdk/1.8.0-121
+module load zlib
+module load bzip2
+module load xz
+module load curl
+module load pcre
+module load libxml2
+
+cwd=$(pwd)
+
+mkdir -p Software
+cd Software
+
+###wget https://www.zlib.net/zlib-1.2.11.tar.gz
+###tar -zxvf zlib-1.2.11.tar.gz
+###rm zlib-1.2.11.tar.gz
+###cd zlib-1.2.11
+###./configure
+###make
+###cd ..
+
+wget https://cloud.r-project.org/src/base/R-3/R-3.6.1.tar.gz
+tar -zxvf R-3.6.1.tar.gz
+rm R-3.6.1.tar.gz
+cd R-3.6.1
+./configure --with-x=no
+make
+cd ..
+
+export PATH="$PATH:~/bb/Software/R-3.6.1/bin"
+
+R -e "install.packages(c('dplyr', 'magrittr', 'knitr', 'rmarkdown', 'readr', 'data.table', 'AUC', 'ROCR', 'RankAggreg', 'C50', 'RRF', 'adabag', 'rpart', 'party', 'kernlab', 'glmnet', 'h2o', 'kknn', 'RSNNS', 'nnet', 'e1071', 'randomForest', 'randomForestSRC', 'ranger', 'klaR', 'sda', 'xgboost', 'parallelMap', 'earth'), repos='http://cloud.r-project.org', clean=TRUE)"
+R -e "install.packages('devtools',repos='http://cloud.r-project.org')"
+R -e "install.packages(c('httr', 'XML'),repos='http://cloud.r-project.org')"
+R -e "library(httr); set_config(config(ssl_verifypeer = 0L)); devtools::install_github('mlr-org/mlr')"
+
+pip3 install sklearn --user
+
+cd ..
+rm -rf ShinyLearner
+git clone https://github.com/srp33/ShinyLearner
+
+#cd ShinyLearner
+#AdhocTests/classification_montecarlo

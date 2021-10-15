@@ -1,0 +1,5 @@
+Description	Outer_Iteration	Inner_Iteration	Algorithm	ElapsedSeconds
+StrongSignal_Both	1	1	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/random_forest/default__bootstrap=True_class_weight=None_criterion=gini_n_estimators=50_oob_score=False	1.252504448
+StrongSignal_Both	1	2	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/random_forest/default__bootstrap=True_class_weight=None_criterion=gini_n_estimators=50_oob_score=False	1.246811136
+StrongSignal_Both	2	1	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/random_forest/default__bootstrap=True_class_weight=None_criterion=gini_n_estimators=50_oob_score=False	1.495601792
+StrongSignal_Both	2	2	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/random_forest/default__bootstrap=True_class_weight=None_criterion=gini_n_estimators=50_oob_score=False	1.67436544

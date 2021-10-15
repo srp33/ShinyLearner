@@ -1,0 +1,13 @@
+#!/bin/bash
+
+trainingFilePath="$1"
+testFilePath="$2"
+classOptions="$3"
+callingScript="$4"
+
+dirName=$(dirname $0)
+
+algorithmAbbreviated=$(python $dirName/ParseAlgorithmName.py $callingScript)
+
+Rscript --vanilla $dirName/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "classif.${algorithmAbbreviated}" 2>&1 | python $dirName/ReformatOutput.py "$classOptions"
+#Rscript --vanilla $dirName/mlr_c_generic.R "$trainingFilePath" "$testFilePath" "$classOptions" "classif.${algorithmAbbreviated}"

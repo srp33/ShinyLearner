@@ -1,0 +1,207 @@
+#!/bin/bash
+
+set -o errexit
+
+SL_DOCKER_IMAGE_NAME="$1"
+
+if [[ "$SL_DOCKER_IMAGE_NAME" == "" ]]
+then
+  SL_DOCKER_IMAGE_NAME=shinylearner
+fi
+
+echo Running ShinyLearner build tests...
+echo Using Docker image $SL_DOCKER_IMAGE_NAME...
+
+#verbose="--verbose true"
+verbose="--verbose false"
+currentDir=$(pwd)
+overallLogFile=log.overall
+tmpDir=/tmp/test_shinylearner_docker
+version=$(cat VERSION)
+
+rm -rf $tmpDir
+mkdir -p $tmpDir/input $tmpDir/output
+
+scripts/build
+tar -zcf ShinyLearner.tar.gz shinylearner.jar scripts AlgorithmScripts README.md VERSION LICENSE UserScripts
+
+mv ShinyLearner.tar.gz $tmpDir/
+#If you want to test ShinyLearner_gpu, run the test_build script in that directory.
+cp Dockerfile $tmpDir/
+cp -r Validation/*.gz $tmpDir/input
+cp -r BuildTests/* $tmpDir/
+
+cd $tmpDir
+
+docker build -t srp33/${SL_DOCKER_IMAGE_NAME}:version${version} . | grep -v "tar: "
+
+if [[ "$SL_DOCKER_IMAGE_NAME" == "shinylearner_gpu" ]]
+then
+  exit 0
+fi
+
+#######################################################
+# Test keras separately because resnet is slow.
+#######################################################
+
+classifAlgoFile=input/classifAlgos.list
+
+classifAlgo="AlgorithmScripts/Classification/tsv/keras/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/keras/dnn/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/keras/snn/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/keras/resnet/default*"
+ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" > $classifAlgoFile
+
+bash classification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 1.log &
+bash classification "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 2.log &
+bash classification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 3.log &
+bash classification "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 4.log &
+wait
+
+cat output/*.log >> $overallLogFile
+rm -f output/*.log
+python3 CheckLogFiles.py $overallLogFile 1
+
+#######################################################
+# Test h2o separately because they tend to throw errors
+# if you execute multiple in parallel.
+#######################################################
+
+classifAlgo="AlgorithmScripts/Classification/tsv/mlr/h2o*/default*"
+ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" > $classifAlgoFile
+
+bash classification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 1.log
+bash classification "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 2.log
+bash classification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both_2Class montecarlo "--iterations 2" "$classifAlgoFile" "--verbose false" 3.log
+bash classification "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both_2Class montecarlo "--iterations 2" "$classifAlgoFile" "--verbose false" 4.log
+
+cat output/*.log >> $overallLogFile
+rm -f output/*.log
+python3 CheckLogFiles.py $overallLogFile 1
+
+#########################################################
+# Test all other classification algorithm using monte
+#   carlo cross validation.
+#########################################################
+
+classifAlgo="AlgorithmScripts/Classification/*/*/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/*/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/demo*/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/svm/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/svm/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/s*/default*"
+#classifAlgo="AlgorithmScripts/Classification/tsv/mlr/xgboost/default*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/*/default*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/ZeroR/default*"
+#classifAlgo="AlgorithmScripts/Classification/arff/weka/SMO/default*"
+
+ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" | grep -v h2o | grep -v keras > $classifAlgoFile
+
+##bash classification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 1.log
+##bash classification "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 2.log
+##bash classification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 3.log
+##bash classification "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both_2Class montecarlo "--iterations 1" "$classifAlgoFile" "--verbose false" 4.log
+
+##bash classification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both montecarlo "--iterations 3" "$classifAlgoFile" "$verbose" 1.log
+bash classification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both montecarlo "--iterations 3" "$classifAlgoFile" "$verbose" 1.log &
+bash classification "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both montecarlo "--iterations 3" "$classifAlgoFile" "$verbose" 2.log &
+bash classification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both_2Class montecarlo "--iterations 3" "$classifAlgoFile" "$verbose" 3.log &
+bash classification "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both_2Class montecarlo "--iterations 3" "$classifAlgoFile" "$verbose" 4.log &
+wait
+
+cat output/*.log >> $overallLogFile
+rm -f output/*.log
+python3 CheckLogFiles.py $overallLogFile 1
+
+#########################################################
+# Test all fs algorithms using monte carlo
+#########################################################
+
+fsAlgo="AlgorithmScripts/FeatureSelection/*/*/*/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/*/weka/*/default*"
+
+bash featureselection "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both montecarlo "--iterations 3" "$fsAlgo" "$verbose" 1.log &
+bash featureselection "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both montecarlo "--iterations 3" "$fsAlgo" "$verbose" 2.log &
+##bash featureselection "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both_2Class montecarlo "--iterations 3" "$fsAlgo" "$verbose" 3.log &
+##bash featureselection "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both_2Class montecarlo "--iterations 3" "$fsAlgo" "$verbose" 4.log &
+wait
+
+cat output/*.log >> $overallLogFile
+rm -f output/*.log
+python3 CheckLogFiles.py $overallLogFile 1
+
+##########################################################
+## Test some fs and cl algorithms using k-fold
+##########################################################
+
+fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default*"
+classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/s*/default*"
+ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" > $classifAlgoFile
+
+bash classification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both crossvalidation "--iterations 1 --folds 3" "$classifAlgoFile" "$verbose" 1.log &
+bash classification "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both crossvalidation "--iterations 1 --folds 3" "$classifAlgoFile" "$verbose" 2.log &
+bash featureselection "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both crossvalidation "--iterations 1 --folds 3" "$fsAlgo" "$verbose" 3.log &
+bash featureselection "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both crossvalidation "--iterations 1 --folds 3" "$fsAlgo" "$verbose" 4.log &
+wait
+
+cat output/*.log >> $overallLogFile
+rm -f output/*.log
+python3 CheckLogFiles.py $overallLogFile 1
+
+#########################################################
+# Test nestedclassification
+#########################################################
+
+classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/s*/default*"
+ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" > $classifAlgoFile
+
+bash nestedclassification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$classifAlgoFile" "$verbose" 1.log &
+bash nestedclassification "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$classifAlgoFile" "$verbose" 2.log &
+bash nestedclassification "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$classifAlgoFile" "$verbose" 3.log &
+bash nestedclassification "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$classifAlgoFile" "$verbose" 4.log &
+wait
+
+cat output/*.log >> $overallLogFile
+rm -f output/*.log
+python3 CheckLogFiles.py $overallLogFile 1
+
+#########################################################
+# Test nestedboth
+#########################################################
+
+fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/r*/default*"
+numFeaturesOptions="10,20"
+classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/s*/default*"
+ls $currentDir/$classifAlgo | sed "s|${currentDir}/||g" > $classifAlgoFile
+
+###fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/mutual_info/default*"
+###classifAlgo="AlgorithmScripts/Classification/tsv/sklearn/lda/default*"
+bash nestedboth "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgoFile" "$verbose" 1.log &
+bash nestedboth "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both montecarlo "--inner-iterations 2 --outer-iterations 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgoFile" "$verbose" 2.log &
+bash nestedboth "$SL_DOCKER_IMAGE_NAME" $version StrongSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgoFile" "$verbose" 3.log &
+bash nestedboth "$SL_DOCKER_IMAGE_NAME" $version NoSignal_Both crossvalidation "--iterations 2 --inner-folds 2 --outer-folds 2" "$fsAlgo" "$numFeaturesOptions" "$classifAlgoFile" "$verbose" 4.log &
+wait
+
+cat output/*.log >> $overallLogFile
+rm -f output/*.log
+python3 CheckLogFiles.py $overallLogFile 1
+
+#########################################################
+# Test special cases
+#########################################################
+
+bash special_cases "$SL_DOCKER_IMAGE_NAME" $version "$verbose" 1.log
+
+cat output/*.log >> $overallLogFile
+rm -f output/*.log
+python3 CheckLogFiles.py $overallLogFile 1
+
+#########################################################
+# Cleanup
+#########################################################
+
+cd $currentDir
+sudo rm -rf $tmpDir
+echo "All tests passed!!!"

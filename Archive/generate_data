@@ -1,0 +1,34 @@
+#!/bin/bash
+
+rm -f *.tsv.gz
+Rscript --vanilla GenerateData.R
+
+for f in *.tsv.gz
+do
+  echo $f
+  cp $f /tmp/1.gz
+  rm -f /tmp/1
+  gunzip /tmp/1.gz
+
+  Rscript --vanilla Impute.R /tmp/1 /tmp/2
+  Rscript --vanilla Standardize.R /tmp/2 /tmp/4
+
+  rm -f /tmp/4.gz
+  gzip /tmp/4
+  mv /tmp/4.gz $f
+done
+
+Rscript --vanilla CreateTwoClassFile.R NoSignal_Both.tsv.gz NoSignal_Both_2Class.tsv
+Rscript --vanilla CreateTwoClassFile.R StrongSignal_Both.tsv.gz StrongSignal_Both_2Class.tsv
+
+rm -f *_2Class.tsv.gz
+gzip *.tsv
+
+python Transpose.py StrongSignal_Both.tsv.gz StrongSignal_Both.ttsv.gz
+python CreateArff.py StrongSignal_Both.tsv.gz StrongSignal_Both.arff.gz
+
+python SelectColumns.py StrongSignal_Continuous.tsv.gz 0to-2 StrongSignal_Continuous_NoClass.tsv.gz
+python SelectColumns.py StrongSignal_Continuous.tsv.gz 0,-1 StrongSignal_Class.tsv.gz
+
+python SelectColumns.py NoSignal_Continuous.tsv.gz 0to-2 NoSignal_Continuous_NoClass.tsv.gz
+python SelectColumns.py NoSignal_Continuous.tsv.gz 0,-1 NoSignal_Class.tsv.gz

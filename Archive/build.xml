@@ -1,0 +1,13 @@
+<project default="jar">
+  <target name="jar">
+    <jar destfile="shinylearner.jar"
+        basedir="shinylearner/src"
+        includes="**/*.class">
+      <manifest>
+        <attribute name="Main-Class" value="shinylearner.Main" />
+      </manifest>
+      <zipgroupfileset dir="lib" includes="**/*.jar"/>
+    </jar>
+  </target>
+</project>
+

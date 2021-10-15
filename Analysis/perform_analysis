@@ -1,0 +1,74 @@
+#!/bin/bash
+
+set -euo pipefail
+
+currentDir=$(pwd)
+dataDir=/tmp/ml_data
+baseDataUrl="https://raw.githubusercontent.com/renatopp/arff-datasets/master/classification"
+
+mkdir -p $dataDir/output
+
+###################################################
+# Download data
+###################################################
+
+for dataset in breast.cancer ecoli mushroom postoperative.patient.data sick
+do
+  fileName=${dataset}.arff
+  url="$baseDataUrl/$fileName"
+
+  cd $dataDir
+
+  if [ ! -f $fileName ]
+  then
+    echo Downloading from $url
+    wget $url
+  fi
+
+  cd $currentDir
+done
+exit
+
+###################################################
+# Clean and convert data files
+###################################################
+
+for f in $dataDir/*.arff
+do
+  fileName=$(basename $f)
+  fileName=${fileName/\.arff/.tsv}
+  tsvFile=$dataDir/$fileName
+
+  if [ ! -f $tsvFile ]
+  then
+    echo Cleaning and converting $f
+    python3 CleanConvertData.py $f $tsvFile
+  fi
+done
+
+###################################################
+# Performing classification
+###################################################
+
+for f in $dataDir/*.tsv
+do
+  cd ..
+
+  description=$(basename $f)
+  description=${description/\.tsv/}
+  p="AlgorithmScripts/Classification/arff/weka/"
+  s="/default"
+  #RBFNetwork was giving me trouble, so I did this as a workaround for now.
+  classifAlgo="${p}B*${s},${p}D*${s},${p}H*${s},${p}J*${s},${p}L*${s},${p}M*${s},${p}N*${s},${p}O*${s},${p}REP*${s},${p}Random*${s},${p}S*${s},${p}V*${s}"
+  iterations=10
+  subOutputDir=$dataDir/output/$description
+  verbose=""
+  #verbose="--verbose"
+
+  mkdir -p $subOutputDir
+
+  # For now, we are bypassing the Docker container for simplicity. We'll change that later.
+  UserScripts/classification_montecarlo --data $f --description $description --iterations $iterations --classif-algo "$classifAlgo" --output-dir "$subOutputDir" $verbose
+
+  cd $currentDir
+done

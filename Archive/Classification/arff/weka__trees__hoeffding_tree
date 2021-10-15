@@ -1,0 +1,10 @@
+#!/bin/bash
+
+mlflexDirPath="$1"
+trainingFilePath="$2"
+testFilePath="$3"
+classOptions="$4"
+
+parameters='weka.classifiers.trees.HoeffdingTree -L 2 -S 1 -E 1.0E-7 -H 0.05 -M 0.01 -G 200.0 -N 0.0'
+
+sh "$(dirname $0)"/Helper/weka_c_generic "$mlflexDirPath" "" "$trainingFilePath" "$testFilePath" "$parameters" "$classOptions"

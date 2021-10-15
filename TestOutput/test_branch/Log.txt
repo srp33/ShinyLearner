@@ -1,0 +1,18 @@
+***********************************************************************
+Command that was executed for analysis on Wed Oct 10 10:31:08 MDT 2018:
+
+UserScripts/classification_montecarlo --data /Users/srp33/Dropbox/ShinyLearner/Validation/StrongSignal_Both.tsv.gz --description StrongSignal_Both --iterations 1 --verbose true --classif-algo AlgorithmScripts/Classification/tsv/keras/dnn/default* --output-dir /Users/srp33/Dropbox/ShinyLearner/TestOutput/test_branch --temp-dir /Users/srp33/Downloads/Temp --scale false --impute true --num-cores 1 --seed 18
+ShinyLearner version: 421
+***********************************************************************
+[2018-10-10 10:31:09] Parsing data...
+[2018-10-10 10:31:09] System command:
+[2018-10-10 10:31:09] ls /Users/srp33/Dropbox/ShinyLearner/Validation/StrongSignal_Both.tsv.gz
+[2018-10-10 10:31:09] After filtering, data were available for 60 instances and 101 data points.
+[2018-10-10 10:31:09] Imputing missing data (where applicable)...
+[2018-10-10 10:31:10] Warning message:
+[2018-10-10 10:31:10] package ‘dplyr’ was built under R version 3.5.1 
+[2018-10-10 10:31:11] [1] "Performing imputation"
+[2018-10-10 10:31:11] [1] "Saving imputed data to /Users/srp33/Downloads/Temp/p7OnxyWDw/data.gz"
+[2018-10-10 10:31:11] One-hot encoding categorical data (where applicable)...
+[2018-10-10 10:31:12] Starting classification...
+[2018-10-10 10:31:15] Calculating classification metrics...

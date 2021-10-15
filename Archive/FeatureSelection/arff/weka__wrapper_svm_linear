@@ -1,0 +1,10 @@
+#!/bin/bash
+
+mlflexDirPath="$1"
+dataFilePath="$2"
+
+parameters='weka.attributeSelection.WrapperSubsetEval -B weka.classifiers.functions.LibSVM -F 5 -T 0.01 -R 1 -E DEFAULT -- -S 0 -K 0 -D 3 -G 0.0 -R 0.0 -N 0.5 -M 40.0 -C 1.0 -E 0.001 -P 0.1 -B -seed 1 -s "weka.attributeSelection.GreedyStepwise -T -1.7976931348623157E308 -N -1 -num-slots 1"'
+
+classPath="$mlflexDirPath/lib/LibSVM.jar:$mlflexDirPath/lib/wekalib/libsvm.jar"
+
+sh "$(dirname $0)"/Helper/weka_fs_generic "$mlflexDirPath" "$classPath" "$dataFilePath" "$parameters"

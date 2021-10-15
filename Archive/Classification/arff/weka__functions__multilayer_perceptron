@@ -1,0 +1,10 @@
+#!/bin/bash
+
+mlflexDirPath="$1"
+trainingFilePath="$2"
+testFilePath="$3"
+classOptions="$4"
+
+parameters='weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a -I'
+
+sh "$(dirname $0)"/Helper/weka_c_generic "$mlflexDirPath" "" "$trainingFilePath" "$testFilePath" "$parameters" "$classOptions"

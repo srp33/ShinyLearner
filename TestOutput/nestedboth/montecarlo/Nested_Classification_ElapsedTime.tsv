@@ -1,0 +1,9 @@
+Description	Outer_Iteration	Inner_Iteration	Feature_Selection_Algorithm	Num_Features	Classification_Algorithm	ElapsedSeconds
+StrongSignal_Both	1	1	AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default	10	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default__tol=0.0001	0.863128576
+StrongSignal_Both	1	1	AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default	20	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default__tol=0.0001	0.887685568
+StrongSignal_Both	1	2	AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default	10	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default__tol=0.0001	0.879835392
+StrongSignal_Both	1	2	AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default	20	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default__tol=0.0001	0.860845312
+StrongSignal_Both	2	1	AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default	10	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default__tol=0.0001	1.374792704
+StrongSignal_Both	2	1	AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default	20	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default__tol=0.0001	0.88705664
+StrongSignal_Both	2	2	AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default	10	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default__tol=0.0001	0.868599808
+StrongSignal_Both	2	2	AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default	20	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default__tol=0.0001	0.86834368

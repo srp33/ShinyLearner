@@ -1,0 +1,79 @@
+#!/bin/bash
+
+set -euo pipefail
+
+validationType=$1
+
+if [[ "$validationType" == "" ]]
+then
+  echo No validation type was specified. This may not be the script you want to be executing.
+  exit 1
+fi
+
+./scripts/build
+
+currentDir=$(pwd)
+testDir=/tmp/ML_Flex_Lite_Test_NestedCL
+outputDir=$currentDir/TestOutput/nestedclassification/$validationType
+
+rm -rf $testDir
+mkdir -p $testDir
+
+cp -r shinylearner.jar $testDir/
+cp -r scripts $testDir/
+cp -r AlgorithmScripts $testDir/
+cp -r UserScripts $testDir/
+cp -r VERSION $testDir/
+
+rm -rf $outputDir
+mkdir -p $outputDir
+
+cd $testDir
+
+validation=StrongSignal_Both
+#validation=NoSignal_Both
+#dataFile=$currentDir/Validation/${validation}.tsv.gz
+#dataFile="$currentDir/debug_data/*.tsv.gz"
+#dataFile="$currentDir/TestFiles/*.tsv.gz"
+#dataFile="$currentDir/debug_data/Archive/mrna-sc_stad.tsv.gz,$currentDir/debug_data/stad_cv_surv1_stad.tsv.gz"
+#dataFile="/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/Class/MolecularMarker__somatic_tp53_mutation.txt,/Users/srp33/Dropbox/Publications/Biomarker_Benchmark\ \(1\)/GSE63885/GSE63885.txt.gz"
+#dataFile=/Users/srp33/Downloads/annHighEditTidyClass.tsv
+dataFile=/Users/srp33/Downloads/Histological__histologic_subtype.txt,/Users/srp33/Downloads/mirna_blca.tsv
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*/*/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/lda/*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*"
+classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/random_forest/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/decision_tree/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/decision_tree/*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/l*,$currentDir/AlgorithmScripts/Classification/tsv/sklearn/svm"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/svm"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/knn/*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/default*"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/alt__base_estimator=SVCprobability=True_bootstrap=True_n_estimators=1000_oob_score=True"
+#classifAlgo="$currentDir/AlgorithmScripts/Classification/tsv/sklearn/bagging/alt__base_estimator=DecisionTreeClassifier_bootstrap=True_n_estimators=1000_oob_score=True"
+#classifAlgo=$currentDir/AlgorithmScripts/Classification/tsv/sklearn/knn/default*,$currentDir/AlgorithmScripts/Classification/arff/weka/RandomForest/default*,$currentDir/AlgorithmScripts/Classification/tsv/mlr/svm/default*
+verbose=true
+#verbose=false
+impute=false
+#impute=true
+#ohe=false
+ohe=true
+#scale=false
+scale=true
+numCores=2
+iterations=1
+#iterations=2
+innerFolds=2
+outerFolds=2
+
+if [[ "$validationType" == "montecarlo" ]]
+then
+  #UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --outer-iterations 1 --inner-iterations 1 --verbose $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir"
+  UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --outer-iterations $outerFolds --inner-iterations $innerFolds --verbose $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir" --impute $impute --scale $scale --ohe $ohe --num-cores $numCores
+else
+  #UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --iterations 1 --inner-folds 2 --outer-folds 2 --verbose $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir"
+  UserScripts/nestedclassification_${validationType} --data "$dataFile" --description $validation --iterations $iterations --inner-folds $innerFolds --outer-folds $outerFolds --verbose $verbose --classif-algo "$classifAlgo" --output-dir "$outputDir" --impute $impute --scale $scale --ohe $ohe --num-cores $numCores
+fi

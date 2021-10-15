@@ -1,0 +1,51 @@
+#!/bin/bash
+
+#mkdir -p TestOutput/Docker
+
+#sudo docker run --rm \
+#  -v $(pwd)/Validation:/InputData \
+#  -v $(pwd)/TestOutput/Docker:/OutputData \
+#  srp33/shinylearner:version225 \
+#  /UserScripts/classification_montecarlo \
+#  InputData/StrongSignal_Both.tsv.gz \
+#  My_Interesting_Analysis \
+#  2 \
+#  false \
+#  "AlgorithmScripts/Classification/arff/weka/Random*/default" \
+#  OutputData/Test_Predictions.tsv \
+#  OutputData/Test_Metrics.tsv \
+#  OutputData/Test_Benchmark.tsv \
+#  OutputData/Test.log
+
+#sudo docker run --rm \
+#  -v $(pwd)/Validation:/InputData \
+#  -v /tmp/TestOutput:/OutputData \
+#  srp33/shinylearner:version225 \
+#  /UserScripts/classification_montecarlo \
+#  InputData/StrongSignal_Both.tsv.gz \
+#  My_Interesting_Analysis \
+#  2 \
+#  false \
+#  AlgorithmScripts/Classification/tsv/sklearn/lda/default,AlgorithmScripts/Classification/tsv/sklearn/logistic_regression/default \
+#  OutputData/Predictions.tsv \
+#  OutputData/Metrics.tsv \
+#  OutputData/Test_Benchmark.tsv \
+#  OutputData/LogFile.txt
+
+sudo docker run --rm \
+  -v $(pwd)/Validation:/InputData \
+  -v /tmp/TestOutput:/OutputData \
+  srp33/shinylearner:version240 \
+  /UserScripts/nestedclassification_montecarlo \
+  InputData/StrongSignal_Both.tsv.gz \
+  My_Interesting_Analysis \
+  10 \
+  5 \
+  false \
+  "AlgorithmScripts/Classification/arff/weka/SVM*/default" \
+  OutputData/Predictions.tsv \
+  OutputData/Metrics.tsv \
+  OutputData/Internal_Predictions.tsv \
+  OutputData/Internal_Metrics.tsv \
+  OutputData/Internal_Benchmark.tsv \
+  OutputData/Test.log

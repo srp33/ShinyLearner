@@ -1,0 +1,36 @@
+---
+title: "ShinyLearner Analysis"
+output: html_notebook
+---
+
+
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(magrittr)
+```
+
+```{r}
+metricData <- read_tsv("Results/Metrics_Summary.tsv")
+metricData$Description <- factor(metricData$Description)
+metricData$Iteration <- factor(metricData$Iteration)
+metricData$Algorithm <- factor(metricData$Algorithm)
+
+group_by(metricData, Description, Algorithm) %>% summarise(AUROC=mean(Value)) -> metricData
+
+metricData %>%
+   group_by(Description) %>%
+   mutate(Max = max(AUROC)) %>%
+   mutate(IsMax = AUROC == Max) -> metricData
+
+
+```
+
+```{r}
+p <- ggplot(metricData, aes(x=Algorithm, y=AUROC, shape=Description)) + geom_point(aes(colour = IsMax)) + theme_bw(base_size = 16) + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5)) + geom_hline(yintercept=0.5, linetype="dotted") + scale_colour_discrete(guide = FALSE)
+print(p)
+
+ggsave("Results/Algorithms.png", width=6.5)
+```

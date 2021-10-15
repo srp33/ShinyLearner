@@ -1,0 +1,3 @@
+Description	Iteration	Feature_Selection_Algorithm	Num_Features	Classification_Algorithm	Classification_Algorithm_Group
+StrongSignal_Both	1	AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default	10	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default__tol=0.0001	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda
+StrongSignal_Both	2	AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default	10	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda/default__tol=0.0001	/Users/srp33/Dropbox/ShinyLearner/AlgorithmScripts/Classification/tsv/sklearn/lda

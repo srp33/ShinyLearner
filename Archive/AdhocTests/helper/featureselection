@@ -1,0 +1,52 @@
+#!/bin/bash
+
+set -euo pipefail
+
+validationType=$1
+
+if [[ "$validationType" == "" ]]
+then
+  echo No validation type was specified. This may not be the script you want to be executing.
+  exit 1
+fi
+
+./scripts/build
+
+currentDir=$(pwd)
+testDir=/tmp/ML_Flex_Lite_Test_FS
+outputDir=$currentDir/TestOutput/featureselection/$validationType
+
+rm -rf $testDir
+mkdir -p $testDir
+
+cp -r shinylearner.jar $testDir/
+cp -r scripts $testDir/
+cp -r AlgorithmScripts $testDir/
+cp -r UserScripts $testDir/
+cp -r VERSION $testDir/
+
+rm -rf $outputDir
+mkdir -p $outputDir
+
+cd $testDir
+
+validation=StrongSignal_Both
+dataFile=$currentDir/Validation/${validation}.tsv.gz
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/svm_rfe/default*"
+fsAlgo="AlgorithmScripts/FeatureSelection/tsv/sklearn/*/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/cforest.importance/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/*/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/random*/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/tsv/mlr/randomForestSRC.rfsrc/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default*"
+#fsAlgo="AlgorithmScripts/FeatureSelection/arff/weka/*/default*"
+verbose=true
+#verbose=false
+impute=true
+
+if [[ "$validationType" == "montecarlo" ]]
+then
+  UserScripts/featureselection_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --verbose $verbose --fs-algo "$fsAlgo" --output-dir "$outputDir" --impute $impute
+else
+  UserScripts/featureselection_${validationType} --data "$dataFile" --description "$validation" --iterations 2 --folds 2 --verbose $verbose --fs-algo "$fsAlgo" --output-dir "$outputDir" --impute $impute
+fi

@@ -1,0 +1,50 @@
+---
+output: html_document
+params:
+  exp_name: 'NULL'
+  outerNumIterations: 'NULL'
+  version: 'NULL'
+  rocc: 'NULL'
+  iteration_metrics: 'NULL'
+  average_metrics: 'NULL'
+  preds: 'NULL'
+---
+
+```{r echo=F, results='hide',  message=FALSE}
+  library(ggplot2)
+```
+
+```{r echo=F, results='asis'}
+  if (params$exp_name != ""){
+    cat("#",params$exp_name,"\n")
+  } else{
+    cat("#","ShinyLearner Results","\n")}
+ cat(paste("* Version:",params$version),"\n","\n")
+```
+
+### Receiver Operating Characteristic Plot
+```{r echo=F, fig.width=6.5, fig.height=4.5}
+if nmultiple iterations, then say multiple for graphs
+  cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+  ggplot(data=params$rocc, aes(x=fpr,y=tpr,group=class,color=class)) +
+    theme_bw() +
+    geom_line(size=1) +
+    scale_colour_manual(values=cbPalette,name='Classes') +
+    labs(x="1 - Specificity", y="Sensitivity") +
+    theme(axis.text=element_text(size=11),axis.title=element_text(size=14)) +
+    theme(legend.text=element_text(size=11),legend.title=element_text(size=14)) +
+    theme(legend.justification=c(1,0),legend.position=c(1,0))
+    #guides(colour = guide_legend(override.aes = list(size=14, title='Class')))
+```
+
+### Metrics
+```{r, echo=F}
+  if (outerNumIterations > 1)
+    kable(average_metrics, align=c('l','r','r','r'), format='markdown', digits=3)
+  kable(iteration_metrics, format='markdown', digits=3, align=c('l','r','r'),row.names=T)
+```
+
+### Predictions
+```{r, echo=F, message=F, warning=F}
+  kable(p_table,format='markdown',row.names=T,digits=3, align=c('l','r','r','r','r'))
+```

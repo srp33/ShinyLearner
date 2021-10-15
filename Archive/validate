@@ -1,0 +1,56 @@
+#!/bin/bash
+
+set -o errexit
+
+#./scripts/build
+
+currentDir=$(pwd)
+testDir=/tmp/ML_Flex_Lite_Validate
+outDir=$testDir/Results
+
+rm -rfv $testDir
+mkdir -p $testDir
+
+cp -rv release/* $testDir/
+cp -rv scripts $testDir/
+
+rm -rfv $outDir
+mkdir -p $outDir/Nested $outDir/Nested_FS
+
+cd $testDir
+
+for signal in NoSignal MediumSignal StrongSignal
+do
+  for size in Small
+  do
+    for dataType in Continuous Discrete Both
+    do
+      validation=${signal}_${size}_${dataType}
+      dataFile=$currentDir/Validation/${validation}_Data.tsv.gz
+      #fsAlgo="$currentDir/AlgorithmScripts/FeatureSelection/arff/weka__info_gain"
+      fsAlgo="$currentDir/AlgorithmScripts/FeatureSelection/*/*__*svm*"
+      numFeaturesOptions="5,20"
+      #classifAlgo="$currentDir/AlgorithmScripts/Classification/arff/weka__*decision_tree*"
+      classifAlgo="$currentDir/AlgorithmScripts/Classification/*/*__*svm*"
+      numIterations=2
+
+      scripts/shinylearner_classification "$dataFile" "$validation" $numIterations false "$classifAlgo" "$outDir/${validation}_Classification_Predictions.tsv" "$outDir/${validation}_Classification_Metrics.tsv" ""
+      scripts/shinylearner_featureselection "$dataFile" "$validation" $numIterations false "$fsAlgo" "$outDir/${validation}_FeatureSelection_SelectedFeatures.tsv" ""
+      scripts/shinylearner_nested "$dataFile" $validation $numIterations $numIterations false "$classifAlgo" $outDir/Nested
+      scripts/shinylearner_nested_featureselection "$dataFile" $validation $numIterations $numIterations false "$fsAlgo" "$numFeaturesOptions" "$classifAlgo" $outDir/Nested_FS
+    done
+  done
+done
+
+cd $currentDir
+
+rm -f Validation/Last*Results*.txt
+python scripts/SmartCat.py Validation/LastClassificationResults_Full.txt $outDir/*Metrics* $outDir/Nested/*Metrics* $outDir/Nested_FS/*Metrics*
+Rscript --vanilla Validation/SummarizeClassificationResults.R Validation/LastClassificationResults_Full.txt Validation/LastClassificationResults_Summarized.txt
+
+python scripts/SmartCat.py Validation/LastFeatureSelectionResults.txt $outDir/*SelectedFeatures*
+
+exit
+python scripts/AreFilesIdentical.py Validation/LastClassificationResults_Full.txt Validation/TrustedClassificationResults_Full.txt
+python scripts/AreFilesIdentical.py Validation/LastClassificationResults_Summarized.txt Validation/TrustedClassificationResults_Summarized.txt
+python scripts/AreFilesIdentical.py Validation/LastFeatureSelectionResults.txt Validation/TrustedFeatureSelectionResults.txt

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mlflexDirPath="$1"
+dataFilePath="$2"
+
+sh "$(dirname $0)"/Helper/mlr_fs_generic "$mlflexDirPath" "$dataFilePath" "$(basename $0)"

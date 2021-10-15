@@ -1,0 +1,10 @@
+#!/bin/bash
+
+mlflexDirPath="$1"
+trainingFilePath="$2"
+testFilePath="$3"
+classOptions="$4"
+
+parameters="weka.classifiers.meta.LogitBoost -P 100 -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 1 -E 1 -S 1 -I 10 -W weka.classifiers.trees.DecisionStump -batch-size"
+
+sh "$(dirname $0)"/Helper/weka_c_generic "$mlflexDirPath" "" "$trainingFilePath" "$testFilePath" "$parameters" "$classOptions"

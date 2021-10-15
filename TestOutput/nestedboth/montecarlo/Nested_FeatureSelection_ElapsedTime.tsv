@@ -1,0 +1,5 @@
+Description	Outer_Iteration	Inner_Iteration	Algorithm	ElapsedSeconds
+StrongSignal_Both	1	1	AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default	1.04171168
+StrongSignal_Both	1	2	AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default	1.039611712
+StrongSignal_Both	2	1	AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default	1.05567872
+StrongSignal_Both	2	2	AlgorithmScripts/FeatureSelection/arff/weka/Correlation/default	1.005347008
