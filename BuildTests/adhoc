@@ -28,13 +28,14 @@ cp -r Validation/$data $tmpDir/input/
 ###################################################
 
 #fsAlgos="AlgorithmScripts/FeatureSelection/tsv/sklearn/svm_rfe/default*"
-fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/OneR/default*"
+#fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/OneR/default*"
 #fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/OneR_Wrapper/default*"
 #fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/SMO_Wrapper/default*"
 #fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/RandomForest_Wrapper/default*"
 #fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/InfoGain/default*"
-#fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/OneR/default*"
 #fsAlgos="AlgorithmScripts/FeatureSelection/*/sklearn/*_wrapper/default*"
+fsAlgos="AlgorithmScripts/FeatureSelection/tsv/mlr/kruskal.test/default"
+#fsAlgos="AlgorithmScripts/FeatureSelection/tsv/mlr/randomForestSRC.rfsrc/default*"
 
 classifAlgos="AlgorithmScripts/Classification/arff/weka/OneR/default*"
 #classifAlgos="AlgorithmScripts/Classification/tsv/sklearn/random_forest/default*"
@@ -43,8 +44,8 @@ classifAlgos="AlgorithmScripts/Classification/arff/weka/OneR/default*"
 #classifAlgos="AlgorithmScripts/Classification/tsv/keras/snn/default*"
 #classifAlgos="AlgorithmScripts/Classification/tsv/keras/resnet/default"
 
-verbose="--verbose true"
-#verbose="--verbose false"
+#verbose="--verbose true"
+verbose="--verbose false"
 impute=true
 ohe=true
 scale=robust

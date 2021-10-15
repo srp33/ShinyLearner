@@ -108,8 +108,7 @@ createScripts("Classification", packagePath, "mlr_c_template", "xgboost", None, 
 cforest_importance = "'cforest.importance', conditional={conditional}, nperm={nperm}, threshold={threshold}"
 createScripts("FeatureSelection", packagePath, "mlr_f_template", "cforest.importance", None, cforest_importance, {"conditional": ["TRUE", "FALSE"], "nperm": [1, 5], "threshold": [0.1, 0.5, 0.9]}, summaryDict)
 
-kruskal_test = "kruskal.test"
-createScripts("FeatureSelection", packagePath, "mlr_f_template", "kruskal.test", None, kruskal_test, {}, summaryDict)
+createScripts("FeatureSelection", packagePath, "mlr_f_template", "kruskal.test", None, "'kruskal.test'", {}, summaryDict)
 
 randomForestSRC_rfsrc = "'randomForestSRC.rfsrc', ntree = {ntree}, bootstrap = '{bootstrap}', nodesize={nodesize}"
 createScripts("FeatureSelection", packagePath, "mlr_f_template", "randomForestSRC.rfsrc", None, randomForestSRC_rfsrc, {"ntree": [1000, 100], "bootstrap": ["by.root", "none"], "nodesize": nodeSizeOptions}, summaryDict)

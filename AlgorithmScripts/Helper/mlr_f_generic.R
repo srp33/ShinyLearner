@@ -30,20 +30,11 @@ learn <- function(parameterList)
 
   # Dynamically execute the code for the specified algorithm and parameters.
   code = paste0("fv = suppressWarnings(generateFilterValuesData(task, method = ", algorithm, ")$data)")
-  print("the code is:")
-  print(code)
   eval(parse(text = paste0("fv = suppressWarnings(generateFilterValuesData(task, method = ", algorithm, ")$data)")))
 
-  #fv = suppressWarnings(generateFilterValuesData(task, method = algorithm)$data)
   fv[,1] = columnNames[-classIndex]
-
-#  if (algorithm == "permutation.importance") {
-#    fv = generateFilterValuesData(task, method = algorithm, learner="classif.logreg", ...)$data
-#  } else {
-#    fv = do.call(generateFilterValuesData, parameterList)$data
-#  }
-
   fv <- fv[order(fv$value, decreasing=TRUE),,drop=FALSE]
+
   features <- paste(fv[,1], collapse=",")
   output <- t(as.data.frame(features))
 

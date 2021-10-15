@@ -89,7 +89,7 @@ Some algorithms support the use of graphical processing units for faster perform
       -v "$(pwd)"/:"/InputData" \
       -v "$(pwd)/Output":"/OutputData" \
       --user $(id -u):$(id -g) \
-      srp33/shinylearner:version602 \
+      srp33/shinylearner:version603 \
       UserScripts/nestedclassification_montecarlo \
         --data Data.tsv.gz \
         --description "My_Interesting_Analysis" \
