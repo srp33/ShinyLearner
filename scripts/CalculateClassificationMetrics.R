@@ -2,6 +2,7 @@ suppressPackageStartupMessages(suppressWarnings(library(mlr)))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(AUC))
+suppressPackageStartupMessages(suppressWarnings(library(MLmetrics)))
 
 inPredictionsFilePath <- commandArgs()[7]
 outMetricsFilePath <- commandArgs()[8]
@@ -43,7 +44,9 @@ calculateMetrics <- function(predictionData)
   #ssr <- measureSSR(probabilities, truth)
   #multiHamLoss <- measureMultilabelHamloss(truth, response)
 
-  list(Accuracy=accuracy, AUROC=auc, BalancedAccuracy=balancedAccuracy, Brier=brier, FDR=fdr, FNR=fnr, FPR=fpr, MCC=mcc, MMCE=mmce, PPV=ppv, NPV=npv, TNR=tnr, TPR=tpr, Recall=recall, F1=f1)
+  auprc = PRAUC(probabilities, truth)
+
+  list(Accuracy=accuracy, AUROC=auc, BalancedAccuracy=balancedAccuracy, Brier=brier, FDR=fdr, FNR=fnr, FPR=fpr, MCC=mcc, MMCE=mmce, PPV=ppv, NPV=npv, TNR=tnr, TPR=tpr, Recall=recall, F1=f1, AUPRC=auprc)
 }
 
 #Description	Algorithm	InstanceID	ActualClass	PredictedClass	0	1
@@ -108,8 +111,13 @@ if ("ERROR" %in% predictionsData$PredictedClass) {
     }
   }
 
-  outData <- data.frame(Description=outDescriptions, Algorithm=outAlgorithms, Metric=outMetrics, Value=outValues)
-  outData <- as.data.frame(ungroup(summarize(group_by(outData, Description, Algorithm, Metric), Value=mean(Value))))
+  options("dplyr.summarise.inform"=FALSE)
+
+  outData <- data.frame(Description=outDescriptions, Algorithm=outAlgorithms, Metric=outMetrics, Value=outValues) %>%
+    group_by(Description, Algorithm, Metric) %>%
+    summarize(Value = mean(Value)) %>%
+    ungroup() %>%
+    as.data.frame()
 
   write.table(outData, outMetricsFilePath, sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE)
 }
