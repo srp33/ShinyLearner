@@ -19,6 +19,7 @@ imageName=shinylearner
 ###################################################
 
 data=StrongSignal_Both.tsv.gz
+#data=StrongSignalManyInstances_Both.tsv.gz
 cp -r Validation/$data $tmpDir/input/
 
 ###################################################
@@ -29,23 +30,21 @@ cp -r Validation/$data $tmpDir/input/
 
 #fsAlgos="AlgorithmScripts/FeatureSelection/tsv/sklearn/svm_rfe/default*"
 #fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/OneR/default*"
-#fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/OneR_Wrapper/default*"
-#fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/SMO_Wrapper/default*"
-#fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/RandomForest_Wrapper/default*"
 #fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/InfoGain/default*"
-#fsAlgos="AlgorithmScripts/FeatureSelection/*/sklearn/*_wrapper/default*"
-fsAlgos="AlgorithmScripts/FeatureSelection/tsv/mlr/kruskal.test/default"
+fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/LibLINEAR_Wrapper/default*"
+#fsAlgos="AlgorithmScripts/FeatureSelection/tsv/mlr/kruskal.test/default"
 #fsAlgos="AlgorithmScripts/FeatureSelection/tsv/mlr/randomForestSRC.rfsrc/default*"
 
-classifAlgos="AlgorithmScripts/Classification/arff/weka/OneR/default*"
+#classifAlgos="AlgorithmScripts/Classification/arff/weka/OneR/default*"
+classifAlgos="AlgorithmScripts/Classification/arff/weka/LibLINEAR/default*"
 #classifAlgos="AlgorithmScripts/Classification/tsv/sklearn/random_forest/default*"
 #classifAlgos="AlgorithmScripts/Classification/tsv/sklearn/extra_trees/alt__bootstrap=True_class_weight=None_criterion=gini_n_estimators=1000_oob_score=False"
 #classifAlgos="AlgorithmScripts/Classification/tsv/keras/dnn/default*"
 #classifAlgos="AlgorithmScripts/Classification/tsv/keras/snn/default*"
 #classifAlgos="AlgorithmScripts/Classification/tsv/keras/resnet/default"
 
-#verbose="--verbose true"
-verbose="--verbose false"
+verbose="--verbose true"
+#verbose="--verbose false"
 impute=true
 ohe=true
 scale=robust
@@ -57,12 +56,14 @@ scale=robust
 ###################################################
 
 #scriptName=classification_montecarlo
-#iterationsFolds="--iterations 2"
+#iterationsFolds="--iterations 1"
+##iterationsFolds="--iterations 2"
 #algos="--classif-algo \"${classifAlgos}\""
 
 scriptName=nestedboth_montecarlo
-iterationsFolds="--outer-iterations 2 --inner-iterations 2"
-algos="--classif-algo \"$classifAlgos\" --fs-algo \"$fsAlgos\" --num-features 1,2,5,10,20,50,100,1000"
+iterationsFolds="--outer-iterations 1 --inner-iterations 1"
+#iterationsFolds="--outer-iterations 2 --inner-iterations 2"
+algos="--classif-algo \"$classifAlgos\" --fs-algo \"$fsAlgos\" --num-features 2,1000"
 
 ###################################################
 ###################################################

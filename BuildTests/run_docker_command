@@ -9,6 +9,7 @@ cmd="$5"
 mkdir -p $outputDir
 
 docker run --rm \
+    -v /tmp:/tmp \
     -v $inputDir:/InputData \
     -v $outputDir:/OutputData \
     --user $(id -u):$(id -g) \

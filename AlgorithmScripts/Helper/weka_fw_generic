@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -euo pipefail
+
+dataFilePath="$1"
+classificationAlgorithm="$2"
+
+source $(dirname $0)/../../scripts/shared_functions
+
+#wekaLibPath=$(dirname $0)/lib
+wekaLibPath=/AlgorithmScripts/Helper/lib
+classPath="$wekaLibPath/*:$wekaLibPath/wekalib/*"
+
+echo java $(getJavaArgs) -classpath $classPath weka.attributeSelection.WrapperSubsetEval -i $dataFilePath -s \"weka.attributeSelection.GreedyStepwise -R -T -1.7976931348623157E308 -N -1 -num-slots 1\" -B $classificationAlgorithm | bash | python3 $(dirname $0)/ParseWekaFSResults.py

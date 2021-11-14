@@ -48,6 +48,7 @@ python3 scripts/AddAlgorithmScripts.py $tmpDir/ie "$fsAlgos" $tmpDir/ie2 $verbos
 python3 scripts/AddAlgorithmScripts.py $tmpDir/ie "$classifAlgos" $tmpDir/ie3 $verbose
 
 echo "Selecting features for inner iterations..." | timestamp | tee -a "$outLogFile"
+#cat $analysisDataFile | gunzip
 java $(getJavaArgs) -jar shinylearner.jar ANALYSIS_DATA_FILE="$analysisDataFile" EXPERIMENT_FILE=$tmpDir/ie2 OUTPUT_FEATURES_FILE_PATH="$tmpDir/if" OUTPUT_BENCHMARK_FILE_PATH="$tmpDir/ifb" DEBUG=$verbose NUM_CORES=$numCores TEMP_DIR=$tmpDir 2> /dev/null
 
 ## Add selected features to inner classification files

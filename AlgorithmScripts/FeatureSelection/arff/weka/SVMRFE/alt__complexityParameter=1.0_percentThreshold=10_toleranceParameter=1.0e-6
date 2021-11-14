@@ -5,4 +5,4 @@
 # software package (http://www.cs.waikato.ac.nz/ml/weka/).
 ##########################################################
 
-bash AlgorithmScripts/Helper/weka_f_generic "$1" 'weka.attributeSelection.SVMAttributeEval -X 0 -Y 10 -Z 10 -P 1.0E-25 -T 1.0e-6 -C 1.0 -N 0 -s "weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1"'
+bash AlgorithmScripts/Helper/weka_ff_generic "$1" 'weka.attributeSelection.SVMAttributeEval -X 0 -Y 10 -Z 10 -P 1.0E-25 -T 1.0e-6 -C 1.0 -N 0 -s "weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1"'

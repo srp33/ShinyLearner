@@ -93,41 +93,38 @@ createScripts("Classification", packagePath, "weka_c_template", "ZeroR", None, Z
 ###createScripts("Classification", packagePath, "weka_c_template", "LWL", None, 'weka.classifiers.lazy.LWL -U 0 -K -1 -A "weka.core.neighboursearch.LinearNNSearch -A \"weka.core.EuclideanDistance -R first-last\"" -W weka.classifiers.trees.DecisionStump')
 
 #################################################################
-# Feature selectors
+# Feature selectors - filters
 #################################################################
 
 # There are no hyperparameters for this algorithm.
 Correlation = 'weka.attributeSelection.CorrelationAttributeEval -s \"weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1\"'
-createScripts("FeatureSelection", packagePath, "weka_f_template", "Correlation", None, Correlation, {}, summaryDict)
+createScripts("FeatureSelection", packagePath, "weka_ff_template", "Correlation", None, Correlation, {}, summaryDict)
 
 # There are no hyperparameters for this algorithm.
 GainRatio = 'weka.attributeSelection.GainRatioAttributeEval -s \"weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1\"'
-createScripts("FeatureSelection", packagePath, "weka_f_template", "GainRatio", None, GainRatio, {}, summaryDict)
+createScripts("FeatureSelection", packagePath, "weka_ff_template", "GainRatio", None, GainRatio, {}, summaryDict)
 
 InfoGain = 'weka.attributeSelection.InfoGainAttributeEval {binarize} -s \"weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1\"'
-createScripts("FeatureSelection", packagePath, "weka_f_template", "InfoGain", None, InfoGain, {"binarize": ["", "-B"]}, summaryDict)
+createScripts("FeatureSelection", packagePath, "weka_ff_template", "InfoGain", None, InfoGain, {"binarize": ["", "-B"]}, summaryDict)
 
 OneR = 'weka.attributeSelection.OneRAttributeEval -S 1 -F {folds} -B {minimumBucketSize} -s \"weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1\"'
-createScripts("FeatureSelection", packagePath, "weka_f_template", "OneR", None, OneR, {"folds": ["10"], "minimumBucketSize": ["6", "3", "10"]}, summaryDict)
+createScripts("FeatureSelection", packagePath, "weka_ff_template", "OneR", None, OneR, {"folds": ["10"], "minimumBucketSize": ["6", "3", "10"]}, summaryDict)
 
 ReliefF = 'weka.attributeSelection.ReliefFAttributeEval -M -1 -D 1 -K {numNeighbors} {weightByDistance} -s \"weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1\"'
-createScripts("FeatureSelection", packagePath, "weka_f_template", "ReliefF", None, ReliefF, {"numNeighbors": ["10", "5", "1"], "weightByDistance": ["", "-W"]}, summaryDict)
+createScripts("FeatureSelection", packagePath, "weka_ff_template", "ReliefF", None, ReliefF, {"numNeighbors": ["10", "5", "1"], "weightByDistance": ["", "-W"]}, summaryDict)
 
 SVMRFE = 'weka.attributeSelection.SVMAttributeEval -X {attsToEliminatePerIteration} -Y {percentToEliminatePerIteration} -Z {percentThreshold} -P {epsilonParameter} -T {toleranceParameter} -C {complexityParameter} -N {filterType} -s \"weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1\"'
-createScripts("FeatureSelection", packagePath, "weka_f_template", "SVMRFE", None, SVMRFE, {"percentThreshold": ["1", "5", "10"], "filterType": ["0"], "toleranceParameter": ["1.0E-10", "1.0e-8", "1.0e-6"], "complexityParameter": cOptions, "attsToEliminatePerIteration": ["0"], "epsilonParameter": ["1.0E-25"], "percentToEliminatePerIteration": ["10"]}, summaryDict)
+createScripts("FeatureSelection", packagePath, "weka_ff_template", "SVMRFE", None, SVMRFE, {"percentThreshold": ["1", "5", "10"], "filterType": ["0"], "toleranceParameter": ["1.0E-10", "1.0e-8", "1.0e-6"], "complexityParameter": cOptions, "attsToEliminatePerIteration": ["0"], "epsilonParameter": ["1.0E-25"], "percentToEliminatePerIteration": ["10"]}, summaryDict)
 
 # There are no hyperparameters for this algorithm.
 SymmetricalUncertainty = 'weka.attributeSelection.SymmetricalUncertAttributeEval -s \"weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1\"'
-createScripts("FeatureSelection", packagePath, "weka_f_template", "SymmetricalUncertainty", None, SymmetricalUncertainty, {}, summaryDict)
+createScripts("FeatureSelection", packagePath, "weka_ff_template", "SymmetricalUncertainty", None, SymmetricalUncertainty, {}, summaryDict)
 
-#OneR_Wrapper = 'weka.attributeSelection.WrapperSubsetEval -B weka.classifiers.rules.OneR -F 5 -T 0.01 -R 1 -E AUC -- -B 6 -s \"weka.attributeSelection.GreedyStepwise -R -T -1.7976931348623157E308 -N -1 -num-slots 1\"'
-#createScripts("FeatureSelection", packagePath, "weka_f_template", "OneR_Wrapper", None, OneR_Wrapper, {}, summaryDict)
+#################################################################
+# Feature selectors - wrappers
+#################################################################
 
-#SMO_Wrapper = 'weka.attributeSelection.WrapperSubsetEval -B weka.classifiers.functions.SMO -F 5 -T 0.01 -R 1 -E AUC -- -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K \"weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007\" -calibrator \"weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4\" -s \"weka.attributeSelection.GreedyStepwise -R -T -1.7976931348623157E308 -N -1 -num-slots 1\"'
-#createScripts("FeatureSelection", packagePath, "weka_f_template", "SMO_Wrapper", None, SMO_Wrapper, {}, summaryDict)
-
-#RandomForest_Wrapper = 'weka.attributeSelection.WrapperSubsetEval -B weka.classifiers.trees.RandomForest -F 5 -T 0.01 -R 1 -E AUC -- -P 100 -I 100 -num-slots 1 -K 0 -M 1.0 -V 0.001 -S 1 -s \"weka.attributeSelection.GreedyStepwise -R -T -1.7976931348623157E308 -N -1 -num-slots 1\"'
-#createScripts("FeatureSelection", packagePath, "weka_f_template", "RandomForest_Wrapper", None, RandomForest_Wrapper, {}, summaryDict)
+createScripts("FeatureSelection", packagePath, "weka_fw_template", "LibLINEAR_Wrapper", None, "weka.classifiers.functions.LibLINEAR -F 5 -T 0.01 -R 1 -E ACC -- -S 0 -C 1.0 -E 0.001 -B 1.0 -P -L 0.1 -I 1000", {}, summaryDict)
 
 if showStats:
     print("#######################################")
