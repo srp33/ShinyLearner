@@ -45,7 +45,7 @@ public class ExperimentItems implements Comparable<ExperimentItems>
 		AlgorithmType = fileNameParts[fileNameParts.length - 5];
 		AlgorithmDataFormat = fileNameParts[fileNameParts.length - 4];
 
-		if (!AlgorithmType.equals("Classification") && !AlgorithmType.equals("FeatureSelection"))
+		if (!AlgorithmType.equals("Classification") && !AlgorithmType.equals("Classification_WrapperFS") && !AlgorithmType.equals("FeatureSelection"))
 			Log.ExceptionFatal("Invalid algorithm type: " + AlgorithmType);
 
 		if (!AnalysisFileCreator.AcceptedDataFormats.contains(AlgorithmDataFormat))
@@ -61,7 +61,7 @@ public class ExperimentItems implements Comparable<ExperimentItems>
 		//Key = AlgorithmType + "_" + rawTrainIDs + "_" + rawTestIDs + "_" + AlgorithmDataFormat + "_" + rawDataPointsToUse;
 		Key = rawTrainIDs + "_" + rawTestIDs + "_" + AlgorithmDataFormat + "_" + rawDataPointsToUse;
 		
-		IsClassificationAnalysis = AlgorithmType.equals("Classification");
+		IsClassificationAnalysis = AlgorithmType.startsWith("Classification");
 	}
 	
 	private String ParseItem(int lineNumber, ArrayList<String> lineItems, int index)

@@ -8,7 +8,7 @@ showStats=False
 rm -rf ../Classification/tsv/mlr/* ../FeatureSelection/tsv/mlr/*
 python3 build_mlr_scripts.py $showStats
 
-rm -rf ../Classification/tsv/sklearn/* ../FeatureSelection/tsv/sklearn/*
+rm -rf ../Classification/tsv/sklearn/* ../Classification_WrapperFS/tsv/sklearn/* ../FeatureSelection/tsv/sklearn/*
 python3 build_sklearn_scripts.py $showStats
 
 rm -rf ../Classification/arff/weka/* ../FeatureSelection/arff/weka/*
@@ -16,3 +16,5 @@ python3 build_weka_scripts.py $showStats
 
 rm -rf ../Classification/tsv/keras/*
 python3 build_keras_scripts.py $showStats
+
+chmod 777 ../* -R

@@ -1,8 +1,0 @@
-#!/bin/bash
-
-##########################################################
-# This algorithm is implemented in the weka
-# software package (http://www.cs.waikato.ac.nz/ml/weka/).
-##########################################################
-
-bash AlgorithmScripts/Helper/weka_fw_generic "$1" 'weka.classifiers.functions.SimpleLogistic -- -I 0 -M 500 -H 50 -W 0.0'

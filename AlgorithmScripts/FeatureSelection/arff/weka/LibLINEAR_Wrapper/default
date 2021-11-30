@@ -1,8 +1,0 @@
-#!/bin/bash
-
-##########################################################
-# This algorithm is implemented in the weka
-# software package (http://www.cs.waikato.ac.nz/ml/weka/).
-##########################################################
-
-bash AlgorithmScripts/Helper/weka_fw_generic "$1" 'weka.classifiers.functions.LibLINEAR -- -S 0 -C 1.0 -E 0.001 -B 1.0 -P -L 0.1 -I 1000'

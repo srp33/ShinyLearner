@@ -30,18 +30,14 @@ cp -r Validation/$data $tmpDir/input/
 
 #fsAlgos="AlgorithmScripts/FeatureSelection/tsv/sklearn/svm_rfe/default*"
 #fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/OneR/default*"
-#fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/InfoGain/default*"
-#fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/LibLINEAR_Wrapper/default*"
-#fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/SimpleLogistic_Wrapper/default*"
-#fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/NaiveBayes_Wrapper/default*"
-fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/VFI_Wrapper/default*"
+fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/InfoGain/default*"
 #fsAlgos="AlgorithmScripts/FeatureSelection/tsv/mlr/kruskal.test/default"
 #fsAlgos="AlgorithmScripts/FeatureSelection/tsv/mlr/randomForestSRC.rfsrc/default*"
 
 #classifAlgos="AlgorithmScripts/Classification/arff/weka/OneR/default*"
-classifAlgos="AlgorithmScripts/Classification/arff/weka/LibLINEAR/default*"
+#classifAlgos="AlgorithmScripts/Classification/arff/weka/LibLINEAR/default*"
 #classifAlgos="AlgorithmScripts/Classification/tsv/sklearn/random_forest/default*"
-#classifAlgos="AlgorithmScripts/Classification/tsv/sklearn/extra_trees/alt__bootstrap=True_class_weight=None_criterion=gini_n_estimators=1000_oob_score=False"
+classifAlgos="AlgorithmScripts/Classification_WrapperFS/tsv/sklearn/multilayer_perceptron/alt__n_features=0.01"
 #classifAlgos="AlgorithmScripts/Classification/tsv/keras/dnn/default*"
 #classifAlgos="AlgorithmScripts/Classification/tsv/keras/snn/default*"
 #classifAlgos="AlgorithmScripts/Classification/tsv/keras/resnet/default"
@@ -63,10 +59,17 @@ scale=robust
 ##iterationsFolds="--iterations 2"
 #algos="--classif-algo \"${classifAlgos}\""
 
-scriptName=nestedboth_montecarlo
+scriptName=nestedclassification_montecarlo
 iterationsFolds="--outer-iterations 1 --inner-iterations 1"
 #iterationsFolds="--outer-iterations 2 --inner-iterations 2"
-algos="--classif-algo \"$classifAlgos\" --fs-algo \"$fsAlgos\" --num-features 2,1000"
+algos="--classif-algo \"$classifAlgos\""
+
+#scriptName=nestedboth_montecarlo
+#iterationsFolds="--outer-iterations 1 --inner-iterations 1"
+##iterationsFolds="--outer-iterations 2 --inner-iterations 2"
+#algos="--classif-algo \"$classifAlgos\" --fs-algo \"$fsAlgos\" --num-features 2,1000"
+
+numCores=8
 
 ###################################################
 ###################################################
@@ -76,6 +79,6 @@ algos="--classif-algo \"$classifAlgos\" --fs-algo \"$fsAlgos\" --num-features 2,
 
 cd $tmpDir
 
-bash $currentDir/BuildTests/run_docker_command $tmpDir/input $tmpDir/output $imageName $version "UserScripts/$scriptName --data "$data" --description "Test" $iterationsFolds $algos $verbose --impute $impute --ohe $ohe" --scale $scale
+bash $currentDir/BuildTests/run_docker_command $tmpDir/input $tmpDir/output $imageName $version "UserScripts/$scriptName --data $data --description Test $iterationsFolds $algos $verbose --impute $impute --ohe $ohe --scale $scale --num-cores $numCores"
 
 echo See results in $tmpDir/output.

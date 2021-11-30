@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -euo pipefail
+
+#####################################################
+# This algorithm is implemented in the scikit-learn
+# software package (http://scikit-learn.org/stable/).
+#####################################################
+
+trainingFilePath="$1"
+testFilePath="$2"
+classOptions="$3"
+numCores="$4"
+verbose="$5"
+
+#export JOBLIB_START_METHOD="forkserver"
+
+python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = Pipeline([('feature_selection', SequentialFeatureSelector(KNeighborsClassifier(), n_features_to_select=0.001, n_jobs = {n_jobs})), ('classification', KNeighborsClassifier())])"
+#python3 AlgorithmScripts/Helper/sklearn_c_generic.py "$trainingFilePath" "$testFilePath" "$classOptions" "$numCores" "clf = Pipeline([('feature_selection', SequentialFeatureSelector(KNeighborsClassifier(), n_features_to_select=0.001, n_jobs = {n_jobs})), ('classification', KNeighborsClassifier())])" 2>&1 | python3 AlgorithmScripts/Helper/ReformatSklearnClassificationOutput.py "$classOptions" "$verbose"

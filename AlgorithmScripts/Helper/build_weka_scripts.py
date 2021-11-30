@@ -124,10 +124,10 @@ createScripts("FeatureSelection", packagePath, "weka_ff_template", "SymmetricalU
 # Feature selectors - wrappers
 #################################################################
 
-createScripts("FeatureSelection", packagePath, "weka_fw_template", "LibLINEAR_Wrapper", None, "weka.classifiers.functions.LibLINEAR -- -S 0 -C 1.0 -E 0.001 -B 1.0 -P -L 0.1 -I 1000", {}, summaryDict)
-createScripts("FeatureSelection", packagePath, "weka_fw_template", "SimpleLogistic_Wrapper", None, "weka.classifiers.functions.SimpleLogistic -- -I 0 -M 500 -H 50 -W 0.0", {}, summaryDict)
-createScripts("FeatureSelection", packagePath, "weka_fw_template", "NaiveBayes_Wrapper", None, "weka.classifiers.bayes.NaiveBayes", {}, summaryDict)
-createScripts("FeatureSelection", packagePath, "weka_fw_template", "VFI_Wrapper", None, "weka.classifiers.misc.VFI -- -B 0.6", {}, summaryDict)
+#createScripts("FeatureSelection", packagePath, "weka_fw_template", "LibLINEAR_Wrapper", None, "weka.classifiers.functions.LibLINEAR -- -S 0 -C 1.0 -E 0.001 -B 1.0 -P -L 0.1 -I 1000", {}, summaryDict)
+#createScripts("FeatureSelection", packagePath, "weka_fw_template", "SimpleLogistic_Wrapper", None, "weka.classifiers.functions.SimpleLogistic -- -I 0 -M 500 -H 50 -W 0.0", {}, summaryDict)
+#createScripts("FeatureSelection", packagePath, "weka_fw_template", "NaiveBayes_Wrapper", None, "weka.classifiers.bayes.NaiveBayes", {}, summaryDict)
+#createScripts("FeatureSelection", packagePath, "weka_fw_template", "VFI_Wrapper", None, "weka.classifiers.misc.VFI -- -B 0.6", {}, summaryDict)
 
 if showStats:
     print("#######################################")

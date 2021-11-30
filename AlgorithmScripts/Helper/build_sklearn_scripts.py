@@ -74,6 +74,25 @@ createScripts("Classification", packagePath, "sklearn_c_template", "svm", None, 
 ## Failed tests: gaussian_naivebayes gaussian_process qda
 
 #############################################################
+# Classifiers that use wrapper-based feature selection
+#############################################################
+
+args = {"n_features": [0.0001, 0.001, 0.01, 0.1, 0.5]}
+
+wrapper_template = "clf = Pipeline([('feature_selection', SequentialFeatureSelector({classif_algo_class}, n_features_to_select={n_features}, n_jobs = {n_jobs})), ('classification', {classif_algo_class})])"
+
+classif_algo_dict = {"adaboost": "AdaBoostClassifier()", "decision_tree": "DecisionTreeClassifier()", "extra_trees": "ExtraTreesClassifier()", "gradient_boosting": "GradientBoostingClassifier()", "knn": "KNeighborsClassifier()", "logistic_regression": "LogisticRegression()", "random_forest": "RandomForestClassifier()", "sgd": "SGDClassifier(loss='modified_huber')", "svm": "SVC(probability=True)"}
+
+for classif_algo_name, classif_algo_class in classif_algo_dict.items():
+    createScripts("Classification_WrapperFS", packagePath, "sklearn_c_template", f"{classif_algo_name}", None, wrapper_template.replace("{classif_algo_class}", classif_algo_class), args, summaryDict)
+
+# NOTES
+#   Excluded because dramatically slower than other algorithms:
+#     "multilayer_perceptron": "MLPClassifier()"
+#   Algorithms that gave "Internal work array size computation failed" error:
+#     "lda": "LinearDiscriminantAnalysis"
+
+#############################################################
 # Feature selectors
 #############################################################
 
