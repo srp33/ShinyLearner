@@ -30,14 +30,17 @@ cp -r Validation/$data $tmpDir/input/
 
 #fsAlgos="AlgorithmScripts/FeatureSelection/tsv/sklearn/svm_rfe/default*"
 #fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/OneR/default*"
-fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/InfoGain/default*"
-#fsAlgos="AlgorithmScripts/FeatureSelection/tsv/mlr/kruskal.test/default"
+#fsAlgos="AlgorithmScripts/FeatureSelection/arff/weka/InfoGain/default*"
+fsAlgos="AlgorithmScripts/FeatureSelection/tsv/mlr/randomForestSRC.rfsrc/default*"
+#fsAlgos="AlgorithmScripts/FeatureSelection/tsv/mlr/kruskal.test/default*"
 #fsAlgos="AlgorithmScripts/FeatureSelection/tsv/mlr/randomForestSRC.rfsrc/default*"
 
 #classifAlgos="AlgorithmScripts/Classification/arff/weka/OneR/default*"
 #classifAlgos="AlgorithmScripts/Classification/arff/weka/LibLINEAR/default*"
+classifAlgos="AlgorithmScripts/Classification/arff/weka/Bagging/default__bagSizePercent=75_classifier=weka.classifiers.trees.REPTree_numIterations=10_representCopiesUsingWeights="
 #classifAlgos="AlgorithmScripts/Classification/tsv/sklearn/random_forest/default*"
-classifAlgos="AlgorithmScripts/Classification_WrapperFS/tsv/sklearn/multilayer_perceptron/alt__n_features=0.01"
+#classifAlgos="AlgorithmScripts/Classification_WrapperFS/tsv/sklearn/multilayer_perceptron/alt__n_features=0.01"
+#classifAlgos="AlgorithmScripts/Classification_WrapperFS/tsv/sklearn/*/alt__n_features=0.01"
 #classifAlgos="AlgorithmScripts/Classification/tsv/keras/dnn/default*"
 #classifAlgos="AlgorithmScripts/Classification/tsv/keras/snn/default*"
 #classifAlgos="AlgorithmScripts/Classification/tsv/keras/resnet/default"
@@ -59,15 +62,15 @@ scale=robust
 ##iterationsFolds="--iterations 2"
 #algos="--classif-algo \"${classifAlgos}\""
 
-scriptName=nestedclassification_montecarlo
-iterationsFolds="--outer-iterations 1 --inner-iterations 1"
-#iterationsFolds="--outer-iterations 2 --inner-iterations 2"
-algos="--classif-algo \"$classifAlgos\""
-
-#scriptName=nestedboth_montecarlo
+#scriptName=nestedclassification_montecarlo
 #iterationsFolds="--outer-iterations 1 --inner-iterations 1"
 ##iterationsFolds="--outer-iterations 2 --inner-iterations 2"
-#algos="--classif-algo \"$classifAlgos\" --fs-algo \"$fsAlgos\" --num-features 2,1000"
+#algos="--classif-algo \"$classifAlgos\""
+
+scriptName=nestedboth_montecarlo
+iterationsFolds="--outer-iterations 1 --inner-iterations 1"
+##iterationsFolds="--outer-iterations 2 --inner-iterations 2"
+algos="--classif-algo \"$classifAlgos\" --fs-algo \"$fsAlgos\" --num-features 1,10,100,1000,10000"
 
 numCores=8
 

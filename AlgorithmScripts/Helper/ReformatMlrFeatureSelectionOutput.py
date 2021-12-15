@@ -1,12 +1,10 @@
+import re
 import sys
 
-verbose = sys.argv[1] == "true"
+features = []
 
 for line in sys.stdin:
-    if line.startswith('c("'):
-        features = line.rstrip("\n").replace('c("', '').replace(")", "").split(", ")
-        features = [x.replace('"', '') for x in features]
-        print(",".join(features).rstrip(","))
+    if re.match(r"^\d+\s+", line):
+        features.append(re.sub(r"^\d+\s+", "", line.rstrip("\n")))
 
-#        if verbose:
-#            sys.stderr.write(line)
+print(",".join(features))

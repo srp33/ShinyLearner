@@ -8,7 +8,9 @@ cmd="$5"
 
 mkdir -p $outputDir
 
-docker run --rm \
+docker run --memory 100G \
+    --memory-swap 100G \
+    --rm \
     -v /tmp:/tmp \
     -v $inputDir:/InputData \
     -v $outputDir:/OutputData \
